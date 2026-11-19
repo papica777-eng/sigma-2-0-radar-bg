@@ -112,8 +112,17 @@
     </div>
   </section>
 
-  <!-- COMPACT CENTRAL FLOWING-NEON TRIGGER BAR FOR HALL OF FAME -->
+  <!-- COMPACT LIVE VISITOR COUNTER + FLOWING-NEON HALL OF FAME TRIGGER -->
   <div class="hof-trigger-wrap">
+    <div class="truth-counter" id="truthCounter" aria-live="polite">
+      <span class="truth-live-dot" aria-hidden="true"></span>
+      <div class="truth-counter-text">
+        <span class="truth-counter-label">БРОЙ БЪЛГАРИ, КОИТО РАЗБРАХА ИСТИНАТА!</span>
+        <span class="truth-counter-sub">Реални посещения на живо</span>
+      </div>
+      <span class="truth-counter-num" id="visitorCountVal">—</span>
+    </div>
+
     <button type="button" class="hof-trigger" id="hofOpenBtn" aria-haspopup="dialog" aria-controls="hofModal">
       <span class="hof-trigger-inner">
         <span class="hof-trigger-left">

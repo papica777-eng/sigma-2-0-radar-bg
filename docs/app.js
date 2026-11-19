@@ -107,6 +107,7 @@
       (cirJson.sharedCompanies || []).forEach((sc) => state.sharedEiks.add(sc.eik));
 
       renderHeader();
+      initLiveVisitorCounter();
       renderHallOfFamePyramid();
       renderVisualCharts();
       renderFilterPills();
@@ -128,6 +129,45 @@
     document.getElementById('syncSubtitle').textContent =
       `Данни от sigma.midt.bg (CC-BY 4.0) · Обновено: ${m.refreshedAt} · Пълен обхват: ${m.totalOfficialsAllRoles} лица`;
     document.getElementById('asOfChip').textContent = `Към дата: ${m.asOf}`;
+  }
+
+  // ===== LIVE GLOBAL VISITOR COUNTER (ABACUS HTTPS API) =====
+  async function initLiveVisitorCounter() {
+    const el = document.getElementById('visitorCountVal');
+    if (!el) return;
+    const ns = 'sigma-2-0-radar-bg';
+    const key = 'visits';
+    const storageKey = 'sigma_radar_bg_counted_v1';
+    const alreadyCounted = (() => {
+      try { return sessionStorage.getItem(storageKey) === '1'; } catch { return false; }
+    })();
+
+    const endpoint = alreadyCounted
+      ? `https://abacus.jasoncameron.dev/get/${ns}/${key}`
+      : `https://abacus.jasoncameron.dev/hit/${ns}/${key}`;
+
+    try {
+      const res = await fetch(endpoint, { mode: 'cors', cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      const target = Number(data && data.value);
+      if (!Number.isFinite(target) || target < 0) throw new Error('Invalid count');
+      try { sessionStorage.setItem(storageKey, '1'); } catch {}
+
+      // Smooth count-up animation
+      const start = Math.max(0, target - Math.min(target, 35));
+      const t0 = performance.now();
+      const dur = 520;
+      const step = (now) => {
+        const p = Math.min(1, (now - t0) / dur);
+        const cur = Math.round(start + (target - start) * (1 - Math.pow(1 - p, 3)));
+        el.textContent = fmtInt(cur);
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    } catch {
+      el.textContent = '1+';
+    }
   }
 
   // ===== CENTRAL NEON PYRAMID: HALL OF FAME (TOP 50) =====
