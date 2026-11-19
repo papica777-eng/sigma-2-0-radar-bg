@@ -7,6 +7,10 @@
     bySlug: new Map(),
     circles: null,
     comp: null,
+    deep: null,
+    deepBySlug: new Map(),
+    deepTier: 'missed',
+    deepConsSearch: '',
     sharedEiks: new Set(),
     filter: 'all',
     scope: 'all',
@@ -79,26 +83,33 @@
 
   async function init() {
     try {
-      const [offRes, cirRes, compRes] = await Promise.all([
+      const [offRes, cirRes, compRes, deepRes] = await Promise.all([
         fetch('data/officials_all.json'),
         fetch('data/circles_graph.json'),
         fetch('data/competition_stats.json'),
+        fetch('data/deep_links.json').catch(() => null),
       ]);
       const offJson = await offRes.json();
       const cirJson = await cirRes.json();
       const compJson = await compRes.json();
+      const deepJson = deepRes && deepRes.ok ? await deepRes.json() : null;
 
       state.meta = offJson.meta;
       state.officials = offJson.officials || [];
       state.officials.forEach((o) => state.bySlug.set(o.slug, o));
       state.circles = cirJson;
       state.comp = compJson;
+      state.deep = deepJson;
+      if (deepJson && deepJson.hiddenConsortiumLeaderboard) {
+        deepJson.hiddenConsortiumLeaderboard.forEach((lb) => state.deepBySlug.set(lb.slug, lb));
+      }
       (cirJson.sharedCompanies || []).forEach((sc) => state.sharedEiks.add(sc.eik));
 
       renderHeader();
       renderVisualCharts();
       renderFilterPills();
       renderDirectory();
+      renderDeepTab();
       renderClusters();
       renderMonopolies();
       populateGraphInstDropdown();
@@ -521,6 +532,24 @@
       <div class="drawer-section"><h4>Декларирани публични длъжности</h4>${instHtml}</div>
       <div class="drawer-section"><h4>Свързани дружества (${o.companies.length})</h4>${compHtml}</div>
       ${relHtml}
+      ${(() => {
+        const dc = state.deepBySlug.get(o.slug);
+        if (!dc) return '';
+        return `<div class="drawer-section">
+          <h4 style="color:var(--plum);">Отвъд СИГМА 2.0: Скрити консорциуми (ДЗЗД без ЕИК) — +${fmtEur(dc.hiddenConsortiumEur)} (${dc.hiddenConsortiumCount} ДЗЗД)</h4>
+          ${dc.topConsortia
+            .map(
+              (tc) => `<div class="contract-row" style="border-left:3px solid var(--plum);">
+                <div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:3px;">
+                  <strong class="mono" style="color:var(--plum);">${fmtEur(tc.wonEur)}</strong>
+                  <span class="mono muted">${tc.contracts} дог.</span>
+                </div>
+                <div style="font-size:12px;">${esc(tc.name)}</div>
+              </div>`
+            )
+            .join('')}
+        </div>`;
+      })()}
       <div class="drawer-section"><h4>Основни възложители (общо ${o.byAuthorityTotal})</h4>${authHtml}</div>
       <div class="drawer-section"><h4>Най-големи договори (Топ ${o.topContracts.length})</h4>${contractsHtml}</div>
       <div class="drawer-section" style="border-bottom:none;"><h4>Декларации в Сметната палата (register.cacbg.bg)</h4>${declsHtml}</div>
@@ -533,6 +562,184 @@
   function closeDossier() {
     document.getElementById('drawerBackdrop').classList.remove('open');
     document.getElementById('dossierDrawer').classList.remove('open');
+  }
+
+  // ===== TAB 1B: BEYOND SIGMA 2.0 (DEEP LINKS, HIDDEN CONSORTIA & CR DEEDS) =====
+  function renderDeepTab() {
+    const d = state.deep;
+    if (!d || !d.summary) return;
+    const s = d.summary;
+
+    const heroNum = document.getElementById('heroDeepNum');
+    const heroSub = document.getElementById('heroDeepSub');
+    if (heroNum) heroNum.textContent = '+' + fmtEur(s.hiddenConsortiumTotalEur);
+    if (heroSub) {
+      heroSub.textContent = `${fmtInt(s.hiddenConsortiumHitsCount)} ДЗЗД на ${s.hiddenConsortiumOfficialsCount} лица + ${s.brandNewPoliticiansNotInSigma571} нови от XML`;
+    }
+
+    document.getElementById('deepKpiGrid').innerHTML = `
+      <div class="kpi-card emphasis">
+        <div class="kpi-label">Скрити ДЗЗД поръчки (без ЕИК)</div>
+        <div class="kpi-val">${fmtEur(s.hiddenConsortiumTotalEur)}</div>
+        <div class="kpi-sub">${fmtInt(s.hiddenConsortiumHitsCount)} обединения на ${s.hiddenConsortiumOfficialsCount} лица от СИГМА</div>
+      </div>
+      <div class="kpi-card emphasis">
+        <div class="kpi-label">Нови лица извън СИГМА 2.0</div>
+        <div class="kpi-val">${fmtInt(s.brandNewPoliticiansNotInSigma571)}</div>
+        <div class="kpi-sub">${s.missedPrivateLinksCount} частни/управленски + ${s.missedPublicStockCount} акции АД</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Сканирани XML (Сметна палата)</div>
+        <div class="kpi-val">${fmtInt(s.declarationsScanned)}</div>
+        <div class="kpi-sub">Депутати, министри, агенции, кметове (2025–2026)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Разбити мега-консорциуми</div>
+        <div class="kpi-val">${fmtInt(s.consortiaExplodedCount)}</div>
+        <div class="kpi-sub">Живи партиди по Търговския регистър (ТР)</div>
+      </div>`;
+
+    renderDeepConsortia();
+    renderDeepXml();
+    renderMegaConsortia();
+  }
+
+  function renderDeepConsortia() {
+    const d = state.deep;
+    const tbody = document.getElementById('deepConsTbody');
+    if (!d || !tbody) return;
+    const q = state.deepConsSearch.trim().toLowerCase();
+    let list = d.hiddenConsortiumLeaderboard || [];
+    if (q) {
+      list = list.filter((lb) =>
+        lb.officialName.toLowerCase().includes(q) ||
+        lb.institution.toLowerCase().includes(q) ||
+        lb.companies.some((c) => c.name.toLowerCase().includes(q) || c.eik.includes(q)) ||
+        lb.topConsortia.some((tc) => tc.name.toLowerCase().includes(q))
+      );
+    }
+
+    if (!list.length) {
+      tbody.innerHTML = `<tr><td colspan="6" class="loading">Няма намерени скрити консорциуми по зададения филтър.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = list
+      .map((lb, idx) => {
+        const compHtml = lb.companies
+          .map((c) => `<div class="comp-item"><span class="comp-name">${esc(c.name)}</span><span class="eik-tag">ЕИК ${esc(c.eik)}</span></div>`)
+          .join('');
+        const consHtml = lb.topConsortia
+          .slice(0, 3)
+          .map((tc) => `<div class="inst-line"><strong class="mono" style="color:var(--plum);">${fmtEur(tc.wonEur)}</strong> · ${esc(tc.name.length > 105 ? tc.name.slice(0, 104) + '…' : tc.name)}</div>`)
+          .join('');
+        const extra = lb.hiddenConsortiumCount > 3 ? `<div class="inst-line muted">+ още ${lb.hiddenConsortiumCount - 3} консорциума (клик за профил)</div>` : '';
+
+        return `<tr data-open-slug="${esc(lb.slug)}">
+          <td class="mono muted">${idx + 1}</td>
+          <td>
+            <span class="official-name">${esc(lb.officialName)}</span>
+            <div class="inst-line">${esc(lb.institution)} · <span class="tag tag-plum">${lb.hiddenConsortiumCount} ДЗЗД</span></div>
+          </td>
+          <td>${compHtml}</td>
+          <td class="num muted">${fmtEur(lb.directTotalEur)}</td>
+          <td class="num" style="color:var(--crimson);font-weight:700;">+${fmtEur(lb.hiddenConsortiumEur)}</td>
+          <td>${consHtml}${extra}</td>
+        </tr>`;
+      })
+      .join('');
+  }
+
+  function renderDeepXml() {
+    const d = state.deep;
+    const tbody = document.getElementById('deepXmlTbody');
+    if (!d || !tbody) return;
+    let list = (d.deepLinks || []).filter((r) => r.missedBySigma);
+    if (state.deepTier === 'private') list = list.filter((r) => r.tier === 'private_link');
+    else if (state.deepTier === 'stock') list = list.filter((r) => r.tier === 'public_stock');
+
+    if (!list.length) {
+      tbody.innerHTML = `<tr><td colspan="6" class="loading">Няма записи в избраната категория.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = list
+      .map((r, idx) => {
+        const newTag = !r.inSigmaPerson
+          ? `<span class="tag tag-crimson">НОВО ЛИЦЕ (извън СИГМА)</span>`
+          : `<span class="tag tag-plum">НОВА ВРЪЗКА</span>`;
+        const typeTag = r.tier === 'private_link'
+          ? `<span class="tag tag-ochre">${esc(r.linkType)}</span>`
+          : `<span class="tag tag-navy">${esc(r.linkType)}${r.shareCount ? ' · ' + esc(r.shareCount) + ' бр.' : ''}</span>`;
+        return `<tr style="cursor:default;">
+          <td class="mono muted">${idx + 1}</td>
+          <td>
+            <span class="official-name">${esc(r.politician)}</span>
+            <div class="inst-line">${esc(r.position)} · ${esc(r.institution)}</div>
+            <div class="badges">${newTag}</div>
+          </td>
+          <td>
+            <div class="badges" style="margin-top:0;margin-bottom:4px;">${typeTag}</div>
+            <div class="inst-line" style="font-family:var(--font-mono);font-size:11px;color:var(--ink-secondary);">${esc(r.rawSnippet)}</div>
+          </td>
+          <td>
+            <a class="comp-name" href="${esc(r.companySigmaUrl)}" target="_blank" rel="noopener">${esc(r.companyName)}</a>
+            <div class="eik-tag" style="margin-left:0;">ЕИК ${esc(r.companyEik)} · ${fmtInt(r.companyContracts)} дог.</div>
+          </td>
+          <td class="num" style="font-weight:600;">${fmtEur(r.companyWonEur)}</td>
+          <td style="white-space:nowrap;">
+            <a class="btn" style="padding:4px 8px;font-size:11.5px;" href="${esc(r.declarationUrl)}" target="_blank" rel="noopener">XML (${esc(r.declarationYear)}) ↗</a>
+          </td>
+        </tr>`;
+      })
+      .join('');
+  }
+
+  function renderMegaConsortia() {
+    const d = state.deep;
+    const grid = document.getElementById('megaConsortiaGrid');
+    if (!d || !grid) return;
+    const list = d.megaConsortia || [];
+    grid.innerHTML = list
+      .map((con) => {
+        const membersHtml = (con.members || [])
+          .map((m) => {
+            const crParts = [];
+            if (m.managers && m.managers.length) crParts.push(`<strong>Управители / СД:</strong> ${esc(m.managers.slice(0, 3).join('; '))}`);
+            if (m.owners && m.owners.length) crParts.push(`<strong>Собственик (ТР):</strong> ${esc(m.owners.slice(0, 2).join('; '))}`);
+            if (m.beneficialOwners && m.beneficialOwners.length) crParts.push(`<strong>Действ. собств. (ЗМИП):</strong> ${esc(m.beneficialOwners.slice(0, 2).join('; '))}`);
+            if (m.holdingParents && m.holdingParents.length) {
+              m.holdingParents.forEach((hp) => {
+                const hpTxt = [...(hp.owners || []), ...(hp.beneficialOwners || []), ...(hp.managers || [])].slice(0, 2).join('; ');
+                if (hpTxt) crParts.push(`<strong style="color:var(--plum);">Холдинг-майка (${esc(hp.name)}):</strong> ${esc(hpTxt)}`);
+              });
+            }
+            const eikLink = m.eik
+              ? `<a href="https://sigma.midt.bg/companies/${esc(m.eik)}" target="_blank" rel="noopener" class="eik-tag">ЕИК ${esc(m.eik)} ↗</a>`
+              : `<span class="eik-tag">чуждестранно / ДЗЗД</span>`;
+            const ownVal = m.ownWonEur > 0 ? `<span class="mono muted" style="font-size:11px;">(${fmtEur(m.ownWonEur)} директно)</span>` : '';
+            return `<li style="cursor:default;flex-direction:column;align-items:stretch;gap:2px;">
+              <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+                <span><strong>${esc(m.name)}</strong> ${eikLink}</span>
+                ${ownVal}
+              </div>
+              ${crParts.length ? `<div style="font-size:11.5px;color:var(--ink-secondary);line-height:1.4;">${crParts.join(' · ')}</div>` : ''}
+            </li>`;
+          })
+          .join('');
+
+        return `<div class="cluster-card has-own" style="border-top-color:var(--plum);">
+          <div class="cluster-head">
+            <div>
+              <div class="cluster-title" style="font-size:14px;">${esc(con.consortiumName.length > 130 ? con.consortiumName.slice(0, 129) + '…' : con.consortiumName)}</div>
+              <div class="muted" style="font-size:11.5px;margin-top:3px;">${con.members.length} участника · ${con.contracts} дог.</div>
+            </div>
+            <div class="cluster-metrics" style="color:var(--crimson);">${fmtEur(con.wonEur)}</div>
+          </div>
+          <ul class="cluster-people">${membersHtml}</ul>
+        </div>`;
+      })
+      .join('');
   }
 
   // ===== TAB 3: CLUSTERS & SHARED COMPANIES =====
@@ -1053,6 +1260,24 @@
 
     document.getElementById('clusterSearchInput').addEventListener('input', renderClustersGrid);
     document.getElementById('clusterOnlyOwn').addEventListener('change', renderClustersGrid);
+
+    const deepConsInput = document.getElementById('deepConsSearch');
+    if (deepConsInput) {
+      deepConsInput.addEventListener('input', (e) => {
+        state.deepConsSearch = e.target.value;
+        renderDeepConsortia();
+      });
+    }
+    const deepTierPills = document.getElementById('deepTierPills');
+    if (deepTierPills) {
+      deepTierPills.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-deep-tier]');
+        if (!btn) return;
+        state.deepTier = btn.dataset.deepTier;
+        deepTierPills.querySelectorAll('.pill').forEach((p) => p.classList.toggle('active', p === btn));
+        renderDeepXml();
+      });
+    }
 
     document.getElementById('graphPresetSelect').addEventListener('change', (e) => {
       document.getElementById('graphInstSelect').value = '';

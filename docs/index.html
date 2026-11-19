@@ -101,6 +101,13 @@
           </div>
           <div class="funnel-step-num">53 лица</div>
         </div>
+        <div class="funnel-step danger" data-jump-tab="deep" style="border-left-color:#6b21a8;background:#faf5ff;">
+          <div>
+            <div class="funnel-step-lbl">5. Отвъд СИГМА 2.0: Скрити ДЗЗД и XML</div>
+            <div class="funnel-step-sub" id="heroDeepSub">Консорциуми без ЕИК + заеми и акции (Табл. 7/9)</div>
+          </div>
+          <div class="funnel-step-num" style="color:#6b21a8;" id="heroDeepNum">+€1,92 млрд.</div>
+        </div>
       </div>
     </div>
   </section>
@@ -155,6 +162,7 @@
   <!-- Navigation Tabs -->
   <nav class="tabs" id="mainTabs" role="tablist">
     <button class="tab-btn active" data-tab="directory">Пълен регистър (571 лица)</button>
+    <button class="tab-btn" data-tab="deep">Отвъд СИГМА 2.0 (ДЗЗД и скрити връзки)</button>
     <button class="tab-btn" data-tab="graph">Мрежов граф на връзките</button>
     <button class="tab-btn" data-tab="clusters">Институции и 33 споделени фирми</button>
     <button class="tab-btn" data-tab="monopolies">Монополи и една оферта</button>
@@ -204,6 +212,84 @@
         </tbody>
       </table>
       <div class="pager" id="pagerBar"></div>
+    </div>
+  </section>
+
+  <!-- TAB 1B: BEYOND SIGMA 2.0 (DEEP LINKS & HIDDEN CONSORTIA) -->
+  <section class="tab-panel" id="tab-deep">
+    <div class="editorial-note" style="border-left-color:#6b21a8;background:#faf5ff;">
+      <div>
+        <strong>Какво пропуска алгоритъмът на СИГМА 2.0:</strong>
+        (1) <strong>Консорциуми (ДЗЗД) без ЕИК</strong> — когато фирма на политик спечели поръчка в обединение, милионите от този договор не се прибавят към профила му в СИГМА;
+        (2) <strong>Скрити таблици в декларациите пред Сметната палата</strong> — частни заеми (Табл. 7), акции/облигации в АД изпълнители (Табл. 9) и промени по чл. 35;
+        (3) <strong>Реални собственици и управители</strong> на мега-консорциумите по живия Търговски регистър (ТРРЮЛНЦ).
+      </div>
+      <a class="btn" href="data/SIGMA_DEEP_LINKS_BEYOND.csv" download>Изтегли CSV (Дълбоки връзки)</a>
+    </div>
+
+    <div class="kpi-grid" id="deepKpiGrid"></div>
+
+    <!-- Section A: Hidden Consortium Leaderboard -->
+    <div class="panel-box" style="margin-bottom:20px;">
+      <div class="chart-head" style="margin-bottom:6px;">
+        <h3 style="margin:0;border:none;padding:0;">1. Скрити поръчки през консорциуми (ДЗЗД без ЕИК) на лица от СИГМА 2.0</h3>
+        <input id="deepConsSearch" class="search-input" style="max-width:340px;flex:0 1 340px;padding:6px 10px;" type="search" placeholder="Търси политик, фирма или ДЗЗД…" />
+      </div>
+      <p class="chart-caption">Длъжностни лица, чиито свързани фирми участват в печеливши консорциуми (<code>kind=consortium</code>) без ЕИК в базата на СИГМА 2.0. Кликнете върху име за пълния профил.</p>
+      <div class="table-wrap" style="border:none;">
+        <table>
+          <thead>
+            <tr>
+              <th>№</th>
+              <th>Длъжностно лице и институция</th>
+              <th>Свързана фирма (ЕИК)</th>
+              <th class="num">В СИГМА (€)</th>
+              <th class="num">Допълнително в ДЗЗД (€)</th>
+              <th>Най-големи консорциуми (ДЗЗД)</th>
+            </tr>
+          </thead>
+          <tbody id="deepConsTbody">
+            <tr><td colspan="6" class="loading">Зареждане на скритите консорциуми…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section B: Hidden XML Tables Beyond SIGMA 2.0 -->
+    <div class="panel-box" style="margin-bottom:20px;">
+      <div class="chart-head" style="margin-bottom:8px;">
+        <h3 style="margin:0;border:none;padding:0;">2. Нови връзки от 3 035 XML декларации (Сметна палата 2025–2026 г.)</h3>
+        <div class="pill-row" id="deepTierPills">
+          <button class="pill active" data-deep-tier="missed">Всички пропуснати от СИГМА</button>
+          <button class="pill" data-deep-tier="private">Частни заеми и управление</button>
+          <button class="pill" data-deep-tier="stock">Акции в топ изпълнители (Табл. 9 / АД)</button>
+        </div>
+      </div>
+      <p class="chart-caption">Всяка връзка е верифицирана по правна форма, ЕИК/населено място и съдържа директен линк към оригиналния XML файл в <code>register.cacbg.bg</code>.</p>
+      <div class="table-wrap" style="border:none;">
+        <table>
+          <thead>
+            <tr>
+              <th>№</th>
+              <th>Политик / Длъжност</th>
+              <th>Тип скрита връзка и цитат от XML</th>
+              <th>Фирма изпълнител (ЕИК)</th>
+              <th class="num">Поръчки на фирмата (€)</th>
+              <th>Доказателство</th>
+            </tr>
+          </thead>
+          <tbody id="deepXmlTbody">
+            <tr><td colspan="6" class="loading">Зареждане на XML връзките…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section C: Exploded Top Mega-Consortia with Live CR Owners -->
+    <div class="panel-box">
+      <h3>3. Разбити мега-консорциуми (ДЗЗД &ge; €25 млн.) — участници и собственици по ТР</h3>
+      <p class="chart-caption">Най-големите инфраструктурни и енергийни обединения в базата на СИГМА 2.0, разбити на съставни дружества с извлечени управители, съвети и собственици директно от Търговския регистър (<code>portal.registryagency.bg</code>).</p>
+      <div class="clusters-grid" id="megaConsortiaGrid"></div>
     </div>
   </section>
 
@@ -339,7 +425,7 @@
       <p>Индексът е изграден изцяло върху публичните отворени данни на платформата <strong>СИГМА 2.0</strong> (<a href="https://sigma.midt.bg" target="_blank" rel="noopener">sigma.midt.bg</a>), поддържана от Министерството на иновациите и дигиталната трансформация (МИДТ).</p>
       <ul>
         <li><strong>Пълен обхват:</strong> Извлечени са всички <strong>571 длъжностни лица</strong>, налични в публичния срез на СИГМА 2.0 (512 лица с пряка собственост, управление или дял на свързано лице + 59 лица с членство в съвети), ведно с 571 индивидуални профила, дружества (ЕИК), вписани в Търговския регистър свързани лица, институции възложители, най-големи договори и препратки към декларациите в Сметната палата (<code>register.cacbg.bg</code>).</li>
-        <li><strong>Възпроизводимост:</strong> Извличането се извършва чрез публичния скрипт <code>scripts/sync_sigma.py</code>, който чете директно машинно четимите endpoint-и на <code>sigma.midt.bg</code> без ръчна редакция на числата.</li>
+        <li><strong>Възпроизводимост:</strong> Извличането на базовия масив се извършва чрез публичния скрипт <code>scripts/sync_sigma.py</code>, а разширеният анализ отвъд СИГМА 2.0 (3 035 XML декларации от Сметната палата за 2025–2026 г., 3 420 консорциума ДЗЗД без ЕИК и живи партиди от Търговския регистър) — чрез <code>scripts/deep_trace.py</code>.</li>
         <li><strong>Правно уточнение:</strong> Данните са публични по силата на ЗОП, чл. 75 от ЗСП, ЗТРРЮЛНЦ и лиценз <strong>CC-BY 4.0</strong> (АОП / ЦАИС ЕОП). Показаните връзки представляват декларирани интереси и регистрови вписвания за обществен контрол, а не правно заключение за конфликт на интереси или нарушение.</li>
       </ul>
     </div>
