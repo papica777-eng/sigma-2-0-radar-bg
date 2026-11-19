@@ -3,76 +3,76 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>СИГМА 2.0 РАДАР — Пълен регистър и граф на всички 571 свързани длъжностни лица и обществени поръчки</title>
-  <meta name="description" content="Независим граждански анализатор и интерактивен граф на всички 571 длъжностни лица, политици, фирми и кръгове на свързаност от официалните отворени данни на СИГМА 2.0 (МИДТ / АОП / Сметна палата / ТРРЮЛНЦ)." />
+  <title>Свързани лица и обществени поръчки — Отворен индекс по данни от СИГМА 2.0</title>
+  <meta name="description" content="Пълен структуриран регистър и граф на всички 571 длъжностни лица, свързани фирми (ЕИК) и обществени поръчки по отворените данни на СИГМА 2.0 (МИДТ, АОП, Сметна палата, Търговски регистър)." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
 <header class="topbar">
   <div class="topbar-inner">
-    <div class="brand">
-      <div class="brand-badge">Σ2</div>
-      <div>
-        <h1>СИГМА 2.0 РАДАР — Карта на свързаните лица и поръчки</h1>
-        <div class="brand-sub" id="syncSubtitle">Зареждане на официалните данни от sigma.midt.bg…</div>
+    <div>
+      <div class="brand">
+        <span class="brand-mark">СИГМА 2.0 · ОТВОРЕН ИНДЕКС</span>
+        <h1>Свързани лица и обществени поръчки</h1>
       </div>
+      <div class="brand-sub" id="syncSubtitle">Зареждане на данните от sigma.midt.bg…</div>
     </div>
     <div class="topbar-actions">
-      <a class="btn" href="data/SIGMA_2_0_ALL_OFFICIALS_571.csv" download>⬇ CSV (Всички 571)</a>
-      <a class="btn" href="data/officials_all.json" download>⬇ JSON Масив</a>
-      <a class="btn" href="https://sigma.midt.bg/conflicts" target="_blank" rel="noopener">↗ СИГМА 2.0 Оригинал</a>
-      <a class="btn btn-primary" href="https://github.com/papica777-eng/sigma-2-0-radar-bg" target="_blank" rel="noopener">★ Отворен код (GitHub)</a>
+      <a class="btn" href="data/SIGMA_2_0_ALL_OFFICIALS_571.csv" download>Изтегли CSV (571)</a>
+      <a class="btn" href="data/officials_all.json" download>JSON</a>
+      <a class="btn" href="https://sigma.midt.bg/conflicts" target="_blank" rel="noopener">Оригинал в sigma.midt.bg</a>
+      <a class="btn btn-dark" href="https://github.com/papica777-eng/sigma-2-0-radar-bg" target="_blank" rel="noopener">Изходен код</a>
     </div>
   </div>
 </header>
 
 <main class="container">
-  <div class="legal-strip">
+  <div class="editorial-note">
     <div>
-      <strong>100% ОФИЦИАЛНИ ПУБЛИЧНИ ДАННИ (CC-BY 4.0):</strong> Извлечено директно от публичния API на <strong>СИГМА 2.0 (МИДТ)</strong>, кръстосващ <strong>ЦАИС ЕОП (АОП)</strong>, <strong>Публичния регистър на Сметната палата (чл. 75 ЗСП)</strong> и <strong>Търговския регистър</strong>.
-      Посочените връзки отразяват официално декларирани интереси и вписвания за граждански и журналистически контрол и сами по себе си не представляват съдебна присъда.
+      <strong>Източник (CC-BY 4.0):</strong> Публичният масив на <strong>СИГМА 2.0</strong> (МИДТ), обединяващ <strong>ЦАИС ЕОП / АОП</strong>, <strong>Публичния регистър на Сметната палата</strong> (чл. 75 ЗСП) и <strong>Търговския регистър</strong>.
+      Отчетените съвпадения отразяват декларирани участия и вписвания за целите на обществения контрол и сами по себе си не установяват нарушение или съдебна вина.
     </div>
-    <span class="chip chip-cyan" id="asOfChip">Актуалност: —</span>
+    <span class="meta-date" id="asOfChip">Данни към: —</span>
   </div>
 
-  <!-- KPI Telemetry Strip -->
+  <!-- Summary Telemetry -->
   <section class="kpi-grid" id="kpiGrid">
-    <div class="kpi-card"><div class="kpi-label">Зареждане…</div><div class="kpi-val">—</div></div>
+    <div class="kpi-card"><div class="kpi-label">Зареждане</div><div class="kpi-val">—</div></div>
   </section>
 
-  <!-- Tabs -->
+  <!-- Navigation -->
   <nav class="tabs" role="tablist">
-    <button class="tab-btn active" data-tab="directory">📋 Всички 571 лица (Пълен списък)</button>
-    <button class="tab-btn" data-tab="graph">🕸️ Интерактивен граф на кръговете</button>
-    <button class="tab-btn" data-tab="clusters">🏛️ Схеми по институции, общини и споделени фирми</button>
-    <button class="tab-btn" data-tab="monopolies">⚠️ Монополи, 1 оферта и Топ потоци</button>
-    <button class="tab-btn" data-tab="methodology">⚖️ Методология и Верификация</button>
+    <button class="tab-btn active" data-tab="directory">Пълен регистър (571 лица)</button>
+    <button class="tab-btn" data-tab="graph">Мрежов граф на връзките</button>
+    <button class="tab-btn" data-tab="clusters">Институции и споделени фирми</button>
+    <button class="tab-btn" data-tab="monopolies">Конкуренция и една оферта</button>
+    <button class="tab-btn" data-tab="methodology">Методология и източници</button>
   </nav>
 
-  <!-- TAB 1: COMPLETE DIRECTORY OF ALL 571 OFFICIALS -->
+  <!-- TAB 1: DIRECTORY -->
   <section class="tab-panel active" id="tab-directory">
     <div class="controls-card">
       <div class="search-row">
-        <input id="searchInput" class="search-input" type="search" placeholder="Търси по име на политик/служител, фирма, ЕИК, община, министерство, роднина или възложител…" />
+        <input id="searchInput" class="search-input" type="search" placeholder="Търсене по име, дружество, ЕИК, община, министерство, свързано лице или възложител…" />
         <select id="sortSelect" class="select-ctrl" aria-label="Подреждане">
           <option value="period">Подреди: Стойност в периода (€)</option>
           <option value="total">Подреди: Обща стойност (€)</option>
-          <option value="risk">Подреди: Риск индекс (0–100)</option>
           <option value="contracts">Подреди: Брой договори</option>
-          <option value="name">Подреди: Име (А–Я)</option>
+          <option value="own">Подреди: Първо от собствената институция</option>
+          <option value="name">Подреди: По азбучен ред (А–Я)</option>
         </select>
         <select id="scopeSelect" class="select-ctrl" aria-label="Обхват роли">
-          <option value="all">Всички 571 лица (вкл. съвети)</option>
-          <option value="core512">Само основните 512 (собственост / управление)</option>
+          <option value="all">Всички 571 лица (вкл. членове на съвети)</option>
+          <option value="core512">Основни 512 (собственост / управление)</option>
         </select>
-        <select id="pageSizeSelect" class="select-ctrl" aria-label="Брой на страница">
-          <option value="50">50 на страница</option>
-          <option value="100" selected>100 на страница</option>
-          <option value="999">Покажи ВСИЧКИ наведнъж</option>
+        <select id="pageSizeSelect" class="select-ctrl" aria-label="Редове на страница">
+          <option value="50">50 реда</option>
+          <option value="100" selected>100 реда</option>
+          <option value="999">Всички наведнъж</option>
         </select>
       </div>
       <div class="pill-row" id="filterPills"></div>
@@ -82,51 +82,50 @@
       <table>
         <thead>
           <tr>
-            <th>#</th>
-            <th>Длъжностно лице и Институции</th>
-            <th>Свързани фирми (ЕИК) и Роднини</th>
-            <th>Признаци и Кръг</th>
+            <th>№</th>
+            <th>Длъжностно лице и институция</th>
+            <th>Свързани дружества (ЕИК)</th>
+            <th>Сектор и признаци</th>
             <th class="num">В периода (€)</th>
             <th class="num">Общо (€)</th>
-            <th class="num">Дог.</th>
-            <th class="num">Риск</th>
+            <th class="num">Договори</th>
           </tr>
         </thead>
         <tbody id="officialsTbody">
-          <tr><td colspan="8" class="loading">Зареждане на всички 571 досиета…</td></tr>
+          <tr><td colspan="7" class="loading">Зареждане на регистъра…</td></tr>
         </tbody>
       </table>
       <div class="pager" id="pagerBar"></div>
     </div>
   </section>
 
-  <!-- TAB 2: INTERACTIVE NETWORK GRAPH -->
+  <!-- TAB 2: NETWORK GRAPH -->
   <section class="tab-panel" id="tab-graph">
     <div class="graph-shell">
       <aside class="graph-sidebar">
         <div>
-          <label class="kpi-label" for="graphPresetSelect" style="display:block;margin-bottom:6px;">Избери кръг / схема за визуализация</label>
+          <label class="kpi-label" for="graphPresetSelect" style="display:block;margin-bottom:6px;">Срез по кръг на свързаност</label>
           <select id="graphPresetSelect" class="select-ctrl" style="width:100%;">
-            <option value="own">🔥 Кръг 1: Директно самовъзлагане (От собствената институция)</option>
-            <option value="parliament">🏛️ Кръг 2: Парламентарен кръг (Народно събрание — Депутати)</option>
-            <option value="central">🛡️ Кръг 3: Висша власт и служби (Министерства, ДАНС, ДАТО, НЗОК, Митници)</option>
-            <option value="shared">🔗 Кръг 4: Споделени фирми (2+ длъжностни лица в една компания)</option>
-            <option value="registry">⚠️ Кръг 5: Роли по Търговския регистър и Пропуски</option>
-            <option value="top35">💰 Кръг 6: Топ 35 най-големи по стойност в периода</option>
-            <option value="burgas">📍 Кръг 7: Област Бургас & Южно Черноморие</option>
+            <option value="own">От собствената институция (53 лица)</option>
+            <option value="parliament">Народно събрание — депутати (57 лица)</option>
+            <option value="central">Министерства, агенции и служби (ДАНС, ДАТО, МВР)</option>
+            <option value="shared">Споделени дружества (2+ лица в 1 фирма)</option>
+            <option value="registry">Вписани роли по Търговския регистър</option>
+            <option value="top35">Топ 35 по стойност в декларирания период</option>
+            <option value="burgas">Област Бургас и Черноморие</option>
           </select>
         </div>
 
         <div>
-          <label class="kpi-label" for="graphInstSelect" style="display:block;margin-bottom:6px;">Или избери конкретна Община / Институция</label>
+          <label class="kpi-label" for="graphInstSelect" style="display:block;margin-bottom:6px;">Филтър по конкретна институция</label>
           <select id="graphInstSelect" class="select-ctrl" style="width:100%;">
-            <option value="">— Всички институции —</option>
+            <option value="">Всички институции</option>
           </select>
         </div>
 
         <div style="display:flex;gap:6px;">
-          <button class="btn" id="btnRelayout" style="flex:1;justify-content:center;">↻ Преподреди</button>
-          <button class="btn" id="btnResetZoom" style="flex:1;justify-content:center;">⌖ Центрирай</button>
+          <button class="btn" id="btnRelayout" style="flex:1;justify-content:center;">Преподреди</button>
+          <button class="btn" id="btnResetZoom" style="flex:1;justify-content:center;">Центрирай</button>
         </div>
 
         <div id="graphStatsBox" class="contract-row" style="margin:0;">
@@ -134,7 +133,7 @@
         </div>
 
         <div>
-          <div class="kpi-label" style="margin-bottom:6px;">Участници в избрания кръг (клик за досие)</div>
+          <div class="kpi-label" style="margin-bottom:6px;">Лица в текущия срез (клик за профил)</div>
           <ul class="cluster-people" id="graphNodeList"></ul>
         </div>
       </aside>
@@ -142,29 +141,29 @@
       <div class="graph-canvas-wrap">
         <canvas id="networkCanvas"></canvas>
         <div class="graph-tooltip" id="graphTooltip">
-          <strong>Интерактивен граф на свързаността</strong><br/>
-          <span class="muted">Задръж мишката върху възел, за да осветиш връзките. Влачи възли или скролирай за мащаб. Кликни върху лице, за да отвориш пълното му досие.</span>
+          <strong>Мрежов граф на свързаността</strong><br/>
+          <span class="muted">Посочете възел за осветяване на връзките. Влачете за подреждане, използвайте скрол за мащаб. Кликнете върху лице за отваряне на пълния профил.</span>
         </div>
         <div class="graph-legend">
-          <span><i class="legend-dot" style="background:#ef4444;"></i>Длъжностно лице (От собств. инст.)</span>
-          <span><i class="legend-dot" style="background:#fb7185;"></i>Длъжностно лице</span>
-          <span><i class="legend-dot" style="background:#f59e0b;"></i>Фирма изпълнител (ЕИК)</span>
-          <span><i class="legend-dot" style="background:#06b6d4;"></i>Институция / Възложител</span>
-          <span><i class="legend-dot" style="background:#a855f7;"></i>Свързано лице (ТР)</span>
+          <span><i class="legend-dot" style="background:#b91c1c;"></i>Длъжностно лице (собствена инст.)</span>
+          <span><i class="legend-dot" style="background:#e11d48;"></i>Длъжностно лице</span>
+          <span><i class="legend-dot" style="background:#b45309;"></i>Дружество (ЕИК)</span>
+          <span><i class="legend-dot" style="background:#1e3a8a;"></i>Институция</span>
+          <span><i class="legend-dot" style="background:#6b21a8;"></i>Свързано лице (ТР)</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- TAB 3: INSTITUTIONAL CLUSTERS & SHARED COMPANIES -->
+  <!-- TAB 3: CLUSTERS & SHARED COMPANIES -->
   <section class="tab-panel" id="tab-clusters">
     <div class="two-col">
       <div class="panel-box">
-        <h3>Разпределение на кръговете по сектори на властта</h3>
+        <h3>Разпределение по институционални сектори</h3>
         <div id="sectorBarsBox"></div>
       </div>
       <div class="panel-box">
-        <h3>🔗 Споделени фирми (2+ длъжностни лица ↔ 1 компания)</h3>
+        <h3>Дружества с повече от едно свързано длъжностно лице</h3>
         <div id="sharedCompaniesBox" style="max-height:360px;overflow-y:auto;"></div>
       </div>
     </div>
@@ -173,30 +172,30 @@
       <div class="search-row" style="margin-bottom:0;">
         <input id="clusterSearchInput" class="search-input" type="search" placeholder="Филтрирай община, министерство, болница или институция…" />
         <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;">
-          <input type="checkbox" id="clusterOnlyOwn" /> Само с директно самовъзлагане
+          <input type="checkbox" id="clusterOnlyOwn" /> Само институции със съвпадение „от собствената институция“
         </label>
       </div>
     </div>
     <div class="clusters-grid" id="clustersGrid"></div>
   </section>
 
-  <!-- TAB 4: MONOPOLIES, SINGLE OFFER & MACRO FLOWS -->
+  <!-- TAB 4: COMPETITION & SINGLE OFFER -->
   <section class="tab-panel" id="tab-monopolies">
     <div class="two-col">
       <div class="panel-box">
-        <h3>🏆 Топ 20 двойки: Възложител → Постоянен изпълнител</h3>
+        <h3>Топ 20 двойки: Възложител — Изпълнител (по брой договори)</h3>
         <div class="table-wrap" style="border:none;">
           <table>
-            <thead><tr><th>#</th><th>Възложител → Изпълнител</th><th class="num">Дог.</th><th class="num">Стойност (€)</th></tr></thead>
+            <thead><tr><th>№</th><th>Възложител / Изпълнител</th><th class="num">Договори</th><th class="num">Стойност (€)</th></tr></thead>
             <tbody id="topPairsTbody"></tbody>
           </table>
         </div>
       </div>
       <div class="panel-box">
-        <h3>🎯 Топ 20 най-концентрирани институции (Индекс HHI)</h3>
+        <h3>Топ 20 институции по концентрация на доставчици (индекс HHI)</h3>
         <div class="table-wrap" style="border:none;">
           <table>
-            <thead><tr><th>#</th><th>Институция</th><th class="num">HHI</th><th class="num">Стойност (€)</th></tr></thead>
+            <thead><tr><th>№</th><th>Институция</th><th class="num">HHI</th><th class="num">Стойност (€)</th></tr></thead>
             <tbody id="concentrationTbody"></tbody>
           </table>
         </div>
@@ -205,19 +204,19 @@
 
     <div class="two-col">
       <div class="panel-box">
-        <h3>🚩 Топ 20 институции по дял поръчки с 1 оферта</h3>
+        <h3>Топ 20 институции по дял поръчки с една оферта</h3>
         <div class="table-wrap" style="border:none;">
           <table>
-            <thead><tr><th>#</th><th>Институция</th><th class="num">1 оферта %</th><th class="num">Стойност (€)</th></tr></thead>
+            <thead><tr><th>№</th><th>Институция</th><th class="num">Дял</th><th class="num">Стойност (€)</th></tr></thead>
             <tbody id="singleOfferTbody"></tbody>
           </table>
         </div>
       </div>
       <div class="panel-box">
-        <h3>⚡ Топ 20 институции по дял пряко договаряне (неконкурентни)</h3>
+        <h3>Топ 20 институции по дял неконкурентни процедури</h3>
         <div class="table-wrap" style="border:none;">
           <table>
-            <thead><tr><th>#</th><th>Институция</th><th class="num">Дял %</th><th class="num">Стойност (€)</th></tr></thead>
+            <thead><tr><th>№</th><th>Институция</th><th class="num">Дял</th><th class="num">Стойност (€)</th></tr></thead>
             <tbody id="directAwardTbody"></tbody>
           </table>
         </div>
@@ -225,31 +224,35 @@
     </div>
   </section>
 
-  <!-- TAB 5: METHODOLOGY & VERIFICATION -->
+  <!-- TAB 5: METHODOLOGY -->
   <section class="tab-panel" id="tab-methodology">
-    <div class="panel-box" style="max-width:960px;">
-      <h3>Методология, Източници и Възпроизводимост</h3>
-      <p>Този портал е независим инструмент с отворен код за граждански мониторинг, изграден директно върху публичните машинно четими данни на държавната платформа <strong>СИГМА 2.0</strong> (<a href="https://sigma.midt.bg" target="_blank" rel="noopener">sigma.midt.bg</a>), разработена от Министерството на иновациите и дигиталната трансформация (МИДТ).</p>
+    <div class="panel-box" style="max-width:920px;">
+      <h3>Методология, източници и възпроизводимост</h3>
+      <p>Индексът е изграден изцяло върху публичните отворени данни на платформата <strong>СИГМА 2.0</strong> (<a href="https://sigma.midt.bg" target="_blank" rel="noopener">sigma.midt.bg</a>), поддържана от Министерството на иновациите и дигиталната трансформация (МИДТ).</p>
       <ul>
-        <li><strong>Пълен обхват (0 пропуснати):</strong> Извлечени са абсолютно всички <strong>571 длъжностни лица</strong>, налични в СИГМА 2.0 (512 лица с пряка собственост/управление/роднински дял + 59 лица с членство в управителни/надзорни съвети), ведно с индивидуалните им профили, свързани компании (ЕИК), вписани в Търговския регистър роднини, възложители, договори и препратки към декларациите в Сметната палата (<code>register.cacbg.bg</code>).</li>
-        <li><strong>Формула за Риск индекс (0–100):</strong> Прозрачна, детерминирана евристика за приоритетен граждански одит: <code>+45</code> при съвпадение „от собствената институция“, <code>+20</code> при договори в декларирания мандат/период, <code>+20</code> при вписана роля по ТР или пропуск в декларация, <code>+10</code> при дял на свързано лице, <code>+5/+10/+15</code> според финансовия мащаб в периода (€50k / €250k / €1M+).</li>
-        <li><strong>100% възпроизводимост:</strong> Всеки гражданин, журналист или институция може да клонира репозиторието и да изпълни <code>python scripts/sync_sigma.py</code>, за да верифицира всяко едно число в реално време директно от сървъра на МИДТ.</li>
-        <li><strong>Правна рамка и отговорност:</strong> Данните са публични по силата на ЗОП, ЗСП (чл. 75), ЗТРРЮЛНЦ и лиценз <strong>CC-BY 4.0</strong> (АОП / ЦАИС ЕОП). Индикациите за свързаност представят официално вписани и декларирани обстоятелства за висок обществен интерес (чл. 10 ЕКПЧ) и не заместват актовете на съдебната власт.</li>
+        <li><strong>Пълен обхват:</strong> Извлечени са всички <strong>571 длъжностни лица</strong>, налични в публичния срез на СИГМА 2.0 (512 лица с пряка собственост, управление или дял на свързано лице + 59 лица с членство в съвети), ведно с 571 индивидуални профила, дружества (ЕИК), вписани в Търговския регистър свързани лица, институции възложители, най-големи договори и препратки към декларациите в Сметната палата (<code>register.cacbg.bg</code>).</li>
+        <li><strong>Възпроизводимост:</strong> Извличането се извършва чрез публичния скрипт <code>scripts/sync_sigma.py</code>, който чете директно машинно четимите endpoint-и на <code>sigma.midt.bg</code> без ръчна редакция на числата.</li>
+        <li><strong>Правно уточнение:</strong> Данните са публични по силата на ЗОП, чл. 75 от ЗСП, ЗТРРЮЛНЦ и лиценз <strong>CC-BY 4.0</strong> (АОП / ЦАИС ЕОП). Показаните връзки представляват декларирани интереси и регистрови вписвания за обществен контрол, а не правно заключение за конфликт на интереси или нарушение.</li>
       </ul>
     </div>
   </section>
 </main>
 
-<!-- Slide-over Official Dossier Drawer -->
+<footer class="site-footer">
+  <span>Източник на данните: АОП / ЦАИС ЕОП, Сметна палата, ТРРЮЛНЦ чрез СИГМА 2.0 (CC-BY 4.0)</span>
+  <span><a href="https://github.com/papica777-eng/sigma-2-0-radar-bg" target="_blank" rel="noopener">github.com/papica777-eng/sigma-2-0-radar-bg</a></span>
+</footer>
+
+<!-- Slide-over Dossier Drawer -->
 <div class="drawer-backdrop" id="drawerBackdrop"></div>
 <aside class="drawer" id="dossierDrawer" aria-hidden="true">
   <div class="drawer-header">
     <div>
       <div class="kpi-label" id="drawerCircle">—</div>
-      <h2 id="drawerName" style="margin:4px 0 6px;font-size:19px;">—</h2>
+      <h2 id="drawerName">—</h2>
       <div class="badges" id="drawerBadges"></div>
     </div>
-    <button class="close-btn" id="drawerClose" aria-label="Затвори">×</button>
+    <button class="close-btn" id="drawerClose" aria-label="Затвори">&times;</button>
   </div>
   <div class="drawer-body" id="drawerBody"></div>
 </aside>

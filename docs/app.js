@@ -19,7 +19,6 @@
       edges: [],
       dragging: null,
       hovered: null,
-      selected: null,
       panX: 0,
       panY: 0,
       scale: 1,
@@ -76,7 +75,7 @@
     } catch (err) {
       console.error(err);
       document.getElementById('officialsTbody').innerHTML =
-        `<tr><td colspan="8" class="loading" style="color:#f87171;">Грешка при зареждане на данните: ${esc(err.message)}</td></tr>`;
+        `<tr><td colspan="7" class="loading" style="color:#b91c1c;">Грешка при зареждане на данните: ${esc(err.message)}</td></tr>`;
     }
   }
 
@@ -84,42 +83,42 @@
     const m = state.meta;
     const nat = m.nationalTotals || {};
     document.getElementById('syncSubtitle').textContent =
-      `Източник: sigma.midt.bg (СС-BY 4.0) · Обновено: ${m.refreshedAt} · Всички ${m.totalOfficialsAllRoles} лица без пропуск`;
-    document.getElementById('asOfChip').textContent = `Данни към: ${m.asOf}`;
+      `Данни от sigma.midt.bg (CC-BY 4.0) · Обновено: ${m.refreshedAt} · Пълен обхват: ${m.totalOfficialsAllRoles} лица`;
+    document.getElementById('asOfChip').textContent = `Към дата: ${m.asOf}`;
 
     const kpis = [
       {
-        cls: 'danger',
-        label: 'Всички свързани лица',
+        cls: '',
+        label: 'Общо длъжностни лица',
         val: `${fmtInt(m.totalOfficialsAllRoles)}`,
-        sub: `${fmtInt(m.totalOfficialsCore512)} собств./упр. + ${m.totalOfficialsAllRoles - m.totalOfficialsCore512} в съвети`,
+        sub: `${fmtInt(m.totalOfficialsCore512)} собств./упр. + ${m.totalOfficialsAllRoles - m.totalOfficialsCore512} членове на съвети`,
       },
       {
-        cls: 'danger',
+        cls: 'emphasis',
         label: 'От собствената институция',
         val: `${fmtInt(m.ownInstitutionHits)}`,
-        sub: 'Директно съвпадение институция ↔ фирма',
+        sub: 'Възложителят съвпада с институцията на лицето',
       },
       {
-        cls: 'amber',
-        label: 'Стойност в мандата / периода',
+        cls: '',
+        label: 'Стойност в периода',
         val: fmtEur(m.totalPeriodEur),
-        sub: `Общо за фирмите им: ${fmtEur(m.totalAllContractsEur)}`,
+        sub: `Общо по всички договори: ${fmtEur(m.totalAllContractsEur)}`,
       },
       {
-        cls: 'cyan',
-        label: 'Депутати (Народно събрание)',
+        cls: '',
+        label: 'Народно събрание',
         val: `${fmtInt(m.mpCount)}`,
-        sub: `Роли по ТР: ${m.registryRoleHits} · Свързани/роднини: ${m.familyStakeHits}`,
+        sub: `ТР роли: ${m.registryRoleHits} · Свързани лица: ${m.familyStakeHits}`,
       },
       {
-        cls: 'purple',
-        label: 'Споделени фирми (2+ лица)',
+        cls: '',
+        label: 'Споделени дружества',
         val: `${fmtInt(m.sharedCompaniesCount)}`,
-        sub: `${fmtInt((state.circles.institutionalClusters || []).length)} институционални кръга`,
+        sub: `${fmtInt((state.circles.institutionalClusters || []).length)} институции в регистъра`,
       },
       {
-        cls: 'amber',
+        cls: 'emphasis',
         label: 'Национално с 1 оферта',
         val: `${((nat.singleOfferValueShare || 0.407) * 100).toFixed(1)}%`,
         sub: `${fmtEur(nat.singleOfferValueEur || 18.5e9)} (${fmtInt(nat.singleOffer || 83930)} договора)`,
@@ -165,23 +164,24 @@
   function renderFilterPills() {
     const base = getScopedOfficials();
     const defs = [
-      { key: 'all', label: 'Всички' },
-      { key: 'own', label: '🔥 От собствената институция' },
-      { key: 'parliament', label: '🏛️ Народно събрание' },
-      { key: 'security', label: '🛡️ ДАНС, ДАТО, МВР' },
-      { key: 'central', label: '🏢 Министерства, Агенции и Области' },
-      { key: 'municipal', label: '🏙️ Кметове и Общински съвети' },
-      { key: 'health', label: '🏥 Болници' },
-      { key: 'state_co', label: '⚙️ Държавни/Общ. дружества' },
-      { key: 'registry', label: '⚠️ ТР роли / Пропуски' },
-      { key: 'family', label: '👨‍👩‍👧 Роднински / Свързани дялове' },
-      { key: 'shared', label: '🔗 Споделени фирми' },
-      { key: 'burgas', label: '📍 Бургас & Черноморие' },
+      { key: 'all', label: 'Всички', dot: '' },
+      { key: 'own', label: 'От собствената институция', dot: '#b91c1c' },
+      { key: 'parliament', label: 'Народно събрание', dot: '#1e3a8a' },
+      { key: 'security', label: 'ДАНС, ДАТО и МВР', dot: '#14171f' },
+      { key: 'central', label: 'Министерства, агенции и области', dot: '#0369a1' },
+      { key: 'municipal', label: 'Общини и общински съвети', dot: '#b45309' },
+      { key: 'health', label: 'Болници', dot: '#0f766e' },
+      { key: 'state_co', label: 'Държавни и общински дружества', dot: '#475569' },
+      { key: 'registry', label: 'Вписани роли по ТР', dot: '#6b21a8' },
+      { key: 'family', label: 'Дял на свързано лице', dot: '#7c3aed' },
+      { key: 'shared', label: 'Споделени дружества', dot: '#be123c' },
+      { key: 'burgas', label: 'Област Бургас', dot: '#0284c7' },
     ];
     const html = defs
       .map((d) => {
         const cnt = base.filter((o) => matchCategory(o, d.key)).length;
-        return `<button class="pill ${state.filter === d.key ? 'active' : ''}" data-filter="${d.key}">${d.label}<span class="cnt">${cnt}</span></button>`;
+        const dotHtml = d.dot ? `<i class="dot" style="background:${d.dot};"></i>` : '';
+        return `<button class="pill ${state.filter === d.key ? 'active' : ''}" data-filter="${d.key}">${dotHtml}${d.label}<span class="cnt">${cnt}</span></button>`;
       })
       .join('');
     document.getElementById('filterPills').innerHTML = html;
@@ -205,7 +205,7 @@
     const s = state.sort;
     list = [...list].sort((a, b) => {
       if (s === 'total') return b.totalEur - a.totalEur;
-      if (s === 'risk') return b.riskScore - a.riskScore || b.periodEur - a.periodEur;
+      if (s === 'own') return (b.ownInstitution - a.ownInstitution) || (b.periodEur - a.periodEur);
       if (s === 'contracts') return b.contractCount - a.contractCount;
       if (s === 'name') return a.name.localeCompare(b.name, 'bg');
       return b.periodEur - a.periodEur || b.totalEur - a.totalEur;
@@ -223,7 +223,7 @@
 
     const tbody = document.getElementById('officialsTbody');
     if (!slice.length) {
-      tbody.innerHTML = `<tr><td colspan="8" class="loading">Няма намерени лица по зададените филтри.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="7" class="loading">Няма намерени записи по зададените критерии.</td></tr>`;
     } else {
       tbody.innerHTML = slice
         .map((o, idx) => {
@@ -237,23 +237,21 @@
             .join('');
           const compHtml = o.companies
             .map((c) => {
-              const sharedTag = state.sharedEiks.has(c.eik) ? `<span class="chip chip-purple" style="margin-left:4px;">споделена</span>` : '';
-              return `<div class="comp-item"><span class="comp-name">${esc(c.name)}</span><span class="eik-tag">${esc(c.eik)}</span>${sharedTag}</div>`;
+              const sharedTag = state.sharedEiks.has(c.eik) ? `<span class="tag tag-plum" style="margin-left:5px;">споделена</span>` : '';
+              return `<div class="comp-item"><span class="comp-name">${esc(c.name)}</span><span class="eik-tag">ЕИК ${esc(c.eik)}</span>${sharedTag}</div>`;
             })
             .join('');
           const relHtml =
             o.relatives && o.relatives.length
-              ? `<div class="inst-line" style="color:#d8b4fe;">Свързани (ТР): ${o.relatives.map((r) => esc(r.name)).join(', ')}</div>`
+              ? `<div class="inst-line" style="color:#6b21a8;">Свързани (ТР): ${o.relatives.map((r) => esc(r.name)).join(', ')}</div>`
               : '';
 
           const badges = [];
-          if (o.ownInstitution) badges.push(`<span class="chip chip-red">ОТ СОБСТВЕНАТА ИНСТ.</span>`);
-          if (o.hasContemporaneous) badges.push(`<span class="chip chip-amber">В МАНДАТА</span>`);
-          if (o.hasRegistryRole) badges.push(`<span class="chip chip-purple">ТР РОЛЯ</span>`);
-          if (o.hasFamilyStake) badges.push(`<span class="chip chip-cyan">СВЪРЗАНО ЛИЦЕ</span>`);
-          if (o.boardOnly) badges.push(`<span class="chip chip-gray">ЧЛЕН НА СЪВЕТ</span>`);
-
-          const riskColor = o.riskScore >= 70 ? '#ef4444' : o.riskScore >= 40 ? '#f59e0b' : '#06b6d4';
+          if (o.ownInstitution) badges.push(`<span class="tag tag-crimson">От собствената инст.</span>`);
+          if (o.hasContemporaneous) badges.push(`<span class="tag tag-ochre">В периода</span>`);
+          if (o.hasRegistryRole) badges.push(`<span class="tag tag-plum">Роля по ТР</span>`);
+          if (o.hasFamilyStake) badges.push(`<span class="tag tag-navy">Свързано лице</span>`);
+          if (o.boardOnly) badges.push(`<span class="tag tag-slate">Член на съвет</span>`);
 
           return `
             <tr data-slug="${esc(o.slug)}">
@@ -264,28 +262,22 @@
               </td>
               <td>${compHtml}${relHtml}</td>
               <td>
-                <div style="font-size:11.5px;color:#93a3bd;">${esc(o.circle)}</div>
+                <div style="font-size:11.5px;color:var(--ink-muted);">${esc(o.circle)}</div>
                 <div class="badges">${badges.join('')}</div>
               </td>
-              <td class="num" style="color:#fbbf24;font-weight:700;">${fmtEur(o.periodEur)}</td>
+              <td class="num" style="font-weight:600;color:${o.periodEur > 0 ? 'var(--ink)' : 'var(--ink-muted)'};">${fmtEur(o.periodEur)}</td>
               <td class="num">${fmtEur(o.totalEur)}</td>
               <td class="num">${fmtInt(o.contractCount)}</td>
-              <td class="num">
-                <div class="risk-bar-wrap">
-                  <div class="risk-bar"><i style="width:${o.riskScore}%;background:${riskColor};"></i></div>
-                  <span style="color:${riskColor};font-weight:700;">${o.riskScore}</span>
-                </div>
-              </td>
             </tr>`;
         })
         .join('');
     }
 
     document.getElementById('pagerBar').innerHTML = `
-      <div class="muted">Показани <strong>${slice.length}</strong> от <strong>${total}</strong> лица (Страница ${state.page} / ${totalPages})</div>
+      <div class="muted">Показани <strong>${slice.length}</strong> от <strong>${total}</strong> лица (страница ${state.page} от ${totalPages})</div>
       <div style="display:flex;gap:6px;">
-        <button class="btn" id="pgPrev" ${state.page <= 1 ? 'disabled' : ''}>← Предишна</button>
-        <button class="btn" id="pgNext" ${state.page >= totalPages ? 'disabled' : ''}>Следваща →</button>
+        <button class="btn" id="pgPrev" ${state.page <= 1 ? 'disabled' : ''}>Предишна</button>
+        <button class="btn" id="pgNext" ${state.page >= totalPages ? 'disabled' : ''}>Следваща</button>
       </div>`;
 
     const prev = document.getElementById('pgPrev');
@@ -294,26 +286,26 @@
     if (next) next.onclick = () => { if (state.page < totalPages) { state.page++; renderDirectory(); window.scrollTo({ top: 180, behavior: 'smooth' }); } };
   }
 
-  // ===== SLIDE-OVER DOSSIER DRAWER =====
+  // ===== SLIDE-OVER PROFILE DRAWER =====
   function openDossier(slug) {
     const o = state.bySlug.get(slug);
     if (!o) return;
-    document.getElementById('drawerCircle').textContent = `${o.circle} · Риск индекс ${o.riskScore}/100`;
+    document.getElementById('drawerCircle').textContent = o.circle;
     document.getElementById('drawerName').textContent = o.name;
 
     const badges = [];
-    if (o.ownInstitution) badges.push(`<span class="chip chip-red">🔥 ОТ СОБСТВЕНАТА ИНСТИТУЦИЯ</span>`);
-    if (o.hasContemporaneous) badges.push(`<span class="chip chip-amber">В ДЕКЛАРИРАНИЯ ПЕРИОД</span>`);
-    if (o.hasRegistryRole) badges.push(`<span class="chip chip-purple">РОЛЯ ПО ТЪРГОВСКИЯ РЕГИСТЪР</span>`);
-    if (o.hasFamilyStake) badges.push(`<span class="chip chip-cyan">ДЯЛ НА СВЪРЗАНО ЛИЦЕ</span>`);
-    badges.push(`<a class="chip chip-gray" href="${esc(o.sigmaUrl)}" target="_blank" rel="noopener">↗ Профил в СИГМА 2.0</a>`);
+    if (o.ownInstitution) badges.push(`<span class="tag tag-crimson">От собствената институция</span>`);
+    if (o.hasContemporaneous) badges.push(`<span class="tag tag-ochre">В декларирания период</span>`);
+    if (o.hasRegistryRole) badges.push(`<span class="tag tag-plum">Роля по Търговския регистър</span>`);
+    if (o.hasFamilyStake) badges.push(`<span class="tag tag-navy">Дял на свързано лице</span>`);
+    badges.push(`<a class="tag tag-slate" href="${esc(o.sigmaUrl)}" target="_blank" rel="noopener">Профил в СИГМА 2.0 ↗</a>`);
     document.getElementById('drawerBadges').innerHTML = badges.join('');
 
     const instHtml = o.institutions
       .map(
         (i) => `<div class="contract-row">
           <strong>${esc(i.institution)}</strong><br/>
-          <span class="muted">${esc(i.positions.join('; '))} · Години: ${esc(i.years.join(', '))}</span>
+          <span class="muted">${esc(i.positions.join('; '))} · Декларирани години: ${esc(i.years.join(', '))}</span>
         </div>`
       )
       .join('');
@@ -325,7 +317,7 @@
             <strong><a href="https://sigma.midt.bg/companies/${esc(c.eik)}" target="_blank" rel="noopener">${esc(c.name)}</a></strong>
             <span class="mono muted">ЕИК ${esc(c.eik)}</span>
           </div>
-          <div class="muted" style="margin-top:3px;">Роли: ${esc(c.roles.join(', '))}${c.missingYears && c.missingYears.length ? ` · Недекларирани години: <strong style="color:#f87171;">${esc(c.missingYears.join(', '))}</strong>` : ''}</div>
+          <div class="muted" style="margin-top:3px;">Основание: ${esc(c.roles.join(', '))}${c.missingYears && c.missingYears.length ? ` · Липсва в декларации за: <strong style="color:var(--crimson);">${esc(c.missingYears.join(', '))}</strong>` : ''}</div>
         </div>`
       )
       .join('');
@@ -333,8 +325,8 @@
     const relHtml =
       o.relatives && o.relatives.length
         ? `<div class="drawer-section">
-            <h4>Вписани свързани лица / роднини (Търговски регистър)</h4>
-            ${o.relatives.map((r) => `<div class="contract-row"><strong style="color:#d8b4fe;">${esc(r.name)}</strong> <span class="muted">(${esc(r.role)})</span></div>`).join('')}
+            <h4>Свързани лица по Търговския регистър</h4>
+            ${o.relatives.map((r) => `<div class="contract-row"><strong style="color:var(--plum);">${esc(r.name)}</strong> <span class="muted">(${esc(r.role)})</span></div>`).join('')}
           </div>`
         : '';
 
@@ -342,9 +334,9 @@
       o.byAuthority && o.byAuthority.length
         ? o.byAuthority
             .map(
-              (a) => `<div style="display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-bottom:1px solid rgba(35,47,68,0.5);font-size:12.5px;">
+              (a) => `<div style="display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);font-size:12.5px;">
                 <a href="https://sigma.midt.bg/authorities/${esc(a.id)}" target="_blank" rel="noopener">${esc(a.name)}</a>
-                <span class="mono" style="white-space:nowrap;color:#fbbf24;">${fmtEur(a.valueEur)} (${a.contracts})</span>
+                <span class="mono" style="white-space:nowrap;font-weight:600;">${fmtEur(a.valueEur)} (${a.contracts})</span>
               </div>`
             )
             .join('')
@@ -356,41 +348,41 @@
             .map(
               (ct) => `<div class="contract-row">
                 <div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:4px;">
-                  <span class="mono" style="color:#fbbf24;font-weight:700;">${fmtEur(ct.valueEur)}</span>
-                  <span class="mono muted">${esc(ct.signedAt)} ${ct.duringOffice ? '<span class="chip chip-amber">в мандата</span>' : ''}</span>
+                  <span class="mono" style="font-weight:600;">${fmtEur(ct.valueEur)}</span>
+                  <span class="mono muted">${esc(ct.signedAt)} ${ct.duringOffice ? '<span class="tag tag-ochre">в периода</span>' : ''}</span>
                 </div>
                 <div style="margin-bottom:4px;"><a href="https://sigma.midt.bg/contracts/${encodeURIComponent(ct.id)}" target="_blank" rel="noopener">${esc(ct.subject)}</a></div>
-                <div class="muted" style="font-size:11.5px;">Възложител: <strong>${esc(ct.authority)}</strong> → Изпълнител: ${esc(ct.company)}</div>
+                <div class="muted" style="font-size:11.5px;">Възложител: <strong>${esc(ct.authority)}</strong> · Изпълнител: ${esc(ct.company)}</div>
               </div>`
             )
             .join('')
-        : '<div class="muted">Вижте пълния списък в профила в СИГМА 2.0.</div>';
+        : '<div class="muted">Пълният списък с договори е достъпен в оригиналния профил в СИГМА 2.0.</div>';
 
     const declsHtml =
       o.declarations && o.declarations.length
         ? o.declarations
             .map(
-              (d) => `<div style="display:flex;justify-content:space-between;gap:8px;padding:4px 0;font-size:12px;border-bottom:1px solid rgba(35,47,68,0.4);">
+              (d) => `<div style="display:flex;justify-content:space-between;gap:8px;padding:5px 0;font-size:12px;border-bottom:1px solid var(--border);">
                 <span><strong>${esc(d.year)}</strong> (${esc(d.type)}) · ${esc(d.institution)}</span>
-                ${d.url ? `<a href="${esc(d.url)}" target="_blank" rel="noopener" class="mono">XML Сметна палата ↗</a>` : ''}
+                ${d.url ? `<a href="${esc(d.url)}" target="_blank" rel="noopener" class="mono">XML регистър ↗</a>` : ''}
               </div>`
             )
             .join('')
         : '<div class="muted">Няма индексирани XML препратки.</div>';
 
     document.getElementById('drawerBody').innerHTML = `
-      <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:16px;">
-        <div class="kpi-card amber"><div class="kpi-label">В периода</div><div class="kpi-val" style="font-size:17px;">${fmtEur(o.periodEur)}</div></div>
-        <div class="kpi-card"><div class="kpi-label">Общо фирми</div><div class="kpi-val" style="font-size:17px;">${fmtEur(o.totalEur)}</div></div>
-        <div class="kpi-card cyan"><div class="kpi-label">Договори</div><div class="kpi-val" style="font-size:17px;">${fmtInt(o.contractCount)}</div></div>
+      <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:18px;">
+        <div class="kpi-card"><div class="kpi-label">В периода</div><div class="kpi-val" style="font-size:16px;">${fmtEur(o.periodEur)}</div></div>
+        <div class="kpi-card"><div class="kpi-label">Общо фирми</div><div class="kpi-val" style="font-size:16px;">${fmtEur(o.totalEur)}</div></div>
+        <div class="kpi-card"><div class="kpi-label">Договори</div><div class="kpi-val" style="font-size:16px;">${fmtInt(o.contractCount)}</div></div>
       </div>
 
-      <div class="drawer-section"><h4>Публични длъжности (Сметна палата / КПКОНПИ)</h4>${instHtml}</div>
-      <div class="drawer-section"><h4>Свързани компании (${o.companies.length})</h4>${compHtml}</div>
+      <div class="drawer-section"><h4>Декларирани публични длъжности</h4>${instHtml}</div>
+      <div class="drawer-section"><h4>Свързани дружества (${o.companies.length})</h4>${compHtml}</div>
       ${relHtml}
-      <div class="drawer-section"><h4>Топ институции възложители (Общо ${o.byAuthorityTotal})</h4>${authHtml}</div>
+      <div class="drawer-section"><h4>Основни възложители (общо ${o.byAuthorityTotal})</h4>${authHtml}</div>
       <div class="drawer-section"><h4>Най-големи договори (Топ ${o.topContracts.length})</h4>${contractsHtml}</div>
-      <div class="drawer-section" style="border-bottom:none;"><h4>Официални декларации (register.cacbg.bg)</h4>${declsHtml}</div>
+      <div class="drawer-section" style="border-bottom:none;"><h4>Декларации в Сметната палата (register.cacbg.bg)</h4>${declsHtml}</div>
     `;
 
     document.getElementById('drawerBackdrop').classList.add('open');
@@ -408,14 +400,14 @@
     const maxPeriod = Math.max(...sectors.map((s) => s.periodEur), 1);
     document.getElementById('sectorBarsBox').innerHTML = sectors
       .map((s) => {
-        const pct = Math.max(2, (s.periodEur / maxPeriod) * 100);
+        const pct = Math.max(1.5, (s.periodEur / maxPeriod) * 100);
         return `
           <div class="sector-bar-row">
             <div class="sector-bar-head">
               <strong>${esc(s.circle)}</strong>
-              <span class="mono muted">${s.officialCount} лица (${s.ownInstitutionHits} собств.) · <strong style="color:#fbbf24;">${fmtEur(s.periodEur)}</strong></span>
+              <span class="mono muted">${s.officialCount} лица (${s.ownInstitutionHits} собств.) · <strong style="color:var(--ink);">${fmtEur(s.periodEur)}</strong></span>
             </div>
-            <div class="sector-bar-track"><div class="sector-bar-fill" style="width:${pct}%"></div></div>
+            <div class="sector-bar-track"><div class="sector-bar-fill ${s.ownInstitutionHits > 0 ? 'crimson' : ''}" style="width:${pct}%"></div></div>
           </div>`;
       })
       .join('');
@@ -425,11 +417,11 @@
       ? shared
           .map(
             (sc) => `<div class="contract-row">
-              <div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:4px;">
-                <strong style="color:#fde68a;">${esc(sc.companyName)} <span class="eik-tag">${esc(sc.eik)}</span></strong>
-                <span class="chip chip-purple">${sc.officialCount} длъжн. лица · ${fmtEur(sc.maxTotalEur)}</span>
+              <div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:6px;">
+                <strong>${esc(sc.companyName)} <span class="eik-tag">ЕИК ${esc(sc.eik)}</span></strong>
+                <span class="tag tag-plum">${sc.officialCount} лица · ${fmtEur(sc.maxTotalEur)}</span>
               </div>
-              <div style="display:flex;flex-wrap:wrap;gap:6px;">
+              <div style="display:flex;flex-wrap:wrap;gap:5px;">
                 ${sc.officials
                   .map(
                     (p) => `<button class="pill" data-open-slug="${esc(p.slug)}" style="font-size:11.5px;">${esc(p.name)} <span class="muted">(${esc(p.institution)})</span></button>`
@@ -439,7 +431,7 @@
             </div>`
           )
           .join('')
-      : '<div class="muted">Няма споделени фирми.</div>';
+      : '<div class="muted">Няма засечени споделени дружества.</div>';
 
     renderClustersGrid();
   }
@@ -466,19 +458,19 @@
           <div class="cluster-head">
             <div>
               <div class="cluster-title">${esc(c.institution)}</div>
-              <div class="muted" style="font-size:11.5px;">${esc(c.circle)} · ${c.officialCount} лица · ${c.companyCount} фирми ${c.ownInstitutionHits > 0 ? `<span class="chip chip-red">${c.ownInstitutionHits} собств.</span>` : ''}</div>
+              <div class="muted" style="font-size:11.5px;margin-top:2px;">${esc(c.circle)} · ${c.officialCount} лица · ${c.companyCount} фирми ${c.ownInstitutionHits > 0 ? `<span class="tag tag-crimson">${c.ownInstitutionHits} собств. инст.</span>` : ''}</div>
             </div>
             <div class="cluster-metrics">
               ${fmtEur(c.periodEur)}<br/>
-              <span class="muted" style="font-size:10.5px;">Общо ${fmtEur(c.totalEur)}</span>
+              <span class="muted" style="font-size:10.5px;font-weight:400;">Общо ${fmtEur(c.totalEur)}</span>
             </div>
           </div>
           <ul class="cluster-people">
             ${c.officials
               .map(
                 (p) => `<li data-open-slug="${esc(p.slug)}">
-                  <span>${p.ownInstitution ? '🔥 ' : ''}<strong>${esc(p.name)}</strong> <span class="muted">→ ${esc(p.companies.slice(0, 2).join(', '))}</span></span>
-                  <span class="mono" style="color:#fbbf24;">${fmtEur(p.periodEur)}</span>
+                  <span>${p.ownInstitution ? '<i class="dot" style="background:#b91c1c;margin-right:5px;"></i>' : ''}<strong>${esc(p.name)}</strong> <span class="muted">· ${esc(p.companies.slice(0, 2).join(', '))}</span></span>
+                  <span class="mono" style="white-space:nowrap;">${fmtEur(p.periodEur)}</span>
                 </li>`
               )
               .join('')}
@@ -488,7 +480,7 @@
       .join('');
   }
 
-  // ===== TAB 4: MONOPOLIES & SINGLE-OFFER =====
+  // ===== TAB 4: COMPETITION & SINGLE-OFFER =====
   function renderMonopolies() {
     const c = state.comp;
     if (!c) return;
@@ -499,10 +491,10 @@
           <td class="mono muted">${p.rank}</td>
           <td>
             <a href="https://sigma.midt.bg/authorities/${esc(p.authoritySlug)}" target="_blank" rel="noopener">${esc(p.authorityName)}</a>
-            <div style="color:#fde68a;font-size:12px;">→ <a style="color:#fde68a;" href="https://sigma.midt.bg/companies/${esc(p.bidderSlug)}" target="_blank" rel="noopener">${esc(p.bidderName)}</a></div>
+            <div style="font-size:12px;color:var(--ink-secondary);margin-top:2px;">&rarr; <a style="color:var(--ochre);font-weight:600;" href="https://sigma.midt.bg/companies/${esc(p.bidderSlug)}" target="_blank" rel="noopener">${esc(p.bidderName)}</a></div>
           </td>
           <td class="num">${fmtInt(p.contracts)}</td>
-          <td class="num" style="color:#fbbf24;">${fmtEur(p.wonEur)}</td>
+          <td class="num" style="font-weight:600;">${fmtEur(p.wonEur)}</td>
         </tr>`
       )
       .join('');
@@ -511,8 +503,8 @@
       .map(
         (x, i) => `<tr>
           <td class="mono muted">${i + 1}</td>
-          <td><a href="https://sigma.midt.bg/authorities/${esc(x.slug)}" target="_blank" rel="noopener">${esc(x.name)}</a> <span class="chip chip-gray">${esc(x.typeLabel || '')}</span></td>
-          <td class="num" style="color:#f87171;font-weight:700;">${Number(x.hhi || 0).toFixed(2)}</td>
+          <td><a href="https://sigma.midt.bg/authorities/${esc(x.slug)}" target="_blank" rel="noopener">${esc(x.name)}</a> <span class="tag tag-slate">${esc(x.typeLabel || '')}</span></td>
+          <td class="num" style="color:var(--crimson);font-weight:600;">${Number(x.hhi || 0).toFixed(2)}</td>
           <td class="num">${fmtEur(x.valueEur)}</td>
         </tr>`
       )
@@ -523,7 +515,7 @@
         (x, i) => `<tr>
           <td class="mono muted">${i + 1}</td>
           <td><a href="https://sigma.midt.bg/authorities/${esc(x.slug)}" target="_blank" rel="noopener">${esc(x.name)}</a></td>
-          <td class="num" style="color:#fbbf24;font-weight:700;">${((x.singleOfferShare || 0) * 100).toFixed(1)}%</td>
+          <td class="num" style="color:var(--ochre);font-weight:600;">${((x.singleOfferShare || 0) * 100).toFixed(1)}%</td>
           <td class="num">${fmtEur(x.valueEur)}</td>
         </tr>`
       )
@@ -534,19 +526,19 @@
         (x, i) => `<tr>
           <td class="mono muted">${i + 1}</td>
           <td><a href="https://sigma.midt.bg/authorities/${esc(x.slug)}" target="_blank" rel="noopener">${esc(x.name)}</a></td>
-          <td class="num" style="color:#c084fc;font-weight:700;">${((x.nonCompetitiveShare || 0) * 100).toFixed(1)}%</td>
+          <td class="num" style="color:var(--plum);font-weight:600;">${((x.nonCompetitiveShare || 0) * 100).toFixed(1)}%</td>
           <td class="num">${fmtEur(x.valueEur)}</td>
         </tr>`
       )
       .join('');
   }
 
-  // ===== TAB 2: INTERACTIVE FORCE-DIRECTED NETWORK GRAPH =====
+  // ===== TAB 2: INTERACTIVE NETWORK GRAPH =====
   function populateGraphInstDropdown() {
     const sel = document.getElementById('graphInstSelect');
     const clusters = (state.circles.institutionalClusters || []).filter((c) => c.officialCount >= 2 || c.ownInstitutionHits > 0);
     sel.innerHTML =
-      `<option value="">— Избери конкретна институция (${clusters.length}) —</option>` +
+      `<option value="">Всички институции (${clusters.length})</option>` +
       clusters
         .map((c) => `<option value="${esc(c.institution)}">${esc(c.institution)} (${c.officialCount} лица · ${fmtEur(c.periodEur)})</option>`)
         .join('');
@@ -575,8 +567,7 @@
       subset = [...state.officials].sort((a, b) => b.periodEur - a.periodEur).slice(0, 35);
     }
 
-    // Cap to top 65 officials for ultra-crisp interactive visual readability
-    subset = [...subset].sort((a, b) => b.periodEur - a.periodEur || b.totalEur - a.totalEur).slice(0, 65);
+    subset = [...subset].sort((a, b) => b.periodEur - a.periodEur || b.totalEur - a.totalEur).slice(0, 60);
 
     const nodesMap = new Map();
     const edges = [];
@@ -593,14 +584,14 @@
           vx: 0,
           vy: 0,
           degree: 0,
-          radius: type === 'inst' ? 14 : type === 'official' ? (meta.ownInstitution ? 13 : 10) : type === 'company' ? 9 : 7,
+          radius: type === 'inst' ? 13 : type === 'official' ? (meta.ownInstitution ? 11.5 : 9) : type === 'company' ? 8 : 6.5,
         });
       }
       return nodesMap.get(id);
     };
 
-    const addEdge = (a, b, kind, weight = 1) => {
-      edges.push({ source: a, target: b, kind, weight });
+    const addEdge = (a, b, kind) => {
+      edges.push({ source: a, target: b, kind });
       nodesMap.get(a).degree++;
       nodesMap.get(b).degree++;
     };
@@ -611,21 +602,21 @@
 
       const iId = `i:${o.primaryInstitution}`;
       addNode(iId, o.primaryInstitution, 'inst', { name: o.primaryInstitution, circle: o.circle });
-      addEdge(iId, oId, o.ownInstitution ? 'own' : 'office', o.ownInstitution ? 2.2 : 1);
+      addEdge(iId, oId, o.ownInstitution ? 'own' : 'office');
 
       o.companies.forEach((c) => {
         const cId = `c:${c.eik || c.name}`;
         addNode(cId, c.name, 'company', { eik: c.eik, name: c.name, roles: c.roles });
-        addEdge(oId, cId, c.registry ? 'registry' : 'company', 1.4);
+        addEdge(oId, cId, c.registry ? 'registry' : 'company');
         if (o.ownInstitution) {
-          addEdge(cId, iId, 'loop', 2.0);
+          addEdge(cId, iId, 'loop');
         }
       });
 
       (o.relatives || []).slice(0, 2).forEach((rel) => {
         const rId = `r:${rel.name}`;
         addNode(rId, rel.name, 'relative', rel);
-        addEdge(oId, rId, 'relative', 1);
+        addEdge(oId, rId, 'relative');
       });
     });
 
@@ -636,12 +627,11 @@
     const cx = w / 2;
     const cy = h / 2;
 
-    // Seed circularly by type so physics converges fast without tangling
     nodes.forEach((n, idx) => {
       const angle = (idx / Math.max(1, nodes.length)) * Math.PI * 2;
-      const ring = n.type === 'inst' ? 110 : n.type === 'official' ? 210 : n.type === 'company' ? 300 : 350;
-      n.x = cx + Math.cos(angle) * ring + (Math.random() - 0.5) * 30;
-      n.y = cy + Math.sin(angle) * ring + (Math.random() - 0.5) * 30;
+      const ring = n.type === 'inst' ? 105 : n.type === 'official' ? 205 : n.type === 'company' ? 295 : 340;
+      n.x = cx + Math.cos(angle) * ring + (Math.random() - 0.5) * 28;
+      n.y = cy + Math.sin(angle) * ring + (Math.random() - 0.5) * 28;
     });
 
     state.graph.nodes = nodes;
@@ -654,14 +644,14 @@
 
     const sumPeriod = subset.reduce((acc, o) => acc + o.periodEur, 0);
     document.getElementById('graphStatsBox').innerHTML = `
-      <strong>${subset.length} длъжностни лица</strong> · <strong>${nodes.filter((n) => n.type === 'company').length} фирми</strong> · <strong>${nodes.filter((n) => n.type === 'inst').length} институции</strong><br/>
-      <span class="muted">Стойност в периода:</span> <strong style="color:#fbbf24;">${fmtEur(sumPeriod)}</strong>`;
+      <strong>${subset.length} длъжностни лица</strong> · <strong>${nodes.filter((n) => n.type === 'company').length} дружества</strong> · <strong>${nodes.filter((n) => n.type === 'inst').length} институции</strong><br/>
+      <span class="muted">Стойност в периода:</span> <strong class="mono">${fmtEur(sumPeriod)}</strong>`;
 
     document.getElementById('graphNodeList').innerHTML = subset
       .map(
         (o) => `<li data-open-slug="${esc(o.slug)}">
-          <span>${o.ownInstitution ? '🔥 ' : ''}${esc(o.name)}</span>
-          <span class="mono" style="color:#fbbf24;font-size:11px;">${fmtEur(o.periodEur)}</span>
+          <span>${o.ownInstitution ? '<i class="dot" style="background:#b91c1c;margin-right:5px;"></i>' : ''}${esc(o.name)}</span>
+          <span class="mono muted" style="font-size:11px;">${fmtEur(o.periodEur)}</span>
         </li>`
       )
       .join('');
@@ -689,20 +679,18 @@
       const { nodes, edges } = state.graph;
       const nodeById = new Map(nodes.map((n) => [n.id, n]));
 
-      // Force simulation
       if (state.graph.simSteps > 0 || state.graph.dragging) {
         if (state.graph.simSteps > 0) state.graph.simSteps--;
         const cx = w / 2;
         const cy = h / 2;
 
-        // Repulsion
         for (let i = 0; i < nodes.length; i++) {
           const a = nodes[i];
           for (let j = i + 1; j < nodes.length; j++) {
             const b = nodes[j];
-            let dx = a.x - b.x;
-            let dy = a.y - b.y;
-            let d2 = dx * dx + dy * dy + 1;
+            const dx = a.x - b.x;
+            const dy = a.y - b.y;
+            const d2 = dx * dx + dy * dy + 1;
             const force = 2600 / d2;
             const d = Math.sqrt(d2);
             const fx = (dx / d) * force;
@@ -710,12 +698,10 @@
             a.vx += fx; a.vy += fy;
             b.vx -= fx; b.vy -= fy;
           }
-          // Center gravity
           a.vx += (cx - a.x) * 0.008;
           a.vy += (cy - a.y) * 0.008;
         }
 
-        // Springs
         for (const e of edges) {
           const a = nodeById.get(e.source);
           const b = nodeById.get(e.target);
@@ -723,7 +709,7 @@
           const dx = b.x - a.x;
           const dy = b.y - a.y;
           const d = Math.sqrt(dx * dx + dy * dy) || 1;
-          const targetLen = e.kind === 'loop' ? 95 : 78;
+          const targetLen = e.kind === 'loop' ? 92 : 76;
           const f = (d - targetLen) * 0.045;
           const fx = (dx / d) * f;
           const fy = (dy / d) * f;
@@ -743,7 +729,6 @@
         }
       }
 
-      // Render
       ctx.save();
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, w, h);
@@ -761,7 +746,7 @@
         });
       }
 
-      // Draw edges
+      // Edges
       for (const e of edges) {
         const a = nodeById.get(e.source);
         const b = nodeById.get(e.target);
@@ -771,40 +756,42 @@
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
         if (e.kind === 'loop' || e.kind === 'own') {
-          ctx.strokeStyle = isLit ? 'rgba(239,68,68,0.75)' : 'rgba(239,68,68,0.08)';
-          ctx.lineWidth = e.kind === 'loop' ? 2.2 : 1.5;
+          ctx.strokeStyle = isLit ? 'rgba(185, 28, 28, 0.55)' : 'rgba(185, 28, 28, 0.07)';
+          ctx.lineWidth = e.kind === 'loop' ? 1.8 : 1.3;
         } else if (e.kind === 'registry') {
-          ctx.strokeStyle = isLit ? 'rgba(168,85,247,0.7)' : 'rgba(168,85,247,0.08)';
-          ctx.lineWidth = 1.5;
+          ctx.strokeStyle = isLit ? 'rgba(107, 33, 168, 0.5)' : 'rgba(107, 33, 168, 0.07)';
+          ctx.lineWidth = 1.2;
         } else {
-          ctx.strokeStyle = isLit ? 'rgba(148,163,184,0.38)' : 'rgba(148,163,184,0.06)';
-          ctx.lineWidth = 1;
+          ctx.strokeStyle = isLit ? 'rgba(71, 85, 105, 0.3)' : 'rgba(71, 85, 105, 0.06)';
+          ctx.lineWidth = 0.9;
         }
         ctx.stroke();
       }
 
-      // Draw nodes
+      // Nodes
       for (const n of nodes) {
         const isLit = !hov || activeSet.has(n.id);
-        let fill = '#06b6d4';
-        if (n.type === 'official') fill = n.meta.ownInstitution ? '#ef4444' : '#fb7185';
-        else if (n.type === 'company') fill = '#f59e0b';
-        else if (n.type === 'relative') fill = '#a855f7';
+        let fill = '#1e3a8a';
+        if (n.type === 'official') fill = n.meta.ownInstitution ? '#b91c1c' : '#e11d48';
+        else if (n.type === 'company') fill = '#b45309';
+        else if (n.type === 'relative') fill = '#6b21a8';
 
-        ctx.globalAlpha = isLit ? 1 : 0.16;
+        ctx.globalAlpha = isLit ? 1 : 0.14;
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
         ctx.fillStyle = fill;
         ctx.fill();
-        ctx.lineWidth = hov === n ? 2.5 : 1.2;
-        ctx.strokeStyle = hov === n ? '#ffffff' : '#080b11';
+        ctx.lineWidth = hov === n ? 2.5 : 1.5;
+        ctx.strokeStyle = hov === n ? '#14171f' : '#ffffff';
         ctx.stroke();
 
-        // Label for important or hovered nodes
-        if (hov === n || (hov && activeSet.has(n.id)) || n.type === 'inst' || n.degree >= 3 || nodes.length <= 45) {
-          ctx.font = `${n.type === 'inst' || hov === n ? '700' : '500'} 10.5px Inter, sans-serif`;
-          ctx.fillStyle = isLit ? '#e2e8f0' : 'rgba(226,232,240,0.2)';
+        if (hov === n || (hov && activeSet.has(n.id)) || n.type === 'inst' || n.degree >= 3 || nodes.length <= 42) {
+          ctx.font = `${n.type === 'inst' || hov === n ? '600' : '400'} 10.5px "IBM Plex Sans", sans-serif`;
           const shortLbl = n.label.length > 28 ? n.label.slice(0, 27) + '…' : n.label;
+          ctx.lineWidth = 3;
+          ctx.strokeStyle = 'rgba(252, 251, 248, 0.9)';
+          ctx.strokeText(shortLbl, n.x + n.radius + 4, n.y + 3.5);
+          ctx.fillStyle = isLit ? '#14171f' : 'rgba(20, 23, 31, 0.25)';
           ctx.fillText(shortLbl, n.x + n.radius + 4, n.y + 3.5);
         }
       }
@@ -821,9 +808,10 @@
     const sy = clientY - rect.top;
     const w = rect.width;
     const h = rect.height;
-    const wx = (sx - w / 2 - state.graph.panX) / state.graph.scale + w / 2;
-    const wy = (sy - h / 2 - state.graph.panY) / state.graph.scale + h / 2;
-    return { x: wx, y: wy };
+    return {
+      x: (sx - w / 2 - state.graph.panX) / state.graph.scale + w / 2,
+      y: (sy - h / 2 - state.graph.panY) / state.graph.scale + h / 2,
+    };
   }
 
   function findNodeAt(x, y) {
@@ -842,24 +830,23 @@
     if (n.type === 'official') {
       const o = n.meta;
       tip.innerHTML = `
-        <strong style="color:#f87171;">👤 ${esc(o.name)}</strong><br/>
+        <strong style="color:var(--crimson);">${esc(o.name)}</strong><br/>
         <span class="muted">${esc(o.primaryInstitution)}</span><br/>
-        В периода: <strong style="color:#fbbf24;">${fmtEur(o.periodEur)}</strong> · Общо: ${fmtEur(o.totalEur)}<br/>
-        <button class="btn" style="margin-top:6px;padding:4px 8px;font-size:11.5px;" data-open-slug="${esc(o.slug)}">Отвори пълното досие →</button>`;
+        В периода: <strong class="mono">${fmtEur(o.periodEur)}</strong> · Общо: <span class="mono">${fmtEur(o.totalEur)}</span><br/>
+        <button class="btn" style="margin-top:7px;padding:4px 8px;font-size:11.5px;" data-open-slug="${esc(o.slug)}">Отвори профила &rarr;</button>`;
     } else if (n.type === 'company') {
       tip.innerHTML = `
-        <strong style="color:#fbbf24;">🏢 ${esc(n.label)}</strong><br/>
-        <span class="mono muted">ЕИК: ${esc(n.meta.eik)}</span><br/>
-        <a href="https://sigma.midt.bg/companies/${esc(n.meta.eik)}" target="_blank" rel="noopener">Виж компанията в СИГМА 2.0 ↗</a>`;
+        <strong style="color:var(--ochre);">${esc(n.label)}</strong><br/>
+        <span class="mono muted">ЕИК ${esc(n.meta.eik)}</span><br/>
+        <a href="https://sigma.midt.bg/companies/${esc(n.meta.eik)}" target="_blank" rel="noopener">Отвори дружеството в СИГМА 2.0 ↗</a>`;
     } else if (n.type === 'inst') {
-      tip.innerHTML = `<strong style="color:#22d3ee;">🏛️ ${esc(n.label)}</strong><br/><span class="muted">${esc(n.meta.circle || '')} · ${n.degree} връзки в графа</span>`;
+      tip.innerHTML = `<strong style="color:var(--navy);">${esc(n.label)}</strong><br/><span class="muted">${esc(n.meta.circle || '')} · ${n.degree} връзки в среза</span>`;
     } else {
-      tip.innerHTML = `<strong style="color:#c084fc;">👥 ${esc(n.label)}</strong><br/><span class="muted">Свързано лице (Търговски регистър)</span>`;
+      tip.innerHTML = `<strong style="color:var(--plum);">${esc(n.label)}</strong><br/><span class="muted">Свързано лице (Търговски регистър)</span>`;
     }
   }
 
   function setupEvents() {
-    // Tabs
     document.querySelectorAll('.tab-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.tab-btn').forEach((b) => b.classList.remove('active'));
@@ -873,7 +860,6 @@
       });
     });
 
-    // Directory controls
     document.getElementById('searchInput').addEventListener('input', (e) => {
       state.search = e.target.value;
       state.page = 1;
@@ -904,28 +890,23 @@
       renderDirectory();
     });
 
-    // Click row to open dossier
     document.getElementById('officialsTbody').addEventListener('click', (e) => {
       const tr = e.target.closest('tr[data-slug]');
       if (tr) openDossier(tr.dataset.slug);
     });
 
-    // Global delegate for data-open-slug buttons/items
     document.body.addEventListener('click', (e) => {
       const el = e.target.closest('[data-open-slug]');
       if (el) openDossier(el.dataset.openSlug);
     });
 
-    // Drawer close
     document.getElementById('drawerClose').onclick = closeDossier;
     document.getElementById('drawerBackdrop').onclick = closeDossier;
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDossier(); });
 
-    // Clusters filter
     document.getElementById('clusterSearchInput').addEventListener('input', renderClustersGrid);
     document.getElementById('clusterOnlyOwn').addEventListener('change', renderClustersGrid);
 
-    // Graph controls
     document.getElementById('graphPresetSelect').addEventListener('change', (e) => {
       document.getElementById('graphInstSelect').value = '';
       buildGraphData(e.target.value, '');
@@ -941,7 +922,6 @@
       state.graph.panX = 0; state.graph.panY = 0; state.graph.scale = 0.92;
     });
 
-    // Canvas mouse interactions
     const canvas = document.getElementById('networkCanvas');
     canvas.addEventListener('mousedown', (e) => {
       const p = screenToWorld(canvas, e.clientX, e.clientY);
@@ -976,11 +956,6 @@
     window.addEventListener('mouseup', () => {
       state.graph.dragging = null;
       state.graph.panning = false;
-    });
-    canvas.addEventListener('dblclick', (e) => {
-      const p = screenToWorld(canvas, e.clientX, e.clientY);
-      const hit = findNodeAt(p.x, p.y);
-      if (hit && hit.type === 'official') openDossier(hit.meta.slug);
     });
     canvas.addEventListener('click', (e) => {
       const p = screenToWorld(canvas, e.clientX, e.clientY);
