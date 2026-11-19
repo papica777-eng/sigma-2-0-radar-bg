@@ -801,3 +801,339 @@ tbody td { padding: 10px 12px; vertical-align: top; }
   flex-wrap: wrap;
   gap: 12px;
 }
+
+/* =========================================================================
+   HALL OF FAME — ANIMATED FLOWING NEON PYRAMID (TOP 50)
+   ========================================================================= */
+@keyframes neonBorderFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes neonHaloPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 18px rgba(255, 30, 86, 0.42),
+      0 0 42px rgba(168, 85, 247, 0.28),
+      0 0 68px rgba(6, 182, 212, 0.18);
+  }
+  50% {
+    box-shadow:
+      0 0 28px rgba(6, 182, 212, 0.55),
+      0 0 56px rgba(255, 30, 86, 0.38),
+      0 0 88px rgba(245, 158, 11, 0.25);
+  }
+}
+
+@keyframes apexShimmer {
+  0%, 100% {
+    box-shadow: 0 0 18px rgba(245, 158, 11, 0.55), 0 0 36px rgba(255, 30, 86, 0.35), inset 0 0 16px rgba(245, 158, 11, 0.12);
+  }
+  50% {
+    box-shadow: 0 0 28px rgba(255, 30, 86, 0.72), 0 0 52px rgba(168, 85, 247, 0.48), inset 0 0 22px rgba(255, 30, 86, 0.18);
+  }
+}
+
+.hof-shell {
+  position: relative;
+  border-radius: 10px;
+  padding: 3px;
+  margin-bottom: 26px;
+  background: linear-gradient(120deg, #ff1e56, #f59e0b, #a855f7, #06b6d4, #ec4899, #ff1e56);
+  background-size: 320% 320%;
+  animation: neonBorderFlow 5.5s linear infinite, neonHaloPulse 3.6s ease-in-out infinite;
+}
+
+.hof-inner {
+  background:
+    radial-gradient(ellipse 68% 36% at 50% 6%, rgba(255, 30, 86, 0.22), transparent 65%),
+    radial-gradient(ellipse 55% 40% at 15% 80%, rgba(168, 85, 247, 0.14), transparent 70%),
+    radial-gradient(ellipse 55% 40% at 85% 80%, rgba(6, 182, 212, 0.14), transparent 70%),
+    #090b12;
+  border-radius: 8px;
+  padding: 26px 20px 22px;
+  color: #f8fafc;
+  overflow: hidden;
+}
+
+.hof-header {
+  text-align: center;
+  max-width: 860px;
+  margin: 0 auto 20px;
+}
+
+.hof-kicker {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 3px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(6, 182, 212, 0.55);
+  background: rgba(6, 182, 212, 0.12);
+  color: #67e8f9;
+  margin-bottom: 10px;
+}
+
+.hof-title {
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+  background: linear-gradient(90deg, #ff4d79, #fbbf24, #38bdf8, #c084fc, #ff4d79);
+  background-size: 260% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: neonBorderFlow 4.2s linear infinite;
+  filter: drop-shadow(0 0 14px rgba(255, 30, 86, 0.35));
+}
+
+.hof-subtitle {
+  font-size: 13.5px;
+  color: #cbd5e1;
+  margin: 0 auto 14px;
+  max-width: 72ch;
+}
+
+.hof-controls {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hof-mode-btn {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  color: #e2e8f0;
+  padding: 6px 13px;
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.hof-mode-btn:hover {
+  border-color: #38bdf8;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+}
+
+.hof-mode-btn.active {
+  background: linear-gradient(90deg, #e11d48, #9333ea);
+  border-color: #f472b6;
+  color: #ffffff;
+  box-shadow: 0 0 16px rgba(225, 29, 72, 0.55);
+}
+
+.hof-pyramid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.hof-row {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 8px;
+  width: 100%;
+  flex-wrap: nowrap;
+}
+
+.hof-row.tier-apex { max-width: 470px; }
+.hof-row.tier-2 { max-width: 760px; }
+.hof-row.tier-3 { max-width: 980px; }
+.hof-row.tier-4 { max-width: 1120px; }
+.hof-row.tier-5 { max-width: 1220px; }
+.hof-row.tier-6 { max-width: 1300px; }
+.hof-row.tier-7 { max-width: 1360px; }
+.hof-row.tier-base { max-width: 100%; flex-wrap: wrap; }
+
+.hof-card {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  background: rgba(17, 22, 36, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 6px;
+  padding: 9px 10px;
+  cursor: pointer;
+  transition: transform 0.14s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  color: #f8fafc;
+}
+
+.hof-card:hover {
+  transform: translateY(-2px);
+  border-color: #38bdf8;
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.45);
+  z-index: 2;
+}
+
+/* Apex (#1) */
+.hof-card.rank-apex {
+  padding: 15px 18px;
+  text-align: center;
+  background: linear-gradient(160deg, rgba(45, 14, 34, 0.96), rgba(15, 23, 42, 0.96));
+  border: 1.5px solid #f59e0b;
+  animation: apexShimmer 3s ease-in-out infinite;
+}
+
+/* Tier 2-3 (#2-#6) */
+.hof-card.rank-upper {
+  padding: 12px 13px;
+  background: linear-gradient(160deg, rgba(30, 17, 46, 0.94), rgba(13, 19, 34, 0.94));
+  border-color: rgba(236, 72, 153, 0.58);
+  box-shadow: 0 0 12px rgba(236, 72, 153, 0.22);
+}
+
+/* Tier 4-6 (#7-#21) */
+.hof-card.rank-mid {
+  border-color: rgba(168, 85, 247, 0.42);
+  box-shadow: 0 0 8px rgba(168, 85, 247, 0.14);
+}
+
+/* Tier 7-base (#22-#50) */
+.hof-card.rank-base {
+  flex: 1 1 118px;
+  max-width: 190px;
+  padding: 7px 8px;
+  border-color: rgba(6, 182, 212, 0.34);
+  background: rgba(13, 20, 34, 0.88);
+}
+
+.hof-card.is-own {
+  border-top: 2px solid #ff1e56;
+}
+
+.hof-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.hof-card.rank-apex .hof-card-top {
+  justify-content: center;
+  gap: 10px;
+}
+
+.hof-rank {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: #38bdf8;
+  letter-spacing: 0.03em;
+}
+
+.hof-card.rank-apex .hof-rank {
+  font-size: 13px;
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.18);
+  border: 1px solid rgba(251, 191, 36, 0.55);
+  padding: 1px 8px;
+  border-radius: 999px;
+}
+
+.hof-card.rank-upper .hof-rank { color: #f472b6; font-size: 12px; }
+
+.hof-pill {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  padding: 1px 5px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.hof-pill-own { background: rgba(255, 30, 86, 0.22); color: #fda4af; border: 1px solid rgba(255, 30, 86, 0.55); }
+.hof-pill-dzzd { background: rgba(168, 85, 247, 0.24); color: #e9d5ff; border: 1px solid rgba(168, 85, 247, 0.55); }
+
+.hof-name {
+  font-weight: 700;
+  font-size: 12.5px;
+  line-height: 1.22;
+  color: #ffffff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.hof-card.rank-apex .hof-name { font-family: var(--font-serif); font-size: 21px; }
+.hof-card.rank-upper .hof-name { font-size: 14px; }
+.hof-card.rank-base .hof-name { font-size: 11px; }
+
+.hof-inst {
+  font-size: 10.5px;
+  color: #94a3b8;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hof-card.rank-apex .hof-inst { font-size: 12.5px; color: #cbd5e1; }
+.hof-card.rank-base .hof-inst { font-size: 9.5px; }
+
+.hof-amount {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 5px;
+  color: #fbbf24;
+  font-variant-numeric: tabular-nums;
+}
+.hof-card.rank-apex .hof-amount { font-size: 21px; color: #fde047; margin-top: 7px; }
+.hof-card.rank-upper .hof-amount { font-size: 15px; color: #fbbf24; }
+.hof-card.rank-base .hof-amount { font-size: 11px; color: #67e8f9; margin-top: 3px; }
+
+.hof-subline {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #94a3b8;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hof-card.rank-apex .hof-subline { font-size: 11.5px; color: #e2e8f0; }
+
+.hof-footer {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 11.5px;
+  color: #94a3b8;
+}
+
+@media (max-width: 1024px) {
+  .hof-row { flex-wrap: wrap; }
+  .hof-row.tier-5 .hof-card,
+  .hof-row.tier-6 .hof-card,
+  .hof-row.tier-7 .hof-card {
+    flex: 1 1 160px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hof-shell, .hof-title, .hof-card.rank-apex { animation: none; }
+}

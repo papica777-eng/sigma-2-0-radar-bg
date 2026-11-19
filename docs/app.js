@@ -11,6 +11,7 @@
     deepBySlug: new Map(),
     deepTier: 'missed',
     deepConsSearch: '',
+    hofMode: 'combined',
     sharedEiks: new Set(),
     filter: 'all',
     scope: 'all',
@@ -106,6 +107,7 @@
       (cirJson.sharedCompanies || []).forEach((sc) => state.sharedEiks.add(sc.eik));
 
       renderHeader();
+      renderHallOfFamePyramid();
       renderVisualCharts();
       renderFilterPills();
       renderDirectory();
@@ -126,6 +128,121 @@
     document.getElementById('syncSubtitle').textContent =
       `Данни от sigma.midt.bg (CC-BY 4.0) · Обновено: ${m.refreshedAt} · Пълен обхват: ${m.totalOfficialsAllRoles} лица`;
     document.getElementById('asOfChip').textContent = `Към дата: ${m.asOf}`;
+  }
+
+  // ===== CENTRAL NEON PYRAMID: HALL OF FAME (TOP 50) =====
+  function renderHallOfFamePyramid() {
+    const host = document.getElementById('hofPyramid');
+    if (!host || !state.officials.length) return;
+
+    const enriched = state.officials.map((o) => {
+      const dc = state.deepBySlug.get(o.slug);
+      const dzzdEur = dc ? Number(dc.hiddenConsortiumEur || 0) : 0;
+      const dzzdCnt = dc ? Number(dc.hiddenConsortiumCount || 0) : 0;
+      return {
+        ...o,
+        dzzdEur,
+        dzzdCnt,
+        combinedEur: Number(o.totalEur || 0) + dzzdEur,
+      };
+    });
+
+    const mode = state.hofMode;
+    let pool = enriched;
+    if (mode === 'own') {
+      pool = enriched
+        .filter((o) => o.ownInstitution)
+        .sort((a, b) => b.periodEur - a.periodEur || b.combinedEur - a.combinedEur);
+    } else if (mode === 'period') {
+      pool = [...enriched].sort((a, b) => b.periodEur - a.periodEur || b.combinedEur - a.combinedEur);
+    } else if (mode === 'dzzd') {
+      pool = enriched
+        .filter((o) => o.dzzdEur > 0)
+        .sort((a, b) => b.dzzdEur - a.dzzdEur || b.totalEur - a.totalEur);
+    } else {
+      pool = [...enriched].sort((a, b) => b.combinedEur - a.combinedEur || b.periodEur - a.periodEur);
+    }
+
+    const top50 = pool.slice(0, 50);
+
+    // 9-row monumental pyramid geometry: 1 + 2 + 3 + 4 + 5 + 6 + 7 + 10 + 12 = 50
+    const rowSpecs = [
+      { count: 1, rowCls: 'tier-apex', cardCls: 'rank-apex', level: 'apex' },
+      { count: 2, rowCls: 'tier-2', cardCls: 'rank-upper', level: 'upper' },
+      { count: 3, rowCls: 'tier-3', cardCls: 'rank-upper', level: 'upper' },
+      { count: 4, rowCls: 'tier-4', cardCls: 'rank-mid', level: 'mid' },
+      { count: 5, rowCls: 'tier-5', cardCls: 'rank-mid', level: 'mid' },
+      { count: 6, rowCls: 'tier-6', cardCls: 'rank-mid', level: 'mid' },
+      { count: 7, rowCls: 'tier-7', cardCls: 'rank-base', level: 'base' },
+      { count: 10, rowCls: 'tier-base', cardCls: 'rank-base', level: 'base' },
+      { count: 12, rowCls: 'tier-base', cardCls: 'rank-base', level: 'base' },
+    ];
+
+    const getPrimaryValue = (o) => {
+      if (mode === 'period' || mode === 'own') return o.periodEur;
+      if (mode === 'dzzd') return o.dzzdEur;
+      return o.combinedEur;
+    };
+
+    let cursor = 0;
+    const rowsHtml = rowSpecs
+      .map((spec) => {
+        const items = top50.slice(cursor, cursor + spec.count);
+        if (!items.length) return '';
+        const cardsHtml = items
+          .map((o, idx) => {
+            const rank = cursor + idx + 1;
+            const val = getPrimaryValue(o);
+            const pills = [];
+            if (o.ownInstitution) pills.push(`<span class="hof-pill hof-pill-own">Собств. инст.</span>`);
+            if (o.dzzdEur > 0 && spec.level !== 'base') {
+              pills.push(`<span class="hof-pill hof-pill-dzzd">+ДЗЗД</span>`);
+            }
+            const topComp = (o.companies && o.companies[0]) ? o.companies[0].name : '';
+            let subline = '';
+            if (spec.level === 'apex') {
+              subline = `<div class="hof-subline">${esc(topComp)} · СИГМА: ${fmtEur(o.totalEur)}${o.dzzdEur > 0 ? ' · Скрити ДЗЗД (' + o.dzzdCnt + '): +' + fmtEur(o.dzzdEur) : ''}${o.periodEur > 0 ? ' · В мандата: ' + fmtEur(o.periodEur) : ''}</div>`;
+            } else if (spec.level === 'upper') {
+              subline = `<div class="hof-subline">${esc(topComp)}${o.dzzdEur > 0 ? ' · ДЗЗД: +' + fmtEur(o.dzzdEur) : ' · В мандата: ' + fmtEur(o.periodEur)}</div>`;
+            } else if (spec.level === 'mid') {
+              subline = `<div class="hof-subline">${o.dzzdEur > 0 ? 'ДЗЗД +' + fmtEur(o.dzzdEur) : esc(topComp)}</div>`;
+            }
+
+            return `<div class="hof-card ${spec.cardCls} ${o.ownInstitution ? 'is-own' : ''}" data-open-slug="${esc(o.slug)}" title="${esc(o.name)} — ${esc(o.primaryInstitution)}">
+              <div>
+                <div class="hof-card-top">
+                  <span class="hof-rank">#${String(rank).padStart(2, '0')}</span>
+                  <div style="display:flex;gap:4px;flex-wrap:wrap;">${pills.join('')}</div>
+                </div>
+                <div class="hof-name">${esc(o.name)}</div>
+                <div class="hof-inst">${esc(o.primaryInstitution)}</div>
+              </div>
+              <div>
+                <div class="hof-amount">${mode === 'dzzd' ? '+' : ''}${fmtEur(val)}</div>
+                ${subline}
+              </div>
+            </div>`;
+          })
+          .join('');
+        cursor += items.length;
+        return `<div class="hof-row ${spec.rowCls}">${cardsHtml}</div>`;
+      })
+      .join('');
+
+    host.innerHTML = rowsHtml;
+
+    const sumVal = top50.reduce((acc, o) => acc + getPrimaryValue(o), 0);
+    const ownIn50 = top50.filter((o) => o.ownInstitution).length;
+    const modeLabels = {
+      combined: 'Общ обем (СИГМА + скрити ДЗЗД)',
+      own: 'Договори в мандата от собствената институция',
+      period: 'Договори в декларирания период',
+      dzzd: 'Скрити поръчки през ДЗЗД консорциуми',
+    };
+    const sumEl = document.getElementById('hofSummaryText');
+    if (sumEl) {
+      sumEl.innerHTML = `<strong>${top50.length} лица</strong> в пирамидата (${modeLabels[mode]}): <strong class="mono" style="color:#fbbf24;">${fmtEur(sumVal)}</strong> · От собствената институция: <strong style="color:#fda4af;">${ownIn50}</strong>`;
+    }
   }
 
   // ===== 4 INTERACTIVE VISUAL CHARTS FOR ORDINARY CITIZENS =====
@@ -1260,6 +1377,17 @@
 
     document.getElementById('clusterSearchInput').addEventListener('input', renderClustersGrid);
     document.getElementById('clusterOnlyOwn').addEventListener('change', renderClustersGrid);
+
+    const hofControls = document.getElementById('hofControls');
+    if (hofControls) {
+      hofControls.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-hof-mode]');
+        if (!btn) return;
+        state.hofMode = btn.dataset.hofMode;
+        hofControls.querySelectorAll('.hof-mode-btn').forEach((b) => b.classList.toggle('active', b === btn));
+        renderHallOfFamePyramid();
+      });
+    }
 
     const deepConsInput = document.getElementById('deepConsSearch');
     if (deepConsInput) {
