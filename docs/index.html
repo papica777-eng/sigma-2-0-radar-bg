@@ -3,8 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Свързани лица и обществени поръчки — Отворен индекс по данни от СИГМА 2.0</title>
-  <meta name="description" content="Пълен структуриран регистър и граф на всички 571 длъжностни лица, свързани фирми (ЕИК) и обществени поръчки по отворените данни на СИГМА 2.0 (МИДТ, АОП, Сметна палата, Търговски регистър)." />
+  <title>Свързани лица и обществени поръчки — Отворен анализ по СИГМА 2.0</title>
+  <meta name="description" content="571 длъжностни лица, 53 директни съвпадения от собствената институция и €2,225 млрд. договори. Интерактивни диаграми, граф на връзките и пълен списък по данни от СИГМА 2.0." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="571 длъжностни лица и €2,225 млрд. обществени поръчки — Пълен индекс по СИГМА 2.0" />
+  <meta property="og:description" content="Провери своята община, депутат или министерство: всички 571 свързани лица, 53 директни съвпадения от собствената институция, диаграми и интерактивен граф." />
+  <meta property="og:url" content="https://papica777-eng.github.io/sigma-2-0-radar-bg/" />
+  <meta property="og:image" content="https://papica777-eng.github.io/sigma-2-0-radar-bg/og-card.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://papica777-eng.github.io/sigma-2-0-radar-bg/og-card.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
@@ -16,40 +25,139 @@
   <div class="topbar-inner">
     <div>
       <div class="brand">
-        <span class="brand-mark">СИГМА 2.0 · ОТВОРЕН ИНДЕКС</span>
-        <h1>Свързани лица и обществени поръчки</h1>
+        <span class="brand-mark">СИГМА 2.0 · ПЪЛЕН ИНДЕКС</span>
+        <span class="brand-title">Свързани лица и обществени поръчки</span>
       </div>
       <div class="brand-sub" id="syncSubtitle">Зареждане на данните от sigma.midt.bg…</div>
     </div>
     <div class="topbar-actions">
       <a class="btn" href="data/SIGMA_2_0_ALL_OFFICIALS_571.csv" download>Изтегли CSV (571)</a>
       <a class="btn" href="data/officials_all.json" download>JSON</a>
-      <a class="btn" href="https://sigma.midt.bg/conflicts" target="_blank" rel="noopener">Оригинал в sigma.midt.bg</a>
-      <a class="btn btn-dark" href="https://github.com/papica777-eng/sigma-2-0-radar-bg" target="_blank" rel="noopener">Изходен код</a>
+      <a class="btn" href="https://sigma.midt.bg/conflicts" target="_blank" rel="noopener">Оригинал в СИГМА 2.0</a>
+      <a class="btn btn-dark" href="https://github.com/papica777-eng/sigma-2-0-radar-bg" target="_blank" rel="noopener">Отворен код</a>
     </div>
   </div>
 </header>
 
 <main class="container">
+  <!-- VISUAL EDITORIAL HERO -->
+  <section class="hero">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-kicker">Граждански одит по публичните данни на МИДТ, АОП и Сметната палата</div>
+        <h1>571 души във властта, свързани с фирми за <em>€2,22 млрд.</em> обществени поръчки</h1>
+        <p class="hero-lead">
+          Пълен, проверим индекс на всички длъжностни лица от СИГМА 2.0 — кметове, общински съветници, депутати, министри и директори на агенции, чиито собствени или роднински фирми печелят държавни и общински договори.
+        </p>
+
+        <div class="hero-search-box">
+          <label class="hero-search-label" for="heroSearchInput">Провери веднага своя град, община, министерство или име на политик:</label>
+          <div class="hero-search-row">
+            <input id="heroSearchInput" type="search" placeholder="Напр. Бургас, Благоевград, Хасково, Несебър, ДАНС, име на фирма…" />
+            <button class="btn btn-dark" id="heroSearchBtn" type="button">Провери</button>
+          </div>
+          <div class="quick-cities">
+            <span>Бърз избор:</span>
+            <button class="city-chip" data-quick="Благоевград">Благоевград</button>
+            <button class="city-chip" data-quick="Хасково">Хасково</button>
+            <button class="city-chip" data-quick="Бургас">Бургас</button>
+            <button class="city-chip" data-quick="Варна">Варна</button>
+            <button class="city-chip" data-quick="Пловдив">Пловдив</button>
+            <button class="city-chip" data-quick="Стара Загора">Стара Загора</button>
+            <button class="city-chip" data-quick="Народно събрание">Депутати</button>
+            <button class="city-chip" data-quick="ДАНС">ДАНС / ДАТО</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4-STEP PLAIN-LANGUAGE FUNNEL -->
+      <div class="funnel-box">
+        <h2 class="funnel-title">Картината с 4 числа (клик за преглед)</h2>
+        <div class="funnel-step" data-jump-tab="monopolies">
+          <div>
+            <div class="funnel-step-lbl">1. Всички поръчки в СИГМА 2.0</div>
+            <div class="funnel-step-sub">206 757 договора (2020–2026 г.)</div>
+          </div>
+          <div class="funnel-step-num">€53,2 млрд.</div>
+        </div>
+        <div class="funnel-step warn" data-jump-tab="monopolies">
+          <div>
+            <div class="funnel-step-lbl">2. Поръчки само с 1 оферта</div>
+            <div class="funnel-step-sub">40,7% от стойността — без конкуренция</div>
+          </div>
+          <div class="funnel-step-num">€18,49 млрд.</div>
+        </div>
+        <div class="funnel-step" data-jump-filter="all">
+          <div>
+            <div class="funnel-step-lbl">3. Свързани лица във властта</div>
+            <div class="funnel-step-sub">€180,8 млн. в мандата · €2,225 млрд. общо</div>
+          </div>
+          <div class="funnel-step-num">571 лица</div>
+        </div>
+        <div class="funnel-step danger" data-jump-filter="own">
+          <div>
+            <div class="funnel-step-lbl">4. От собствената институция</div>
+            <div class="funnel-step-sub">Фирмата печели от същата институция</div>
+          </div>
+          <div class="funnel-step-num">53 лица</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2x2 INTERACTIVE VISUAL CHARTS FOR ORDINARY CITIZENS -->
+  <section class="charts-grid" aria-label="Визуални диаграми">
+    <article class="chart-card">
+      <div class="chart-head">
+        <h2 class="chart-title">Къде отиват парите по време на мандата</h2>
+        <span class="meta-date">Клик върху лента за филтър</span>
+      </div>
+      <p class="chart-caption">Близо четири пети (77,2%) от стойността в декларирания период минават през общини и общински съвети.</p>
+      <div id="chartSectorBars"></div>
+    </article>
+
+    <article class="chart-card">
+      <div class="chart-head">
+        <h2 class="chart-title">Как се разпределят 571-те лица</h2>
+        <span class="meta-date">Клик върху сегмент</span>
+      </div>
+      <p class="chart-caption">Дял на директното съвпадение със собствената институция, договорите по време на поста и членовете на съвети.</p>
+      <div id="chartDonutWrap" class="donut-layout"></div>
+    </article>
+
+    <article class="chart-card">
+      <div class="chart-head">
+        <h2 class="chart-title">Топ 10 най-големи случая в периода</h2>
+        <span class="meta-date">Клик върху име за досие</span>
+      </div>
+      <p class="chart-caption">Червените ленти отбелязват лица, чиито фирми са печелили договори от собствената им институция.</p>
+      <div id="chartTop10Bars"></div>
+    </article>
+
+    <article class="chart-card">
+      <div class="chart-head">
+        <h2 class="chart-title">Колко реална е конкуренцията в България</h2>
+        <span class="meta-date">Национален срез · АОП</span>
+      </div>
+      <p class="chart-caption">Делът на поръчките с единствен участник и пряко договаряне върху 206 757 обществени договора.</p>
+      <div id="chartCompetitionGauge"></div>
+    </article>
+  </section>
+
   <div class="editorial-note">
     <div>
       <strong>Източник (CC-BY 4.0):</strong> Публичният масив на <strong>СИГМА 2.0</strong> (МИДТ), обединяващ <strong>ЦАИС ЕОП / АОП</strong>, <strong>Публичния регистър на Сметната палата</strong> (чл. 75 ЗСП) и <strong>Търговския регистър</strong>.
-      Отчетените съвпадения отразяват декларирани участия и вписвания за целите на обществения контрол и сами по себе си не установяват нарушение или съдебна вина.
+      Отчетените съвпадения отразяват официално декларирани интереси и вписвания за обществен контрол и не представляват съдебно установена вина.
     </div>
     <span class="meta-date" id="asOfChip">Данни към: —</span>
   </div>
 
-  <!-- Summary Telemetry -->
-  <section class="kpi-grid" id="kpiGrid">
-    <div class="kpi-card"><div class="kpi-label">Зареждане</div><div class="kpi-val">—</div></div>
-  </section>
-
-  <!-- Navigation -->
-  <nav class="tabs" role="tablist">
+  <!-- Navigation Tabs -->
+  <nav class="tabs" id="mainTabs" role="tablist">
     <button class="tab-btn active" data-tab="directory">Пълен регистър (571 лица)</button>
     <button class="tab-btn" data-tab="graph">Мрежов граф на връзките</button>
-    <button class="tab-btn" data-tab="clusters">Институции и споделени фирми</button>
-    <button class="tab-btn" data-tab="monopolies">Конкуренция и една оферта</button>
+    <button class="tab-btn" data-tab="clusters">Институции и 33 споделени фирми</button>
+    <button class="tab-btn" data-tab="monopolies">Монополи и една оферта</button>
     <button class="tab-btn" data-tab="methodology">Методология и източници</button>
   </nav>
 

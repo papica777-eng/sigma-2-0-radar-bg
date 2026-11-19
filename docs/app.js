@@ -47,6 +47,36 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
 
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-btn').forEach((b) => {
+      b.classList.toggle('active', b.dataset.tab === tabId);
+    });
+    document.querySelectorAll('.tab-panel').forEach((p) => {
+      p.classList.toggle('active', p.id === 'tab-' + tabId);
+    });
+    if (tabId === 'graph' && !state.graph.nodes.length) {
+      buildGraphData(document.getElementById('graphPresetSelect').value);
+    }
+  }
+
+  function jumpToDirectory(opts = {}) {
+    switchTab('directory');
+    if (opts.filter !== undefined) state.filter = opts.filter;
+    if (opts.search !== undefined) {
+      state.search = opts.search;
+      document.getElementById('searchInput').value = opts.search;
+    }
+    if (opts.sort !== undefined) {
+      state.sort = opts.sort;
+      document.getElementById('sortSelect').value = opts.sort;
+    }
+    state.page = 1;
+    renderFilterPills();
+    renderDirectory();
+    const el = document.getElementById('mainTabs');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   async function init() {
     try {
       const [offRes, cirRes, compRes] = await Promise.all([
@@ -65,7 +95,8 @@
       state.comp = compJson;
       (cirJson.sharedCompanies || []).forEach((sc) => state.sharedEiks.add(sc.eik));
 
-      renderHeaderAndKPIs();
+      renderHeader();
+      renderVisualCharts();
       renderFilterPills();
       renderDirectory();
       renderClusters();
@@ -79,62 +110,173 @@
     }
   }
 
-  function renderHeaderAndKPIs() {
+  function renderHeader() {
     const m = state.meta;
-    const nat = m.nationalTotals || {};
     document.getElementById('syncSubtitle').textContent =
       `Данни от sigma.midt.bg (CC-BY 4.0) · Обновено: ${m.refreshedAt} · Пълен обхват: ${m.totalOfficialsAllRoles} лица`;
     document.getElementById('asOfChip').textContent = `Към дата: ${m.asOf}`;
+  }
 
-    const kpis = [
-      {
-        cls: '',
-        label: 'Общо длъжностни лица',
-        val: `${fmtInt(m.totalOfficialsAllRoles)}`,
-        sub: `${fmtInt(m.totalOfficialsCore512)} собств./упр. + ${m.totalOfficialsAllRoles - m.totalOfficialsCore512} членове на съвети`,
-      },
-      {
-        cls: 'emphasis',
-        label: 'От собствената институция',
-        val: `${fmtInt(m.ownInstitutionHits)}`,
-        sub: 'Възложителят съвпада с институцията на лицето',
-      },
-      {
-        cls: '',
-        label: 'Стойност в периода',
-        val: fmtEur(m.totalPeriodEur),
-        sub: `Общо по всички договори: ${fmtEur(m.totalAllContractsEur)}`,
-      },
-      {
-        cls: '',
-        label: 'Народно събрание',
-        val: `${fmtInt(m.mpCount)}`,
-        sub: `ТР роли: ${m.registryRoleHits} · Свързани лица: ${m.familyStakeHits}`,
-      },
-      {
-        cls: '',
-        label: 'Споделени дружества',
-        val: `${fmtInt(m.sharedCompaniesCount)}`,
-        sub: `${fmtInt((state.circles.institutionalClusters || []).length)} институции в регистъра`,
-      },
-      {
-        cls: 'emphasis',
-        label: 'Национално с 1 оферта',
-        val: `${((nat.singleOfferValueShare || 0.407) * 100).toFixed(1)}%`,
-        sub: `${fmtEur(nat.singleOfferValueEur || 18.5e9)} (${fmtInt(nat.singleOffer || 83930)} договора)`,
-      },
+  // ===== 4 INTERACTIVE VISUAL CHARTS FOR ORDINARY CITIZENS =====
+  function renderVisualCharts() {
+    const sectors = (state.circles.circleSummary || []).slice(0, 7);
+    const totalPeriod = state.meta.totalPeriodEur || 1;
+    const maxSec = Math.max(...sectors.map((s) => s.periodEur), 1);
+
+    const sectorToFilter = (name) => {
+      if (name.includes('Общини')) return 'municipal';
+      if (name.includes('Народно събрание')) return 'parliament';
+      if (name.includes('Служби')) return 'security';
+      if (name.includes('Централна') || name.includes('Областни')) return 'central';
+      if (name.includes('болници')) return 'health';
+      if (name.includes('дружества')) return 'state_co';
+      return 'all';
+    };
+
+    // Chart 1: Sector Horizontal Bars
+    document.getElementById('chartSectorBars').innerHTML = sectors
+      .map((s, idx) => {
+        const pctWidth = Math.max(2, (s.periodEur / maxSec) * 100);
+        const sharePct = ((s.periodEur / totalPeriod) * 100).toFixed(1).replace('.', ',');
+        const fillCol = idx === 0 ? '#b91c1c' : idx === 1 ? '#1e3a8a' : '#475569';
+        return `
+          <div class="hbar-item" data-chart-filter="${sectorToFilter(s.circle)}">
+            <div class="hbar-top">
+              <span class="hbar-name">${esc(s.circle)} <span class="muted" style="font-weight:400;">(${s.officialCount} лица)</span></span>
+              <span class="hbar-val">${fmtEur(s.periodEur)} <span class="muted" style="font-weight:400;">(${sharePct}%)</span></span>
+            </div>
+            <div class="hbar-track"><div class="hbar-fill" style="width:${pctWidth}%;background:${fillCol};"></div></div>
+          </div>`;
+      })
+      .join('');
+
+    // Chart 2: SVG Donut Breakdown of all 571 Officials
+    const ownCnt = state.officials.filter((o) => o.ownInstitution).length;
+    const inPeriodOtherCnt = state.officials.filter((o) => !o.ownInstitution && o.inCore512 && o.hasContemporaneous).length;
+    const histCoreCnt = state.officials.filter((o) => !o.ownInstitution && o.inCore512 && !o.hasContemporaneous).length;
+    const boardOnlyCnt = state.officials.filter((o) => !o.inCore512).length;
+    const totalN = state.officials.length || 1;
+
+    const slices = [
+      { label: 'От собствената институция', count: ownCnt, color: '#b91c1c', filter: 'own' },
+      { label: 'В мандата (друга институция)', count: inPeriodOtherCnt, color: '#b45309', filter: 'all' },
+      { label: 'Историческа / извън мандата', count: histCoreCnt, color: '#1e3a8a', filter: 'all' },
+      { label: 'Членове на съвети', count: boardOnlyCnt, color: '#94a3b8', filter: 'all' },
     ];
 
-    document.getElementById('kpiGrid').innerHTML = kpis
-      .map(
-        (k) => `
-      <div class="kpi-card ${k.cls}">
-        <div class="kpi-label">${k.label}</div>
-        <div class="kpi-val">${k.val}</div>
-        <div class="kpi-sub">${k.sub}</div>
-      </div>`
-      )
+    const r = 64;
+    const circ = 2 * Math.PI * r;
+    let offset = 0;
+    const arcsSvg = slices
+      .map((sl) => {
+        const len = (sl.count / totalN) * circ;
+        const svg = `<circle cx="90" cy="90" r="${r}" fill="none" stroke="${sl.color}" stroke-width="24"
+          stroke-dasharray="${len.toFixed(2)} ${(circ - len).toFixed(2)}"
+          stroke-dashoffset="${(-offset).toFixed(2)}"
+          transform="rotate(-90 90 90)" style="cursor:pointer;" data-chart-filter="${sl.filter}" />`;
+        offset += len;
+        return svg;
+      })
       .join('');
+
+    document.getElementById('chartDonutWrap').innerHTML = `
+      <svg viewBox="0 0 180 180" width="176" height="176" aria-label="Разпределение на 571 лица">
+        ${arcsSvg}
+        <text x="90" y="86" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="24" font-weight="700" fill="#131720">${totalN}</text>
+        <text x="90" y="104" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#6c7484">общо лица</text>
+      </svg>
+      <ul class="donut-legend">
+        ${slices
+          .map(
+            (sl) => `<li data-chart-filter="${sl.filter}">
+              <span><i class="dot" style="background:${sl.color};margin-right:7px;"></i>${sl.label}</span>
+              <span class="mono" style="font-weight:600;">${sl.count} <span class="muted" style="font-weight:400;">(${((sl.count / totalN) * 100).toFixed(1)}%)</span></span>
+            </li>`
+          )
+          .join('')}
+      </ul>`;
+
+    // Chart 3: Top 10 Biggest Cases by Period Value
+    const top10 = [...state.officials]
+      .sort((a, b) => b.periodEur - a.periodEur)
+      .slice(0, 10);
+    const maxTop = Math.max(...top10.map((o) => o.periodEur), 1);
+
+    document.getElementById('chartTop10Bars').innerHTML = top10
+      .map((o) => {
+        const w = Math.max(3, (o.periodEur / maxTop) * 100);
+        const col = o.ownInstitution ? '#b91c1c' : '#334155';
+        return `
+          <div class="hbar-item" data-open-slug="${esc(o.slug)}">
+            <div class="hbar-top">
+              <span class="hbar-name">${esc(o.name)} <span class="muted" style="font-weight:400;">· ${esc(o.primaryInstitution)}</span></span>
+              <span class="hbar-val" style="color:${o.ownInstitution ? '#b91c1c' : 'var(--ink)'};">${fmtEur(o.periodEur)}</span>
+            </div>
+            <div class="hbar-track"><div class="hbar-fill" style="width:${w}%;background:${col};"></div></div>
+          </div>`;
+      })
+      .join('');
+
+    // Chart 4: National Competition Stacked Proportion Bars
+    const nat = state.meta.nationalTotals || {};
+    const proc = state.meta.procedureTotals || {};
+    const soValPct = ((nat.singleOfferValueShare || 0.4066) * 100).toFixed(1);
+    const multiValPct = (100 - Number(soValPct)).toFixed(1);
+    const soCntPct = ((nat.singleOfferShare || 0.4541) * 100).toFixed(1);
+    const multiCntPct = (100 - Number(soCntPct)).toFixed(1);
+    const nonCompPct = ((proc.nonCompetitiveShare || 0.1354) * 100).toFixed(1);
+    const compPct = (100 - Number(nonCompPct)).toFixed(1);
+
+    document.getElementById('chartCompetitionGauge').innerHTML = `
+      <div class="gauge-block">
+        <div class="hbar-top">
+          <span class="hbar-name">По стойност на договорите (€45,47 млрд. с известен брой оферти)</span>
+          <span class="hbar-val" style="color:#b91c1c;">${soValPct}% без конкуренция</span>
+        </div>
+        <div class="gauge-bar">
+          <div class="gauge-seg" style="width:${soValPct}%;background:#b91c1c;">${soValPct}% (€18,49 млрд.)</div>
+          <div class="gauge-seg" style="width:${multiValPct}%;background:#334155;">${multiValPct}% с 2+ оферти</div>
+        </div>
+        <div class="gauge-legend">
+          <span><i class="dot" style="background:#b91c1c;margin-right:5px;"></i>1 оферта: <strong>€18,49 млрд.</strong></span>
+          <span><i class="dot" style="background:#334155;margin-right:5px;"></i>2+ оферти: <strong>€26,98 млрд.</strong></span>
+        </div>
+      </div>
+
+      <div class="gauge-block">
+        <div class="hbar-top">
+          <span class="hbar-name">По брой договори (184 843 договора с данни за оферти)</span>
+          <span class="hbar-val" style="color:#b45309;">${soCntPct}% само 1 участник</span>
+        </div>
+        <div class="gauge-bar">
+          <div class="gauge-seg" style="width:${soCntPct}%;background:#b45309;">${fmtInt(nat.singleOffer || 83930)} договора</div>
+          <div class="gauge-seg" style="width:${multiCntPct}%;background:#64748b;">${fmtInt((nat.contracts || 184843) - (nat.singleOffer || 83930))} с 2+ оферти</div>
+        </div>
+      </div>
+
+      <div class="gauge-block" style="margin-bottom:0;">
+        <div class="hbar-top">
+          <span class="hbar-name">Неконкурентни процедури / пряко договаряне (от 187 473 класифицирани)</span>
+          <span class="hbar-val" style="color:#6b21a8;">${nonCompPct}% (€5,92 млрд.)</span>
+        </div>
+        <div class="gauge-bar">
+          <div class="gauge-seg" style="width:${nonCompPct}%;background:#6b21a8;">${nonCompPct}%</div>
+          <div class="gauge-seg" style="width:${compPct}%;background:#94a3b8;color:#131720;">${compPct}% състезателни процедури</div>
+        </div>
+        <div class="muted" style="font-size:11.5px;margin-top:6px;">
+          Общо <strong>25 380 договора</strong> за <strong>€5,92 млрд.</strong> без открито състезание.
+          <a href="#" id="linkJumpMonopolies" style="margin-left:6px;font-weight:600;">Виж най-концентрираните институции &rarr;</a>
+        </div>
+      </div>`;
+
+    const jm = document.getElementById('linkJumpMonopolies');
+    if (jm) {
+      jm.onclick = (e) => {
+        e.preventDefault();
+        switchTab('monopolies');
+        document.getElementById('mainTabs').scrollIntoView({ behavior: 'smooth' });
+      };
+    }
   }
 
   function getScopedOfficials() {
@@ -167,7 +309,7 @@
       { key: 'all', label: 'Всички', dot: '' },
       { key: 'own', label: 'От собствената институция', dot: '#b91c1c' },
       { key: 'parliament', label: 'Народно събрание', dot: '#1e3a8a' },
-      { key: 'security', label: 'ДАНС, ДАТО и МВР', dot: '#14171f' },
+      { key: 'security', label: 'ДАНС, ДАТО и МВР', dot: '#131720' },
       { key: 'central', label: 'Министерства, агенции и области', dot: '#0369a1' },
       { key: 'municipal', label: 'Общини и общински съвети', dot: '#b45309' },
       { key: 'health', label: 'Болници', dot: '#0f766e' },
@@ -177,14 +319,13 @@
       { key: 'shared', label: 'Споделени дружества', dot: '#be123c' },
       { key: 'burgas', label: 'Област Бургас', dot: '#0284c7' },
     ];
-    const html = defs
+    document.getElementById('filterPills').innerHTML = defs
       .map((d) => {
         const cnt = base.filter((o) => matchCategory(o, d.key)).length;
         const dotHtml = d.dot ? `<i class="dot" style="background:${d.dot};"></i>` : '';
         return `<button class="pill ${state.filter === d.key ? 'active' : ''}" data-filter="${d.key}">${dotHtml}${d.label}<span class="cnt">${cnt}</span></button>`;
       })
       .join('');
-    document.getElementById('filterPills').innerHTML = html;
   }
 
   function getFilteredOfficials() {
@@ -282,8 +423,8 @@
 
     const prev = document.getElementById('pgPrev');
     const next = document.getElementById('pgNext');
-    if (prev) prev.onclick = () => { if (state.page > 1) { state.page--; renderDirectory(); window.scrollTo({ top: 180, behavior: 'smooth' }); } };
-    if (next) next.onclick = () => { if (state.page < totalPages) { state.page++; renderDirectory(); window.scrollTo({ top: 180, behavior: 'smooth' }); } };
+    if (prev) prev.onclick = () => { if (state.page > 1) { state.page--; renderDirectory(); document.getElementById('mainTabs').scrollIntoView({ behavior: 'smooth' }); } };
+    if (next) next.onclick = () => { if (state.page < totalPages) { state.page++; renderDirectory(); document.getElementById('mainTabs').scrollIntoView({ behavior: 'smooth' }); } };
   }
 
   // ===== SLIDE-OVER PROFILE DRAWER =====
@@ -579,11 +720,7 @@
           label,
           type,
           meta,
-          x: 0,
-          y: 0,
-          vx: 0,
-          vy: 0,
-          degree: 0,
+          x: 0, y: 0, vx: 0, vy: 0, degree: 0,
           radius: type === 'inst' ? 13 : type === 'official' ? (meta.ownInstitution ? 11.5 : 9) : type === 'company' ? 8 : 6.5,
         });
       }
@@ -599,7 +736,6 @@
     subset.forEach((o) => {
       const oId = `o:${o.slug}`;
       addNode(oId, o.name, 'official', o);
-
       const iId = `i:${o.primaryInstitution}`;
       addNode(iId, o.primaryInstitution, 'inst', { name: o.primaryInstitution, circle: o.circle });
       addEdge(iId, oId, o.ownInstitution ? 'own' : 'office');
@@ -608,9 +744,7 @@
         const cId = `c:${c.eik || c.name}`;
         addNode(cId, c.name, 'company', { eik: c.eik, name: c.name, roles: c.roles });
         addEdge(oId, cId, c.registry ? 'registry' : 'company');
-        if (o.ownInstitution) {
-          addEdge(cId, iId, 'loop');
-        }
+        if (o.ownInstitution) addEdge(cId, iId, 'loop');
       });
 
       (o.relatives || []).slice(0, 2).forEach((rel) => {
@@ -636,11 +770,8 @@
 
     state.graph.nodes = nodes;
     state.graph.edges = edges;
-    state.graph.panX = 0;
-    state.graph.panY = 0;
-    state.graph.scale = 0.92;
-    state.graph.simSteps = 220;
-    state.graph.hovered = null;
+    state.graph.panX = 0; state.graph.panY = 0; state.graph.scale = 0.92;
+    state.graph.simSteps = 220; state.graph.hovered = null;
 
     const sumPeriod = subset.reduce((acc, o) => acc + o.periodEur, 0);
     document.getElementById('graphStatsBox').innerHTML = `
@@ -718,14 +849,9 @@
         }
 
         for (const n of nodes) {
-          if (state.graph.dragging === n) {
-            n.vx = 0; n.vy = 0;
-            continue;
-          }
-          n.vx *= 0.82;
-          n.vy *= 0.82;
-          n.x += n.vx;
-          n.y += n.vy;
+          if (state.graph.dragging === n) { n.vx = 0; n.vy = 0; continue; }
+          n.vx *= 0.82; n.vy *= 0.82;
+          n.x += n.vx; n.y += n.vy;
         }
       }
 
@@ -746,7 +872,6 @@
         });
       }
 
-      // Edges
       for (const e of edges) {
         const a = nodeById.get(e.source);
         const b = nodeById.get(e.target);
@@ -768,7 +893,6 @@
         ctx.stroke();
       }
 
-      // Nodes
       for (const n of nodes) {
         const isLit = !hov || activeSet.has(n.id);
         let fill = '#1e3a8a';
@@ -782,7 +906,7 @@
         ctx.fillStyle = fill;
         ctx.fill();
         ctx.lineWidth = hov === n ? 2.5 : 1.5;
-        ctx.strokeStyle = hov === n ? '#14171f' : '#ffffff';
+        ctx.strokeStyle = hov === n ? '#131720' : '#ffffff';
         ctx.stroke();
 
         if (hov === n || (hov && activeSet.has(n.id)) || n.type === 'inst' || n.degree >= 3 || nodes.length <= 42) {
@@ -791,12 +915,11 @@
           ctx.lineWidth = 3;
           ctx.strokeStyle = 'rgba(252, 251, 248, 0.9)';
           ctx.strokeText(shortLbl, n.x + n.radius + 4, n.y + 3.5);
-          ctx.fillStyle = isLit ? '#14171f' : 'rgba(20, 23, 31, 0.25)';
+          ctx.fillStyle = isLit ? '#131720' : 'rgba(19, 23, 32, 0.25)';
           ctx.fillText(shortLbl, n.x + n.radius + 4, n.y + 3.5);
         }
       }
       ctx.restore();
-
       state.graph.raf = requestAnimationFrame(tick);
     };
     tick();
@@ -804,13 +927,9 @@
 
   function screenToWorld(canvas, clientX, clientY) {
     const rect = canvas.getBoundingClientRect();
-    const sx = clientX - rect.left;
-    const sy = clientY - rect.top;
-    const w = rect.width;
-    const h = rect.height;
     return {
-      x: (sx - w / 2 - state.graph.panX) / state.graph.scale + w / 2,
-      y: (sy - h / 2 - state.graph.panY) / state.graph.scale + h / 2,
+      x: (clientX - rect.left - rect.width / 2 - state.graph.panX) / state.graph.scale + rect.width / 2,
+      y: (clientY - rect.top - rect.height / 2 - state.graph.panY) / state.graph.scale + rect.height / 2,
     };
   }
 
@@ -840,24 +959,57 @@
         <span class="mono muted">ЕИК ${esc(n.meta.eik)}</span><br/>
         <a href="https://sigma.midt.bg/companies/${esc(n.meta.eik)}" target="_blank" rel="noopener">Отвори дружеството в СИГМА 2.0 ↗</a>`;
     } else if (n.type === 'inst') {
-      tip.innerHTML = `<strong style="color:var(--navy);">${esc(n.label)}</strong><br/><span class="muted">${esc(n.meta.circle || '')} · ${n.degree} връзки в среза</span>`;
+      tip.innerHTML = `<strong style="color:var(--navy-dark);">${esc(n.label)}</strong><br/><span class="muted">${esc(n.meta.circle || '')} · ${n.degree} връзки в среза</span>`;
     } else {
       tip.innerHTML = `<strong style="color:var(--plum);">${esc(n.label)}</strong><br/><span class="muted">Свързано лице (Търговски регистър)</span>`;
     }
   }
 
   function setupEvents() {
-    document.querySelectorAll('.tab-btn').forEach((btn) => {
+    // Hero Search & Quick Cities & Funnel
+    const runHeroSearch = () => {
+      const val = document.getElementById('heroSearchInput').value.trim();
+      jumpToDirectory({ filter: 'all', search: val });
+    };
+    document.getElementById('heroSearchBtn').addEventListener('click', runHeroSearch);
+    document.getElementById('heroSearchInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') runHeroSearch();
+    });
+    document.querySelectorAll('[data-quick]').forEach((btn) => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach((b) => b.classList.remove('active'));
-        document.querySelectorAll('.tab-panel').forEach((p) => p.classList.remove('active'));
-        btn.classList.add('active');
-        const id = btn.dataset.tab;
-        document.getElementById('tab-' + id).classList.add('active');
-        if (id === 'graph' && !state.graph.nodes.length) {
-          buildGraphData(document.getElementById('graphPresetSelect').value);
+        const q = btn.dataset.quick;
+        if (q === 'Народно събрание') jumpToDirectory({ filter: 'parliament', search: '' });
+        else if (q === 'ДАНС') jumpToDirectory({ filter: 'security', search: '' });
+        else {
+          document.getElementById('heroSearchInput').value = q;
+          jumpToDirectory({ filter: 'all', search: q });
         }
       });
+    });
+    document.querySelectorAll('[data-jump-filter]').forEach((el) => {
+      el.addEventListener('click', () => jumpToDirectory({ filter: el.dataset.jumpFilter, search: '' }));
+    });
+    document.querySelectorAll('[data-jump-tab]').forEach((el) => {
+      el.addEventListener('click', () => {
+        switchTab(el.dataset.jumpTab);
+        document.getElementById('mainTabs').scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    // Click on chart bars / donut slices to filter directory
+    document.body.addEventListener('click', (e) => {
+      const chartFilterEl = e.target.closest('[data-chart-filter]');
+      if (chartFilterEl) {
+        jumpToDirectory({ filter: chartFilterEl.dataset.chartFilter, search: '' });
+        return;
+      }
+      const slugEl = e.target.closest('[data-open-slug]');
+      if (slugEl) openDossier(slugEl.dataset.openSlug);
+    });
+
+    // Tabs
+    document.querySelectorAll('.tab-btn').forEach((btn) => {
+      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
     });
 
     document.getElementById('searchInput').addEventListener('input', (e) => {
@@ -895,11 +1047,6 @@
       if (tr) openDossier(tr.dataset.slug);
     });
 
-    document.body.addEventListener('click', (e) => {
-      const el = e.target.closest('[data-open-slug]');
-      if (el) openDossier(el.dataset.openSlug);
-    });
-
     document.getElementById('drawerClose').onclick = closeDossier;
     document.getElementById('drawerBackdrop').onclick = closeDossier;
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDossier(); });
@@ -915,9 +1062,7 @@
       if (e.target.value) buildGraphData('', e.target.value);
       else buildGraphData(document.getElementById('graphPresetSelect').value, '');
     });
-    document.getElementById('btnRelayout').addEventListener('click', () => {
-      state.graph.simSteps = 220;
-    });
+    document.getElementById('btnRelayout').addEventListener('click', () => { state.graph.simSteps = 220; });
     document.getElementById('btnResetZoom').addEventListener('click', () => {
       state.graph.panX = 0; state.graph.panY = 0; state.graph.scale = 0.92;
     });
@@ -953,10 +1098,7 @@
         if (hit) updateGraphTooltip(hit);
       }
     });
-    window.addEventListener('mouseup', () => {
-      state.graph.dragging = null;
-      state.graph.panning = false;
-    });
+    window.addEventListener('mouseup', () => { state.graph.dragging = null; state.graph.panning = false; });
     canvas.addEventListener('click', (e) => {
       const p = screenToWorld(canvas, e.clientX, e.clientY);
       const hit = findNodeAt(p.x, p.y);

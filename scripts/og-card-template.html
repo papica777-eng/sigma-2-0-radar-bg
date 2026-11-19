@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      width: 1200px; height: 630px;
+      overflow: hidden;
+      background: #f7f6f2;
+      color: #131720;
+      font-family: 'Segoe UI', -apple-system, sans-serif;
+    }
+    .frame {
+      width: 1200px; height: 630px;
+      padding: 42px 52px;
+      border-top: 10px solid #b91c1c;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .kicker {
+      font-family: Consolas, monospace;
+      font-size: 15px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: #b91c1c;
+      display: flex; justify-content: space-between;
+    }
+    .headline {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 46px; font-weight: 700; line-height: 1.12;
+      margin: 12px 0 18px; letter-spacing: -0.02em;
+    }
+    .headline em { color: #b91c1c; font-style: italic; }
+    .body-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 36px;
+      align-items: center;
+      flex: 1;
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .m-card {
+      background: #ffffff;
+      border: 1px solid #d4d0c5;
+      border-left: 4px solid #131720;
+      padding: 16px 18px;
+    }
+    .m-card.red { border-left-color: #b91c1c; background: #fffafa; }
+    .m-card.amber { border-left-color: #b45309; }
+    .m-lbl { font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; color: #5b6372; font-weight: 700; }
+    .m-val { font-family: Consolas, monospace; font-size: 34px; font-weight: 700; margin: 4px 0 2px; color: #131720; }
+    .m-card.red .m-val { color: #b91c1c; }
+    .m-card.amber .m-val { color: #b45309; }
+    .m-sub { font-size: 13px; color: #6c7484; }
+
+    .chart-box {
+      background: #ffffff;
+      border: 1px solid #d4d0c5;
+      padding: 20px 22px;
+    }
+    .chart-h { font-family: Georgia, serif; font-size: 19px; font-weight: 700; margin: 0 0 14px; }
+    .bar-row { margin-bottom: 12px; }
+    .bar-row:last-child { margin-bottom: 0; }
+    .bar-top { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 4px; }
+    .bar-track { height: 12px; background: #eeece6; border-radius: 2px; overflow: hidden; }
+    .bar-fill { height: 100%; }
+
+    .foot {
+      border-top: 1px solid #d4d0c5;
+      padding-top: 14px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 14px; color: #5b6372;
+    }
+    .url { font-family: Consolas, monospace; font-weight: 700; color: #131720; font-size: 15px; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <div>
+      <div class="kicker">
+        <span>СИГМА 2.0 · ПЪЛЕН ОТВОРЕН ИНДЕКС НА СВЪРЗАНИТЕ ЛИЦА</span>
+        <span>ДАННИ КЪМ 19.11.2026</span>
+      </div>
+      <div class="headline">571 души във властта, свързани с фирми за <em>€2,22 млрд.</em> обществени поръчки</div>
+    </div>
+
+    <div class="body-grid">
+      <div class="metrics">
+        <div class="m-card red">
+          <div class="m-lbl">От собствената институция</div>
+          <div class="m-val">53 лица</div>
+          <div class="m-sub">Фирмата печели от същата институция</div>
+        </div>
+        <div class="m-card amber">
+          <div class="m-lbl">В мандата / периода</div>
+          <div class="m-val">€180,8 млн.</div>
+          <div class="m-sub">Общо за фирмите им: €2,225 млрд.</div>
+        </div>
+        <div class="m-card">
+          <div class="m-lbl">Поръчки с 1 оферта</div>
+          <div class="m-val">40,7%</div>
+          <div class="m-sub">€18,49 млрд. (83 930 договора)</div>
+        </div>
+        <div class="m-card">
+          <div class="m-lbl">Споделени фирми</div>
+          <div class="m-val">33 фирми</div>
+          <div class="m-sub">57 депутати · 7 ДАНС/ДАТО/МВР</div>
+        </div>
+      </div>
+
+      <div class="chart-box">
+        <div class="chart-h">Къде отиват парите в мандата (по сектори)</div>
+        <div class="bar-row">
+          <div class="bar-top"><strong>Общини и общински съвети (321 лица)</strong><strong style="color:#b91c1c;">€139,6 млн. (77%)</strong></div>
+          <div class="bar-track"><div class="bar-fill" style="width:100%;background:#b91c1c;"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-top"><span>Държавни и общ. дружества (52 лица)</span><span>€17,3 млн.</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:18%;background:#1e3a8a;"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-top"><span>Народно събрание — депутати (57 лица)</span><span>€5,6 млн.</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:11%;background:#334155;"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-top"><span>Областни администрации (17 лица)</span><span>€4,9 млн.</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:9.5%;background:#475569;"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-top"><span>ДАНС, ДАТО и МВР (7 лица)</span><span>€3,1 млн.</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:7.5%;background:#b45309;"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-top"><span>Министерства и агенции (49 лица)</span><span>€2,8 млн.</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:7%;background:#64748b;"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot">
+      <span>Източник: sigma.midt.bg · АОП / ЦАИС ЕОП · Сметна палата · ТРРЮЛНЦ (CC-BY 4.0)</span>
+      <span class="url">papica777-eng.github.io/sigma-2-0-radar-bg</span>
+    </div>
+  </div>
+</body>
+</html>
