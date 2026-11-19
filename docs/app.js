@@ -243,6 +243,30 @@
     if (sumEl) {
       sumEl.innerHTML = `<strong>${top50.length} лица</strong> в пирамидата (${modeLabels[mode]}): <strong class="mono" style="color:#fbbf24;">${fmtEur(sumVal)}</strong> · От собствената институция: <strong style="color:#fda4af;">${ownIn50}</strong>`;
     }
+    if (mode === 'combined' && top50.length >= 3) {
+      const teaser = document.getElementById('hofTriggerTeaser');
+      if (teaser) {
+        teaser.textContent = `#01 ${top50[0].name} (${fmtEur(top50[0].combinedEur)}) · #02 ${top50[1].name} · #03 ${top50[2].name}`;
+      }
+    }
+  }
+
+  function openHallOfFame() {
+    const bd = document.getElementById('hofModalBackdrop');
+    if (!bd) return;
+    if (!document.getElementById('hofPyramid').children.length) renderHallOfFamePyramid();
+    bd.classList.add('open');
+    bd.setAttribute('aria-hidden', 'false');
+    bd.scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeHallOfFame() {
+    const bd = document.getElementById('hofModalBackdrop');
+    if (!bd) return;
+    bd.classList.remove('open');
+    bd.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
   }
 
   // ===== 4 INTERACTIVE VISUAL CHARTS FOR ORDINARY CITIZENS =====
@@ -1373,7 +1397,23 @@
 
     document.getElementById('drawerClose').onclick = closeDossier;
     document.getElementById('drawerBackdrop').onclick = closeDossier;
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDossier(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (document.getElementById('dossierDrawer').classList.contains('open')) closeDossier();
+        else closeHallOfFame();
+      }
+    });
+
+    const hofOpenBtn = document.getElementById('hofOpenBtn');
+    const hofCloseBtn = document.getElementById('hofCloseBtn');
+    const hofModalBackdrop = document.getElementById('hofModalBackdrop');
+    if (hofOpenBtn) hofOpenBtn.addEventListener('click', openHallOfFame);
+    if (hofCloseBtn) hofCloseBtn.addEventListener('click', closeHallOfFame);
+    if (hofModalBackdrop) {
+      hofModalBackdrop.addEventListener('click', (e) => {
+        if (e.target === hofModalBackdrop) closeHallOfFame();
+      });
+    }
 
     document.getElementById('clusterSearchInput').addEventListener('input', renderClustersGrid);
     document.getElementById('clusterOnlyOwn').addEventListener('change', renderClustersGrid);
