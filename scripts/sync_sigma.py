@@ -176,14 +176,22 @@ def normalize_municipality_or_inst(name: str) -> str:
         return "НЗОК"
 
     # Extract municipality name for Община X / Общински съвет X / ОбС X
-    m = re.search(r"(?:общински\s+съвет|община|обс)\s*[-–:,]?\s*(?:на\s+община\s+|към\s+община\s+|гр\.?\s*|с\.?\s*|град\s+)?([А-Яа-яЁё\-]+(?:\s+[А-Яа-яЁё\-]+)?)", s, flags=re.I)
+    m = re.search(
+        r"(?:общински\s+съвет|община|обс)\s*[-–:,]?\s*(?:(?:на|към)\s+община\s+)?(?:(?:гр\.|с\.|град|село)\s+)?([А-Яа-яЁё\-]+(?:\s+[А-Яа-яЁё\-]+)?)",
+        s,
+        flags=re.I,
+    )
     if m:
         city = m.group(1).strip(" ,.-–\"'„“")
-        if city.lower() not in ("съвет", "община", "общински", "при", "на", "за", "рб"):
-            # Keep clean title-case for first word(s)
+        low_city = city.lower()
+        # Strip leading "гр." / "с." only when followed by dot or space
+        city = re.sub(r"^(?:гр\.|с\.|град|село)\s+", "", city, flags=re.I).strip()
+        if city.lower() not in ("съвет", "община", "общински", "при", "на", "за", "рб", "град", "село"):
             words = city.split()
             if len(words) == 2 and words[1].lower() in ("обл", "област", "съвет"):
                 city = words[0]
+            if len(words) == 2 and words[0].lower() in ("град", "село", "гр.", "с."):
+                city = words[1]
             return f"Община / ОбС {city.title()}"
     return s
 
