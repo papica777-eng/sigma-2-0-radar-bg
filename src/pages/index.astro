@@ -14,9 +14,12 @@ import Tab09Companies from '../components/tabs/Tab09Companies.astro';
 import Tab10Graph9Node from '../components/tabs/Tab10Graph9Node.astro';
 import Tab11Oracle from '../components/tabs/Tab11Oracle.astro';
 import Tab12Proposal from '../components/tabs/Tab12Proposal.astro';
+import j6Raw from '../../docs/data/sigma3_judicial_6.json';
+
+const dynamicAsOf = String((j6Raw as any).generatedAtUtc || '2026-11-20').slice(0, 10);
 ---
-<BaseLayout asOf="2026-04-18">
-  <HeroFunnel asOf="2026-04-18" />
+<BaseLayout asOf={dynamicAsOf}>
+  <HeroFunnel asOf={dynamicAsOf} />
   <NavTabs />
   <Tab01Dashboard />
   <Tab02Atlas />

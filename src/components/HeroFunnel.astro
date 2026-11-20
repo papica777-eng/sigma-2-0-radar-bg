@@ -1,8 +1,11 @@
 ---
+import j6Raw from '../../docs/data/sigma3_judicial_6.json';
+
 interface Props {
   asOf?: string;
 }
-const { asOf = '2026-04-18' } = Astro.props;
+const defaultAsOf = String((j6Raw as any).generatedAtUtc || '2026-11-20').slice(0, 10);
+const { asOf = defaultAsOf } = Astro.props;
 ---
 <!-- EXECUTIVE SOVEREIGN HERO -->
 <section class="hero">

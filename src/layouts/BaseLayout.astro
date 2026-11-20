@@ -1,5 +1,6 @@
 ---
 import ModalsAndDrawer from '../components/modals/ModalsAndDrawer.astro';
+import j6Raw from '../../docs/data/sigma3_judicial_6.json';
 
 interface Props {
   title?: string;
@@ -7,10 +8,11 @@ interface Props {
   asOf?: string;
 }
 
+const defaultAsOf = String((j6Raw as any).generatedAtUtc || '2026-11-20').slice(0, 10);
 const {
   title = 'СИГМА 3.0 FINALITY — Национална криминалистична платформа за обществени поръчки',
   description = 'СИГМА 3.0 FINALITY на paas.website: €53,22 млрд. (206 907 договора), 4 344 възложители, 17 428 изпълнители, 571 свързани длъжностни лица, +€1,92 млрд. скрити ДЗЗД, 28-областен атлас, картелна лаборатория, Закон на Бенфорд и жив AI асистент.',
-  asOf = '2026-04-18',
+  asOf = defaultAsOf,
 } = Astro.props;
 ---
 <!DOCTYPE html>
