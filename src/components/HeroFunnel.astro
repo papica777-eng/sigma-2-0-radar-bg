@@ -1,5 +1,6 @@
 ---
 import j6Raw from '../../docs/data/sigma3_judicial_6.json';
+import HeroEmblem from './HeroEmblem.astro';
 
 interface Props {
   asOf?: string;
@@ -40,6 +41,8 @@ const { asOf = defaultAsOf } = Astro.props;
         </div>
       </div>
     </div>
+
+    <HeroEmblem />
   </div>
 
   <!-- 6-STAGE FORENSIC TOTALS STRIP (SIGMA.MIDT.BG EDITORIAL HAIRLINE GRID) -->

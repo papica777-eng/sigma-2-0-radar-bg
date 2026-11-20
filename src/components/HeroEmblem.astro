@@ -1,0 +1,140 @@
+---
+---
+<div class="hero-emblem-stage" aria-hidden="true">
+  <svg
+    class="hero-emblem-svg"
+    viewBox="-8 -10 164 134"
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-label="NAsvetlo — Червена лупа и златен прожектор, осветяващ картата на България"
+  >
+    <defs>
+      <!-- Signature Vermilion Crimson Metallic Lens Gradient (Matches #ac1b18 palette) -->
+      <linearGradient id="lensCrimson" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#d62824" />
+        <stop offset="48%" stop-color="#ac1b18" />
+        <stop offset="100%" stop-color="#6e0f0d" />
+      </linearGradient>
+
+      <!-- Subtle Specular Inner Edge on the Crimson Lens -->
+      <linearGradient id="lensRim" x1="15%" y1="5%" x2="85%" y2="95%">
+        <stop offset="0%" stop-color="#fca5a5" stop-opacity="0.7" />
+        <stop offset="50%" stop-color="#ac1b18" stop-opacity="0.1" />
+        <stop offset="100%" stop-color="#fbbf24" stop-opacity="0.65" />
+      </linearGradient>
+
+      <!-- Golden Spotlight Orb Gradient (Top-Right Sun / Projector) -->
+      <radialGradient id="goldOrb" cx="35%" cy="32%" r="68%">
+        <stop offset="0%" stop-color="#fffbeb" />
+        <stop offset="32%" stop-color="#fde047" />
+        <stop offset="72%" stop-color="#f59e0b" />
+        <stop offset="100%" stop-color="#b45309" />
+      </radialGradient>
+
+      <!-- Ambient Halo Behind the Golden Orb -->
+      <radialGradient id="orbHalo" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.55" />
+        <stop offset="55%" stop-color="#fbbf24" stop-opacity="0.18" />
+        <stop offset="100%" stop-color="#fbbf24" stop-opacity="0" />
+      </radialGradient>
+
+      <!-- Diagonal Volumetric Searchlight Beam Cone -->
+      <linearGradient id="goldBeamOuter" x1="88%" y1="8%" x2="18%" y2="76%">
+        <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.46" />
+        <stop offset="35%" stop-color="#fbbf24" stop-opacity="0.34" />
+        <stop offset="72%" stop-color="#f59e0b" stop-opacity="0.16" />
+        <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.0" />
+      </linearGradient>
+
+      <!-- Inner Concentrated Light Core -->
+      <linearGradient id="goldBeamCore" x1="88%" y1="8%" x2="28%" y2="66%">
+        <stop offset="0%" stop-color="#fef08a" stop-opacity="0.72" />
+        <stop offset="45%" stop-color="#fbbf24" stop-opacity="0.36" />
+        <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.0" />
+      </linearGradient>
+
+      <!-- Illuminated Gold Gradient for the Bulgaria Slats Inside the Beam -->
+      <linearGradient id="bulgariaLitGold" x1="100%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#fde047" />
+        <stop offset="45%" stop-color="#f59e0b" />
+        <stop offset="100%" stop-color="#b45309" />
+      </linearGradient>
+
+      <!-- Lens Specular Flare Where the Beam Hits the Crimson Rim -->
+      <radialGradient id="rimFlare" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95" />
+        <stop offset="35%" stop-color="#fde047" stop-opacity="0.75" />
+        <stop offset="100%" stop-color="#f59e0b" stop-opacity="0" />
+      </radialGradient>
+
+      <!-- Subtle Architectural Drop Shadow -->
+      <filter id="emblemShadow" x="-15%" y="-15%" width="135%" height="135%">
+        <feDropShadow dx="0" dy="4" stdDeviation="3.5" flood-color="#171511" flood-opacity="0.18" />
+      </filter>
+
+      <!-- Clip Path Matching the Volumetric Searchlight Beam Across Bulgaria -->
+      <clipPath id="searchlightBeamClip">
+        <polygon points="118,2 134,16 66,94 24,62" />
+      </clipPath>
+
+      <!-- Reusable Exact 19 Horizontal Scan-Lines Forming the Silhouette of Bulgaria -->
+      <g id="bulgariaScanlines" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round">
+        <path d="m60.76,30.98h20.93c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-20.93c-.29,0-.52.23-.52.52s.23.52.52.52Z" />
+        <path d="m59.79,46.83h72.23c.29,0,.52-.23.52-.52s-.23-.52-.52-.52H59.79c-.29,0-.52.23-.52.52s.23.52.52.52Z" />
+        <path d="m60.76,26.75h7.28c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-7.28c-.29,0-.52.23-.52.52s.23.52.52.52Z" />
+        <path d="m132.02,38.9c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-63.98c-.29,0-.52.23-.52.52s.23.52.52.52h63.98Z" />
+        <path d="m65.56,42.35c0,.29.23.52.52.52h65.94c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-65.94c-.29,0-.52.23-.52.52Z" />
+        <path d="m106.22,26.75h28.24c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-28.24c-.29,0-.52.23-.52.52s.23.52.52.52Z" />
+        <path d="m116.99,22.53h8.96c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-8.96c-.29,0-.52.23-.52.52s.23.52.52.52Z" />
+        <path d="m64.33,22.53h2.17c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-2.17c-.29,0-.52.23-.52.52s.23.52.52.52Z" />
+        <path d="m141.2,29.94h-39.62c-.29,0-.52.23-.52.52s.23.52.52.52h39.62c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
+        <path d="m87.04,30.98h8.56c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-8.56c-.29,0-.52.23-.52.52s.23.52.52.52Z" />
+        <path d="m132.91,57.68H61.39c-.29,0-.52.23-.52.52s.23.52.52.52h71.52c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
+        <path d="m114.58,61.65h-48.5c-.29,0-.52.23-.52.52s.23.52.52.52h48.5c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
+        <path d="m111.98,65.61h-44.16c-.29,0-.52.23-.52.52s.23.52.52.52h44.16c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
+        <path d="m140.07,33.9H62.42c-.29,0-.52.23-.52.52s.23.52.52.52h77.65c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
+        <path d="m61.49,53.72c-.29,0-.52.23-.52.52s.23.52.52.52h67.54c.29,0,.52-.23.52-.52s-.23-.52-.52-.52H61.49Z" />
+        <path d="m78.75,73.53h-10.93c-.29,0-.52.23-.52.52s.23.52.52.52h10.93c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
+        <path d="m126.53,50.27c0-.29-.23-.52-.52-.52H59.79c-.29,0-.52.23-.52.52s.23.52.52.52h66.22c.29,0,.52-.23.52-.52Z" />
+        <path d="m108.39,73.53h-18.84c-.29,0-.52.23-.52.52s.23.52.52.52h18.84c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
+        <path d="m108.39,69.57h-40.57c-.29,0-.52.23-.52.52s.23.52.52.52h40.57c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
+      </g>
+    </defs>
+
+    <!-- 1. Ambient Halo & Volumetric Diagonal Golden Searchlight Beam -->
+    <g class="emblem-beam-layer">
+      <circle cx="126" cy="8.5" r="24" fill="url(#orbHalo)" />
+      <!-- Outer Wide Volumetric Beam -->
+      <polygon points="118,3 134,15 62,102 18,64" fill="url(#goldBeamOuter)" />
+      <!-- Concentrated Center Beam -->
+      <polygon points="121,6 131,13 58,86 35,66" fill="url(#goldBeamCore)" />
+      <!-- Subtle Light Rays Inside the Cone -->
+      <line x1="123" y1="8" x2="36" y2="74" stroke="#fde047" stroke-width="0.8" stroke-opacity="0.55" />
+      <line x1="127" y1="12" x2="58" y2="88" stroke="#f59e0b" stroke-width="0.7" stroke-opacity="0.4" />
+    </g>
+
+    <!-- 2. Base Map of Bulgaria (Deep Charcoal Ink in Light Mode / Brushed Silver in Dark Mode) -->
+    <use href="#bulgariaScanlines" class="emblem-bg-base" />
+
+    <!-- 3. Illuminated Map of Bulgaria Caught Inside the Searchlight Beam (Radiant Gold!) -->
+    <g clip-path="url(#searchlightBeamClip)">
+      <use href="#bulgariaScanlines" fill="url(#bulgariaLitGold)" stroke="url(#bulgariaLitGold)" />
+    </g>
+
+    <!-- 4. Bold Vermilion Crimson Magnifying Glass (Matches Site Accent #ac1b18) -->
+    <path
+      class="emblem-lens-path"
+      filter="url(#emblemShadow)"
+      fill="url(#lensCrimson)"
+      stroke="url(#lensRim)"
+      stroke-width="0.9"
+      d="m32.16,74.18c-14.45-19.63-9.12-44.25,12.01-56.4,17.28-9.94,34.78-2.51,42.35,2.97,2.57,1.86,6.12,1.52,8.36-.72h0c2.83-2.83,2.44-7.5-.77-9.89C73.94-4.86,45.3-3.21,27.01,15.08c-18.56,18.56-19.97,47.77-4.26,67.96L1.88,103.91c-2.51,2.51-2.51,6.59,0,9.1h0c2.51,2.51,6.59,2.51,9.1,0l20.87-20.87c18.27,14.22,43.91,14.42,62.38.58,3.14-2.35,3.48-6.95.7-9.72h0c-2.29-2.29-5.88-2.47-8.47-.54-16.67,12.43-41.09,9.67-54.31-8.29Z"
+    />
+
+    <!-- 5. Golden Specular Glint Where the Searchlight Beam Strikes the Crimson Rim -->
+    <circle cx="32.5" cy="75.5" r="7.5" fill="url(#rimFlare)" />
+
+    <!-- 6. Radiant 3D Golden Spotlight Orb (Top-Right) -->
+    <circle cx="126" cy="8.5" r="8.2" fill="url(#goldOrb)" stroke="#fef08a" stroke-width="0.8" filter="url(#emblemShadow)" />
+  </svg>
+</div>
