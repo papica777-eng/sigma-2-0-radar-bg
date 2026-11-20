@@ -5,145 +5,30 @@ interface Props {
 const { variant = 'header' } = Astro.props;
 ---
 {variant === 'header' ? (
-  <div class="sigma-projector-brand" title="НА СВЕТЛО · СИГМА 3.0 — Платформа за прозрачност на обществените поръчки">
-    <!-- Exact sigma.midt.bg logo.svg architecture with the magnifying glass replaced by a Projector illuminating the 19 horizontal scan-lines of Bulgaria -->
-    <svg
-      class="sigma-projector-logo-svg"
-      viewBox="0 0 545 115"
-      xmlns="http://www.w3.org/2000/svg"
-      role="img"
-      aria-label="СИГМА 3.0 · НА СВЕТЛО — Прожектор, осветяващ България"
-    >
-      <defs>
-        <linearGradient id="hdrBeamFill" x1="0%" y1="50%" x2="100%" y2="50%">
-          <stop offset="0%" stop-color="#ac1b18" stop-opacity="0.28" />
-          <stop offset="65%" stop-color="#ac1b18" stop-opacity="0.10" />
-          <stop offset="100%" stop-color="#ac1b18" stop-opacity="0.0" />
-        </linearGradient>
-      </defs>
-
-      <!-- Conical Light Beam from the Projector Illuminating Bulgaria -->
-      <polygon points="48,37 144,10 144,86 48,59" fill="url(#hdrBeamFill)" />
-      <line x1="48" y1="37" x2="138" y2="12" stroke="#ac1b18" stroke-width="2.2" stroke-linecap="round" opacity="0.55" />
-      <line x1="48" y1="59" x2="128" y2="83" stroke="#ac1b18" stroke-width="2.2" stroke-linecap="round" opacity="0.55" />
-
-      <!-- Architectural Projector / Searchlight (Replacing the Magnifying Glass of sigma.midt.bg) -->
-      <g fill="#ac1b18">
-        <!-- Rear Lamp Housing -->
-        <rect x="2" y="37" width="13" height="22" rx="2.5" />
-        <!-- Cooling Ribs / Barrel -->
-        <rect x="17" y="33" width="4" height="30" rx="1" />
-        <rect x="23" y="33" width="4" height="30" rx="1" />
-        <!-- Main Projector Cone Head -->
-        <path d="M 29 31 L 46 24 C 48 23 50 24.5 50 26.8 L 50 69.2 C 50 71.5 48 73 46 72 L 29 65 Z" />
-        <!-- Optical Lens Rim -->
-        <rect x="49" y="26" width="3.5" height="44" rx="1.7" fill="#d4d0cb" />
-        <!-- Yoke Mount & Tripod Stand (Matching the 45-degree handle angle of sigma.midt.bg) -->
-        <path d="M 20 65 L 20 75 C 20 78 22 80 25 80 L 35 80" fill="none" stroke="#ac1b18" stroke-width="5.5" stroke-linecap="round" />
-        <path d="M 26 78 L 5 104" fill="none" stroke="#ac1b18" stroke-width="10" stroke-linecap="round" />
-        <path d="M 26 78 L 40 104" fill="none" stroke="#ac1b18" stroke-width="7.5" stroke-linecap="round" />
-      </g>
-
-      <!-- Exact 19 Horizontal Scan-Lines of Bulgaria from sigma.midt.bg/logo.svg (Illuminated inside the Beam) -->
-      <g fill="#ac1b18" transform="translate(8, 0)">
-        <path d="m60.76,30.98h20.93c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-20.93c-.29,0,.52.23-.52.52s.23.52.52.52Z" />
-        <path d="m59.79,46.83h72.23c.29,0,.52-.23.52-.52s-.23-.52-.52-.52H59.79c-.29,0-.52.23-.52.52s.23.52.52.52Z" />
-        <path d="m60.76,26.75h7.28c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-7.28c-.29,0-.52.23-.52.52s.23.52.52.52Z" />
-        <path d="m132.02,38.9c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-63.98c-.29,0-.52.23-.52.52s.23.52.52.52h63.98Z" />
-        <path d="m65.56,42.35c0,.29.23.52.52.52h65.94c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-65.94c-.29,0-.52.23-.52.52Z" />
-        <path d="m106.22,26.75h28.24c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-28.24c-.29,0-.52.23-.52.52s.23.52.52.52Z" />
-        <path d="m116.99,22.53h8.96c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-8.96c-.29,0-.52.23-.52.52s.23.52.52.52Z" />
-        <path d="m64.33,22.53h2.17c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-2.17c-.29,0-.52.23-.52.52s.23.52.52.52Z" />
-        <path d="m141.2,29.94h-39.62c-.29,0-.52.23-.52.52s.23.52.52.52h39.62c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
-        <path d="m87.04,30.98h8.56c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-8.56c-.29,0-.52.23-.52.52s.23.52.52.52Z" />
-        <path d="m132.91,57.68H61.39c-.29,0-.52.23-.52.52s.23.52.52.52h71.52c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
-        <path d="m114.58,61.65h-48.5c-.29,0-.52.23-.52.52s.23.52.52.52h48.5c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
-        <path d="m111.98,65.61h-44.16c-.29,0-.52.23-.52.52s.23.52.52.52h44.16c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
-        <path d="m140.07,33.9H62.42c-.29,0-.52.23-.52.52s.23.52.52.52h77.65c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
-        <path d="m61.49,53.72c-.29,0-.52.23-.52.52s.23.52.52.52h67.54c.29,0,.52-.23.52-.52s-.23-.52-.52-.52H61.49Z" />
-        <path d="m78.75,73.53h-10.93c-.29,0-.52.23-.52.52s.23.52.52.52h10.93c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
-        <path d="m126.53,50.27c0-.29-.23-.52-.52-.52H59.79c-.29,0-.52.23-.52.52s.23.52.52.52h66.22c.29,0,.52-.23.52-.52Z" />
-        <path d="m108.39,73.53h-18.84c-.29,0-.52.23-.52.52s.23.52.52.52h18.84c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
-        <path d="m108.39,69.57h-40.57c-.29,0-.52.23-.52.52s.23.52.52.52h40.57c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
-      </g>
-
-      <!-- Exact SIGMA Wordmark Paths from sigma.midt.bg/logo.svg -->
-      <g class="sigma-wordmark-ink" fill="currentColor" transform="translate(16, 0)">
-        <path d="m187.46,4.31l-55.9,77.4c-.78,1.08-2.48.53-2.48-.8v-13.37h-6.01l-6.86,8.57v15.96c0,4.45,2.56,8.71,6.73,10.24,4.58,1.68,9.45.04,12.11-3.66l55.9-77.4c.78-1.08,2.48-.53,2.48.8v74.48c0,3.55,2.88,6.44,6.44,6.44h0c3.55,0,6.44-2.88,6.44-6.44V10.41C206.31,4.66,201.65,0,195.9,0h0c-3.34,0-6.48,1.6-8.44,4.31Z" />
-        <path d="m223.87,6.44v90.09c0,3.55,2.88,6.44,6.44,6.44h0c3.55,0,6.44-2.88,6.44-6.44V16.03c0-1.75,1.42-3.16,3.16-3.16h54.75c3.55,0,6.44-2.88,6.44-6.44h0C301.1,2.88,298.21,0,294.66,0h-64.35c-3.55,0-6.44,2.88-6.44,6.44Z" />
-        <path d="m393.82,3.55l-29.54,59.07c-.36.71-1.37.71-1.73,0l-29.54-59.07C331.94,1.38,329.71,0,327.28,0h-2.18c-3.54,0-6.42,2.87-6.43,6.41l-.27,90.12c-.01,3.56,2.87,6.44,6.43,6.44h0c3.55,0,6.43-2.88,6.43-6.43V29.83c0-1.02,1.37-1.34,1.83-.43l22.14,44.27c1.09,2.18,3.31,3.55,5.75,3.55h4.93c2.43,0,4.66-1.38,5.75-3.55l22.14-44.27c.46-.91,1.83-.59,1.83.43v66.71c0,3.55,2.88,6.43,6.43,6.43h.02c3.55,0,6.43-2.88,6.43-6.43V6.43C408.47,2.88,405.59,0,402.04,0h-2.47c-2.43,0-4.66,1.38-5.75,3.55Z" />
-        <path d="m516.72,102.93h0c4.21,0,7.12-4.2,5.64-8.14L488.27,3.87C487.39,1.52,485.14,0,482.63,0h-17.39c-2.51,0-4.76,1.56-5.64,3.91l-34.09,90.91c-1.48,3.94,1.43,8.14,5.64,8.14h0c2.51,0,4.76-1.56,5.64-3.91l30.85-82.27c.88-2.35,3.13-3.91,5.64-3.91h1.32c2.51,0,4.76,1.56,5.64,3.91l30.84,82.24c.88,2.35,3.13,3.91,5.64,3.91Z" />
-        <circle cx="473.93" cy="62.71" r="6.44" />
-      </g>
-      <circle fill="#d4d0cb" cx="130.65" cy="6.7" r="6.44" />
-    </svg>
-    <span class="sigma-edition-tag">3.0 · НА СВЕТЛО</span>
+  <div class="nasvetlo-official-header" title="NAsvetlo · СИГМА 3.0 — Платформа за прозрачност на обществените поръчки">
+    <img
+      src="sigma3/nasvetlo-official-logo.jpg"
+      alt="NAsvetlo"
+      width="44"
+      height="44"
+      class="nasvetlo-header-img"
+    />
+    <div class="nasvetlo-header-text">
+      <div class="nasvetlo-header-row">
+        <span class="nasvetlo-brand-name">NAsvetlo</span>
+        <span class="sigma-edition-tag">СИГМА 3.0</span>
+      </div>
+      <span class="nasvetlo-brand-tagline">Платформа за прозрачност на обществените поръчки</span>
+    </div>
   </div>
 ) : (
-  <!-- Exact sigma.midt.bg hero-mark architecture: Large Projector on the Left Illuminating the 19-Scanline Map of Bulgaria on the Right -->
-  <div class="hero-projector-mark-wrap" aria-hidden="true">
-    <svg
-      class="hero-mark"
-      viewBox="0 0 165 115"
-      xmlns="http://www.w3.org/2000/svg"
-      role="img"
-      aria-label="Прожектор, осветяващ картата на България"
-    >
-      <defs>
-        <linearGradient id="heroBeamGrad" x1="0%" y1="50%" x2="100%" y2="50%">
-          <stop offset="0%" stop-color="#ac1b18" stop-opacity="0.22" />
-          <stop offset="60%" stop-color="#ac1b18" stop-opacity="0.08" />
-          <stop offset="100%" stop-color="#ac1b18" stop-opacity="0.0" />
-        </linearGradient>
-      </defs>
-
-      <!-- Volumetric Searchlight Cone Projecting Across Bulgaria -->
-      <polygon class="hero-beam-cone" points="50,36 156,6 156,90 50,60" fill="url(#heroBeamGrad)" />
-      <line x1="50" y1="36" x2="152" y2="8" stroke="#ac1b18" stroke-width="1.4" stroke-dasharray="3 2.5" opacity="0.55" />
-      <line x1="50" y1="60" x2="142" y2="87" stroke="#ac1b18" stroke-width="1.4" stroke-dasharray="3 2.5" opacity="0.55" />
-
-      <!-- Sleek Minimalist Projector (Replacing the Magnifying Glass of sigma.midt.bg/hero-mark.png) -->
-      <g class="hero-projector-body" fill="#d4d0cb">
-        <!-- Rear Lamp Housing -->
-        <rect x="3" y="37" width="13" height="22" rx="2.5" />
-        <!-- Cooling Fins -->
-        <rect x="18" y="33" width="4" height="30" rx="1" />
-        <rect x="24" y="33" width="4" height="30" rx="1" />
-        <!-- Conical Projector Head -->
-        <path d="M 30 31 L 47 23.5 C 49.2 22.5 51 24 51 26.5 L 51 69.5 C 51 72 49.2 73.5 47 72.5 L 30 65 Z" />
-        <!-- Active Glowing Vermilion Lens Aperture -->
-        <rect x="50" y="26" width="3.5" height="44" rx="1.7" fill="#ac1b18" />
-        <!-- Yoke & Handle/Stand at 45° (Matching sigma.midt.bg's iconic silhouette) -->
-        <path d="M 21 65 L 21 75 C 21 78 23 80 26 80 L 36 80" fill="none" stroke="#d4d0cb" stroke-width="5.5" stroke-linecap="round" />
-        <path d="M 27 78 L 5 105" fill="none" stroke="#d4d0cb" stroke-width="10.5" stroke-linecap="round" />
-        <path d="M 27 78 L 41 105" fill="none" stroke="#d4d0cb" stroke-width="7.5" stroke-linecap="round" />
-      </g>
-
-      <!-- Exact 19 Horizontal Scan-Lines Forming the Map of Bulgaria (Illuminated by the Projector!) -->
-      <g class="hero-bulgaria-scanlines" transform="translate(12, 0)">
-        <path fill="#d4d0cb" d="m60.76,26.75h7.28c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-7.28c-.29,0-.52.23-.52.52s.23.52.52.52Z" />
-        <path fill="#ac1b18" d="m106.22,26.75h28.24c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-28.24c-.29,0-.52.23-.52.52s.23.52.52.52Z" />
-        <path fill="#ac1b18" d="m116.99,22.53h8.96c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-8.96c-.29,0-.52.23-.52.52s.23.52.52.52Z" />
-        <path fill="#d4d0cb" d="m64.33,22.53h2.17c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-2.17c-.29,0-.52.23-.52.52s.23.52.52.52Z" />
-        <path fill="#d4d0cb" d="m60.76,30.98h20.93c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-20.93c-.29,0-.52.23-.52.52s.23.52.52.52Z" />
-        <path fill="#ac1b18" d="m87.04,30.98h8.56c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-8.56c-.29,0-.52.23-.52.52s.23.52.52.52Z" />
-        <path fill="#ac1b18" d="m141.2,29.94h-39.62c-.29,0-.52.23-.52.52s.23.52.52.52h39.62c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
-        <path fill="#ac1b18" d="m140.07,33.9H62.42c-.29,0,.52.23-.52.52s.23.52.52.52h77.65c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
-        <path fill="#d4d0cb" d="m132.02,38.9c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-63.98c-.29,0-.52.23-.52.52s.23.52.52.52h63.98Z" />
-        <path fill="#ac1b18" d="m65.56,42.35c0,.29.23.52.52.52h65.94c.29,0,.52-.23.52-.52s-.23-.52-.52-.52h-65.94c-.29,0-.52.23-.52.52Z" />
-        <path fill="#ac1b18" d="m59.79,46.83h72.23c.29,0,.52-.23.52-.52s-.23-.52-.52-.52H59.79c-.29,0-.52.23-.52.52s.23.52.52.52Z" />
-        <path fill="#d4d0cb" d="m126.53,50.27c0-.29-.23-.52-.52-.52H59.79c-.29,0-.52.23-.52.52s.23.52.52.52h66.22c.29,0,.52-.23.52-.52Z" />
-        <path fill="#ac1b18" d="m61.49,53.72c-.29,0-.52.23-.52.52s.23.52.52.52h67.54c.29,0,.52-.23.52-.52s-.23-.52-.52-.52H61.49Z" />
-        <path fill="#ac1b18" d="m132.91,57.68H61.39c-.29,0-.52.23-.52.52s.23.52.52.52h71.52c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
-        <path fill="#d4d0cb" d="m114.58,61.65h-48.5c-.29,0-.52.23-.52.52s.23.52.52.52h48.5c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
-        <path fill="#ac1b18" d="m111.98,65.61h-44.16c-.29,0-.52.23-.52.52s.23.52.52.52h44.16c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
-        <path fill="#d4d0cb" d="m108.39,69.57h-40.57c-.29,0-.52.23-.52.52s.23.52.52.52h40.57c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
-        <path fill="#ac1b18" d="m78.75,73.53h-10.93c-.29,0-.52.23-.52.52s.23.52.52.52h10.93c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
-        <path fill="#ac1b18" d="m108.39,73.53h-18.84c-.29,0-.52.23-.52.52s.23.52.52.52h18.84c.29,0,.52-.23.52-.52s-.23-.52-.52-.52Z" />
-      </g>
-
-      <!-- Iconic Beacon Circle Above Bulgaria -->
-      <circle fill="#ac1b18" cx="134.65" cy="9.5" r="6.44" />
-    </svg>
+  <div class="hero-official-logo-wrap">
+    <img
+      src="sigma3/nasvetlo-official-logo.jpg"
+      alt="NAsvetlo — Прожектор върху обществените поръчки в България"
+      width="320"
+      height="320"
+      class="hero-official-logo"
+    />
   </div>
 )}
