@@ -153,13 +153,31 @@ def fetch_cr_deed_cached_or_live(eik: str, allow_live: bool = False) -> dict[str
     return None
 
 
+HOMONYM_AUTH_RE = re.compile(
+    r"\b(училище|оу|су|соу|ну|пг|гимназия|детска\s+градина|дг|читалище|водоснабдяване\s+и\s+канализация|вик|многопрофилна\s+болница|мбал|дкц|медицински\s+център|дом\s+за\s+стари\s+хора|цсоп|дгс|длс|районна\s+избирателна)\b",
+    re.I,
+)
+
+NON_PROCUREMENT_EIK_PREFIXES = ("121817309", "000695074", "131447880")
+NON_PROCUREMENT_KEYWORDS = (
+    "прокуратура",
+    "агенция по вписванията",
+    "национална агенция за приходите",
+    "главна инспекция по труда",
+    "дирекция инспекция по труда",
+)
+
+
 # =============================================================================
 # ENTITY MATCHING LAYER (4,344 AUTHORITIES + 17,428 COMPANIES + 206,907 UNPs)
+#   Includes Geographic Disambiguation (City / Municipality / Oblast / Court / DID)
+#   for homonymous schools, kindergartens, chitalishta, hospitals, and ВиК operators!
 # =============================================================================
 class EntityMatcher:
     def __init__(self, authorities: list[list[Any]], companies: list[list[Any]]) -> None:
         self.auth_by_eik: dict[str, dict[str, Any]] = {}
         self.auth_by_norm: dict[str, dict[str, Any]] = {}
+        self.auth_candidates_by_norm: dict[str, list[dict[str, Any]]] = defaultdict(list)
         self.auth_muni: dict[str, dict[str, Any]] = {}
         self.auth_list: list[tuple[str, dict[str, Any]]] = []
 
@@ -178,8 +196,12 @@ class EntityMatcher:
             n_full = norm_entity(rec["name"], drop_legal=False)
             n_core = norm_entity(rec["name"], drop_legal=True)
             for k in (n_full, n_core):
-                if k and (k not in self.auth_by_norm or rec["spentEur"] > self.auth_by_norm[k]["spentEur"]):
+                if not k:
+                    continue
+                if k not in self.auth_by_norm or rec["spentEur"] > self.auth_by_norm[k]["spentEur"]:
                     self.auth_by_norm[k] = rec
+                if not any(c["eik"] == rec["eik"] for c in self.auth_candidates_by_norm[k]):
+                    self.auth_candidates_by_norm[k].append(rec)
             # Exact municipality shortcut: "община бургас" -> "бургас"
             m_muni = re.match(r"^община\s+([а-я\-]+(?:\s+[а-я\-]+)?)$", n_core)
             if m_muni:
@@ -188,6 +210,9 @@ class EntityMatcher:
                     self.auth_muni[mk] = rec
             if len(n_core) >= 8:
                 self.auth_list.append((n_core, rec))
+
+        for k in self.auth_candidates_by_norm:
+            self.auth_candidates_by_norm[k].sort(key=lambda x: x["spentEur"], reverse=True)
 
         self.comp_by_eik: dict[str, dict[str, Any]] = {}
         self.comp_by_norm: dict[str, dict[str, Any]] = {}
@@ -208,10 +233,72 @@ class EntityMatcher:
 
         self.stats = Counter()
 
-    def match_authority(self, raw_name: str, raw_eik: str = "") -> tuple[dict[str, Any] | None, str]:
+    def _disambiguate_candidates(self, candidates: list[dict[str, Any]], raw_name: str, context_hint: str) -> dict[str, Any] | None:
+        if not candidates:
+            return None
+        is_homonym = (len(candidates) > 1) or bool(HOMONYM_AUTH_RE.search(raw_name)) or bool(HOMONYM_AUTH_RE.search(candidates[0]["name"]))
+        full_ctx = f"{raw_name} {context_hint}".lower()
+
+        # Check if raw_name explicitly names a village/city ("гр. Кюстендил", "с. Люляково", "- Перник")
+        m_explicit_loc = re.search(
+            r"(?:,\s*|\s+[–\-]\s+|\s+)(?:гр\.?|град|с\.?|село)\s+([а-я\-]{3,25}(?:\s+[а-я\-]{3,25})?)",
+            raw_name.lower(),
+        )
+        explicit_loc = m_explicit_loc.group(1).strip() if m_explicit_loc else ""
+        # Strip trailing ", общ. ..." from explicit_loc if captured
+        if explicit_loc:
+            explicit_loc = re.split(r"\s+(?:общ|обл|район)\b", explicit_loc)[0].strip()
+
+        if explicit_loc:
+            for c in candidates:
+                st = (c.get("settlement") or "").lower().replace("гр.", "").replace("с.", "").strip()
+                rg = (c.get("region") or "").lower().strip()
+                if st and (st == explicit_loc or explicit_loc.startswith(st) or st in explicit_loc):
+                    return c
+            for c in candidates:
+                rg = (c.get("region") or "").lower().strip()
+                if rg and (rg == explicit_loc or rg in full_ctx):
+                    # Only allow region fallback if raw_name did NOT specify a village ("с. ...") different from settlement
+                    if not re.search(r"\b(?:с\.|село)\s+", raw_name.lower()):
+                        return c
+            if is_homonym:
+                return None
+
+        # Match against settlement or region mentioned anywhere in raw_name + context_hint (e.g. court city "Окръжен съд - Перник")
+        for c in candidates:
+            st = (c.get("settlement") or "").lower().replace("гр.", "").replace("с.", "").strip()
+            if len(st) >= 3 and re.search(rf"\b{re.escape(st)}\b", full_ctx):
+                return c
+        for c in candidates:
+            rg = (c.get("region") or "").lower().strip()
+            if len(rg) >= 3 and re.search(rf"\b{re.escape(rg)}\b", full_ctx):
+                if not re.search(r"\b(?:с\.|село)\s+", raw_name.lower()):
+                    return c
+
+        # Check ADFI regional directorate hint (ДИД1-СФ .. ДИД8-ВТ) if present
+        m_did = re.search(r"(ДИД\d-[А-Я]{2})", f"{raw_name} {context_hint}", re.I)
+        if m_did:
+            dcode = m_did.group(1).upper()
+            allowed_cities = DIRECTORATE_CITIES.get(dcode, ())
+            if allowed_cities and len(candidates) == 1 and not re.search(r"\b(?:с\.|село)\s+", raw_name.lower()):
+                c0 = candidates[0]
+                st0 = (c0.get("settlement") or "").lower()
+                rg0 = (c0.get("region") or "").lower()
+                if any(ac in st0 or ac in rg0 for ac in allowed_cities):
+                    return c0
+
+        if is_homonym:
+            return None
+        return candidates[0]
+
+    def match_authority(self, raw_name: str, raw_eik: str = "", context_hint: str = "") -> tuple[dict[str, Any] | None, str]:
         if raw_eik and raw_eik in self.auth_by_eik:
             self.stats["auth_eik"] += 1
             return self.auth_by_eik[raw_eik], "EIK"
+        m_inline_eik = re.search(r"(?:ЕИК|БУЛСТАТ)\s*[:№]?\s*(\d{9})\b", f"{raw_name} {context_hint}", re.I)
+        if m_inline_eik and m_inline_eik.group(1) in self.auth_by_eik:
+            self.stats["auth_eik"] += 1
+            return self.auth_by_eik[m_inline_eik.group(1)], "EIK"
         if not raw_name:
             return None, ""
         # Strip trailing city suffixes like ", гр. Бургас" or " - гр. Добрич"
@@ -219,12 +306,16 @@ class EntityMatcher:
         for cand in (raw_name, cleaned):
             nf = norm_entity(cand, drop_legal=False)
             nc = norm_entity(cand, drop_legal=True)
-            if nf in self.auth_by_norm:
-                self.stats["auth_name_exact"] += 1
-                return self.auth_by_norm[nf], "NAME_EXACT"
-            if nc in self.auth_by_norm:
-                self.stats["auth_name_core"] += 1
-                return self.auth_by_norm[nc], "NAME_CORE"
+            if nf in self.auth_candidates_by_norm:
+                picked = self._disambiguate_candidates(self.auth_candidates_by_norm[nf], raw_name, context_hint)
+                if picked:
+                    self.stats["auth_name_exact"] += 1
+                    return picked, "NAME_EXACT"
+            if nc in self.auth_candidates_by_norm:
+                picked = self._disambiguate_candidates(self.auth_candidates_by_norm[nc], raw_name, context_hint)
+                if picked:
+                    self.stats["auth_name_core"] += 1
+                    return picked, "NAME_CORE"
             # Handle "столична община - район X" -> "район X"
             m_rn = re.search(r"район\s+([а-я0-9\-]+)", nc)
             if m_rn:
@@ -242,10 +333,13 @@ class EntityMatcher:
                 if f"град {mk}" in self.auth_muni:
                     self.stats["auth_muni"] += 1
                     return self.auth_muni[f"град {mk}"], "NAME_MUNI"
-            # Handle "апи", "нкжи", "умбал", "вик" common aliases
+            # Handle common national agency aliases
             if "агенция пътна инфраструктура" in nc and "000695089" in self.auth_by_eik:
                 self.stats["auth_alias"] += 1
                 return self.auth_by_eik["000695089"], "ALIAS"
+            if "автомобилна администрация" in nc and "121410441" in self.auth_by_eik:
+                self.stats["auth_alias"] += 1
+                return self.auth_by_eik["121410441"], "ALIAS"
             if "столична община" == nc and "000696327" in self.auth_by_eik:
                 self.stats["auth_alias"] += 1
                 return self.auth_by_eik["000696327"], "ALIAS"
@@ -322,7 +416,12 @@ def ingest_adfi_reports(matcher: EntityMatcher) -> dict[str, Any]:
             basis_cat = "По сигнал на граждани/организации (чл. 5, ал. 1, т. 1)"
         by_basis[basis_cat] += 1
 
-        auth_rec, match_method = matcher.match_authority(obj_raw)
+        dir_m = re.match(r"^(?:Доклад\s+)?(ДИД\d-[А-Я]{2})", rep_code, re.I)
+        dir_code = dir_m.group(1).upper() if dir_m else "ДИД"
+        auth_rec, match_method = matcher.match_authority(obj_raw, context_hint=rep_code)
+        if auth_rec and match_method in {"NAME_EXACT", "NAME_CORE"}:
+            if not validate_regional_homonym(obj_raw, dir_code, auth_rec):
+                auth_rec, match_method = None, "REJECTED_HOMONYM"
         if auth_rec:
             matched_reports += 1
             aeik = auth_rec["eik"]
@@ -1019,37 +1118,41 @@ def _extract_lawyers_and_experts_from_bundle(bundle: dict[str, Any], case_meta: 
     found_lawyers: list[str] = []
     found_experts: list[str] = []
 
+    # STRICT STRUCTURED LAWYER EXTRACTION FROM /Case/SidesLoadData ONLY (Zero free-text sentence artifacts!)
     for s in sides:
-        role = str(s.get("sideInvolvementKindName") or "")
-        sname = str(s.get("subjectName") or "").strip()
-        if any(k in role.lower() for k in ("адвокат", "представител", "юрисконсулт")) and sname:
-            lbl = f"{role}: {sname}"
+        role_raw = str(s.get("sideInvolvementKindName") or "").strip()
+        sname_raw = str(s.get("subjectName") or "").strip()
+        if not any(k in role_raw.lower() for k in ("адвокат", "представител", "юрисконсулт")) or not sname_raw:
+            continue
+        # Split compound lawyer strings ("адв. Елена Димова и адв. Александър Александров")
+        parts = re.split(r"\s+и\s+|,|;", sname_raw)
+        for pt in parts:
+            clean_nm = re.sub(
+                r"^(?:адв\.?|адвокат|ст\.?\s*юрисконсулт|старши\s+юрисконсулт|гл\.?\s*юрисконсулт|главен\s+юрисконсулт|юрисконсулт|процесуален\s+представител)\s*",
+                "",
+                pt.strip(),
+                flags=re.I,
+            ).strip(" ,.;:()\"„“")
+            if not clean_nm or len(clean_nm) < 3:
+                continue
+            # Ensure name consists only of valid Cyrillic name tokens / initials (no verbs!)
+            if not re.match(r"^[А-ЯЁ][А-Яа-яЁё\.\-\s]{1,46}$", clean_nm):
+                continue
+            role_norm = "Юрисконсулт" if "юрисконсулт" in f"{role_raw} {pt}".lower() else ("Адвокат" if "адв" in f"{role_raw} {pt}".lower() else role_raw)
+            lbl = f"{role_norm}: {clean_nm}"
             if lbl not in found_lawyers:
                 found_lawyers.append(lbl)
-                lawyers_out.append({
-                    "name": sname, "role": role, "caseNo": case_meta["caseLabel"],
-                    "court": case_meta["courtName"], "authority": case_meta.get("authorityName") or "",
-                    "party": case_meta.get("counterparty") or "", "caseUrl": case_meta["caseUrl"],
-                })
+                if not any(x["name"] == clean_nm and x["caseNo"] == case_meta["caseLabel"] for x in lawyers_out):
+                    lawyers_out.append({
+                        "name": clean_nm, "role": role_norm, "caseNo": case_meta["caseLabel"],
+                        "court": case_meta["courtName"], "authority": case_meta.get("authorityName") or "",
+                        "party": case_meta.get("counterparty") or "", "caseUrl": case_meta["caseUrl"],
+                    })
 
-    # Also extract "адв. X Y" / "юрисконсулт X Y" from decision text
-    for m_l in re.finditer(r"\b(адв\.|адвокат|ст\.\s*юрисконсулт|старши\s+юрисконсулт|гл\.\s*юрисконсулт|главен\s+юрисконсулт|юрисконсулт)\s+([А-Я]\.\s*[А-Яа-я\.\-]+(?:\s+[А-Яа-я\.\-]+)?)", txt):
-        role_t = m_l.group(1).strip()
-        nm_t = m_l.group(2).strip(" ,.;:()")
-        if len(nm_t) >= 3:
-            lbl = f"{role_t} {nm_t}"
-            if lbl not in found_lawyers and len(found_lawyers) < 6:
-                found_lawyers.append(lbl)
-                lawyers_out.append({
-                    "name": nm_t, "role": role_t, "caseNo": case_meta["caseLabel"],
-                    "court": case_meta["courtName"], "authority": case_meta.get("authorityName") or "",
-                    "party": case_meta.get("counterparty") or "", "caseUrl": case_meta["caseUrl"],
-                })
-
-    # Extract court experts ("вещо лице" / "вещото лице" / "ССТЕ" / "ССчЕ")
-    for m_e in re.finditer(r"(?:вещо(?:то)?\s+лице|експертиза(?:та)?\s+на\s+в\.?\s*л\.?)\s+([А-Я]\.\s*[А-Яа-я\.\-]+(?:\s+[А-Яа-я\.\-]+)?)", txt, re.I):
+    # Extract court experts ("вещо лице" / "вещото лице") strictly validating initials or capitalized names
+    for m_e in re.finditer(r"(?:вещо(?:то)?\s+лице)\s+([А-Я]\.\s*[А-Я]\.\s*[А-Я]\.|[А-Я][а-я]+\s+[А-Я][а-я]+)", txt):
         enm = m_e.group(1).strip(" ,.;:()")
-        if len(enm) >= 3 and enm not in found_experts:
+        if len(enm) >= 4 and enm not in found_experts:
             found_experts.append(enm)
             experts_out.append({
                 "name": enm, "specialty": "Съдебна експертиза (ЕИСС акт)",
@@ -1139,9 +1242,18 @@ def ingest_eiss_ecase_live(
         m_fine = re.search(r"(?:глоба|имуществена\s+санкция)\s+в\s+размер\s+на\s+([0-9][0-9\s\.,]*\s*(?:евро|лв\.?|лева))", txt, re.I)
         fine_str = re.sub(r"\s+", " ", m_fine.group(1)).strip() if m_fine else ""
 
-        # Match Contracting Authority from sides or decision text!
+        # Match Contracting Authority from UNP first, then sides or decision text with geographic context!
         other_side = sr if agency_is_appellant else sl
-        auth_rec, match_how = matcher.match_authority(other_side)
+        court_ctx = f"{r.get('courtName', '')} {and_court}"
+        auth_rec = None
+        match_how = ""
+        if unp_val and unp_val in unp_index:
+            aeik_u = unp_index[unp_val].get("authorityEik") or ""
+            if aeik_u in matcher.auth_by_eik:
+                auth_rec = matcher.auth_by_eik[aeik_u]
+                match_how = "UNP_EIK"
+        if not auth_rec:
+            auth_rec, match_how = matcher.match_authority(other_side, context_hint=court_ctx)
         extracted_entity = other_side
         if not auth_rec and txt:
             # Look for "кмет на Община ...", "директор на ...", "управител на ..."
@@ -1150,19 +1262,20 @@ def ingest_eiss_ecase_live(
                 txt,
             ):
                 cand_ent = m_ent.group(1).strip()
-                cand_ent = re.split(r",\s*(?:ЕИК|БУЛСТАТ|с\s+адрес|гр\.|обл\.|и\s+публичен)", cand_ent)[0].strip()
-                if any(bad in cand_ent.lower() for bad in ("агенция за държавна", "адфи", "дирекция", "отдел", "съд")):
+                # Truncate cleanly before verbs or clause boundaries
+                cand_ent = re.split(
+                    r",\s*(?:ЕИК|БУЛСТАТ|с\s+адрес|гр\.|обл\.|и\s+публичен|е\s+наложен|на\s+основание|в\s+качеството|представляван)|(?:\s+е\s+наложен|\s+на\s+основание|\s+за\s+нарушение)",
+                    cand_ent,
+                    flags=re.I,
+                )[0].strip(" ,.;:-\"„“")
+                if any(bad in cand_ent.lower() for bad in ("агенция за държавна", "адфи", "дирекция", "отдел", "съд", "сметна палата")):
                     continue
-                extracted_entity = cand_ent[:85]
-                ar, mh = matcher.match_authority(cand_ent)
-                if ar:
-                    auth_rec, match_how = ar, f"TEXT_{mh}"
-                    break
-        if not auth_rec and unp_val and unp_val in unp_index:
-            aeik_u = unp_index[unp_val].get("authorityEik") or ""
-            if aeik_u in matcher.auth_by_eik:
-                auth_rec = matcher.auth_by_eik[aeik_u]
-                match_how = "UNP_EIK"
+                if len(cand_ent) >= 5:
+                    extracted_entity = cand_ent[:80]
+                    ar, mh = matcher.match_authority(cand_ent, context_hint=court_ctx)
+                    if ar:
+                        auth_rec, match_how = ar, f"TEXT_{mh}"
+                        break
 
         # Determine exact court fate of the ADFI / NAO Penalty Decree (НП)
         # First check what the Regional Court (АНД) did:
@@ -1259,43 +1372,33 @@ def ingest_eiss_ecase_live(
             "lawyers": l_list,
         })
 
-    # Link the 370 art. 17(7) updated ADFI reports to matched authorities & regional court outcomes!
+    # Link the 370 art. 17(7) updated ADFI reports STRICTLY to exact EIK / DID report matches!
     cases_by_auth: dict[str, list[dict[str, Any]]] = defaultdict(list)
-    cases_by_city: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    cases_by_order: dict[str, dict[str, Any]] = {}
     for ac in adfi_court_cases:
         if ac["authorityEik"]:
             cases_by_auth[ac["authorityEik"]].append(ac)
-        cname_l = ac["court"].lower()
-        for dcode, cities in DIRECTORATE_CITIES.items():
-            if any(ct in cname_l for ct in cities):
-                cases_by_city[dcode].append(ac)
+        if ac.get("adfiOrder"):
+            cases_by_order[ac["adfiOrder"].upper()] = ac
 
     linked_art17_cnt = 0
     for rep in mod2_adfi.get("updatedArt17Reports") or []:
         aeik = rep.get("authorityEik") or ""
-        dcode = rep.get("directorate") or ""
-        direct_cases = cases_by_auth.get(aeik) or []
-        reg_cases = cases_by_city.get(dcode) or []
-        if direct_cases:
-            c0 = direct_cases[0]
+        rcode = (rep.get("code") or "").upper()
+        direct_cases = cases_by_auth.get(aeik) if aeik else None
+        order_case = cases_by_order.get(rcode)
+        c0 = order_case or (direct_cases[0] if direct_cases else None)
+        if c0:
             rep["linkedCourtCase"] = f"{c0['court']} · {c0['caseNo']}" + (f" ({c0['andCaseNo']})" if c0["andCaseNo"] else "")
             rep["linkedCaseUrl"] = c0["actDownloadUrl"]
             rep["courtFate"] = c0["outcome"]
             rep["annulmentReason"] = c0["annulmentReason"]
             rep["linkType"] = "EXACT_EIK"
             linked_art17_cnt += 1
-        elif reg_cases:
-            c0 = reg_cases[0]
-            rep["linkedCourtCase"] = f"Регионална практика {dcode}: {c0['court']} · {c0['caseNo']}"
-            rep["linkedCaseUrl"] = c0["actDownloadUrl"]
-            rep["courtFate"] = c0["outcome"]
-            rep["annulmentReason"] = c0["annulmentReason"]
-            rep["linkType"] = f"DIR_{dcode}"
-            linked_art17_cnt += 1
         else:
-            rep["linkedCourtCase"] = "Чл. 19 ЗДФИ Прокуратура / АУАН в производство"
+            rep["linkedCourtCase"] = "Публикуван пълен доклад след приключила проверка по чл. 19 ЗДФИ / НП"
             rep["linkedCaseUrl"] = rep["url"]
-            rep["courtFate"] = "Актуализиран след проверка по чл. 17, ал. 7 ЗДФИ"
+            rep["courtFate"] = "Актуализиран по чл. 17, ал. 7 ЗДФИ"
             rep["annulmentReason"] = "—"
             rep["linkType"] = "PDF_ART17"
 
@@ -1463,14 +1566,16 @@ def ingest_eiss_ecase_live(
 
     # -------------------------------------------------------------------------
     # PART 3: Commercial & Appellate Commercial Lawsuits (ТД=5, ВТД=15) Contractor <-> Authority
+    #   Strictly excludes Prosecutor's Offices (art. 155 TZ dissolutions, EIK 121817309*),
+    #   Registry Agency (131447880), NRA, and Labor Inspectorate!
     # -------------------------------------------------------------------------
     comm_candidates: list[dict[str, Any]] = []
     seen_comm_gids: set[str] = set()
     total_comm_scanned = 0
 
-    for ck_id, max_p in (("5", 5), ("15", 2)):
+    for yr, ck_id, max_p in (("2026", "5", 5), ("2026", "15", 2), ("2025", "5", 4)):
         for p in range(1, max_p + 1):
-            rows, _ = _ecase_load_grid("-1", ck_id, "2026", "1", p, 500)
+            rows, _ = _ecase_load_grid("-1", ck_id, yr, "1", p, 500)
             if not rows:
                 break
             total_comm_scanned += len(rows)
@@ -1482,11 +1587,17 @@ def ingest_eiss_ecase_live(
                 sr = str(r.get("sideRight") or "").strip()
                 if not sl or not sr:
                     continue
-                if "АГЕНЦИЯ ПО ВПИСВАНИЯТА" in sl.upper() or "АГЕНЦИЯ ПО ВПИСВАНИЯТА" in sr.upper():
+                comb_low = f"{sl} {sr}".lower()
+                if any(kw in comb_low for kw in NON_PROCUREMENT_KEYWORDS):
                     continue
-                # Match either side against our 4,344 Authorities!
-                a_left, how_l = matcher.match_authority(sl)
-                a_right, how_r = matcher.match_authority(sr)
+                court_ctx = str(r.get("courtName") or "")
+                # Match either side against our 4,344 Authorities (with court city disambiguation!)
+                a_left, how_l = matcher.match_authority(sl, context_hint=court_ctx)
+                a_right, how_r = matcher.match_authority(sr, context_hint=court_ctx)
+                if a_left and a_left["eik"].startswith(NON_PROCUREMENT_EIK_PREFIXES):
+                    a_left = None
+                if a_right and a_right["eik"].startswith(NON_PROCUREMENT_EIK_PREFIXES):
+                    a_right = None
                 if a_left or a_right:
                     seen_comm_gids.add(gid)
                     r["_authLeft"] = a_left
@@ -1494,15 +1605,19 @@ def ingest_eiss_ecase_live(
                     r["_howAuth"] = how_r or how_l
                     comm_candidates.append(r)
 
-    print(f"    [EISS-J1] Scanned {total_comm_scanned:,} decided ТД/ВТД commercial rows -> matched {len(comm_candidates)} live Contractor <-> Authority lawsuits.")
+    print(f"    [EISS-J1] Scanned {total_comm_scanned:,} decided ТД/ВТД commercial rows -> matched {len(comm_candidates)} clean Contractor <-> Authority lawsuits (0 Prosecutor art.155 TZ).")
 
     live_comm_disputes: list[dict[str, Any]] = []
     comm_outcome_counts: Counter[str] = Counter()
 
-    for r in comm_candidates[:26]:
+    for r in comm_candidates[:28]:
         gid = r["gid"]
         bundle = _ecase_fetch_case_bundle(gid)
         txt = bundle.get("actText") or ""
+        tlow = txt.lower()
+        # Double-check text doesn't describe an art. 155 TZ company dissolution
+        if "чл. 155" in tlow and "прекратява" in tlow:
+            continue
         disp = _extract_operative_disposition(txt)
         dlow = disp.lower()
         sl = str(r.get("sideLeft") or "").strip()
@@ -1516,32 +1631,37 @@ def ingest_eiss_ecase_live(
             contr_raw = sl
         else:
             auth_rec = a_left
-            auth_role = "Ищец"
+            auth_role = "Ищец (Възложител)"
             contr_raw = sr
 
         comp_rec, comp_how = matcher.match_company(contr_raw)
 
         # Extract claimed/awarded money amount from disposition or text
-        m_amt = re.search(r"сума(?:та)?\s+от\s+([0-9][0-9\s\.,]*\s*(?:евро|лв\.?|лева))", disp, re.I)
+        m_amt = re.search(r"сума(?:та)?\s+от\s+([0-9][0-9\s\.,]*\s*(?:евро|лв\.?|лева))", f"{disp} {txt}", re.I)
         if not m_amt:
-            m_amt = re.search(r"(?:заплати|размер\s+на)\s+([0-9][0-9\s\.,]*\s*(?:евро|лв\.?|лева))", disp, re.I)
+            m_amt = re.search(r"(?:заплати|размер\s+на)\s+([0-9][0-9\s\.,]*\s*(?:евро|лв\.?|лева))", f"{disp} {txt}", re.I)
         claimed_str = re.sub(r"\s+", " ", m_amt.group(1)).strip() if m_amt else "По договор / фактури"
 
-        # Classify commercial litigation outcome
-        if "спогодба" in dlow or "прекратява" in dlow:
+        # Classify commercial litigation outcome from disposition + full text
+        check_low = f"{dlow} {tlow[-900:]}"
+        if "спогодба" in check_low or "одобрява постигнатата" in check_low:
             c_outcome = "СЪДЕБНА СПОГОДБА / ПРЕКРАТЕНО"
             c_sev = "critical"
-        elif "осъжда" in dlow and (auth_rec["name"].lower()[:10] in dlow or a_right is not None):
-            c_outcome = "ОСЪДЕН ВЪЗЛОЖИТЕЛ (Уважен иск на фирмата)"
-            c_sev = "critical"
-        elif "отхвърля" in dlow:
+        elif "осъжда" in check_low:
+            if a_right is not None:
+                c_outcome = "ОСЪДЕН ВЪЗЛОЖИТЕЛ (Уважен иск на изпълнителя)"
+                c_sev = "critical"
+            else:
+                c_outcome = "ОСЪДЕН ИЗПЪЛНИТЕЛ (Уважен иск на възложителя)"
+                c_sev = "warn"
+        elif "отхвърля" in check_low:
             c_outcome = "ОТХВЪРЛЕН ИСК"
             c_sev = "ok"
-        elif "оставя в сила" in dlow or "потвърждава" in dlow:
-            c_outcome = "ОСТАВЕНО В СИЛА РЕШЕНИЕ (ВТД)"
+        elif "оставя в сила" in check_low or "потвърждава" in check_low:
+            c_outcome = "ПОТВЪРДЕНО РЕШЕНИЕ (ВТД)"
             c_sev = "warn"
         else:
-            c_outcome = "Постановено съдебно решение"
+            c_outcome = "Решено търговско дело (ТД/ВТД)"
             c_sev = "info"
 
         comm_outcome_counts[c_outcome] += 1
@@ -1757,6 +1877,228 @@ def parse_cr_distress(deed: dict[str, Any]) -> dict[str, Any]:
         "isDistressed": is_distressed,
         "people": people[:8],
     }
+
+
+# ==============================================================================
+# PATCH: PRECISION ENTITY MATCHING & ARTIFACT CLEANUP (SIGMA 3.0 FINALITY)
+# ==============================================================================
+PROSECUTOR_EIK_PREFIX = "121817309"
+
+
+def is_valid_procurement_dispute(authority_eik: str, authority_name: str, contractor_eik: str, contractor_won_eur: float) -> bool:
+    """
+    Отхвърля служебни искове на Прокуратурата срещу фирми извън ЗОП.
+    Запазва само реални търговски спорове Възложител <-> Изпълнител.
+    """
+    eik = (authority_eik or "").strip()
+    name_upper = (authority_name or "").upper()
+    if eik.startswith(PROSECUTOR_EIK_PREFIX) or "ПРОКУРАТУРА" in name_upper:
+        if not contractor_eik or contractor_won_eur <= 0:
+            return False
+    return True
+
+
+ADFI_DIR_TO_REGIONS = {
+    "ДИД1-СФ": {"софия", "софия (столица)", "софия-град"},
+    "ДИД2-СФ": {"софия", "софия (столица)", "софия-град"},
+    "ДИД4-СО": {"софия", "софийска"},
+    "ДИД4-ПК": {"перник"},
+    "ДИД4-КН": {"кюстендил"},
+    "ДИД4-БЛ": {"благоевград"},
+    "ДИД4-ПЗ": {"пазарджик"},
+    "ДИД4-СМ": {"смолян"},
+    "ДИД5-ПД": {"пловдив"},
+    "ДИД5-СЗ": {"стара загора"},
+    "ДИД5-ХС": {"хасково"},
+    "ДИД5-ГБ": {"габрово"},
+    "ДИД6-БС": {"бургас"},
+    "ДИД6-СЛ": {"сливен"},
+    "ДИД6-ЯМ": {"ямбол"},
+    "ДИД6-КЖ": {"кърджали"},
+    "ДИД6-ВТ": {"велико търново"},
+    "ДИД6-ТЩ": {"търговище"},
+    "ДИД7-ВН": {"варна"},
+    "ДИД7-ДЧ": {"добрич"},
+    "ДИД7-ШН": {"шумен"},
+    "ДИД7-ШГ": {"шумен"},
+    "ДИД7-РЗ": {"разград"},
+    "ДИД7-СС": {"силистра"},
+    "ДИД7-РС": {"русе"},
+    "ДИД3-ПЛ": {"плевен"},
+    "ДИД3-ЛЧ": {"ловеч"},
+    "ДИД3-ВР": {"враца"},
+    "ДИД3-МН": {"монтана"},
+    "ДИД3-ВД": {"видин"},
+}
+
+HOMONYM_KEYWORDS = (
+    "УЧИЛИЩЕ", "ГИМНАЗИЯ", "ДЕТСКА ГРАДИНА", "ЧИТАЛИЩЕ",
+    "ВОДОСНАБДЯВАНЕ И КАНАЛИЗАЦИЯ", "В И К", "ВИК ", "МБАЛ", "ЦСМП", "РЗИ",
+)
+
+
+def validate_regional_homonym(object_text: str, directorate: str, candidate_auth: dict) -> bool:
+    """
+    Предотвратява смесването на напр. СУ 'Отец Паисий' (Смолян) със с. Люляково (Бургас)
+    или 'ВиК' Пловдив с 'ВиК' Бургас при съвпадение само по име.
+    """
+    auth_name = (candidate_auth.get("name") or "").upper()
+    if not any(k in auth_name for k in HOMONYM_KEYWORDS):
+        return True
+
+    auth_region = (candidate_auth.get("region") or "").strip().lower()
+    obj_lower = (object_text or "").lower()
+
+    expected_regions = ADFI_DIR_TO_REGIONS.get((directorate or "").strip().upper(), set())
+    if expected_regions and auth_region:
+        if not any(r in auth_region or auth_region in r for r in expected_regions):
+            return False
+
+    if "ВОДОСНАБДЯВАНЕ" in auth_name or "В И К" in auth_name:
+        if auth_region and auth_region not in obj_lower:
+            return False
+
+    return True
+
+
+LAWYER_STOPWORDS = {
+    "оспорва", "касационната", "жалба", "против", "ответника", "касатора",
+    "касаторът", "излага", "моли", "съда", "разноски", "пълномощно",
+}
+
+ROLE_PREFIX_RE = re.compile(
+    r"^(?:Адвокат|Юрисконсулт|Процесуален представител|Особен представител|"
+    r"гл\.\s*юрисконсулт|главен юрисконсулт|старши юрисконсулт|ст\.\s*юрисконсулт|"
+    r"адвокат|юрисконсулт|адв\.|юриск\.)\s*:?\s*",
+    flags=re.IGNORECASE,
+)
+
+
+def clean_extracted_lawyers(raw_entries: list[str]) -> list[dict]:
+    """
+    Премахва дублирани префикси ('Адвокат: адв. ...'), разделя слепени имена с 'и'
+    и отхвърля глаголни опашки от регекса ('В. оспорва касационната').
+    """
+    cleaned = []
+    seen = set()
+
+    for raw in raw_entries:
+        if not raw:
+            continue
+        role = "Юрисконсулт" if "юриск" in raw.lower() else "Адвокат"
+        body = ROLE_PREFIX_RE.sub("", raw).strip(" ,.;:-")
+        body = ROLE_PREFIX_RE.sub("", body).strip(" ,.;:-")
+
+        parts = re.split(r"\s+и\s+(?=[А-ЯA-Z])|[,;]", body)
+        for part in parts:
+            name = ROLE_PREFIX_RE.sub("", part).strip(" ,.;:-")
+            name = re.sub(r"\s+(?:от|при|към|срещу|против|с|на|САК|АК)$", "", name, flags=re.IGNORECASE).strip()
+
+            tokens = [t.strip(".,").lower() for t in name.split()]
+            if not tokens or any(t in LAWYER_STOPWORDS for t in tokens):
+                continue
+            if len(name) < 3 or len(name) > 55:
+                continue
+
+            if re.fullmatch(r"(?:[А-ЯA-Z]\.?\s*){2,4}", name):
+                letters = re.findall(r"[А-ЯA-Z]", name)
+                name = ".".join(letters) + "."
+
+            key = (role, name.upper())
+            if key not in seen:
+                seen.add(key)
+                cleaned.append({"name": name, "role": role})
+
+    return cleaned
+
+
+def clean_authority_name_snippet(raw_name: str) -> str:
+    """Изрязва глаголни опашки от регекс парсъра по КАНД актове."""
+    if not raw_name:
+        return ""
+    cut = re.split(
+        r",\s*(?:с което|е наложено|тя е била|в качеството|а не заместник)|"
+        r"\s+(?:задължение да|е вписан като|жалбоподателят е)",
+        raw_name,
+        maxsplit=1,
+        flags=re.IGNORECASE,
+    )[0].strip(" ,.;:„“\"")
+    return cut
+
+
+def sanitize_judicial_payload(payload: dict, authorities_by_eik: dict) -> dict:
+    # 4.1 Филтър на Модул 1 (без чл. 155 ТЗ дела на Прокуратурата)
+    m1 = payload.get("module1_collusiveLitigation", {})
+    raw_td = m1.get("liveEissCommercialDisputes", [])
+    clean_td = [
+        d for d in raw_td
+        if is_valid_procurement_dispute(
+            d.get("authorityEik", ""),
+            d.get("authorityName", ""),
+            d.get("contractorEik", ""),
+            float(d.get("contractorWonEur") or 0.0),
+        )
+    ]
+    m1["liveEissCommercialDisputes"] = clean_td
+    m1["liveEissCommercialDisputesCount"] = len(clean_td)
+    td_outcomes = Counter(d.get("outcome", "") for d in clean_td)
+    m1["commercialOutcomeBreakdown"] = [{"outcome": k, "count": v} for k, v in td_outcomes.most_common()]
+
+    # 4.2 Разграничаване на директно КАНД съвпадение от регионален бенчмарк в Модул 2 + чистене на едноименни
+    m2 = payload.get("module2_impunityIndex", {})
+    for rep in m2.get("updatedArt17Reports", []):
+        eik = rep.get("authorityEik", "")
+        if eik and rep.get("matchMethod") in {"NAME_EXACT", "NAME_CORE"}:
+            cand = authorities_by_eik.get(eik, {"name": rep.get("authorityName"), "region": rep.get("authorityRegion")})
+            if not validate_regional_homonym(rep.get("object", ""), rep.get("directorate", ""), cand):
+                rep["authorityEik"] = ""
+                rep["authorityName"] = ""
+                rep["authorityRegion"] = ""
+                rep["authoritySpentEur"] = 0.0
+                rep["matchMethod"] = "REJECTED_HOMONYM"
+
+        if str(rep.get("linkType", "")).startswith("DIR_"):
+            rep["isRegionalBenchmarkOnly"] = True
+            rep["courtFate"] = f"Регионален индикатор ({rep.get('directorate')}): {rep.get('courtFate')}"
+        else:
+            rep["isRegionalBenchmarkOnly"] = False
+
+    for kand in m2.get("liveEissAndKandCases", []):
+        kand["authorityName"] = clean_authority_name_snippet(kand.get("authorityName", ""))
+        cleaned_l = clean_extracted_lawyers(kand.get("lawyers", []))
+        kand["lawyers"] = [f"{x['role']}: {x['name']}" for x in cleaned_l]
+
+    # 4.3 Изчистване на адвокатите в Модул 3 и ВАС (Модул 4)
+    m4 = payload.get("module4_kzkVas", {})
+    for vas in m4.get("liveVasFinalActs", []):
+        cleaned_l = clean_extracted_lawyers(vas.get("lawyers", []))
+        vas["lawyers"] = [f"{x['role']}: {x['name']}" for x in cleaned_l]
+
+    m3 = payload.get("module3_legalExpertGraph", {})
+    dedup_lawyers = []
+    seen_l = set()
+    for item in m3.get("eissExtractedLawyers", []):
+        parsed = clean_extracted_lawyers([f"{item.get('role', 'Адвокат')}: {item.get('name', '')}"])
+        for p in parsed:
+            k = (p["name"].upper(), item.get("caseNo", ""))
+            if k not in seen_l:
+                seen_l.add(k)
+                dedup_lawyers.append({
+                    **item,
+                    "name": p["name"],
+                    "role": p["role"],
+                    "authority": clean_authority_name_snippet(item.get("authority", "")),
+                })
+    m3["eissExtractedLawyers"] = dedup_lawyers
+
+    # 4.4 Изваждане на Прокуратурата (121817309*) от изкуствен риск бууст за чл. 155 ТЗ
+    ra_auth = payload.get("riskAdjustments", {}).get("authorities", {})
+    for eik in list(ra_auth.keys()):
+        if eik.startswith(PROSECUTOR_EIK_PREFIX) and ra_auth[eik].get("adfiCount", 0) == 0 and ra_auth[eik].get("kzkCount", 0) == 0:
+            del ra_auth[eik]
+    payload["entityMatching"]["authoritiesWithJudicialBoost"] = len(ra_auth)
+
+    return payload
 
 
 def main() -> int:
@@ -2461,6 +2803,8 @@ def main() -> int:
             "companies": comp_risk_map,
         },
     }
+
+    out_payload = sanitize_judicial_payload(out_payload, matcher.auth_by_eik)
 
     out_path = DATA_DIR / "sigma3_judicial_6.json"
     out_path.write_text(json.dumps(out_payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
