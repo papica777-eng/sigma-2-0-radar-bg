@@ -1,0 +1,21 @@
+{
+  "name": "sigma-3-0-finality-astro",
+  "type": "module",
+  "version": "3.0.0",
+  "description": "СИГМА 3.0 FINALITY — Национална криминалистична платформа за обществени поръчки и съдебно-институционално разузнаване (Astro + Dart Sass @use + TypeScript)",
+  "scripts": {
+    "dev": "astro dev",
+    "build:sass": "sass --no-source-map src/styles/main.scss docs/sigma3/styles.css",
+    "build:astro": "astro build",
+    "sync:docs": "node -e \"const fs=require('fs'); fs.copyFileSync('dist/index.html','docs/index.html');\"",
+    "build": "npm run build:sass && npm run build:astro && npm run sync:docs",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^5.5.0"
+  },
+  "devDependencies": {
+    "sass": "^1.85.0",
+    "typescript": "^5.8.0"
+  }
+}
