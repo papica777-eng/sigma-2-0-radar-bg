@@ -1,14 +1,14 @@
 # СИГМА 3.0 FINALITY — Национален Радар за Обществени Поръчки, Форенсик Одит и Съдебно-Институционално Разузнаване
 
-[![Live Platform](https://img.shields.io/badge/LIVE-https%3A%2F%2Fpaas.website%2F-10b981?style=for-the-badge)](https://paas.website/)
-[![Judicial Pipeline](https://img.shields.io/badge/EPEP%20%2F%20EISS%20API-ZERO%20CAPTCHA%20%7C%2086%20ACTS-4f46e5?style=for-the-badge)](https://paas.website/)
-[![GDPR & Data Audit](https://img.shields.io/badge/GDPR%20%2F%20%D0%97%D0%97%D0%9B%D0%94-0%20RAW%20EGN%20%7C%204--POINT%20VERIFIED-059669?style=for-the-badge)](https://paas.website/)
-[![Architecture](https://img.shields.io/badge/DART%20SASS-@use%20%2F%20@forward%209--NODE%20SYSTEM-0284c7?style=for-the-badge)](https://paas.website/)
+[![Live Platform](https://img.shields.io/badge/LIVE-https%3A%2F%2Fnasvetlo.website%2F-10b981?style=for-the-badge)](https://nasvetlo.website/)
+[![Judicial Pipeline](https://img.shields.io/badge/EPEP%20%2F%20EISS%20API-ZERO%20CAPTCHA%20%7C%2086%20ACTS-4f46e5?style=for-the-badge)](https://nasvetlo.website/)
+[![GDPR & Data Audit](https://img.shields.io/badge/GDPR%20%2F%20%D0%97%D0%97%D0%9B%D0%94-0%20RAW%20EGN%20%7C%204--POINT%20VERIFIED-059669?style=for-the-badge)](https://nasvetlo.website/)
+[![Architecture](https://img.shields.io/badge/ASTRO%205%20%2B%20DART%20SASS-@use%20%2F%20@forward%209--NODE%20SYSTEM-0284c7?style=for-the-badge)](https://nasvetlo.website/)
 
 **СИГМА 3.0 FINALITY** (актуализирана надстройка над СИГМА 2.0) е публична аналитична и форенсик платформа за кръстосана верификация на държавни разходи, обществени поръчки и съдебно-контролни производства в Република България. Платформата обединява отворените данни от **ЦАИС ЕОП / АОП**, **Търговския регистър (ТРРЮЛНЦ)**, **АДФИ**, **КЗК**, **ЕИСС / ЕПЕП (`ecase.justice.bg`)** и **Върховния административен съд (ВАС)** в единен 9-възлов граф и динамичен **Индекс на риска и безнаказаността (`0–100`)**.
 
-- **Публичен портал (Production):** https://paas.website/
-- **Огледален GitHub Pages адрес:** https://papica777-eng.github.io/sigma-2-0-radar-bg/
+- **Официален домейн (Production):** https://nasvetlo.website/
+- **Автоматично 301 пренасочване от старите линкове:** https://papica777-eng.github.io/sigma-2-0-radar-bg/ и https://paas.website/ &rarr; `https://nasvetlo.website/`
 
 ---
 
