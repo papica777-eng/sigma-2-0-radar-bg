@@ -53,27 +53,21 @@ const {
 
 <header class="topbar">
   <div class="topbar-inner">
-    <div class="brand-wrap brand-with-logo">
-      <NasvetloLogo variant="header" />
-      <div class="brand-text-col">
-        <div class="brand">
-          <span class="brand-nasvetlo-wordmark">НА СВЕТЛО</span>
-          <span class="brand-mark">СИГМА 3.0 · FINALITY</span>
-          <span class="brand-title">Национален криминалистичен радар</span>
-          <span class="brand-badge-live"><i class="live-pulse"></i> NASVETLO.WEBSITE</span>
-        </div>
-        <div class="brand-sub" id="syncSubtitle">Жив масив sigma.midt.bg + Сметна палата + ТР + ЕПЕП/АДФИ/КЗК · Данни към: {asOf} · 206 907 дог. · 4 344 инст. · 17 428 фирми</div>
-      </div>
+    <div class="brand-wrap">
+      <a href="#top" class="brand-home-link" aria-label="НА СВЕТЛО · SIGMA 3.0">
+        <NasvetloLogo variant="header" />
+      </a>
+      <div class="brand-sub" id="syncSubtitle">Жив масив sigma.midt.bg + Сметна палата + ТР + ЕПЕП/АДФИ/КЗК · Данни към: {asOf} · 206 907 дог. · 4 344 инст. · 17 428 фирми</div>
     </div>
     <div class="topbar-actions">
       <button type="button" class="btn btn-cmd" id="openCmdPaletteBtn" title="Бързо глобално търсене (Ctrl+K)">
-        <span>Търси във всички 22 343 записа</span>
+        <span>Търсене (22 343)</span>
         <kbd>Ctrl K</kbd>
       </button>
       <button type="button" class="btn btn-oracle" id="quickOpenOracleBtn">AI Асистент</button>
       <button type="button" class="btn btn-proposal" id="quickOpenProposalBtn">МИДТ 3.0</button>
-      <button type="button" class="btn" id="densityToggleBtn" title="Превключи между компактен одиторски изглед (200 000+ договора) и презентационен изглед">Одиторски изглед</button>
-      <button type="button" class="btn" id="themeToggleBtn" title="Смени светъл / тъмен команден режим">Тъмен режим</button>
+      <button type="button" class="btn" id="densityToggleBtn" title="Превключи между компактен одиторски изглед и презентационен изглед">Одиторски изглед</button>
+      <button type="button" class="btn" id="themeToggleBtn" title="Смени светъл / тъмен режим">Тъмен режим</button>
       <a class="btn" href="data/SIGMA_2_0_ALL_OFFICIALS_571.csv" download>CSV</a>
       <a class="btn" href="https://sigma.midt.bg" target="_blank" rel="noopener">СИГМА 2.0 ↗</a>
     </div>
