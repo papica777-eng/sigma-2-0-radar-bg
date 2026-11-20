@@ -11,8 +11,8 @@ interface Props {
 
 const defaultAsOf = String((j6Raw as any).generatedAtUtc || '2026-11-20').slice(0, 10);
 const {
-  title = 'СИГМА 3.0 FINALITY (НА СВЕТЛО) — Национална криминалистична платформа за обществени поръчки',
-  description = 'СИГМА 3.0 FINALITY на nasvetlo.website: €53,22 млрд. (206 907 договора), 4 344 възложители, 17 428 изпълнители, 571 свързани длъжностни лица, +€1,92 млрд. скрити ДЗЗД, 28-областен атлас, картелна лаборатория, Закон на Бенфорд и жив AI асистент.',
+  title = 'NAsvetlo — Независима гражданска платформа за прозрачност на обществените поръчки',
+  description = 'NAsvetlo (nasvetlo.website) — Независима гражданска платформа, изградена върху отворените данни (CC-BY 4.0) на МИДТ / СИГМА 2.0: €53,22 млрд. (206 907 договора), 4 344 възложители, 17 428 изпълнители, 571 свързани лица, +€1,92 млрд. скрити ДЗЗД, 28-областен атлас, картелна лаборатория, Закон на Бенфорд и жив AI асистент.',
   asOf = defaultAsOf,
 } = Astro.props;
 ---
@@ -24,9 +24,9 @@ const {
   <title>{title}</title>
   <meta name="description" content={description} />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="СИГМА 3.0 FINALITY · НА СВЕТЛО" />
-  <meta property="og:title" content="СИГМА 3.0 FINALITY — Криминалистичен одит на €53,22 млрд. обществени поръчки" />
-  <meta property="og:description" content="Надграждане отвъд СИГМА 2.0: 28-областен рисков атлас, +€1,92 млрд. скрити ДЗЗД консорциуми, 60 картелни двойки, Закон на Бенфорд, жива JSON проверка на договори и 0-503 AI асистент." />
+  <meta property="og:site_name" content="NAsvetlo" />
+  <meta property="og:title" content="NAsvetlo — Граждански контрол върху €53,22 млрд. обществени поръчки" />
+  <meta property="og:description" content="Независима гражданска платформа върху отворените данни (CC-BY 4.0) на МИДТ / СИГМА 2.0: 28-областен рисков атлас, +€1,92 млрд. скрити ДЗЗД, 60 картелни двойки, Закон на Бенфорд и жив AI асистент." />
   <meta property="og:url" content="https://nasvetlo.website/" />
   <meta property="og:image" content="https://nasvetlo.website/sigma3/og-card.png" />
   <meta property="og:image:width" content="1200" />
@@ -55,7 +55,7 @@ const {
 <header class="topbar">
   <div class="topbar-inner">
     <div class="brand-wrap">
-      <a href="#top" class="brand-home-link" aria-label="НА СВЕТЛО · SIGMA 3.0">
+      <a href="#top" class="brand-home-link" aria-label="NAsvetlo — Независима гражданска платформа">
         <NasvetloLogo variant="header" />
       </a>
       <div class="brand-sub" id="syncSubtitle">Жив масив sigma.midt.bg + Сметна палата + ТР + ЕПЕП/АДФИ/КЗК · Данни към: {asOf} · 206 907 дог. · 4 344 инст. · 17 428 фирми</div>
@@ -66,7 +66,7 @@ const {
         <kbd>Ctrl K</kbd>
       </button>
       <button type="button" class="btn btn-oracle" id="quickOpenOracleBtn">AI Асистент</button>
-      <button type="button" class="btn btn-proposal" id="quickOpenProposalBtn">МИДТ 3.0</button>
+      <button type="button" class="btn btn-proposal" id="quickOpenProposalBtn">Архитектура &amp; МИДТ</button>
       <button type="button" class="btn" id="densityToggleBtn" title="Превключи между компактен одиторски изглед и презентационен изглед">Одиторски изглед</button>
       <button type="button" class="btn" id="themeToggleBtn" title="Смени светъл / тъмен режим">Тъмен режим</button>
       <a class="btn" href="data/SIGMA_2_0_ALL_OFFICIALS_571.csv" download>CSV</a>
@@ -80,7 +80,7 @@ const {
 </main>
 
 <footer class="site-footer">
-  <span><strong>СИГМА 3.0 FINALITY</strong> · Интегрирано на <a href="https://nasvetlo.website">nasvetlo.website</a> · Първични регистри (2026): АОП / ЦАИС ЕОП, СИГМА (МИДТ), Сметна палата &amp; ЕРИК, КПК (бивша КПКОНПИ), АДФИ, КЗК, ВСС — ЕПЕП / ЕИСС &amp; ВАС, ТРРЮЛНЦ, EPPO (CC-BY 4.0) · ETL: <code>sync_sigma.py</code>, <code>deep_trace.py</code>, <code>sync_sigma3_finality.py</code>, <code>build_sigma3_forensics_7.py</code>, <code>sync_sigma3_judicial_6.py</code> · Карта: GISCO NUTS 2021 © EuroGeographics</span>
+  <span><strong>NAsvetlo</strong> (<a href="https://nasvetlo.website">nasvetlo.website</a>) · Независима гражданска платформа, изградена върху отворените данни (CC-BY 4.0) на МИДТ / СИГМА 2.0 и първичните регистри (2026): АОП / ЦАИС ЕОП, Сметна палата &amp; ЕРИК, КПК (бивша КПКОНПИ), АДФИ, КЗК, ВСС — ЕПЕП / ЕИСС &amp; ВАС, ТРРЮЛНЦ, EPPO · Карта: GISCO NUTS 2021 © EuroGeographics</span>
   <span style="display:flex;gap:14px;flex-wrap:wrap;">
     <a href="https://sigma.midt.bg" target="_blank" rel="noopener">sigma.midt.bg</a>
     <a href="https://sigma-budget.midt.bg" target="_blank" rel="noopener">СИГМА Бюджет</a>
