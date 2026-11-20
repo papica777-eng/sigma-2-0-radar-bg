@@ -5,29 +5,28 @@ interface Props {
 const { variant = 'header' } = Astro.props;
 ---
 {variant === 'header' ? (
-  <div class="nasvetlo-official-header" title="NAsvetlo — Независима гражданска платформа, изградена върху отворените данни (CC-BY 4.0) на МИДТ / СИГМА 2.0">
+  <a href="#top" class="brand-logo" aria-label="NAsvetlo — Граждански одит · CC-BY 4.0">
     <img
-      src="sigma3/nasvetlo-official-logo.jpg"
+      src="sigma3/logo-icon.png"
       alt="NAsvetlo"
-      width="44"
-      height="44"
-      class="nasvetlo-header-img"
+      width="38"
+      height="38"
+      class="brand-logo-icon"
     />
-    <div class="nasvetlo-header-text">
-      <div class="nasvetlo-header-row">
-        <span class="nasvetlo-brand-name">NAsvetlo</span>
-        <span class="sigma-edition-tag">CC-BY 4.0 · ГРАЖДАНСКИ КОНТРОЛ</span>
-      </div>
-      <span class="nasvetlo-brand-tagline">Независима гражданска платформа, изградена върху отворените данни (CC-BY 4.0) на МИДТ / СИГМА 2.0</span>
+    <div class="brand-logo-text">
+      <span class="brand-logo-name">
+        NA<span class="brand-logo-accent">svetlo</span>
+      </span>
+      <span class="brand-logo-meta">Граждански одит · CC-BY 4.0</span>
     </div>
-  </div>
+  </a>
 ) : (
   <div class="hero-official-logo-wrap">
     <img
       src="sigma3/nasvetlo-official-logo.jpg"
       alt="NAsvetlo — Прожектор върху обществените поръчки в България"
-      width="320"
-      height="320"
+      width="310"
+      height="310"
       class="hero-official-logo"
     />
   </div>

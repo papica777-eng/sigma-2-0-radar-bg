@@ -34,7 +34,7 @@ const {
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://nasvetlo.website/sigma3/og-card.png" />
   <link rel="canonical" href="https://nasvetlo.website/" />
-  <link rel="icon" type="image/jpeg" href="sigma3/nasvetlo-official-logo.jpg" />
+  <link rel="icon" type="image/png" href="sigma3/logo-icon.png" />
   <link rel="apple-touch-icon" href="sigma3/nasvetlo-official-logo.jpg" />
   <script is:inline>
     (function() {
@@ -54,26 +54,40 @@ const {
 
 <header class="topbar">
   <div class="topbar-inner">
-    <div class="brand-wrap">
-      <a href="#top" class="brand-home-link" aria-label="NAsvetlo — Независима гражданска платформа">
-        <NasvetloLogo variant="header" />
-      </a>
-      <div class="brand-sub" id="syncSubtitle">Жив масив sigma.midt.bg + Сметна палата + ТР + ЕПЕП/АДФИ/КЗК · Данни към: {asOf} · 206 907 дог. · 4 344 инст. · 17 428 фирми</div>
+    <div class="topbar-left">
+      <NasvetloLogo variant="header" />
     </div>
-    <div class="topbar-actions">
-      <button type="button" class="btn btn-cmd" id="openCmdPaletteBtn" title="Бързо глобално търсене (Ctrl+K)">
-        <span>Търсене (22 343)</span>
+
+    <div class="topbar-center">
+      <button type="button" class="btn-cmd-center" id="openCmdPaletteBtn" title="Бързо глобално търсене (Ctrl+K)">
+        <span class="cmd-search-icon" aria-hidden="true">⌕</span>
+        <span class="cmd-search-label">Търсене (22 343)</span>
         <kbd>Ctrl K</kbd>
       </button>
-      <button type="button" class="btn btn-oracle" id="quickOpenOracleBtn">AI Асистент</button>
-      <button type="button" class="btn btn-proposal" id="quickOpenProposalBtn">Архитектура &amp; МИДТ</button>
-      <button type="button" class="btn" id="densityToggleBtn" title="Превключи между компактен одиторски изглед и презентационен изглед">Одиторски изглед</button>
-      <button type="button" class="btn" id="themeToggleBtn" title="Смени светъл / тъмен режим">Тъмен режим</button>
-      <a class="btn" href="data/SIGMA_2_0_ALL_OFFICIALS_571.csv" download>CSV</a>
-      <a class="btn" href="https://sigma.midt.bg" target="_blank" rel="noopener">СИГМА 2.0 ↗</a>
+    </div>
+
+    <div class="topbar-right">
+      <button type="button" class="btn topbar-btn-ai" id="quickOpenOracleBtn">AI Асистент</button>
+      <button type="button" class="btn topbar-btn" id="densityToggleBtn" title="Превключи между компактен одиторски изглед и презентационен изглед">Одиторски изглед</button>
+      <button type="button" class="btn topbar-btn" id="themeToggleBtn" title="Смени светъл / тъмен режим">Тъмен режим</button>
     </div>
   </div>
 </header>
+
+<div class="info-subbar">
+  <div class="info-subbar-inner">
+    <div class="info-subbar-meta">
+      <span class="civic-positioning-tag">Независима гражданска платформа върху отворените данни (CC-BY 4.0) на МИДТ / СИГМА 2.0</span>
+      <span class="info-subbar-sep" aria-hidden="true">·</span>
+      <span class="info-subbar-sync" id="syncSubtitle">Жив масив sigma.midt.bg + Сметна палата + ТР + ЕПЕП/АДФИ/КЗК · Данни към: {asOf} · 206 907 дог. · 4 344 инст. · 17 428 фирми</span>
+    </div>
+    <div class="info-subbar-links">
+      <button type="button" class="subbar-link-btn" id="quickOpenProposalBtn">Архитектура &amp; МИДТ</button>
+      <a class="subbar-link" href="data/SIGMA_2_0_ALL_OFFICIALS_571.csv" download>CSV</a>
+      <a class="subbar-link" href="https://sigma.midt.bg" target="_blank" rel="noopener">СИГМА 2.0 ↗</a>
+    </div>
+  </div>
+</div>
 
 <main class="container">
   <slot />
