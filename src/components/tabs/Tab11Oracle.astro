@@ -7,14 +7,14 @@ const annexTotalLabel = '+€' + (annexInflationEur / 1e9).toFixed(2).replace('.
 <!-- =================================================================== -->
 <!-- TAB 11: SIGMA 3.0 ORACLE — LIVE BULGARIAN AI COPILOT (QANTUM NLU) -->
 <!-- =================================================================== -->
-<section class="tab-panel" id="tab-oracle">
+<section class="tab-panel" id="tab-oracle" hidden>
   <div class="oracle-shell">
     <div class="oracle-head">
       <div>
-        <div class="hero-kicker" style="margin-bottom:4px;">NAsvetlo ORACLE · СЕМАНТИЧЕН NLU &amp; 13-РАДАРЕН RAG ДВИГАТЕЛ (0 × HTTP 503)</div>
-        <h2 style="font-family:var(--font-serif);margin:0 0 4px;font-size:22px;">Интелигентен одиторски AI агент (свободен български език, шльокавица и размито търсене)</h2>
+        <div class="hero-kicker" style="margin-bottom:4px;">NAsvetlo ORACLE · СЕМАНТИЧЕН ОДИТЕН АСИСТЕНТ · 100% НЕПРЕКЪСВАЕМОСТ</div>
+        <h2 style="font-family:var(--font-serif);margin:0 0 4px;font-size:22px;">Интелигентен одиторски AI асистент (разговорен език, съкращения и латиница)</h2>
         <p class="muted" style="margin:0;font-size:12.5px;">
-          Разбира свободен разговорен език, правописни грешки, латиница (шльокавица), синоними, съкращения (<code>АПИ</code>, <code>НКЖИ</code>, <code>АЕЦ</code>, <code>СО</code>) и контекстни въпроси („а какви дела има там?“, „дай сигнал за него“). Изпълнява 360° кръстосан синтез през всички 206 907 договора, 22 343 субекта, 7-те криминалистични радара и живите съдебни актове от ЕПЕП/ВАС/АДФИ/КЗК.
+          Разбира свободен разговорен език, правописни грешки, латиница, синоними, съкращения (<code>АПИ</code>, <code>НКЖИ</code>, <code>АЕЦ</code>, <code>СО</code>) и контекстни въпроси („а какви дела има там?“, „дай сигнал за него“). Изпълнява 360° кръстосан синтез през всички 206 907 договора, 22 343 субекта, 7-те одитни радара и живите съдебни актове от ЕПЕП/ВАС/АДФИ/КЗК без външни сървъри.
         </p>
       </div>
       <button class="btn" id="oracleClearBtn" type="button">Изчисти чата</button>
@@ -36,13 +36,13 @@ const annexTotalLabel = '+€' + (annexInflationEur / 1e9).toFixed(2).replace('.
       <button class="city-chip" data-oracle-q="Кои партийни медии и дарители от ЕРИК печелят поръчки?">Дарения ЕРИК &amp; Медии</button>
       <button class="city-chip" data-oracle-q="Покажи адвокатските кантори, юристите от ЕПЕП и вещите лица">Адвокати и Вещи лица</button>
       <button class="city-chip" data-oracle-q="Сравни област Варна и област Пловдив">Сравни Варна и Пловдив</button>
-      <button class="city-chip" data-oracle-q="kaji mi za glavbolgarstroi i patinjenering">Пример на шльокавица (латиница)</button>
+      <button class="city-chip" data-oracle-q="kaji mi za glavbolgarstroi i patinjenering">Заявка на латиница (транслитерация)</button>
     </div>
 
     <div class="oracle-messages" id="oracleMessages" aria-live="polite"></div>
 
     <form class="oracle-form" id="oracleForm">
-      <input id="oracleInput" class="search-input" type="text" placeholder="Пишете свободно (на кирилица или шльокавица, дори с грешки): напр. „kakvi dela i adfi ima za varna“, „провери Главболгарстрой“, „кой краде от асфалт и строителство“, „а за него дай сигнал“…" autocomplete="off" />
+      <input id="oracleInput" class="search-input" type="text" placeholder="Задайте въпрос на свободен български език или латиница: напр. „какви дела и АДФИ доклади има за Варна“, „провери АПИ“, „сравни Пловдив и Бургас“…" autocomplete="off" />
       <button class="btn btn-dark" type="submit">Изпълни заявка &rarr;</button>
     </form>
   </div>

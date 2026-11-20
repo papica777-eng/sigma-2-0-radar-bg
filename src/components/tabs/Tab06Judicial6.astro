@@ -17,7 +17,7 @@ const fmtEurB = (n: any) => '€' + (Number(n || 0) / 1e9).toFixed(2).replace('.
 <!-- =================================================================== -->
 <!-- TAB 6: 6 JUDICIAL x PROCUREMENT ENGINES (AOP x COURTS / ADFI / KZK) -->
 <!-- =================================================================== -->
-<section class="tab-panel judicial-radar-scope" id="tab-judicial6">
+<section class="tab-panel judicial-radar-scope" id="tab-judicial6" hidden>
   <div class="editorial-note" id="j6EntityMatchingBox" style="display:block;">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:10px;">
       <div>
@@ -36,7 +36,7 @@ const fmtEurB = (n: any) => '€' + (Number(n || 0) / 1e9).toFixed(2).replace('.
     <div class="kpi-card emphasis"><div class="kpi-label">2. АДФИ + КАНД/АНД (ЕИСС)</div><div class="kpi-val" style="color:var(--crimson);">{fmtInt(m2.updatedArt17Count)} чл.17(7) · {(m2.liveEissAndKandCases || []).length} дела</div><div class="kpi-sub">{fmtInt(m2.totalReports)} докл. АДФИ · Потвърдени vs Отменени НП</div></div>
     <div class="kpi-card"><div class="kpi-label">3. Адвокати и Вещи лица</div><div class="kpi-val">{fmtInt(m3.lawFirmsCount)} кант. / {(m3.eissExtractedLawyers || []).length} юристи</div><div class="kpi-sub">{fmtInt((m3.adfiRegisteredExperts || {}).totalExperts)} АДФИ експерти</div></div>
     <div class="kpi-card emphasis"><div class="kpi-label">4. КЗК &amp; ВАС IV отд. (ЕИСС)</div><div class="kpi-val">{(m4.liveVasFinalActs || []).length} акта ВАС</div><div class="kpi-sub">{kzkIng.prelimGranted || 0} допуснати предв. изп. · {kzkIng.decisionsOverturned || 0} отм. в КЗК</div></div>
-    <div class="kpi-card"><div class="kpi-label">5. Несъстоятелност / Феникс</div><div class="kpi-val">{fmtInt(m5.burnoutFirmsCount)} burnout</div><div class="kpi-sub">{m5.distressedOrPledgedCount} със запори/залози ТР · {m5.phoenixChainsCount} вериги</div></div>
+    <div class="kpi-card"><div class="kpi-label">5. Несъстоятелност / Феникс</div><div class="kpi-val">{fmtInt(m5.burnoutFirmsCount)} в срив</div><div class="kpi-sub">{m5.distressedOrPledgedCount} със запори/залози ТР · {m5.phoenixChainsCount} вериги</div></div>
     <div class="kpi-card"><div class="kpi-label">6. ЕС Средства / EPPO Радар</div><div class="kpi-val">{fmtEurB(m6.euFundedTotalEur)}</div><div class="kpi-sub">{m6.euSingleOfferSharePct}% с 1 оф. · {fmtInt(m6.eppoHighRiskCount)} EPPO тригера</div></div>
   </div>
   <div class="controls-card">
