@@ -1,5 +1,6 @@
 ---
 import ModalsAndDrawer from '../components/modals/ModalsAndDrawer.astro';
+import NasvetloLogo from '../components/NasvetloLogo.astro';
 import j6Raw from '../../docs/data/sigma3_judicial_6.json';
 
 interface Props {
@@ -33,6 +34,7 @@ const {
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://nasvetlo.website/sigma3/og-card.png" />
   <link rel="canonical" href="https://nasvetlo.website/" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <script is:inline>
     (function() {
       var h = window.location.hostname;
@@ -51,13 +53,17 @@ const {
 
 <header class="topbar">
   <div class="topbar-inner">
-    <div class="brand-wrap">
-      <div class="brand">
-        <span class="brand-mark">СИГМА 3.0 · FINALITY</span>
-        <span class="brand-title">Национален криминалистичен радар</span>
-        <span class="brand-badge-live"><i class="live-pulse"></i> NASVETLO.WEBSITE</span>
+    <div class="brand-wrap brand-with-logo">
+      <NasvetloLogo variant="header" />
+      <div class="brand-text-col">
+        <div class="brand">
+          <span class="brand-nasvetlo-wordmark">НА СВЕТЛО</span>
+          <span class="brand-mark">СИГМА 3.0 · FINALITY</span>
+          <span class="brand-title">Национален криминалистичен радар</span>
+          <span class="brand-badge-live"><i class="live-pulse"></i> NASVETLO.WEBSITE</span>
+        </div>
+        <div class="brand-sub" id="syncSubtitle">Жив масив sigma.midt.bg + Сметна палата + ТР + ЕПЕП/АДФИ/КЗК · Данни към: {asOf} · 206 907 дог. · 4 344 инст. · 17 428 фирми</div>
       </div>
-      <div class="brand-sub" id="syncSubtitle">Жив масив sigma.midt.bg + Сметна палата + ТР + ЕПЕП/АДФИ/КЗК · Данни към: {asOf} · 206 907 дог. · 4 344 инст. · 17 428 фирми</div>
     </div>
     <div class="topbar-actions">
       <button type="button" class="btn btn-cmd" id="openCmdPaletteBtn" title="Бързо глобално търсене (Ctrl+K)">

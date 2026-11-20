@@ -1,5 +1,6 @@
 ---
 import j6Raw from '../../docs/data/sigma3_judicial_6.json';
+import NasvetloLogo from './NasvetloLogo.astro';
 
 interface Props {
   asOf?: string;
@@ -11,6 +12,18 @@ const { asOf = defaultAsOf } = Astro.props;
 <section class="hero">
   <div class="hero-grid">
     <div>
+      <div class="hero-spotlight-banner">
+        <NasvetloLogo variant="hero" />
+        <div class="hero-spotlight-copy">
+          <div class="hero-spotlight-topline">
+            <span class="spotlight-pill-beam">ПРОЖЕКТОР „НА СВЕТЛО“</span>
+            <span class="spotlight-domain-tag">nasvetlo.website</span>
+          </div>
+          <div class="hero-spotlight-motto">
+            Осветяваме в тъмното <strong>€53,22 млрд.</strong> обществени поръчки, <strong>+€1,92 млрд.</strong> скрити ДЗЗД дивиденти и <strong>+€1,29 млрд.</strong> анекси
+          </div>
+        </div>
+      </div>
       <div class="hero-kicker">СИГМА 3.0 FINALITY · Предложение за национален стандарт към МИДТ · CC-BY 4.0</div>
       <h1>Пълен криминалистичен рентген на <em>€53,22 млрд.</em> обществени поръчки в България</h1>
       <p class="hero-lead">
