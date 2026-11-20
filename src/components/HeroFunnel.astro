@@ -1,6 +1,5 @@
 ---
 import j6Raw from '../../docs/data/sigma3_judicial_6.json';
-import NasvetloLogo from './NasvetloLogo.astro';
 
 interface Props {
   asOf?: string;
@@ -10,7 +9,7 @@ const { asOf = defaultAsOf } = Astro.props;
 ---
 <!-- EXECUTIVE SOVEREIGN HERO (SIGMA.MIDT.BG SWISS EDITORIAL ARCHITECTURE) -->
 <section class="hero" id="top">
-  <div class="hero-top-split">
+  <div class="hero-top-split hero-section">
     <div class="hero-editorial-col">
       <div class="hero-kicker">Независима гражданска платформа · Отворени данни (CC-BY 4.0) на МИДТ / СИГМА 2.0</div>
       <h1>Къде отиват <em>€53,22 млрд.</em> от обществените поръчки в България?</h1>
@@ -40,10 +39,6 @@ const { asOf = defaultAsOf } = Astro.props;
           <button class="city-chip chip-accent" data-jump-tab="judicial6">Съдебен радар (АДФИ/КЗК)</button>
         </div>
       </div>
-    </div>
-
-    <div class="hero-emblem-col">
-      <NasvetloLogo variant="hero" />
     </div>
   </div>
 
