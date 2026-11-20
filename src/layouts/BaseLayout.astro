@@ -48,7 +48,7 @@ const {
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="sigma3/styles.css?v=20261120e" />
+  <link rel="stylesheet" href="sigma3/styles.css?v=20261120f" />
 </head>
 <body>
 
@@ -79,10 +79,10 @@ const {
     <div class="info-subbar-meta">
       <span class="civic-positioning-tag">Независима гражданска платформа върху отворените данни (CC-BY 4.0) на МИДТ / СИГМА 2.0</span>
       <span class="info-subbar-sep" aria-hidden="true">·</span>
-      <span class="info-subbar-sync" id="syncSubtitle">Данни към: {asOf} · 206 907 дог. · 4 344 инст.</span>
+      <a class="info-subbar-sync" id="syncSubtitle" href="data/sigma3_judicial_6.json" target="_blank" rel="noopener" title="Преглед на актуалния JSON лог на последната синхронизация">Синхронизация: {asOf}</a>
     </div>
     <div class="info-subbar-links">
-      <button type="button" class="subbar-link-btn" id="quickOpenProposalBtn">Архитектура &amp; МИДТ</button>
+      <button type="button" class="subbar-link-btn" id="quickOpenProposalBtn">Архитектура &amp; Методология</button>
       <a class="subbar-link" href="data/SIGMA_2_0_ALL_OFFICIALS_571.csv" download>CSV</a>
       <a class="subbar-link" href="https://sigma.midt.bg" target="_blank" rel="noopener">СИГМА 2.0 ↗</a>
     </div>
@@ -108,9 +108,9 @@ const {
 
 <ModalsAndDrawer />
 
-<script is:inline src="sigma3/app.js?v=20261120c"></script>
-<script is:inline src="sigma3/semantic_dialog_engine.js"></script>
-<script is:inline src="sigma3/sigma3_modules.js"></script>
+<script is:inline src="sigma3/app.js?v=20261120f"></script>
+<script is:inline src="sigma3/semantic_dialog_engine.js?v=20261120f"></script>
+<script is:inline src="sigma3/sigma3_modules.js?v=20261120f"></script>
 <script is:inline src="sigma3/forensics7.js"></script>
 <script is:inline src="sigma3/judicial6.js"></script>
 </body>
