@@ -1,33 +1,17 @@
 ---
-interface Props {
-  variant?: 'header' | 'hero';
-}
-const { variant = 'header' } = Astro.props;
 ---
-{variant === 'header' ? (
-  <a href="#top" class="brand-logo" aria-label="NAsvetlo — Граждански одит · CC-BY 4.0">
-    <img
-      src="sigma3/logo-icon.png"
-      alt="NAsvetlo"
-      width="38"
-      height="38"
-      class="brand-logo-icon"
-    />
-    <div class="brand-logo-text">
-      <span class="brand-logo-name">
-        NA<span class="brand-logo-accent">svetlo</span>
-      </span>
-      <span class="brand-logo-meta">Граждански одит · CC-BY 4.0</span>
-    </div>
-  </a>
-) : (
-  <div class="hero-official-logo-wrap">
-    <img
-      src="sigma3/nasvetlo-official-logo.jpg"
-      alt="NAsvetlo — Прожектор върху обществените поръчки в България"
-      width="310"
-      height="310"
-      class="hero-official-logo"
-    />
+<a href="#top" class="brand-logo" aria-label="NAsvetlo — Граждански одит · CC-BY 4.0">
+  <img
+    src="/logo-icon.png"
+    alt="NAsvetlo"
+    width="38"
+    height="38"
+    class="brand-logo-icon"
+  />
+  <div class="brand-logo-text">
+    <span class="brand-logo-name">
+      NA<span class="brand-logo-accent">svetlo</span>
+    </span>
+    <span class="brand-logo-meta">Граждански одит · CC-BY 4.0</span>
   </div>
-)}
+</a>
