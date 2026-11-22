@@ -18,6 +18,8 @@ const macroRaw = loadJson('sigma3_macro.json');
 const deepRaw = loadJson('deep_links.json');
 const f7Raw = loadJson('sigma3_forensics_7.json');
 const j6Raw = loadJson('sigma3_judicial_6.json');
+const invRaw = loadJson('nasvetlo_investigations.json');
+const adm50Raw = loadJson('nasvetlo_50_admins.json');
 
 // Normalize rows identically to app.js
 const officials = (officialsRaw.officials || officialsRaw).map((o) => ({
@@ -84,6 +86,31 @@ const sandbox = {
 sandbox.window = sandbox;
 sandbox.globalThis = sandbox;
 
+const invByCompanyEik = new Map();
+const admin50ByEik = new Map();
+const blackBoxByEik = new Map();
+const addCompInv = (eik, badge, cls, detail) => {
+  if (!eik) return;
+  if (!invByCompanyEik.has(eik)) invByCompanyEik.set(eik, []);
+  invByCompanyEik.get(eik).push({ badge, cls, detail });
+};
+const invD = (invRaw && invRaw.investigations) || {};
+((invD.mvrSecurity && invD.mvrSecurity.noActiveSecurityHighlights) || []).forEach((x) => {
+  addCompInv(x.eik, 'Отнет МВР + Охрана ЗОП', 'tag-crimson', `МВР ЗЧОД: ${x.latestStatus} (${x.latestDoc}) — ${x.securitySampleSubject || ''}`);
+});
+((invD.meConcessions && invD.meConcessions.topFindings) || []).forEach((x) => {
+  addCompInv(x.eik, 'Кариера МЕ', 'tag-teal', `МЕ Концесия: находище „${x.deposit}“ (${x.municipality}, ${x.mineralType})`);
+});
+((invD.dnsk && invD.dnsk.topConsultants) || []).forEach((x) => {
+  addCompInv(x.eik, x.isExpired ? 'Изтекъл надзор ДНСК' : 'Надзор ДНСК', x.isExpired ? 'tag-crimson' : 'tag-teal', `ДНСК валидно до ${x.validUntil}`);
+});
+((invD.blackBoxContracts && invD.blackBoxContracts.blackBoxBreakdown) || []).forEach((b) => {
+  if (b.eik) blackBoxByEik.set(b.eik, b);
+});
+((adm50Raw && adm50Raw.administrations) || []).forEach((a) => {
+  [a.eik, ...(a.extraEiks || [])].filter(Boolean).forEach((e) => admin50ByEik.set(e, a));
+});
+
 const state = {
   meta: null, // prevent auto initModules
   officials,
@@ -92,6 +119,11 @@ const state = {
   deep: deepRaw,
   forensics7: f7Raw,
   judicial6: j6Raw,
+  investigations: invRaw,
+  admins50: adm50Raw,
+  invByCompanyEik,
+  admin50ByEik,
+  blackBoxByEik,
   comp: {},
 };
 
@@ -103,6 +135,7 @@ sandbox.SIGMA3 = {
   riskBadgeHtml: (sc) => `[${sc}/100]`,
   ensureAuthoritiesLoaded: async () => auths,
   ensureCompaniesLoaded: async () => comps,
+  ensureInvestigationsLoaded: async () => invRaw,
   generateSignalBrief: () => {},
   openDossier: () => {},
 };
@@ -194,4 +227,17 @@ test('8. Gibberish / unknown queries abstain honestly with ZERO hallucinated COM
   const h = await queryOracle('blabla qwerty xyz123');
   assert.match(h, /Не открих точен субект/);
   assert.doesNotMatch(h, /COMPARE|IntentAnchor|NB TF-IDF|256-D|Авкова/);
+});
+
+test('9. New cross-registry investigations & 50-admin transparency integration in ORACLE', async () => {
+  const hTopic = await queryOracle('Кои фирми са с отнет охранителен лиценз и кои са черните кутии?');
+  assert.match(hTopic, /Кръстосани разследвания/);
+  assert.match(hTopic, /БАТ СЕКЮРИТИ/);
+  assert.match(hTopic, /СЕЛЕНА 52/);
+  assert.match(hTopic, /Табако Трейд/i);
+
+  const hGbsCross = await queryOracle('kaji mi za glavbolgarstroi');
+  assert.match(hGbsCross, /ГЛАВБОЛГАРСТРОЙ/);
+  assert.match(hGbsCross, /Кръстосани държавни регистри/);
+  assert.match(hGbsCross, /Бов/);
 });

@@ -348,6 +348,7 @@
     'сравни': ['сравнение', 'разлика между', 'срещу', 'съпостави'],
     'помощ': ['възможности', 'функции', 'инструкция', 'ръководство', 'команди', 'примери', 'умееш', 'работиш'],
     'източници': ['методология', 'статистика', 'актуалност', 'регистри', 'отворени данни'],
+    'разследвания': ['отнет лиценз', 'отнети лицензи', 'зчод', 'кариери', 'концесионери', 'незаконни строежи', 'изтекъл надзор', 'черни кутии', 'черна кутия', 'фасадна прозрачност', 'затворно дело', 'табако трейд'],
   };
 
   function expandTextWithSynonyms(text) {
@@ -461,6 +462,10 @@
     // UI_NAVIGATION
     { text: 'отвори графа връзките картата областите превключи тъмен режим', intent: 'UI_NAVIGATION' },
     { text: 'намери пътя връзката графа включи одиторски изглед пирамидата', intent: 'UI_NAVIGATION' },
+    // OPEN_DATA_INVESTIGATIONS
+    { text: 'отнет лиценз охранителен зчод бат секюрити селена черни кутии', intent: 'OPEN_DATA_INVESTIGATIONS' },
+    { text: 'кариери концесионери незаконни строежи изтекъл надзор днск', intent: 'OPEN_DATA_INVESTIGATIONS' },
+    { text: 'индекс прозрачност фасадна табако трейд затворно дело', intent: 'OPEN_DATA_INVESTIGATIONS' },
   ];
 
   // ===========================================================================
@@ -567,6 +572,25 @@
           this.memorize(
             `Анекс и оскъпяване (+${c.inflationPct}%, +${c.inflationEur} EUR): ${c.authority} към ${c.contractor} — ${c.subject || ''}`,
             { id: `annex_${i}`, type: 'fact', domain: 'forensic_annex', actionPayload: { contractId: c.id } }
+          );
+        });
+      }
+
+      if (state.admins50 && Array.isArray(state.admins50.administrations)) {
+        state.admins50.administrations.forEach((a) => {
+          const ac = a.antiCorruption || {};
+          this.memorize(
+            `Индекс на прозрачност: ${a.name} ЕИК ${a.eik} — ${ac.statusLabel || ac.accessStatus} (${(a.openData || {}).totalDatasets || 0} масива в data.egov.bg). Схема: ${ac.corruptionSchemes || ''}`,
+            { id: `adm50_${a.id}`, type: 'fact', domain: 'admin50', actionPayload: { authorityEik: a.eik } }
+          );
+        });
+      }
+      if (state.investigations && state.investigations.investigations) {
+        const inv = state.investigations.investigations;
+        ((inv.mvrSecurity && inv.mvrSecurity.noActiveSecurityHighlights) || []).forEach((x, i) => {
+          this.memorize(
+            `МВР отнет охранителен лиценз ЗЧОД: ${x.name} ЕИК ${x.eik} (${x.latestStatus}) — ${x.securityContractsEur} EUR (${x.securitySampleSubject || ''})`,
+            { id: `invmvr_${i}`, type: 'fact', domain: 'investigations', actionPayload: { companyKey: x.eik } }
           );
         });
       }

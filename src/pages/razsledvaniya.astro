@@ -80,6 +80,8 @@ const uniqueClusters = Array.from(new Set(adminsAll.map((a) => a.cluster).filter
     <div class="inv-nav-actions">
       <a href="#invCrossSection" class="btn topbar-btn">1. Кръстосани разследвания ({fmtInt(sumInv.totalCrossLinkedRegistries || 11)} регистъра)</a>
       <a href="#invAudit50Section" class="btn topbar-btn">2. Индекс на прозрачност ({totalAdmins} институции)</a>
+      <button type="button" class="btn topbar-btn-inv" id="btnOpenSignalsModal" data-signal-doc="exec_brief">Екзекутивен доклад &amp; Готови сигнали (ЗДОИ / АДФИ / КЗК)</button>
+      <a href="data/NASVETLO_INSTITUTIONAL_ACTION_PACK_2026.md" download class="btn topbar-btn">Пълен пакет (.md) &darr;</a>
     </div>
   </section>
 
@@ -139,18 +141,21 @@ const uniqueClusters = Array.from(new Set(adminsAll.map((a) => a.cluster).filter
           <span class="inv-tag tag-crit">МВР Охранителни лицензи × ЗОП</span>
           <h3>Отнети лицензи с реални охранителни договори</h3>
           <p>От <strong>{fmtInt(mvr.zopMatchedCompanies)}</strong> изпълнители по ЗОП с досие в регистъра за частна охранителна дейност (ЗЧОД) на МВР ({fmtEur(mvr.zopMatchedTotalEur)}), <strong>{fmtInt(mvr.noActiveLicenseZopCount)}</strong> нямат действащ лиценз (<strong>{fmtInt(mvr.explicitRevokedNoActiveCount)}</strong> изрично <strong>„Отнет“ / „Отказ“</strong>). Фирмите с отнет лиценз и без активен документ ({fmtInt(mvr.securityContractNoActiveCount)} бр. — <em>БАТ СЕКЮРИТИ ЕООД</em> и <em>СЕЛЕНА 52 ЕООД</em>) са спечелили <strong>преки охранителни поръчки</strong> за {fmtEur(mvr.securityContractNoActiveEur)} (охрана на БНР/БНТ и Министерството на туризма).</p>
+          <div style="margin-top:8px;"><button type="button" class="btn" style="padding:3px 9px;font-size:0.74rem;" data-signal-doc="sig_mvr">Генерирай сигнал (МВР / АДФИ) &rarr;</button></div>
         </article>
 
         <article class="inv-finding-card">
           <span class="inv-tag tag-ok">МЕ Кариери × Строители по ЗОП</span>
           <h3>{fmtInt(me.zopMatchedCompanies)} концесионери държат {fmtEur(me.zopMatchedDirectEur)} + {fmtEur(me.zopMatchedConsortiumEur)} ДЗЗД</h3>
           <p>Строителните компании с концесии за варовик, мрамор, баластра и диабази около пътните трасета (<em>Главболгарстрой АД</em>, <em>Европейски пътища АД</em>, <em>Пътинженерингстрой-Т ЕАД</em>, <em>Грома Холд ЕООД</em>, <em>Автомагистрали - Черно море АД</em>) концентрират мултимилиардни директни и консорциумни поръчки по ЗОП.</p>
+          <div style="margin-top:8px;"><button type="button" class="btn" style="padding:3px 9px;font-size:0.74rem;" data-signal-doc="sig_concessions">Генерирай сигнал (КЗК / МЕ) &rarr;</button></div>
         </article>
 
         <article class="inv-finding-card">
           <span class="inv-tag tag-warn">ДНСК Надзор &amp; Незаконни строежи</span>
           <h3>{fmtInt(dnsk.illegalInProcedure)} висящи събаряния + {fmtInt(dnsk.expiredConsultantsInZop)} надзорни фирми с изтекъл срок</h3>
           <p>От {fmtInt(dnsk.illegalOrdersTotal)} влезли в сила заповеди за премахване на незаконни строежи, <strong>{fmtInt(dnsk.illegalInProcedure)}</strong> са висящи в процедура (някои от 2001–2002 г.). От {fmtInt(dnsk.totalConsultantsRegistry)} консултанти по чл. 166 ЗУТ, <strong>{fmtInt(dnsk.zopMatchedConsultants)}</strong> печелят по ЗОП ({fmtEur(dnsk.zopConsultantsTotalEur)}), като при <strong>{fmtInt(dnsk.expiredConsultantsInZop)}</strong> срокът в масива на ДНСК е изтекъл.</p>
+          <div style="margin-top:8px;"><button type="button" class="btn" style="padding:3px 9px;font-size:0.74rem;" data-signal-doc="sig_dnsk">Генерирай сигнал (ДНСК / МРРБ) &rarr;</button></div>
         </article>
 
         <article class="inv-finding-card">
@@ -159,18 +164,21 @@ const uniqueClusters = Array.from(new Set(adminsAll.map((a) => a.cluster).filter
           <p>Одитът на реалния брой оферти сред {bbRows.length} водещи затворени и инфраструктурни възложители ({fmtEur(bb.totalBlackBoxEur)}) показва: {bbRows.slice(0, 3).map((r, i) => (
             <>{i > 0 ? ', ' : ''}<strong>{r.name}</strong> — {String(r.singleOfferSharePct).replace('.', ',')}% ({fmtInt(r.singleOfferCount)}/{fmtInt(r.contracts)})</>
           ))}.</p>
+          <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;"><button type="button" class="btn" style="padding:3px 9px;font-size:0.74rem;" data-signal-doc="sig_fzd">Сигнал: Фонд затворно дело (€395M) &rarr;</button><button type="button" class="btn" style="padding:3px 9px;font-size:0.74rem;" data-signal-doc="sig_aec">Сигнал: АЕЦ &amp; ЕСО (1 оферта) &rarr;</button></div>
         </article>
 
         <article class="inv-finding-card">
           <span class="inv-tag tag-ok">Държавен резерв, ИААА, БАБХ &amp; Хазарт</span>
           <h3>{fmtInt(iaaa.zopMatchedCompanies)} транспортни, {fmtInt(resv.zopMatchedFuelCompanies)} горивни и {fmtInt(oth.babhZopMatched)} хранителни фирми в ЗОП</h3>
           <p>Пресичането с ИААА ({fmtEur(iaaa.zopMatchedTotalEur)}), задължените лица по ЗЗНН и петролни бази ({fmtEur(resv.zopMatchedFuelEur)}), БАБХ ({fmtEur(oth.babhZopEur)}), енергийните помощи ОЗОБ ({fmtInt(resv.ozobZopMatched)} фирми) и хазартните лицензи на НАП ({fmtInt(oth.napGamblingZopMatched)} фирма в ЗОП: {fmtEur(oth.napGamblingZopEur)}) разкрива пълния отпечатък на изпълнителите.</p>
+          <div style="margin-top:8px;"><button type="button" class="btn" style="padding:3px 9px;font-size:0.74rem;" data-signal-doc="sig_reserve">Сигнал: Държавен резерв (95% 1 оферта) &rarr;</button></div>
         </article>
 
         <article class="inv-finding-card">
           <span class="inv-tag tag-warn">МФ ПВУ &amp; Бариера при ДФЗ 2025</span>
           <h3>{String(pvu.executionPct || 76.09).replace('.', ',')}% усвояване по ПВУ · {fmtInt(pvu.zeroPaidBigProjectsCount)} мега-проекта на 0 €</h3>
           <p>Към 30.09.2026 г. от {fmtEur(pvu.totalBudgetEur)} по ПВУ са изплатени {fmtEur(pvu.totalPaidEur)}, но <em>Цифровизацията на НАП</em> (23,42 млн. €) и <em>Агенция „Митници“</em> (17,61 млн. €) стоят на <strong>0,00 €</strong>. Междувременно масивът за субсидии на ДФЗ за 2025 г. в <code>data.egov.bg</code> прекъсва с timeout (&gt;120s) при масов CSV експорт.</p>
+          <div style="margin-top:8px;"><button type="button" class="btn" style="padding:3px 9px;font-size:0.74rem;" data-signal-doc="zdoi_pvu_dfz">Заявление по ЗДОИ (ПВУ 0 € &amp; ДФЗ) &rarr;</button></div>
         </article>
       </div>
 
@@ -309,4 +317,35 @@ const uniqueClusters = Array.from(new Set(adminsAll.map((a) => a.cluster).filter
       </div>
     </div>
   </section>
+
+  <!-- 1-CLICK SIGNAL, ZDOI & EXECUTIVE BRIEF GENERATOR MODAL -->
+  <div class="modal-backdrop" id="invSignalModalBackdrop" aria-hidden="true">
+    <div class="contract-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="invSignalModalTitle">
+      <div class="drawer-header">
+        <div>
+          <div class="kpi-label">ГЕНЕРАТОР НА ОФИЦИАЛНИ СИГНАЛИ, ЗДОИ &amp; ПЛАН 48 ЧАСА (АДФИ · КЗК · КПК · ДНСК · ЕППО)</div>
+          <h2 id="invSignalModalTitle" style="font-size:18px;">Екзекутивен доклад &amp; Сигнали</h2>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button type="button" class="btn" id="invSignalCopyBtn">Копирай</button>
+          <button type="button" class="btn btn-dark" id="invSignalDownloadBtn">Изтегли .md</button>
+          <button type="button" class="btn" id="invSignalPrintBtn">Печат / PDF</button>
+          <button type="button" class="close-btn" id="invSignalCloseBtn" aria-label="Затвори">&times;</button>
+        </div>
+      </div>
+      <div class="drawer-body">
+        <div class="inv-tabs" id="invSignalTabs" style="margin-bottom:12px;">
+          <button type="button" class="inv-tab-btn active" data-signal-doc="exec_brief">План 48 ч. (МС/МЕУ)</button>
+          <button type="button" class="inv-tab-btn" data-signal-doc="sig_fzd">Фонд затворно дело</button>
+          <button type="button" class="inv-tab-btn" data-signal-doc="sig_reserve">Държавен резерв</button>
+          <button type="button" class="inv-tab-btn" data-signal-doc="sig_mvr">МВР Отнети лицензи</button>
+          <button type="button" class="inv-tab-btn" data-signal-doc="sig_dnsk">ДНСК Надзор &amp; Събаряния</button>
+          <button type="button" class="inv-tab-btn" data-signal-doc="sig_concessions">МЕ Кариери × ДЗЗД</button>
+          <button type="button" class="inv-tab-btn" data-signal-doc="sig_aec">АЕЦ &amp; ЕСО</button>
+          <button type="button" class="inv-tab-btn" data-signal-doc="zdoi_pvu_dfz">ЗДОИ (ПВУ &amp; ДФЗ)</button>
+        </div>
+        <pre class="signal-pre" id="invSignalModalText"></pre>
+      </div>
+    </div>
+  </div>
 </BaseLayout>

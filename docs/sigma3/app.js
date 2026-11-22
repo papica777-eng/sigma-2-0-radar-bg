@@ -17,6 +17,11 @@
     companiesByEik: new Map(),
     forensics7: null,
     judicial6: null,
+    investigations: null,
+    admins50: null,
+    invByCompanyEik: new Map(),
+    admin50ByEik: new Map(),
+    blackBoxByEik: new Map(),
     sharedEiks: new Set(),
     trendMode: 'months',
     liveContractMode: 'top',
@@ -73,6 +78,7 @@
     }));
     state.authorities.forEach((a) => { if (a.eik) state.authoritiesByEik.set(a.eik, a); });
     if (window.SIGMA3_J6) window.SIGMA3_J6.applyJudicialRiskWeightsToState();
+    await ensureInvestigationsLoaded();
     return state.authorities;
   }
 
@@ -88,7 +94,145 @@
     }));
     state.companies.forEach((c) => { if (c.eik) state.companiesByEik.set(c.eik, c); });
     if (window.SIGMA3_J6) window.SIGMA3_J6.applyJudicialRiskWeightsToState();
+    await ensureInvestigationsLoaded();
     return state.companies;
+  }
+
+  function indexCrossInvestigations(invJson, admJson) {
+    state.invByCompanyEik.clear();
+    state.admin50ByEik.clear();
+    state.blackBoxByEik.clear();
+
+    const addCompHit = (eik, badge, cls, detail) => {
+      const key = String(eik || '').trim();
+      if (!key) return;
+      if (!state.invByCompanyEik.has(key)) state.invByCompanyEik.set(key, []);
+      const arr = state.invByCompanyEik.get(key);
+      if (arr.some((x) => x.badge === badge && x.detail === detail)) return;
+      arr.push({ badge, cls, detail });
+    };
+
+    const inv = (invJson && invJson.investigations) || {};
+    const mvr = inv.mvrSecurity || {};
+    const seenMvr = new Set();
+    [...(mvr.noActiveSecurityHighlights || []), ...(mvr.topFindings || [])].forEach((x) => {
+      if (!x || !x.eik || seenMvr.has(x.eik)) return;
+      seenMvr.add(x.eik);
+      if (x.noActiveLicense) {
+        const hasSec = Number(x.securityContracts || 0) > 0;
+        addCompHit(
+          x.eik,
+          hasSec ? 'Отнет МВР + Охрана ЗОП' : 'Няма активен ЗЧОД МВР',
+          'tag-crimson',
+          `МВР ЗЧОД: статус „${x.latestStatus}“ (лиценз ${x.latestDoc}), ${hasSec ? `преки охранителни поръчки ${fmtEur(x.securityContractsEur)}` : `общо ЗОП ${fmtEur(x.wonEur)}`}${x.securitySampleSubject ? ' — ' + x.securitySampleSubject : ''}`
+        );
+      } else {
+        addCompHit(
+          x.eik,
+          'Лиценз МВР (ЗЧОД)',
+          'tag-slate',
+          `МВР ЗЧОД: „${x.latestStatus || 'Действащ'}“ (${x.latestDoc}), ${fmtInt(x.securityContracts || 0)} охранителни поръчки за ${fmtEur(x.securityContractsEur || 0)}`
+        );
+      }
+    });
+
+    ((inv.meConcessions && inv.meConcessions.topFindings) || []).forEach((x) => {
+      addCompHit(
+        x.eik,
+        'Кариера МЕ',
+        'tag-teal',
+        `МЕ Концесия: находище „${x.deposit}“ (общ. ${x.municipality}, ${x.mineralType}, срок ${x.term}) — директно ${fmtEur(x.wonEur)} + ДЗЗД ${fmtEur(x.consortiumEur)}`
+      );
+    });
+
+    ((inv.dnsk && inv.dnsk.topConsultants) || []).forEach((x) => {
+      addCompHit(
+        x.eik,
+        x.isExpired ? 'Изтекъл надзор ДНСК' : 'Надзор ДНСК',
+        x.isExpired ? 'tag-crimson' : 'tag-teal',
+        `ДНСК чл. 166 ЗУТ: валидно до ${x.validUntil} (${x.isExpired ? 'ИЗТЕКЪЛ СРОК в масива' : 'Валиден'}) — ${fmtInt(x.contracts)} договора за ${fmtEur(x.wonEur)}`
+      );
+    });
+
+    ((inv.reserveAndEnergy && inv.reserveAndEnergy.topFuelFindings) || []).forEach((x) => {
+      addCompHit(
+        x.eik,
+        'ЗЗНН Горива',
+        'tag-ochre',
+        `${x.source} (${x.detail}) — ${fmtEur(x.wonEur)} (${fmtInt(x.contracts)} договора)`
+      );
+    });
+
+    ((inv.iaaa && inv.iaaa.topFindings) || []).forEach((x) => {
+      addCompHit(
+        x.eik,
+        'ИААА Транспорт',
+        'tag-slate',
+        `ИААА лиценз № ${x.licenseNo} (${x.kind}, ${x.region}) — ${fmtEur(x.wonEur)} (${fmtInt(x.contracts)} договора)`
+      );
+    });
+
+    ((inv.otherRegistries && inv.otherRegistries.babhTop) || []).forEach((x) => {
+      addCompHit(
+        x.eik,
+        'БАБХ Храни',
+        'tag-teal',
+        `БАБХ регистър (${x.status}) — ${fmtEur(x.wonEur)} (${fmtInt(x.contracts)} договора)`
+      );
+    });
+
+    ((inv.otherRegistries && inv.otherRegistries.napGamblingTop) || []).forEach((x) => {
+      addCompHit(
+        x.eik,
+        'НАП Хазарт',
+        'tag-ochre',
+        `НАП Хазартен лиценз (${x.activity}) — ${fmtEur(x.wonEur)} (${fmtInt(x.contracts)} договора)`
+      );
+    });
+
+    ((inv.blackBoxContracts && inv.blackBoxContracts.blackBoxBreakdown) || []).forEach((bb) => {
+      if (bb.eik) state.blackBoxByEik.set(String(bb.eik).trim(), bb);
+      (bb.topContractors || []).forEach((tc) => {
+        if (!tc.eik) return;
+        const isAllSingle = tc.contracts > 0 && tc.single === tc.contracts;
+        const isHighSingle = tc.single >= 5 && tc.single >= Math.ceil(tc.contracts * 0.6);
+        if (isAllSingle || isHighSingle) {
+          addCompHit(
+            tc.eik,
+            isAllSingle ? '100% 1 оферта (Черна кутия)' : 'Черна кутия (1 оферта)',
+            isAllSingle ? 'tag-crimson' : 'tag-ochre',
+            `${bb.name}: ${fmtEur(tc.eur)} (${tc.single}/${tc.contracts} договора с 1 оферта)`
+          );
+        }
+      });
+    });
+
+    ((admJson && admJson.administrations) || []).forEach((a) => {
+      const eiks = [a.eik, ...(Array.isArray(a.extraEiks) ? a.extraEiks : [])].filter(Boolean);
+      eiks.forEach((ek) => state.admin50ByEik.set(String(ek).trim(), a));
+    });
+  }
+
+  let invLoadPromise = null;
+  async function ensureInvestigationsLoaded() {
+    if (state.investigations && state.admins50) return state.investigations;
+    if (invLoadPromise) return invLoadPromise;
+    invLoadPromise = (async () => {
+      try {
+        if (typeof fetch !== 'function') return null;
+        const [invRes, admRes] = await Promise.all([
+          fetch('data/nasvetlo_investigations.json').catch(() => null),
+          fetch('data/nasvetlo_50_admins.json').catch(() => null),
+        ]);
+        const invJson = invRes && invRes.ok ? await invRes.json() : null;
+        const admJson = admRes && admRes.ok ? await admRes.json() : null;
+        if (invJson) state.investigations = invJson;
+        if (admJson) state.admins50 = admJson;
+        indexCrossInvestigations(invJson, admJson);
+      } catch (_) {}
+      return state.investigations;
+    })();
+    return invLoadPromise;
   }
 
   function switchTab(tabId) {
@@ -194,6 +338,7 @@
       if (window.SIGMA3_MOD) window.SIGMA3_MOD.initModules();
       if (window.SIGMA3_F7) window.SIGMA3_F7.ensureForensics7Loaded();
       if (window.SIGMA3_J6) window.SIGMA3_J6.ensureJudicial6Loaded();
+      ensureInvestigationsLoaded();
       setupEvents();
     } catch (err) {
       console.error(err);
@@ -1528,6 +1673,7 @@
   window.SIGMA3 = {
     state, fmtEur, fmtInt, esc, riskBadgeHtml,
     ensureAuthoritiesLoaded, ensureCompaniesLoaded,
+    ensureInvestigationsLoaded, indexCrossInvestigations,
     switchTab, jumpToDirectory, openDossier, closeDossier,
     inspectContractLive, generateSignalBrief, renderAtlas,
   };

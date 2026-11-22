@@ -133,36 +133,42 @@
             <span class="inv-tag tag-crit">МВР Охранителни лицензи × ЗОП</span>
             <h3>Отнети лицензи с реални охранителни договори</h3>
             <p>От <strong>${fmtInt(mvr.zopMatchedCompanies)}</strong> изпълнители по ЗОП с досие в регистъра за частна охранителна дейност (ЗЧОД) на МВР (${fmtEur(mvr.zopMatchedTotalEur)}), <strong>${fmtInt(mvr.noActiveLicenseZopCount)}</strong> нямат действащ лиценз (<strong>${fmtInt(mvr.explicitRevokedNoActiveCount)}</strong> изрично <strong>„Отнет“ / „Отказ“</strong>). Фирмите с отнет лиценз и без активен документ (${fmtInt(mvr.securityContractNoActiveCount)} бр. — <em>БАТ СЕКЮРИТИ ЕООД</em> и <em>СЕЛЕНА 52 ЕООД</em>) са спечелили <strong>преки охранителни поръчки</strong> за ${fmtEur(mvr.securityContractNoActiveEur)} (охрана на БНР/БНТ и Министерството на туризма).</p>
+            <div style="margin-top:8px;"><button type="button" class="btn" style="padding:3px 9px;font-size:0.74rem;" data-signal-doc="sig_mvr">Генерирай сигнал (МВР / АДФИ) &rarr;</button></div>
           </article>
 
           <article class="inv-finding-card">
             <span class="inv-tag tag-ok">МЕ Кариери × Строители по ЗОП</span>
             <h3>${fmtInt(me.zopMatchedCompanies)} концесионери държат ${fmtEur(me.zopMatchedDirectEur)} + ${fmtEur(me.zopMatchedConsortiumEur)} ДЗЗД</h3>
             <p>Строителните компании с концесии за варовик, мрамор, баластра и диабази около пътните трасета (<em>Главболгарстрой АД</em>, <em>Европейски пътища АД</em>, <em>Пътинженерингстрой-Т ЕАД</em>, <em>Грома Холд ЕООД</em>, <em>Автомагистрали - Черно море АД</em>) концентрират мултимилиардни директни и консорциумни поръчки по ЗОП.</p>
+            <div style="margin-top:8px;"><button type="button" class="btn" style="padding:3px 9px;font-size:0.74rem;" data-signal-doc="sig_concessions">Генерирай сигнал (КЗК / МЕ) &rarr;</button></div>
           </article>
 
           <article class="inv-finding-card">
             <span class="inv-tag tag-warn">ДНСК Надзор &amp; Незаконни строежи</span>
             <h3>${fmtInt(dnsk.illegalInProcedure)} висящи събаряния + ${fmtInt(dnsk.expiredConsultantsInZop)} надзорни фирми с изтекъл срок</h3>
             <p>От ${fmtInt(dnsk.illegalOrdersTotal)} влезли в сила заповеди за премахване на незаконни строежи, <strong>${fmtInt(dnsk.illegalInProcedure)}</strong> са висящи в процедура (някои от 2001–2002 г.). От ${fmtInt(dnsk.totalConsultantsRegistry)} консултанти по чл. 166 ЗУТ, <strong>${fmtInt(dnsk.zopMatchedConsultants)}</strong> печелят по ЗОП (${fmtEur(dnsk.zopConsultantsTotalEur)}), като при <strong>${fmtInt(dnsk.expiredConsultantsInZop)}</strong> срокът в масива на ДНСК е изтекъл.</p>
+            <div style="margin-top:8px;"><button type="button" class="btn" style="padding:3px 9px;font-size:0.74rem;" data-signal-doc="sig_dnsk">Генерирай сигнал (ДНСК / МРРБ) &rarr;</button></div>
           </article>
 
           <article class="inv-finding-card">
             <span class="inv-tag tag-crit">Черни кутии (206 907 договора)</span>
             <h3>${fmtInt(bb.totalSingleOfferCount)} договора с 1 оферта за ${fmtEur(bb.totalSingleOfferEur)}</h3>
             <p>Одитът на реалния брой оферти сред ${bbRows.length} водещи затворени и инфраструктурни възложители (${fmtEur(bb.totalBlackBoxEur)}) показва: ${top3}.</p>
+            <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;"><button type="button" class="btn" style="padding:3px 9px;font-size:0.74rem;" data-signal-doc="sig_fzd">Сигнал: Фонд затворно дело (€395M) &rarr;</button><button type="button" class="btn" style="padding:3px 9px;font-size:0.74rem;" data-signal-doc="sig_aec">Сигнал: АЕЦ &amp; ЕСО (1 оферта) &rarr;</button></div>
           </article>
 
           <article class="inv-finding-card">
             <span class="inv-tag tag-ok">Държавен резерв, ИААА, БАБХ &amp; Хазарт</span>
             <h3>${fmtInt(iaaa.zopMatchedCompanies)} транспортни, ${fmtInt(resv.zopMatchedFuelCompanies)} горивни и ${fmtInt(oth.babhZopMatched)} хранителни фирми в ЗОП</h3>
             <p>Пресичането с ИААА (${fmtEur(iaaa.zopMatchedTotalEur)}), задължените лица по ЗЗНН и петролни бази (${fmtEur(resv.zopMatchedFuelEur)}), БАБХ (${fmtEur(oth.babhZopEur)}), енергийните помощи ОЗОБ (${fmtInt(resv.ozobZopMatched)} фирми) и хазартните лицензи на НАП (${fmtInt(oth.napGamblingZopMatched)} фирма в ЗОП: ${fmtEur(oth.napGamblingZopEur)}) разкрива пълния отпечатък на изпълнителите.</p>
+            <div style="margin-top:8px;"><button type="button" class="btn" style="padding:3px 9px;font-size:0.74rem;" data-signal-doc="sig_reserve">Сигнал: Държавен резерв (95% 1 оферта) &rarr;</button></div>
           </article>
 
           <article class="inv-finding-card">
             <span class="inv-tag tag-warn">МФ ПВУ &amp; Бариера при ДФЗ 2025</span>
             <h3>${String(pvu.executionPct || 76.09).replace('.', ',')}% усвояване по ПВУ · ${fmtInt(pvu.zeroPaidBigProjectsCount)} мега-проекта на 0 €</h3>
             <p>Към 30.09.2026 г. от ${fmtEur(pvu.totalBudgetEur)} по ПВУ са изплатени ${fmtEur(pvu.totalPaidEur)}, но <em>Цифровизацията на НАП</em> (23,42 млн. €) и <em>Агенция „Митници“</em> (17,61 млн. €) стоят на <strong>0,00 €</strong>. Междувременно масивът за субсидии на ДФЗ за 2025 г. в <code>data.egov.bg</code> прекъсва с timeout (&gt;120s) при масов CSV експорт.</p>
+            <div style="margin-top:8px;"><button type="button" class="btn" style="padding:3px 9px;font-size:0.74rem;" data-signal-doc="zdoi_pvu_dfz">Заявление по ЗДОИ (ПВУ 0 € &amp; ДФЗ) &rarr;</button></div>
           </article>
         </div>
         ${secNoAct.length ? `
@@ -571,6 +577,7 @@
                 <div class="mono" style="margin-top:8px;font-size:0.72rem;color:var(--ink-muted);">
                   Отворени данни: ${ac.openAccessScore}/100 · Свързани политици: ${fmtInt(pr.linkedOfficials)} · АДФИ/КЗК: ${fmtInt((a.judicialAndForensics?.adfiReports || 0) + (a.judicialAndForensics?.kzkCount || 0))}
                 </div>
+                <div style="margin-top:10px;"><button type="button" class="btn" style="padding:4px 10px;font-size:0.75rem;" data-gen-admin-zdoi="${esc(a.id)}">Генерирай ЗДОИ &amp; Одитен сигнал за ${esc(a.shortName || a.name)} &rarr;</button></div>
               </div>
             </div>
           </td>
@@ -578,6 +585,285 @@
       `;
       return rowHtml + detailHtml;
     }).join('');
+  }
+
+  let lastSignalText = '';
+  let lastSignalFile = 'NASVETLO_SIGNAL.md';
+
+  function getSignalTemplates() {
+    const today = (invData && invData.generatedAtUtc ? String(invData.generatedAtUtc).slice(0, 10) : '2026-11-22');
+    const sum50 = (admData && admData.summary) || {};
+    const admins = (admData && admData.administrations) || [];
+    const bbAdmins = admins.filter((a) => a.antiCorruption?.accessStatus === 'CLOSED_BLOCKED');
+    const bbEur = bbAdmins.reduce((s, a) => s + Number(a.procurement?.spentEur || 0), 0);
+    const inv = (invData && invData.investigations) || {};
+    const mvr = inv.mvrSecurity || {};
+    const me = inv.meConcessions || {};
+    const dnsk = inv.dnsk || {};
+    const pvu = inv.mfPvu || {};
+    const bb = inv.blackBoxContracts || {};
+
+    return {
+      exec_brief: {
+        title: 'Екзекутивен доклад & План за 48 часа (МС / МЕУ / МФ)',
+        file: `NASVETLO_EXEC_BRIEF_48H_${today}.md`,
+        text: [
+          `ДО: Министерски съвет, Министерство на електронното управление (МЕУ), Министерство на финансите, Министерство на правосъдието и МИДТ`,
+          `ОТ: Независима гражданска платформа NAsvetlo (https://nasvetlo.website/razsledvaniya.html)`,
+          `ДАТА: ${today}`,
+          `ОТНОСНО: Национален одит на прозрачността на ${sum50.totalAdministrations || 50} водещи администрации (${fmtEur(sum50.totalZopSpentEur || 23739873735)} / ${fmtInt(sum50.totalZopContracts || 28226)} договора по ЗОП) и План за незабавно отваряне в 48 часа`,
+          ``,
+          `1. СТРУКТУРА НА ПРОЗРАЧНОСТТА В DATA.EGOV.BG (11 843 МАСИВА / 547 ОРГАНИЗАЦИИ)`,
+          `- 9 ЧЕРНИ КУТИИ (0 масива в data.egov.bg при ${fmtEur(bbEur || 6637337217)} по ЗОП): АЕЦ Козлодуй (106513772), Булгартрансгаз (175203478), ЕСО ЕАД (175201304), НКЖИ (130823243), Фонд на фондовете (203740812), Мини Марица-изток (833017552), НЕК ЕАД (000649348), ДП РВД (000697179), ДППИ (130316140).`,
+          `- 6 ФАСАДНА ПРОЗРАЧНОСТ (Openwashing): АПИ (6,17 млрд. €, скрити подизпълнители на „Автомагистрали“ ЕАД и Акт 19), Топ 4 Общини (2,62 млрд. €), МП / ДП „Фонд затворно дело“ (458,56 млн. € без самостоятелен отворен масив) и др.`,
+          `- 17 ГОТОВИ ЗА СВЪРЗВАНЕ (актуални CSV/JSON 2025-2026), 10 ЗАМРЪЗНАЛИ (2018-2024), 8 СВЪРЗАНИ В NASVETLO.`,
+          ``,
+          `2. ЧЕТИРИ МЕРКИ ЗА 48 ЧАСА БЕЗ ПРОМЯНА НА ЗАКОН`,
+          `1) Задължителен структуриран CSV/JSON експорт в data.egov.bg по ЕИК на контрагентите и подизпълнителите за 9-те черни кутии + ДП ФЗД + Акт 19/Автомагистрали ЕАД в АПИ.`,
+          `2) Задължително вписване на ЕИК/БУЛСТАТ на всички съдружници в ДЗЗД в ЦАИС ЕОП (затваряне на слепия петък: +1,92 млрд. € при политици и 3,64 млрд. € при кариерни концесионери).`,
+          `3) Отстраняване на timeout (>120s) при ДФЗ агросубсидии за 2025 г. (f764215a-0a73-43b7-ae8a-d0acd7b0d7f4), премахване на CAPTCHA в legalacts.justice.bg и XML/JSON експорт на ИВСС.`,
+          `4) Междуведомствена проверка защо при общо ${String(pvu.executionPct || 76.09).replace('.', ',')}% изпълнение на ПВУ, Цифровизацията на НАП (К10.И13 — 23,42 млн. €) и Агенция „Митници“ (К10.И12 — 17,61 млн. €) са на 0,00 €.`,
+        ].join('\n'),
+      },
+      sig_fzd: {
+        title: 'Сигнал № 1: ДП „Фонд затворно дело“ (92,4% с 1 оферта / €395M в 1 фирма)',
+        file: `SIGNAL_FOND_ZATVORNO_DELO_${today}.md`,
+        text: [
+          `ДО: Агенция за държавна финансова инспекция (АДФИ), Комисия за защита на конкуренцията (КЗК), Министерство на правосъдието и Прокуратурата на РБ`,
+          `ДАТА: ${today} · ИЗТОЧНИК: https://nasvetlo.website/razsledvaniya.html`,
+          `ОТНОСНО: Сигнал за екстремна концентрация и липса на конкуренция в ДП „Фонд затворно дело“ (ЕИК 129009070)`,
+          ``,
+          `ФАКТИ ОТ ЦАИС ЕОП (206 907 договора) И DATA.EGOV.BG:`,
+          `- Общо отчетени договори по ЗОП за ДП „Фонд затворно дело“ (ЕИК 129009070): 186 записа за 458 557 379,14 € (458,56 млн. €), при 0 самостоятелни отворени масива в data.egov.bg.`,
+          `- Поръчки с 1 единствена оферта: 94 записа (50,5% от броя / 92,4% от стойността) = 423 912 184,00 €. Допълнително 34 неконкурентни процедури за 23 786 820,44 €.`,
+          `- Единствен доминантен изпълнител: „ТАБАКО ТРЕЙД СЪРВИСЕС“ ЕООД (ЕИК 201261845) — 395 413 123,81 € (86,2% от целия договорен обем!) в 13 договора, всички 13 от 13 (100%) с 1 единствена оферта.`,
+          ``,
+          `ИСКАНЕ: Финансова инспекция по ЗДФИ/ЗОП, антитръстова проверка по ЗЗК относно ограничителните условия и пълно публикуване на договорите и подизпълнителите по ЕИК в data.egov.bg.`,
+        ].join('\n'),
+      },
+      sig_reserve: {
+        title: 'Сигнал № 2: ДА „Държавен резерв“ (95,2% с 1 оферта)',
+        file: `SIGNAL_DARZHAVEN_REZERV_${today}.md`,
+        text: [
+          `ДО: АДФИ, КЗК, Сметна палата и Прокуратура на РБ`,
+          `ДАТА: ${today} · ИЗТОЧНИК: https://nasvetlo.website/razsledvaniya.html`,
+          `ОТНОСНО: Сигнал за 95,2% възлагане при 1 оферта и 84,4% неконкурентни процедури в ДА „Държавен резерв и военновременни запаси“ (ЕИК 831913661)`,
+          ``,
+          `ФАКТИ ОТ ЦАИС ЕОП И РЕГИСТРИТЕ ПО ЗЗНН:`,
+          `- Общ договорен ресурс: 660 728 934,35 € (347 договорни записа).`,
+          `- С 1 единствена оферта: 212 записа (61,1% от броя / 95,2% от стойността) = 629 138 719,33 €.`,
+          `- Неконкурентни процедури: 115 броя за 557 314 444,12 € (84,4%).`,
+          `- Всички Топ 5 изпълнители са със 100% дял с 1 оферта:`,
+          `  1. БЕНТ ОЙЛ АД (ЕИК 200852966) — 237 458 451,54 € (40/40 с 1 оферта)`,
+          `  2. ПЕТРОЛ ЕНЕРДЖИ ЕООД (ЕИК 201109588) — 175 153 340,60 € (31/31 с 1 оферта)`,
+          `  3. ПЪРВИ МАЙ АД (ЕИК 118006467) — 36 658 686,85 € (5/5 с 1 оферта)`,
+          `  4. Боду ЕООД (ЕИК 130068321) — 31 897 387,13 € (2/2 с 1 оферта)`,
+          `  5. ИНСА ОЙЛ ЕООД (ЕИК 115624227) — 27 950 754,74 € (6/6 с 1 оферта)`,
+          ``,
+          `ИСКАНЕ: Проверка по ЗОП (особено прилагането на чл. 79 ЗОП и условията за складов достъп) и ценови анализ спрямо пазарните котировки.`,
+        ].join('\n'),
+      },
+      sig_mvr: {
+        title: 'Сигнал № 3: МВР ЗЧОД — Отнети лицензи в охранителни поръчки & НЕК',
+        file: `SIGNAL_MVR_OHRANA_LICENZI_${today}.md`,
+        text: [
+          `ДО: Министъра на вътрешните работи (ГДНП — ЗЧОД), АДФИ и Прокуратурата на РБ`,
+          `ДАТА: ${today} · ИЗТОЧНИК: https://nasvetlo.website/razsledvaniya.html`,
+          `ОТНОСНО: Кръстосано засичане на регистъра по ЗЧОД (МВР) със ЗОП — 70 фирми без действащ лиценз (${mvr.explicitRevokedNoActiveCount || 7} изрично „Отнет“/„Отказ“), 2 преки охранителни поръчки при отнет лиценз и концентрация в НЕК ЕАД`,
+          ``,
+          `1. ПРЕКИ ОХРАНИТЕЛНИ ПОРЪЧКИ ПРИ СТАТУС „ОТНЕТ“ (БЕЗ АКТИВЕН ДОКУМЕНТ В МВР):`,
+          `- „БАТ СЕКЮРИТИ“ ЕООД (ЕИК 130548570), лиценз № 361 (10.09.2004 г.) — статус „Отнет“: 67 490,53 € за въоръжена денонощна охрана на БНР и БНТ в Благоевград (УНП 00388-2020-0017).`,
+          `- „СЕЛЕНА 52“ ЕООД (ЕИК 130997265), лиценз № 704 (14.11.2005 г.) — статус „Отнет“: 30 554,80 € за охрана на сградите и паркинга на Министерството на туризма (УНП 05024-2020-0006).`,
+          ``,
+          `2. КОНЦЕНТРАЦИЯ ЗА ЧАСТНА ОХРАНА В НЕК ЕАД (ЕИК 000649348 — ЧЕРНА КУТИЯ С 0 МАСИВА):`,
+          `- Три частни охранителни фирми заемат 57,92 млн. € (19,9% от ЗОП разходите на НЕК): МУЛТИФОРС А.С. ЕООД (831637711 — 27,79 млн. €, 2/2 с 1 оферта), СИКЮРИТИ ГЛОБЪЛ ЕООД (825266290 — 15,38 млн. €) и ГРУП-7 ЕООД (831661979 — 14,76 млн. €, 2/3 с 1 оферта).`,
+          ``,
+          `ИСКАНЕ: Проверка за наличие на валидни лицензи към датите на възлагане и изпълнение по чл. 41/45 ЗЧОД, контрол върху БНР/БНТ и МТ и финансов одит на охранителните договори на НЕК ЕАД.`,
+        ].join('\n'),
+      },
+      sig_dnsk: {
+        title: 'Сигнал № 4: ДНСК — 92 надзорни фирми с изтекъл срок & 5 177 висящи събаряния',
+        file: `SIGNAL_DNSK_NADZOR_I_NEZAKONNI_${today}.md`,
+        text: [
+          `ДО: Началника на ДНСК, Министъра на регионалното развитие и благоустройството и АДФИ`,
+          `ДАТА: ${today} · ИЗТОЧНИК: https://nasvetlo.website/razsledvaniya.html`,
+          `ОТНОСНО: ${dnsk.expiredConsultantsInZop || 92} консултантски фирми по чл. 166 ЗУТ в ЗОП с изтекъл срок в масива на ДНСК и ${dnsk.illegalInProcedure || 5177} неизпълнени заповеди за премахване (от общо ${dnsk.illegalOrdersTotal || 6250})`,
+          ``,
+          `ФАКТИ:`,
+          `- От 265 консултанти по чл. 166 ЗУТ, печелещи по ЗОП (242,56 млн. €), 92 дружества (34,7%) фигурират с изтекъл срок на удостоверението в отворения регистър на ДНСК — вкл. „ЕВРОСТРОЙ РН“ ЕООД (ЕИК 114674768 — 14,12 млн. €, 37 договора, изтекло 22.05.2024 г.), „ЕН АР КОНСУЛТ“ ЕООД (126720807 — 3,07 млн. €, 62 договора), „РИСК ИНЖЕНЕРИНГ“ АД (040463255 — 2,45 млн. €, 09.05.2022 г.), „СЖС БЪЛГАРИЯ“ ЕООД (000653802 — 2,35 млн. €, 06.04.2022 г.).`,
+          `- 5 177 от 6 250 влезли в сила заповеди за премахване на незаконни строежи (82,8%) остават неизпълнени, включително от 1998–2002 г. (напр. Заповед № 233/28.05.1998 г. за „Снек-бар Корсар“ в Морската градина – гр. Варна).`,
+          ``,
+          `ИСКАНЕ: Насрещна проверка по ЗУТ и ЗОП и незабавна актуализация/публикуване на графиците за принудително премахване и актуалната правоспособност по ЕИК в data.egov.bg.`,
+        ].join('\n'),
+      },
+      sig_concessions: {
+        title: 'Сигнал № 5: МЕ Кариери × Строителни ДЗЗД (€4,84 млрд.)',
+        file: `SIGNAL_KZK_KARIERI_DZZD_${today}.md`,
+        text: [
+          `ДО: Комисия за защита на конкуренцията (КЗК), Министерство на енергетиката и Европейска прокуратура (EPPO)`,
+          `ДАТА: ${today} · ИЗТОЧНИК: https://nasvetlo.website/razsledvaniya.html`,
+          `ОТНОСНО: Искане за секторен анализ по ЗЗК на вертикалната концентрация между ${me.zopMatchedCompanies || 54} концесионери на подземни богатства и строителни мега-поръчки (${fmtEur(me.zopMatchedDirectEur || 1201427449)} директно + ${fmtEur(me.zopMatchedConsortiumEur || 3638988766)} ДЗЗД)`,
+          ``,
+          `ВОДЕЩИ ПРИМЕРИ ПРИ КРЪСТОСВАНЕТО НА МЕ И ЦАИС ЕОП:`,
+          `1. ГЛАВБОЛГАРСТРОЙ АД (ЕИК 831652485, кариера „Бов“, Своге) — 22,15 млн. € директно + 742,03 млн. € през ДЗЗД.`,
+          `2. ЕВРОПЕЙСКИ ПЪТИЩА АД (ЕИК 115004094, кариера „Белащица - юг“) — 221,91 млн. € директно + 509,78 млн. € през ДЗЗД.`,
+          `3. ПЪТИНЖЕНЕРИНГСТРОЙ-Т ЕАД (ЕИК 835009611, кариера „Боаза“) — 153,35 млн. € директно + 552,49 млн. € през ДЗЗД.`,
+          `4. Грома Холд ЕООД (ЕИК 101611650, кариера „Лучище“) — 43,08 млн. € директно + 632,30 млн. € през ДЗЗД.`,
+          `5. АВТОМАГИСТРАЛИ - ЧЕРНО МОРЕ АД (ЕИК 127001597, кариера „Кралево-2“, 31.07.2025 г.) — 134,36 млн. € директно + 494,06 млн. € през ДЗЗД.`,
+          ``,
+          `ИСКАНЕ: Секторен анализ по ЗЗК за вертикален достъп до суровини и картелна ротация в ДЗЗД консорциуми, както и задължително разкриване на ЕИК на всички участници в ДЗЗД.`,
+        ].join('\n'),
+      },
+      sig_aec: {
+        title: 'Сигнал № 6: „АЕЦ Козлодуй“ ЕАД & ЕСО ЕАД (Черни кутии)',
+        file: `SIGNAL_AEC_ESO_BLACKBOX_${today}.md`,
+        text: [
+          `ДО: АДФИ, КЗК, МЕУ и БЕХ ЕАД`,
+          `ДАТА: ${today} · ИЗТОЧНИК: https://nasvetlo.website/razsledvaniya.html`,
+          `ОТНОСНО: Липса на отворени данни (0 масива в data.egov.bg), ${fmtEur(bb.totalSingleOfferEur)} с 1 оферта при затворените възложители и неконкурентни договори в „АЕЦ Козлодуй“ ЕАД и ЕСО ЕАД`,
+          ``,
+          `ФАКТИ:`,
+          `- „АЕЦ Козлодуй“ ЕАД (ЕИК 106513772, 0 масива в data.egov.bg): 1,37 млрд. € (2 154 записа), от които 722 неконкурентни процедури за 1 083 898 017,48 € (79,3%!) и 962 записа с 1 оферта за 843,16 млн. €. Водещ изпълнител: „АТОМЕНЕРГОРЕМОНТ“ АД (106530686 — 228,93 млн. €, 29/41 с 1 оферта).`,
+          `- ЕСО ЕАД (ЕИК 175201304, 0 масива в data.egov.bg): 880,36 млн. € (1 382 записа), 490 с 1 оферта (35,5%); дъщерното „ЕСО ИНЖЕНЕРИНГ“ ЕООД (206401308) има 207 договора за 63,48 млн. €, от които 205/207 (99,0%) са с 1 единствена оферта.`,
+          `- „Булгартрансгаз“ ЕАД (ЕИК 175203478, 0 масива): 46,0% от записите са с 1 оферта (210,47 млн. €), а Топ 5 мега-договорите за 623,20 млн. € са сключени с ДЗЗД консорциуми без ЕИК.`,
+          ``,
+          `ИСКАНЕ: Проверка на основанията за неконкурентни процедури и публикуване на структуриран CSV/JSON регистър на несекретните договори и ВЕИ опашката в data.egov.bg.`,
+        ].join('\n'),
+      },
+      zdoi_pvu_dfz: {
+        title: 'Заявление по ЗДОИ: ПВУ 0 € (НАП/Митници) & ДФЗ 2025 CSV',
+        file: `ZDOI_PVU_NA_NULA_I_DFZ_2025_${today}.md`,
+        text: [
+          `ДО: Министъра на финансите, Изпълнителния директор на ДФЗ, Изпълнителния директор на НАП и Директора на Агенция „Митници“`,
+          `ОТ: [Име / Организация] · [Контакт / Профил в ССЕВ]`,
+          `ДАТА: ${today}`,
+          ``,
+          `ЗАЯВЛЕНИЕ ЗА ДОСТЪП ДО ОБЩЕСТВЕНА ИНФОРМАЦИЯ`,
+          `на основание чл. 24 и чл. 15б–15г от ЗДОИ и Директива (ЕС) 2019/1024`,
+          ``,
+          `1. По отношение на Плана за възстановяване и устойчивост (отчет на МФ към 30.09.2026 г.):`,
+          `   При общо 76,09% финансово изпълнение (4,97 млрд. € платени от 6,53 млрд. € бюджет), два ключови проекта за дигитализация на приходния и митническия контрол са с 0,00 € изплатени суми:`,
+          `   - К10.И13 „Цифровизация на Националната агенция за приходите“ (бюджет 23 419 805 € — платено 0,00 €)`,
+          `   - К10.И12 „Цифровизация на Агенция „Митници““ (бюджет 17 605 266 € — платено 0,00 €)`,
+          `   Моля да предоставите справка за причините за 0% плащане, проведените/прекратените обществени поръчки по двата проекта и актуалния график до крайния срок на ПВУ.`,
+          ``,
+          `2. По отношение на Държавен фонд „Земеделие“ (ЕИК 121100421):`,
+          `   Масивът „Данни за изплатени субсидии за финансова 2025 година“ в data.egov.bg (f764215a-0a73-43b7-ae8a-d0acd7b0d7f4 / ресурс 2b533076-23ae-4a6e-9864-87277d3b45b9) прекъсва със сървърен timeout (>120s) при стандартно изтегляне на CSV файла.`,
+          `   Моля, на основание чл. 15г ЗДОИ, да осигурите статичен компресиран CSV/JSON експорт (или месечни/областни партиди) с пълния списък на бенефициентите за 2025 г. и прилежащия им ЕИК.`,
+          ``,
+          `С уважение,`,
+          `[Име и подпис]`,
+        ].join('\n'),
+      },
+    };
+  }
+
+  function buildAdminZdoiSignal(a) {
+    const today = (invData && invData.generatedAtUtc ? String(invData.generatedAtUtc).slice(0, 10) : '2026-11-22');
+    const allEiks = [a.eik, ...(Array.isArray(a.extraEiks) ? a.extraEiks : [])].filter(Boolean);
+    const od = a.openData || {};
+    const ac = a.antiCorruption || {};
+    const pr = a.procurement || {};
+    const jf = a.judicialAndForensics || {};
+    return {
+      title: `ЗДОИ & Одит: ${a.shortName || a.name}`,
+      file: `ZDOI_SIGNAL_${String(a.id || a.eik).toUpperCase()}_${today}.md`,
+      text: [
+        `ДО: Ръководството на ${a.name} (${allEiks.length > 1 ? 'Обединени ЕИК: ' + allEiks.join(', ') : 'ЕИК ' + a.eik})`,
+        `КОПИЕ: Министерство на електронното управление (МЕУ), АДФИ, КЗК`,
+        `ДАТА: ${today} · ИЗТОЧНИК: NAsvetlo Индекс на прозрачност (https://nasvetlo.website/razsledvaniya.html)`,
+        ``,
+        `ЗАЯВЛЕНИЕ ПО ЗДОИ (чл. 24, чл. 15б–15г ЗДОИ) И СИГНАЛ ЗА ПУБЛИКУВАНЕ НА ОТВОРЕНИ ДАННИ`,
+        ``,
+        `1. УСТАНОВЕН ПРОФИЛ НА ИНСТИТУЦИЯТА:`,
+        `- Ресор: ${a.cluster}`,
+        `- Проверен ресурс по ЗОП: ${fmtEur(pr.spentEur)} в ${fmtInt(pr.contracts)} договора`,
+        `- Статус в data.egov.bg: ${ac.statusLabel || ac.accessStatus} (${fmtInt(od.totalDatasets || 0)} масива · последно обновление: ${od.latestUpdate || 'без данни'})`,
+        `- Оценка на отворения достъп: ${ac.openAccessScore}/100 · Корупционна експозиция: ${ac.corruptionExposureScore}/100`,
+        `- АДФИ / КЗК / Анекси: ${jf.adfiReports || 0} доклада АДФИ (${jf.adfiArt17 || 0} по чл. 17(7)), ${jf.kzkCount || 0} КЗК акта, ${jf.annexCount || 0} анекса (+${fmtEur(jf.annexEur || 0)})`,
+        `- Портал: ${od.portalUrl} (HTTP ${od.portalProbe?.httpStatus || 0}${od.portalProbe?.hasWaf ? ', WAF' : ''}${od.portalProbe?.hasCaptcha ? ', CAPTCHA' : ''})`,
+        ``,
+        `2. КОНСТАТИРАНА БАРИЕРА И РИСКОВИ СХЕМИ:`,
+        `- Ключов регистър: ${ac.keyRegistry}`,
+        `- Доказуема схема: ${ac.corruptionSchemes}`,
+        `- Липсващ отворен слой: ${ac.knownBarrier}`,
+        `- Ключ за автоматично сечение: ${ac.crossLinkKey}`,
+        ``,
+        `3. ИСКАНЕ ЗА НЕЗАБАВНО ДЕЙСТВИЕ В 48 ЧАСА (МАШИННОЧЕТИМ CSV/JSON В DATA.EGOV.BG):`,
+        `${ac.action48h}`,
+        ``,
+        `С уважение,`,
+        `[Име / Гражданска организация] · [ССЕВ / Електронен адрес]`,
+      ].join('\n'),
+    };
+  }
+
+  function openInvSignalModal(docKey = 'exec_brief', adminId = null) {
+    const bd = document.getElementById('invSignalModalBackdrop');
+    const titleEl = document.getElementById('invSignalModalTitle');
+    const textEl = document.getElementById('invSignalModalText');
+    if (!bd || !titleEl || !textEl) return;
+
+    let payload = null;
+    if (adminId && admData) {
+      const a = (admData.administrations || []).find((x) => String(x.id) === String(adminId));
+      if (a) payload = buildAdminZdoiSignal(a);
+    }
+    if (!payload) {
+      const tpls = getSignalTemplates();
+      payload = tpls[docKey] || tpls.exec_brief;
+    }
+
+    lastSignalText = payload.text;
+    lastSignalFile = payload.file;
+    titleEl.textContent = payload.title;
+    textEl.textContent = payload.text;
+
+    document.querySelectorAll('#invSignalTabs [data-signal-doc]').forEach((b) => {
+      b.classList.toggle('active', !adminId && b.dataset.signalDoc === docKey);
+    });
+
+    bd.classList.add('open');
+    bd.setAttribute('aria-hidden', 'false');
+  }
+
+  function bindSignalModalEvents() {
+    const closeModal = () => document.getElementById('invSignalModalBackdrop')?.classList.remove('open');
+    document.getElementById('invSignalCloseBtn')?.addEventListener('click', closeModal);
+    document.getElementById('invSignalModalBackdrop')?.addEventListener('click', (e) => {
+      if (e.target && e.target.id === 'invSignalModalBackdrop') closeModal();
+    });
+    document.getElementById('invSignalCopyBtn')?.addEventListener('click', () => {
+      navigator.clipboard?.writeText(lastSignalText).then(() => {
+        const b = document.getElementById('invSignalCopyBtn');
+        if (b) {
+          b.textContent = 'Копирано!';
+          setTimeout(() => { b.textContent = 'Копирай'; }, 1500);
+        }
+      });
+    });
+    document.getElementById('invSignalDownloadBtn')?.addEventListener('click', () => {
+      const blob = new Blob([lastSignalText], { type: 'text/markdown;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = lastSignalFile;
+      a.click();
+    });
+    document.getElementById('invSignalPrintBtn')?.addEventListener('click', () => window.print());
+    document.addEventListener('click', (e) => {
+      const sigBtn = e.target.closest('[data-signal-doc]');
+      if (sigBtn) {
+        openInvSignalModal(sigBtn.dataset.signalDoc, null);
+        return;
+      }
+      const admBtn = e.target.closest('[data-gen-admin-zdoi]');
+      if (admBtn) {
+        openInvSignalModal('exec_brief', admBtn.dataset.genAdminZdoi);
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
   }
 
   async function init() {
@@ -594,6 +880,7 @@
       }
 
       initVisitCounter();
+      bindSignalModalEvents();
 
       const [invRes, admRes] = await Promise.all([
         fetch('data/nasvetlo_investigations.json'),

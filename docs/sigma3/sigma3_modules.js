@@ -259,8 +259,11 @@
   }
 
   async function openAuthorityDossier(eik) {
-    const { state, ensureAuthoritiesLoaded, fmtEur, fmtInt, esc, riskBadgeHtml } = api();
-    await ensureAuthoritiesLoaded();
+    const { state, ensureAuthoritiesLoaded, ensureInvestigationsLoaded, fmtEur, fmtInt, esc, riskBadgeHtml } = api();
+    await Promise.all([
+      ensureAuthoritiesLoaded(),
+      ensureInvestigationsLoaded ? ensureInvestigationsLoaded() : Promise.resolve(null),
+    ]);
     const a = state.authoritiesByEik.get(eik);
     if (!a) return;
     document.getElementById('drawerCircle').textContent = `ВЪЗЛОЖИТЕЛ · ${a.type || 'ИНСТИТУЦИЯ'} · ${a.region || 'БЪЛГАРИЯ'}`;
@@ -285,6 +288,19 @@
       </div>
     </div>` : '';
 
+    const adm50 = state.admin50ByEik ? state.admin50ByEik.get(a.eik) : null;
+    const bbRow = state.blackBoxByEik ? state.blackBoxByEik.get(a.eik) : null;
+    const admin50Box = (adm50 || bbRow) ? `<div class="drawer-section">
+      <h4 style="color:var(--crimson);">Индекс на институционалната прозрачност (data.egov.bg &amp; Черни кутии)</h4>
+      <div class="contract-row" style="border-left:3px solid var(--crimson);">
+        ${adm50 ? `<div><strong>Статус в data.egov.bg:</strong> <span class="tag ${adm50.antiCorruption?.accessStatus === 'CLOSED_BLOCKED' ? 'tag-crimson' : 'tag-ochre'}">${esc(adm50.antiCorruption?.statusLabel || adm50.antiCorruption?.accessStatus)}</span> · Масиви: <strong>${fmtInt(adm50.openData?.totalDatasets || 0)}</strong> (${esc(adm50.openData?.latestUpdate || 'без данни')})</div>
+        <div style="margin-top:4px;"><strong>Липсващ отворен слой:</strong> ${esc(adm50.antiCorruption?.knownBarrier || '—')}</div>
+        <div style="margin-top:4px;color:var(--teal);"><strong>48-часова мярка:</strong> ${esc(adm50.antiCorruption?.action48h || '—')}</div>` : ''}
+        ${bbRow ? `<div style="margin-top:4px;"><strong>Разрез 206 907 записа:</strong> <span class="tag tag-crimson">${fmtInt(bbRow.singleOfferCount)}/${fmtInt(bbRow.contracts)} (${String(bbRow.singleOfferSharePct).replace('.', ',')}%) с 1 оферта</span> за <strong>${fmtEur(bbRow.singleOfferEur)}</strong></div>` : ''}
+        <div style="margin-top:6px;"><a class="tag tag-navy" href="razsledvaniya.html#invAudit50Section">Отвори в Индекса на прозрачност &rarr;</a></div>
+      </div>
+    </div>` : '';
+
     document.getElementById('drawerBody').innerHTML = `
       <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px;">
         <div class="kpi-card"><div class="kpi-label">Разход (2020–26)</div><div class="kpi-val" style="font-size:15px;">${fmtEur(a.spentEur)}</div></div>
@@ -293,6 +309,7 @@
         <div class="kpi-card"><div class="kpi-label">Среден договор</div><div class="kpi-val" style="font-size:15px;">${fmtEur(a.avgEur)}</div></div>
       </div>
       ${judicialBox}
+      ${admin50Box}
       <div class="drawer-section">
         <h4>Индикатори за концентрация и конкуренция</h4>
         <div class="contract-row">
@@ -362,7 +379,9 @@
     const start = (f.page - 1) * pageSize;
     const slice = list.slice(start, start + pageSize);
 
-    document.getElementById('companiesTbody').innerHTML = slice.length ? slice.map((c, idx) => `<tr data-open-company="${esc(c.eik || c.name)}">
+    document.getElementById('companiesTbody').innerHTML = slice.length ? slice.map((c, idx) => {
+      const invHits = (state.invByCompanyEik && c.eik) ? (state.invByCompanyEik.get(c.eik) || []) : [];
+      return `<tr data-open-company="${esc(c.eik || c.name)}">
       <td class="mono muted">${start + idx + 1}</td>
       <td>
         <span class="official-name">${esc(c.name.length > 92 ? c.name.slice(0, 91) + '…' : c.name)}</span>
@@ -375,13 +394,15 @@
       <td>
         <div class="badges" style="margin-top:0;">
           ${c.judicialRiskScore > 0 ? riskBadgeHtml(c.judicialRiskScore) : ''}
+          ${invHits.slice(0, 2).map((h) => `<span class="tag ${esc(h.cls)}">${esc(h.badge)}</span>`).join('')}
           ${c.isConsortium ? '<span class="tag tag-plum">ДЗЗД</span>' : '<span class="tag tag-slate">Фирма</span>'}
           ${c.linkedOfficials > 0 ? `<span class="tag tag-crimson">${c.linkedOfficials} политик</span>` : ''}
           ${c.consortiumCount > 0 ? `<span class="tag tag-ochre">${c.consortiumCount} ДЗЗД</span>` : ''}
         </div>
         ${c.judicialReasons && c.judicialReasons.length ? `<div class="inst-line" style="color:var(--crimson);">${esc(c.judicialReasons.slice(0, 2).join(' · '))}</div>` : ''}
       </td>
-    </tr>`).join('') : `<tr><td colspan="7" class="loading">Няма намерени фирми.</td></tr>`;
+    </tr>`;
+    }).join('') : `<tr><td colspan="7" class="loading">Няма намерени фирми.</td></tr>`;
 
     document.getElementById('compPagerBar').innerHTML = `
       <div class="muted">Показани <strong>${slice.length}</strong> от <strong>${fmtInt(list.length)}</strong> изпълнители (стр. ${f.page}/${totalPages})</div>
@@ -395,8 +416,11 @@
   }
 
   async function openCompanyDossier(eikOrName) {
-    const { state, ensureCompaniesLoaded, fmtEur, fmtInt, esc } = api();
-    await ensureCompaniesLoaded();
+    const { state, ensureCompaniesLoaded, ensureInvestigationsLoaded, fmtEur, fmtInt, esc } = api();
+    await Promise.all([
+      ensureCompaniesLoaded(),
+      ensureInvestigationsLoaded ? ensureInvestigationsLoaded() : Promise.resolve(null),
+    ]);
     const cleanNeedle = String(eikOrName || '').replace(/\s+и др\.$/i, '').trim().toLowerCase();
     const c = state.companiesByEik.get(eikOrName)
       || state.companies.find((x) => x.name === eikOrName)
@@ -422,6 +446,15 @@
       </div>
     </div>` : '';
 
+    const invHits = (state.invByCompanyEik && c.eik) ? (state.invByCompanyEik.get(c.eik) || []) : [];
+    const invCompBox = invHits.length ? `<div class="drawer-section">
+      <h4 style="color:var(--crimson);">Кръстосани държавни регистри (data.egov.bg &times; ЗОП)</h4>
+      <div class="contract-row" style="border-left:3px solid var(--crimson);">
+        ${invHits.map((h) => `<div style="margin-bottom:5px;"><span class="tag ${esc(h.cls)}" style="margin-right:6px;">${esc(h.badge)}</span> ${esc(h.detail)}</div>`).join('')}
+        <div style="margin-top:6px;"><a class="tag tag-navy" href="razsledvaniya.html">Отвори Кръстосани разследвания &rarr;</a></div>
+      </div>
+    </div>` : '';
+
     document.getElementById('drawerBody').innerHTML = `
       <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px;">
         <div class="kpi-card"><div class="kpi-label">Директни (€)</div><div class="kpi-val" style="font-size:15px;">${fmtEur(c.wonEur)}</div></div>
@@ -430,6 +463,7 @@
         <div class="kpi-card"><div class="kpi-label">Възложители</div><div class="kpi-val" style="font-size:15px;">${fmtInt(c.authorities)}</div></div>
       </div>
       ${jCompRisk}
+      ${invCompBox}
       ${linkedOffs.length ? `<div class="drawer-section"><h4>Свързани длъжностни лица (СИГМА)</h4><ul class="cluster-people">${linkedOffs.map((o) => `<li data-open-slug="${esc(o.slug)}"><span><strong>${esc(o.name)}</strong> <span class="muted">· ${esc(o.primaryInstitution)}</span></span><span class="mono">${fmtEur(o.periodEur)}</span></li>`).join('')}</ul></div>` : ''}
       ${pairs.length ? `<div class="drawer-section"><h4>Повтарящи се ДЗЗД партньори (Картелна матрица)</h4>${pairs.map((p) => {
         const partnerName = p.eikA === c.eik ? p.nameB : p.nameA;
@@ -1207,6 +1241,18 @@
       triggers: ['крад', 'далавер', 'корупц', 'схем', 'злоупотреб', 'нарушен', 'съмнител', 'рисков', 'червени флагове', 'топ 10', 'топ 50', 'класация', 'пирамида', 'кой води', 'най-много пари'],
       weight: 1.8,
     },
+    {
+      id: 'OPEN_DATA_INVESTIGATIONS',
+      label: 'Кръстосани регистри & Черни кутии',
+      triggers: [
+        'отнет лиценз', 'отнети лицензи', 'охранителен лиценз', 'охранителни лицензи',
+        'зчод', 'бат секюрити', 'селена 52', 'кариер', 'концесионер', 'подземни богатства',
+        'незаконни строежи', 'незаконен строеж', 'висящи събаряния', 'изтекъл надзор',
+        'черна кутия', 'черни кутии', 'черните кутии', 'фасадна прозрачност', 'openwashing',
+        'data.egov.bg', 'индекс на прозрачност', 'табако трейд', 'затворно дело',
+      ],
+      weight: 2.7,
+    },
   ];
 
   function matchesTriggerPrecision(trig, combinedLower, fullNorm, rawTokens, stems, requireWordBoundary) {
@@ -1519,7 +1565,7 @@
 
   async function askOracle(question) {
     ensureOracleReady();
-    const { state, fmtEur, fmtInt, esc, riskBadgeHtml, ensureAuthoritiesLoaded, ensureCompaniesLoaded, generateSignalBrief } = api();
+    const { state, fmtEur, fmtInt, esc, riskBadgeHtml, ensureAuthoritiesLoaded, ensureCompaniesLoaded, ensureInvestigationsLoaded, generateSignalBrief } = api();
     const qRaw = (question || '').trim();
     if (!qRaw) return;
     appendOracleMsg('user', esc(qRaw));
@@ -1529,6 +1575,7 @@
       ensureCompaniesLoaded(),
       state.forensics7 || (window.SIGMA3_F7 ? window.SIGMA3_F7.ensureForensics7Loaded() : Promise.resolve(null)),
       state.judicial6 || (window.SIGMA3_J6 ? window.SIGMA3_J6.ensureJudicial6Loaded() : Promise.resolve(null)),
+      ensureInvestigationsLoaded ? ensureInvestigationsLoaded() : Promise.resolve(null),
     ]);
 
     const nlu = analyzeNaturalQuery(qRaw);
@@ -1867,6 +1914,33 @@
         }
       }
 
+      // 7. Cross-Check 11 Live Open-Data Registries & 50-Institution Transparency Index!
+      {
+        const crossLines = [];
+        if (topComp && topComp.eik && state.invByCompanyEik && state.invByCompanyEik.has(topComp.eik)) {
+          state.invByCompanyEik.get(topComp.eik).forEach((h) => {
+            crossLines.push(`<li><span class="tag ${esc(h.cls)}">${esc(h.badge)}</span> ${esc(h.detail)}</li>`);
+          });
+        }
+        if (topAuth && state.admin50ByEik && state.admin50ByEik.has(topAuth.eik)) {
+          const adm = state.admin50ByEik.get(topAuth.eik);
+          const od = adm.openData || {};
+          const ac = adm.antiCorruption || {};
+          crossLines.push(`<li><strong>Индекс на прозрачност (data.egov.bg):</strong> ${esc(ac.statusLabel || ac.accessStatus)} · <b>${fmtInt(od.totalDatasets || 0)} масива</b> (${esc(od.latestUpdate || 'без данни')}) · Експозиция <b>${ac.corruptionExposureScore}/100</b>. <em>Мярка 48ч:</em> ${esc(ac.action48h)}</li>`);
+        }
+        if (topAuth && state.blackBoxByEik && state.blackBoxByEik.has(topAuth.eik)) {
+          const bbRow = state.blackBoxByEik.get(topAuth.eik);
+          crossLines.push(`<li><strong>Одит на офертите (206 907 записа):</strong> <b>${fmtInt(bbRow.singleOfferCount)}/${fmtInt(bbRow.contracts)} (${String(bbRow.singleOfferSharePct).replace('.', ',')}%)</b> с 1 оферта за <strong class="mono">${fmtEur(bbRow.singleOfferEur)}</strong> (неконкурентни: ${fmtInt(bbRow.nonCompetitiveCount)} за ${fmtEur(bbRow.nonCompetitiveEur)}).</li>`);
+        }
+        if (crossLines.length) {
+          sections.push(`<div class="contract-row" style="border-left:3px solid var(--crimson);">
+            <strong style="color:var(--crimson);">Кръстосани държавни регистри &amp; Индекс на прозрачност (data.egov.bg):</strong>
+            <ul class="clean-list" style="margin-top:4px;font-size:12px;">${crossLines.join('')}</ul>
+            <div style="margin-top:4px;"><a class="tag tag-navy" href="razsledvaniya.html">Отвори пълния раздел Разследвания ↗</a></div>
+          </div>`);
+        }
+      }
+
       if (sections.length) {
         const followUps = [];
         if (topOff) followUps.push(`Генерирай сигнал за ${topOff.name}`);
@@ -2037,6 +2111,27 @@
         blocks.push(`<div><strong>${title} — общо ${sub.length} лица (Комбиниран обем СИГМА + ДЗЗД: ${fmtEur(sub.reduce((a, o) => a + o.combinedEur, 0))}):</strong><ol style="margin:6px 0 0;padding-left:18px;">` +
           sub.slice(0, 8).map((o) => `<li><a href="#" data-open-slug="${esc(o.slug)}"><strong>${esc(o.name)}</strong></a> (${esc(o.primaryInstitution)}) — В мандата: <b>${fmtEur(o.periodEur)}</b> · Общо+ДЗЗД: <b>${fmtEur(o.combinedEur)}</b> ${riskBadgeHtml(o.sigma3Score)}</li>`).join('') + `</ol></div>`);
       }
+    }
+
+    if (intentSet.has('OPEN_DATA_INVESTIGATIONS')) {
+      const invSum = (state.investigations && state.investigations.summary) || {};
+      const invD = (state.investigations && state.investigations.investigations) || {};
+      const mvr = invD.mvrSecurity || {};
+      const me = invD.meConcessions || {};
+      const dnsk = invD.dnsk || {};
+      const bb = invD.blackBoxContracts || {};
+      const pvu = invD.mfPvu || {};
+      const admSum = (state.admins50 && state.admins50.summary) || {};
+      blocks.push(`<div><strong>Кръстосани разследвания (${invSum.totalCrossLinkedRegistries || 11} живи регистъра от data.egov.bg) &amp; Индекс на прозрачност (${admSum.totalAdministrations || 50} институции / ${fmtEur(admSum.totalZopSpentEur || 23739873735)}):</strong>
+        <ul class="clean-list" style="margin-top:6px;">
+          <li><strong>МВР Охранителни лицензи (ЗЧОД):</strong> <b>${fmtInt(mvr.noActiveLicenseZopCount || 70)}</b> фирми в ЗОП без действащ лиценз (<b>${fmtInt(mvr.explicitRevokedNoActiveCount || 7)}</b> изрично „Отнет“/„Отказ“), като <b>БАТ СЕКЮРИТИ ЕООД</b> (ЕИК 130548570) и <b>СЕЛЕНА 52 ЕООД</b> (ЕИК 130997265) имат преки охранителни договори за <b>${fmtEur(mvr.securityContractNoActiveEur || 98045)}</b> при статус „Отнет“.</li>
+          <li><strong>МЕ Кариери &times; ЗОП:</strong> <b>${fmtInt(me.zopMatchedCompanies || 54)}</b> концесионери държат <b>${fmtEur(me.zopMatchedDirectEur || 1201427449)}</b> директни + <b>${fmtEur(me.zopMatchedConsortiumEur || 3638988766)}</b> ДЗЗД поръчки.</li>
+          <li><strong>ДНСК Надзор &amp; Незаконни строежи:</strong> <b>${fmtInt(dnsk.expiredConsultantsInZop || 92)}</b> надзорни фирми в ЗОП с изтекъл срок + <b>${fmtInt(dnsk.illegalInProcedure || 5177)}</b> висящи заповеди за премахване (от ${fmtInt(dnsk.illegalOrdersTotal || 6250)}).</li>
+          <li><strong>Черни кутии (1 оферта &amp; 0 масива):</strong> <b>${fmtInt(bb.totalSingleOfferCount || 3296)}</b> договора с 1 оферта за <b>${fmtEur(bb.totalSingleOfferEur || 4106803608)}</b> — напр. <em>ДА „Държавен резерв“</em> (95,2% от сумата с 1 оферта), <em>ДП „Фонд затворно дело“</em> (Табако Трейд Сървисес: €395,41 млн., 13/13 с 1 оферта) и <b>9 черни кутии</b> с 0 масива в data.egov.bg (€6,64 млрд.).</li>
+          <li><strong>МФ ПВУ &amp; ДФЗ 2025:</strong> ${String(pvu.executionPct || 76.09).replace('.', ',')}% усвояване по ПВУ, но НАП (€23,42 млн.) и Митници (€17,61 млн.) са на <b>0,00 €</b>, а CSV масивът на ДФЗ 2025 прекъсва с timeout (&gt;120s).</li>
+        </ul>
+        <div style="margin-top:8px;"><a class="btn btn-dark" style="padding:3px 10px;font-size:11.5px;text-decoration:none;" href="razsledvaniya.html">Отвори пълния раздел + Генератор на сигнали/ЗДОИ &rarr;</a></div>
+      </div>`);
     }
 
     if (intentSet.has('HIGH_RISK_OVERVIEW') && !blocks.length) {
