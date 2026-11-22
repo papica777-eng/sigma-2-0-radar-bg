@@ -273,6 +273,18 @@ def strict_match_company(raw_name: str, raw_eik: str, uni: dict[str, Any]) -> tu
     return None, ""
 
 
+def clean_subject_display(subj: str, unp: str = "") -> str:
+    s = re.sub(r"\s+", " ", (subj or "").replace('""', '"')).strip()
+    if "Благоевтрад" in s:
+        s = s.replace("Благоевтрад", "Благоевтрад [sic, дословно в ЦАИС ЕОП]")
+    if len(s) > 280:
+        cut = s[:280].rsplit(" ", 1)[0].rstrip(" ,;:-")
+        s = cut + "…"
+    if unp:
+        s = f"{s} (УНП {unp})"
+    return s
+
+
 def build_security_contract_index() -> dict[str, dict[str, Any]]:
     """Index actual ZOP guarding/security contracts per contractor EIK from contracts.csv."""
     idx: dict[str, dict[str, Any]] = defaultdict(lambda: {"count": 0, "eur": 0.0, "sampleSubject": ""})
@@ -283,6 +295,7 @@ def build_security_contract_index() -> dict[str, dict[str, Any]]:
         for row in csv.DictReader(f):
             ceik = (row.get("contractor_eik") or "").strip()
             subj = (row.get("subject") or "").strip()
+            unp = (row.get("unp") or "").strip()
             if not ceik or not subj:
                 continue
             if sec_kw.search(subj):
@@ -291,7 +304,7 @@ def build_security_contract_index() -> dict[str, dict[str, Any]]:
                 st["count"] += 1
                 st["eur"] += val
                 if not st["sampleSubject"]:
-                    st["sampleSubject"] = subj[:140]
+                    st["sampleSubject"] = clean_subject_display(subj, unp)
     return idx
 
 
@@ -764,7 +777,7 @@ def analyze_state_reserve_and_energy(uni: dict[str, Any]) -> dict[str, Any]:
 
 def analyze_dfz_and_gambling(uni: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
     # Try DFZ 2025 subsidies (short timeout if data.egov.bg backend hangs on full bulk SQL CSV)
-    p_dfz = download_csv_cached(RESOURCE_FEEDS["dfz_2025"][0]["rv"], "dfz_2025", timeout=22, max_bytes=35_000_000)
+    p_dfz = download_csv_cached(RESOURCE_FEEDS["dfz_2025"][0]["rv"], "dfz_2025", timeout=8, max_bytes=35_000_000)
     dfz_by_eik: dict[str, dict[str, Any]] = {}
     dfz_rows = 0
     dfz_headers: list[str] = []

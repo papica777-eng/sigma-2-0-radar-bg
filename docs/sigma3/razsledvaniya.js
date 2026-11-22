@@ -132,7 +132,7 @@
           <article class="inv-finding-card">
             <span class="inv-tag tag-crit">МВР Охранителни лицензи × ЗОП</span>
             <h3>Отнети лицензи с реални охранителни договори</h3>
-            <p>От <strong>${fmtInt(mvr.zopMatchedCompanies)}</strong> изпълнители по ЗОП с досие в регистъра за частна охранителна дейност (ЗЧОД) на МВР (${fmtEur(mvr.zopMatchedTotalEur)}), <strong>${fmtInt(mvr.noActiveLicenseZopCount)}</strong> нямат действащ лиценз (${fmtInt(mvr.explicitRevokedNoActive)} изрично <strong>„Отнет“ / „Отказ“</strong>). Фирмите с отнет лиценз и без активен документ (${fmtInt(mvr.securityContractNoActiveCount)} бр. — <em>БАТ СЕКЮРИТИ ЕООД</em> и <em>СЕЛЕНА 52 ЕООД</em>) са спечелили <strong>преки охранителни поръчки</strong> за ${fmtEur(mvr.securityContractNoActiveEur)} (охрана на БНР/БНТ и Министерството на туризма).</p>
+            <p>От <strong>${fmtInt(mvr.zopMatchedCompanies)}</strong> изпълнители по ЗОП с досие в регистъра за частна охранителна дейност (ЗЧОД) на МВР (${fmtEur(mvr.zopMatchedTotalEur)}), <strong>${fmtInt(mvr.noActiveLicenseZopCount)}</strong> нямат действащ лиценз (<strong>${fmtInt(mvr.explicitRevokedNoActiveCount)}</strong> изрично <strong>„Отнет“ / „Отказ“</strong>). Фирмите с отнет лиценз и без активен документ (${fmtInt(mvr.securityContractNoActiveCount)} бр. — <em>БАТ СЕКЮРИТИ ЕООД</em> и <em>СЕЛЕНА 52 ЕООД</em>) са спечелили <strong>преки охранителни поръчки</strong> за ${fmtEur(mvr.securityContractNoActiveEur)} (охрана на БНР/БНТ и Министерството на туризма).</p>
           </article>
 
           <article class="inv-finding-card">
@@ -189,7 +189,7 @@
           <h3 style="font-size:0.95rem;margin:14px 0 8px;">Топ 5 затворени и инфраструктурни възложители по дял на договорите с 1 оферта</h3>
           <div class="inv-table-wrap">
             <table class="inv-table">
-              <thead><tr><th>ЕИК</th><th>Възложител</th><th class="num">Общо ЗОП</th><th class="num">1 оферта (бр. / %)</th><th class="num">Сума с 1 оферта</th></tr></thead>
+              <thead><tr><th>ЕИК</th><th>Възложител</th><th class="num">Общо ЗОП (записи)</th><th class="num">1 оферта (бр. / %)</th><th class="num">Сума с 1 оферта</th></tr></thead>
               <tbody>
                 ${bbRows.slice(0, 5).map((a) => `
                   <tr>
@@ -203,6 +203,9 @@
               </tbody>
             </table>
           </div>
+          <p style="font-size:0.75rem;color:var(--ink-muted);margin:8px 0 0;">
+            Методологична бележка: Броят записи в таблиците за 1 оферта включва всички договорни позиции и рамкови споразумения в пълния договорен масив (206 907 записа), докато Индексът на прозрачност по-долу използва агрегирания брой договори с обявена стойност от СИГМА 2.0. Общите суми в евро съвпадат.
+          </p>
         ` : ''}
       `;
       return;
@@ -214,7 +217,7 @@
       const top = mvr.topFindings || [];
       body.innerHTML = `
         <p style="margin-top:0;font-size:0.84rem;color:var(--ink-secondary);">
-          Регистър на МВР за частна охранителна дейност — ЗЧОД (<a href="${esc(mvr.datasetUrl)}" target="_blank" rel="noopener">data.egov.bg ↗</a>): <strong>${fmtInt(mvr.totalRegistryRecords)}</strong> записа (${fmtInt(mvr.uniqueEiksInRegistry)} уникални ЕИК). Общо <strong>${fmtInt(mvr.zopMatchedCompanies)}</strong> фирми присъстват в ЗОП (${fmtEur(mvr.zopMatchedTotalEur)}), от които <strong>${fmtInt(mvr.noActiveLicenseZopCount)}</strong> нямат нито един действащ лиценз (${fmtInt(mvr.explicitRevokedNoActive)} изрично <strong>Отнет</strong>). Политически свързани фирми с лиценз: <strong>${fmtInt(mvr.politicianLinkedCount)}</strong>.
+          Регистър на МВР за частна охранителна дейност — ЗЧОД (<a href="${esc(mvr.datasetUrl)}" target="_blank" rel="noopener">data.egov.bg ↗</a>): <strong>${fmtInt(mvr.totalRegistryRecords)}</strong> записа (${fmtInt(mvr.uniqueEiksInRegistry)} уникални ЕИК). Общо <strong>${fmtInt(mvr.zopMatchedCompanies)}</strong> фирми присъстват в ЗОП (${fmtEur(mvr.zopMatchedTotalEur)}), от които <strong>${fmtInt(mvr.noActiveLicenseZopCount)}</strong> нямат нито един действащ лиценз (<strong>${fmtInt(mvr.explicitRevokedNoActiveCount)}</strong> изрично <strong>Отнет</strong>). Политически свързани фирми с лиценз: <strong>${fmtInt(mvr.politicianLinkedCount)}</strong>.
         </p>
         ${secNoAct.length ? `
           <h3 style="font-size:0.95rem;color:var(--crimson);margin:14px 0 8px;">1. Фирми БЕЗ действащ охранителен лиценз, спечелили преки охранителни поръчки по ЗОП</h3>
@@ -441,7 +444,7 @@
         </p>
         <div class="inv-table-wrap">
           <table class="inv-table">
-            <thead><tr><th>ЕИК</th><th>Възложител (Черна кутия)</th><th class="num">Договори / Сума</th><th class="num">1 оферта (бр. / %)</th><th class="num">Сума с 1 оферта</th><th>Топ 3 контрагенти (с 1 оферта)</th></tr></thead>
+            <thead><tr><th>ЕИК</th><th>Възложител (Черна кутия)</th><th class="num">Записи / Сума</th><th class="num">1 оферта (бр. / %)</th><th class="num">Сума с 1 оферта</th><th>Топ 3 контрагенти (с 1 оферта)</th></tr></thead>
             <tbody>
               ${rows.map((a) => `
                 <tr>
@@ -458,6 +461,9 @@
             </tbody>
           </table>
         </div>
+        <p style="font-size:0.75rem;color:var(--ink-muted);margin:8px 0 0;">
+          Методологична бележка: Броят записи включва всички договорни позиции и рамкови споразумения в пълния договорен масив (206 907 записа), докато Индексът на прозрачност по-долу използва агрегирания брой договори с обявена стойност от СИГМА 2.0. Общите суми в евро съвпадат.
+        </p>
       `;
     }
   }
@@ -473,7 +479,9 @@
       if (clusterFilter !== 'ALL' && a.cluster !== clusterFilter) return false;
       if (searchFilter) {
         const hay = [
-          a.name, a.shortName, a.eik, a.cluster,
+          a.name, a.shortName, a.eik,
+          ...(Array.isArray(a.extraEiks) ? a.extraEiks : []),
+          a.cluster,
           a.antiCorruption?.keyRegistry, a.antiCorruption?.corruptionSchemes,
           a.antiCorruption?.knownBarrier, a.antiCorruption?.action48h,
           a.openData?.egovMatchedName,
@@ -507,13 +515,17 @@
       const ac = a.antiCorruption || {};
       const pr = a.procurement || {};
       const isExp = expandedAdminId === a.id;
+      const allEiks = [a.eik, ...(Array.isArray(a.extraEiks) ? a.extraEiks : [])].filter(Boolean);
+      const eikLabel = allEiks.length > 1
+        ? `Обединени ЕИК (${allEiks.length}): ${allEiks.join(', ')}`
+        : `ЕИК: ${a.eik}`;
 
       const rowHtml = `
         <tr class="inv-admin-row" data-admin-id="${esc(a.id)}">
           <td class="mono">${idx + 1}</td>
           <td>
             <strong>${esc(a.name)}</strong>
-            <div class="mono" style="font-size:0.72rem;color:var(--ink-muted);">ЕИК: ${esc(a.eik)} · ${fmtInt(pr.contracts)} договора</div>
+            <div class="mono" style="font-size:0.72rem;color:var(--ink-muted);">${esc(eikLabel)} · ${fmtInt(pr.contracts)} договора</div>
           </td>
           <td>
             <span class="inv-tag ${stInfo.cls}">${esc(stInfo.label)}</span>

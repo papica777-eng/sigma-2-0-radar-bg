@@ -138,7 +138,7 @@ const uniqueClusters = Array.from(new Set(adminsAll.map((a) => a.cluster).filter
         <article class="inv-finding-card">
           <span class="inv-tag tag-crit">МВР Охранителни лицензи × ЗОП</span>
           <h3>Отнети лицензи с реални охранителни договори</h3>
-          <p>От <strong>{fmtInt(mvr.zopMatchedCompanies)}</strong> изпълнители по ЗОП с досие в регистъра за частна охранителна дейност (ЗЧОД) на МВР ({fmtEur(mvr.zopMatchedTotalEur)}), <strong>{fmtInt(mvr.noActiveLicenseZopCount)}</strong> нямат действащ лиценз ({fmtInt(mvr.explicitRevokedNoActive)} изрично <strong>„Отнет“ / „Отказ“</strong>). Фирмите с отнет лиценз и без активен документ ({fmtInt(mvr.securityContractNoActiveCount)} бр. — <em>БАТ СЕКЮРИТИ ЕООД</em> и <em>СЕЛЕНА 52 ЕООД</em>) са спечелили <strong>преки охранителни поръчки</strong> за {fmtEur(mvr.securityContractNoActiveEur)} (охрана на БНР/БНТ и Министерството на туризма).</p>
+          <p>От <strong>{fmtInt(mvr.zopMatchedCompanies)}</strong> изпълнители по ЗОП с досие в регистъра за частна охранителна дейност (ЗЧОД) на МВР ({fmtEur(mvr.zopMatchedTotalEur)}), <strong>{fmtInt(mvr.noActiveLicenseZopCount)}</strong> нямат действащ лиценз (<strong>{fmtInt(mvr.explicitRevokedNoActiveCount)}</strong> изрично <strong>„Отнет“ / „Отказ“</strong>). Фирмите с отнет лиценз и без активен документ ({fmtInt(mvr.securityContractNoActiveCount)} бр. — <em>БАТ СЕКЮРИТИ ЕООД</em> и <em>СЕЛЕНА 52 ЕООД</em>) са спечелили <strong>преки охранителни поръчки</strong> за {fmtEur(mvr.securityContractNoActiveEur)} (охрана на БНР/БНТ и Министерството на туризма).</p>
         </article>
 
         <article class="inv-finding-card">
@@ -202,7 +202,7 @@ const uniqueClusters = Array.from(new Set(adminsAll.map((a) => a.cluster).filter
           <h3 style="font-size:0.95rem;margin:14px 0 8px;">Топ 5 затворени и инфраструктурни възложители по дял на договорите с 1 оферта</h3>
           <div class="inv-table-wrap">
             <table class="inv-table">
-              <thead><tr><th>ЕИК</th><th>Възложител</th><th class="num">Общо ЗОП</th><th class="num">1 оферта (бр. / %)</th><th class="num">Сума с 1 оферта</th></tr></thead>
+              <thead><tr><th>ЕИК</th><th>Възложител</th><th class="num">Общо ЗОП (записи)</th><th class="num">1 оферта (бр. / %)</th><th class="num">Сума с 1 оферта</th></tr></thead>
               <tbody>
                 {bbRows.slice(0, 5).map((a) => (
                   <tr>
@@ -216,6 +216,9 @@ const uniqueClusters = Array.from(new Set(adminsAll.map((a) => a.cluster).filter
               </tbody>
             </table>
           </div>
+          <p style="font-size:0.75rem;color:var(--ink-muted);margin:8px 0 0;">
+            Методологична бележка: Броят записи в таблиците за 1 оферта включва всички договорни позиции и рамкови споразумения в пълния договорен масив (206 907 записа), докато Индексът на прозрачност по-долу използва агрегирания брой договори с обявена стойност от СИГМА 2.0. Общите суми в евро съвпадат.
+          </p>
         </>
       )}
     </div>
@@ -276,12 +279,16 @@ const uniqueClusters = Array.from(new Set(adminsAll.map((a) => a.cluster).filter
               const od = a.openData || {};
               const ac = a.antiCorruption || {};
               const pr = a.procurement || {};
+              const allEiks = [a.eik, ...(Array.isArray(a.extraEiks) ? a.extraEiks : [])].filter(Boolean);
+              const eikLabel = allEiks.length > 1
+                ? `Обединени ЕИК (${allEiks.length}): ${allEiks.join(', ')}`
+                : `ЕИК: ${a.eik}`;
               return (
                 <tr class="inv-admin-row" data-admin-id={a.id}>
                   <td class="mono">{idx + 1}</td>
                   <td>
                     <strong>{a.name}</strong>
-                    <div class="mono" style="font-size:0.72rem;color:var(--ink-muted);">ЕИК: {a.eik} · {fmtInt(pr.contracts)} договора</div>
+                    <div class="mono" style="font-size:0.72rem;color:var(--ink-muted);">{eikLabel} · {fmtInt(pr.contracts)} договора</div>
                   </td>
                   <td>
                     <span class={`inv-tag ${stInfo.cls}`}>{stInfo.label}</span>
