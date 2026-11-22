@@ -207,12 +207,14 @@
     const t = mm ? mm.totals : { contracts: 206907, valueEur: 53224934606, authorities: 4344, bidders: 17428 };
     const j6Date = (state.judicial6 && state.judicial6.generatedAtUtc) ? String(state.judicial6.generatedAtUtc).slice(0, 10) : '';
     const f7Date = (state.forensics7 && state.forensics7.generatedAtUtc) ? String(state.forensics7.generatedAtUtc).slice(0, 10) : '';
-    const latestDate = [j6Date, f7Date, (mm && mm.asOf) || '', (state.meta && state.meta.asOf) || '', '2026-11-20'].filter(Boolean).sort().pop();
-    const refreshed = latestDate || '2026-11-20';
-    const asOf = latestDate || '2026-11-20';
-    document.getElementById('syncSubtitle').textContent =
-      `Синхронизация: ${refreshed}`;
-    document.getElementById('asOfChip').textContent = `Данни към: ${asOf}`;
+    const syncEl = document.getElementById('syncSubtitle');
+    const domDate = syncEl ? ((syncEl.textContent || '').match(/\d{4}-\d{2}-\d{2}/) || [''])[0] : '';
+    const latestDate = [j6Date, f7Date, domDate, (mm && mm.asOf) || '', (state.meta && state.meta.asOf) || '', '2026-11-22'].filter(Boolean).sort().pop();
+    const refreshed = latestDate || '2026-11-22';
+    const asOf = latestDate || '2026-11-22';
+    if (syncEl) syncEl.textContent = `Синхронизация: ${refreshed}`;
+    const chipEl = document.getElementById('asOfChip');
+    if (chipEl) chipEl.textContent = `Данни към: ${asOf}`;
     document.getElementById('f1Val').textContent = fmtEur(t.valueEur);
     document.getElementById('f1Sub').textContent = `${fmtInt(t.contracts)} договора · ${fmtInt(t.authorities)} възложители · ${fmtInt(t.bidders)} фирми`;
     if (mm && mm.singleOffer) {
@@ -1481,6 +1483,7 @@
         topWrap.style.display = '';
       }
       if (topSep) {
+        topSep.textContent = '·';
         topSep.hidden = false;
         topSep.style.display = '';
       }

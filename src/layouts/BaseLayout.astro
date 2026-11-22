@@ -13,7 +13,12 @@ interface Props {
   canonicalPath?: string;
 }
 
-const defaultAsOf = String((j6Raw as any).generatedAtUtc || '2026-11-20').slice(0, 10);
+const defaultAsOf = [
+  String((j6Raw as any).generatedAtUtc || '').slice(0, 10),
+  String((adm50Raw as any).generatedAtUtc || '').slice(0, 10),
+  String((invRaw as any).generatedAtUtc || '').slice(0, 10),
+  '2026-11-22',
+].filter(Boolean).sort().pop() || '2026-11-22';
 const {
   title = 'NAsvetlo — Независима гражданска платформа за прозрачност на обществените поръчки',
   description = 'NAsvetlo (nasvetlo.website) — Независима гражданска платформа, изградена върху отворените данни (CC-BY 4.0) на МИДТ / СИГМА 2.0: €53,22 млрд. (206 907 договора), 4 344 възложители, 17 428 изпълнители, 571 свързани лица, +€1,92 млрд. скрити ДЗЗД, 28-областен атлас, картелна лаборатория, Закон на Бенфорд и жив AI асистент.',
@@ -171,7 +176,7 @@ const jsonLd = JSON.stringify({
     </div>
     <div class="info-subbar-links">
       <span class="info-subbar-visits" id="nasvetloVisitCounter" title="Общ постоянен брой посещения на nasvetlo.website (не се занулява)" hidden style="display:none;"></span>
-      <span class="info-subbar-sep" id="nasvetloVisitSep" aria-hidden="true" hidden style="display:none;">·</span>
+      <span class="info-subbar-sep" id="nasvetloVisitSep" aria-hidden="true" hidden style="display:none;"></span>
       {subpage ? (
         <>
           <a class="subbar-link" href="data/nasvetlo_50_admins.json" download>Индекс JSON</a>
@@ -208,18 +213,17 @@ const jsonLd = JSON.stringify({
 </footer>
 
 {subpage ? (
-  <script is:inline src="sigma3/razsledvaniya.js?v=20261122b"></script>
+  <script is:inline src="sigma3/razsledvaniya.js?v=20261122c"></script>
 ) : (
   <>
     <aside class="nasvetlo-mini-win" id="nasvetloNewInvestigationsWin" aria-label="Нови разследвания в NAsvetlo">
       <div class="mini-win-head">
-        <span class="mini-win-badge">
+        <a href="razsledvaniya.html" class="mini-win-badge" style="text-decoration:none;">
           <span class="mini-win-dot" aria-hidden="true"></span>
           <span>НОВИ РАЗСЛЕДВАНИЯ</span>
-        </span>
+        </a>
         <div class="mini-win-controls">
-          <a href="razsledvaniya.html" class="mini-win-btn" id="miniWinQuickGo" style="text-decoration:none;display:none;">Отвори ↗</a>
-          <button type="button" class="mini-win-btn" id="miniWinMinBtn" aria-expanded="true" title="Свий / покажи прозорчето">—</button>
+          <button type="button" class="mini-win-btn" id="miniWinMinBtn" aria-expanded="true" title="Свий или разгъни прозорчето">Свий ▾</button>
         </div>
       </div>
       <div class="mini-win-body">
@@ -238,13 +242,11 @@ const jsonLd = JSON.stringify({
       (function() {
         var win = document.getElementById('nasvetloNewInvestigationsWin');
         var btn = document.getElementById('miniWinMinBtn');
-        var go = document.getElementById('miniWinQuickGo');
         if (!win || !btn) return;
         function setCollapsed(c) {
           win.classList.toggle('is-collapsed', c);
           btn.setAttribute('aria-expanded', c ? 'false' : 'true');
-          btn.textContent = c ? '+' : '—';
-          if (go) go.style.display = c ? 'inline-flex' : 'none';
+          btn.textContent = c ? 'Разгъни ▴' : 'Свий ▾';
           try { sessionStorage.setItem('nasvetlo_miniwin_collapsed', c ? '1' : '0'); } catch (_) {}
         }
         try {
@@ -258,7 +260,7 @@ const jsonLd = JSON.stringify({
 
     <ModalsAndDrawer />
 
-    <script is:inline src="sigma3/app.js?v=20261122b"></script>
+    <script is:inline src="sigma3/app.js?v=20261122c"></script>
     <script is:inline src="sigma3/semantic_dialog_engine.js?v=20261121b"></script>
     <script is:inline src="sigma3/sigma3_modules.js?v=20261121b"></script>
     <script is:inline src="sigma3/forensics7.js?v=20261120g"></script>

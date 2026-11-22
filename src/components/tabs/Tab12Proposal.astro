@@ -1,11 +1,16 @@
 ---
 import f7Raw from '../../../docs/data/sigma3_forensics_7.json';
 import j6Raw from '../../../docs/data/sigma3_judicial_6.json';
+import invRaw from '../../../docs/data/nasvetlo_investigations.json';
 
 const e1: any = (f7Raw as any).engine1_annexInflation || {};
 const annexTotalLabel = '+€' + (Number(e1.totalInflationEur || 1290789382.76) / 1e9).toFixed(2).replace('.', ',') + ' млрд.';
 const annexProbedCount = Number(e1.probedCount || 165);
-const asOfDate = String((j6Raw as any).generatedAtUtc || '2026-11-20').slice(0, 10);
+const asOfDate = [
+  String((j6Raw as any).generatedAtUtc || '').slice(0, 10),
+  String((invRaw as any).generatedAtUtc || '').slice(0, 10),
+  '2026-11-22',
+].filter(Boolean).sort().pop() || '2026-11-22';
 
 const PROPOSAL_ROWS = [
   ['Обхват на обединения по ЗЗД (ДЗЗД)', 'Свързва директни договори по ЕИК (обединенията по ЗЗД нямат собствен ЕИК)', 'Пълно разбиване на 3 427 обединения по ЗЗД → разкрива +€1,92 млрд. при 76 лица', '+€1,92 млрд. нова видимост'],

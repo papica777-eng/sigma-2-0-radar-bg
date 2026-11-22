@@ -70,6 +70,7 @@
         wrap.style.display = '';
       }
       if (sepEl) {
+        sepEl.textContent = '·';
         sepEl.hidden = false;
         sepEl.style.display = '';
       }
