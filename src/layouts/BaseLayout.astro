@@ -2,11 +2,15 @@
 import ModalsAndDrawer from '../components/modals/ModalsAndDrawer.astro';
 import NasvetloLogo from '../components/NasvetloLogo.astro';
 import j6Raw from '../../docs/data/sigma3_judicial_6.json';
+import adm50Raw from '../../docs/data/nasvetlo_50_admins.json';
+import invRaw from '../../docs/data/nasvetlo_investigations.json';
 
 interface Props {
   title?: string;
   description?: string;
   asOf?: string;
+  subpage?: boolean;
+  canonicalPath?: string;
 }
 
 const defaultAsOf = String((j6Raw as any).generatedAtUtc || '2026-11-20').slice(0, 10);
@@ -14,7 +18,14 @@ const {
   title = 'NAsvetlo — Независима гражданска платформа за прозрачност на обществените поръчки',
   description = 'NAsvetlo (nasvetlo.website) — Независима гражданска платформа, изградена върху отворените данни (CC-BY 4.0) на МИДТ / СИГМА 2.0: €53,22 млрд. (206 907 договора), 4 344 възложители, 17 428 изпълнители, 571 свързани лица, +€1,92 млрд. скрити ДЗЗД, 28-областен атлас, картелна лаборатория, Закон на Бенфорд и жив AI асистент.',
   asOf = defaultAsOf,
+  subpage = false,
+  canonicalPath = '/',
 } = Astro.props;
+
+const canonicalUrl = `https://nasvetlo.website${canonicalPath === '/' ? '/' : canonicalPath}`;
+const blackBoxCount = Number((adm50Raw as any)?.summary?.statusBreakdown?.CLOSED_BLOCKED || 9);
+const crossRegCount = Number((invRaw as any)?.summary?.totalCrossLinkedRegistries || 11);
+const singleOfferCnt = Number((invRaw as any)?.summary?.blackBoxTotalSingleOfferCount || 0).toLocaleString('bg-BG');
 
 const jsonLd = JSON.stringify({
   '@context': 'https://schema.org',
@@ -30,9 +41,9 @@ const jsonLd = JSON.stringify({
     },
     {
       '@type': 'WebApplication',
-      '@id': 'https://nasvetlo.website/#app',
-      name: 'NAsvetlo — Граждански одит на обществените поръчки в България',
-      url: 'https://nasvetlo.website/',
+      '@id': `${canonicalUrl}#app`,
+      name: title,
+      url: canonicalUrl,
       applicationCategory: 'GovernmentApplication',
       operatingSystem: 'Web',
       inLanguage: 'bg-BG',
@@ -46,7 +57,7 @@ const jsonLd = JSON.stringify({
       '@id': 'https://nasvetlo.website/#dataset',
       name: 'NAsvetlo — Отворен одитен масив за обществени поръчки в България (€53,22 млрд., 206 907 договора)',
       description: 'Кръстосан граждански одитен масив върху отворените данни (CC-BY 4.0) на МИДТ / СИГМА 2.0, АОП / ЦАИС ЕОП, Сметна палата и ЕРИК, КПК, АДФИ, КЗК, ВСС (ЕПЕП/ЕИСС), ВАС и ТРРЮЛНЦ.',
-      url: 'https://nasvetlo.website/',
+      url: canonicalUrl,
       license: 'https://creativecommons.org/licenses/by/4.0/',
       isBasedOn: 'https://sigma.midt.bg/',
       inLanguage: 'bg-BG',
@@ -84,15 +95,15 @@ const jsonLd = JSON.stringify({
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="bg_BG" />
   <meta property="og:site_name" content="NAsvetlo" />
-  <meta property="og:title" content="NAsvetlo — Граждански контрол върху €53,22 млрд. обществени поръчки" />
-  <meta property="og:description" content="Независима гражданска платформа върху отворените данни (CC-BY 4.0) на МИДТ / СИГМА 2.0: 28-областен рисков атлас, +€1,92 млрд. скрити ДЗЗД, 60 картелни двойки, Закон на Бенфорд и жив AI асистент." />
-  <meta property="og:url" content="https://nasvetlo.website/" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonicalUrl} />
   <meta property="og:image" content="https://nasvetlo.website/sigma3/og-card.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://nasvetlo.website/sigma3/og-card.png" />
-  <link rel="canonical" href="https://nasvetlo.website/" />
+  <link rel="canonical" href={canonicalUrl} />
   <link rel="sitemap" type="application/xml" title="Sitemap" href="https://nasvetlo.website/sitemap.xml" />
   <script type="application/ld+json" set:html={jsonLd} />
   <link rel="icon" type="image/png" href="sigma3/logo-icon.png" />
@@ -109,28 +120,44 @@ const jsonLd = JSON.stringify({
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="sigma3/styles.css?v=20261122b" />
+  <link rel="stylesheet" href="sigma3/styles.css?v=20261122c" />
 </head>
 <body>
 
 <header class="topbar">
   <div class="topbar-inner">
     <div class="topbar-left">
-      <NasvetloLogo />
+      <NasvetloLogo href={subpage ? './' : '#top'} />
     </div>
 
     <div class="topbar-center">
-      <button type="button" class="btn-cmd-center" id="openCmdPaletteBtn" title="Бързо глобално търсене (Ctrl+K)">
-        <span class="cmd-search-icon" aria-hidden="true">⌕</span>
-        <span class="cmd-search-label">Търсене (22 343)</span>
-        <kbd>Ctrl K</kbd>
-      </button>
+      {subpage ? (
+        <a href="./" class="btn-cmd-center" style="text-decoration:none;justify-content:center;">
+          <span>&larr; Главна платформа NAsvetlo (12 модула · €53,22 млрд.)</span>
+        </a>
+      ) : (
+        <button type="button" class="btn-cmd-center" id="openCmdPaletteBtn" title="Бързо глобално търсене (Ctrl+K)">
+          <span class="cmd-search-icon" aria-hidden="true">⌕</span>
+          <span class="cmd-search-label">Търсене (22 343)</span>
+          <kbd>Ctrl K</kbd>
+        </button>
+      )}
     </div>
 
     <div class="topbar-right">
-      <button type="button" class="btn topbar-btn-ai" id="quickOpenOracleBtn">AI Асистент</button>
-      <button type="button" class="btn topbar-btn" id="densityToggleBtn" title="Превключи между компактен одиторски изглед и презентационен изглед">Одиторски изглед</button>
-      <button type="button" class="btn topbar-btn topbar-btn-theme" id="themeToggleBtn" title="Превключи между НАсветло и НАтъмно"><span class="theme-prefix">НА</span><span class="theme-suffix-dark">тъмно</span></button>
+      {subpage ? (
+        <>
+          <a href="./" class="btn topbar-btn">Към главната страница</a>
+          <button type="button" class="btn topbar-btn" onclick="window.print()">Печат / PDF</button>
+          <button type="button" class="btn topbar-btn topbar-btn-theme" id="themeToggleBtn" title="Превключи между НАсветло и НАтъмно"><span class="theme-prefix">НА</span><span class="theme-suffix-dark">тъмно</span></button>
+        </>
+      ) : (
+        <>
+          <button type="button" class="btn topbar-btn-ai" id="quickOpenOracleBtn">AI Асистент</button>
+          <button type="button" class="btn topbar-btn" id="densityToggleBtn" title="Превключи между компактен одиторски изглед и презентационен изглед">Одиторски изглед</button>
+          <button type="button" class="btn topbar-btn topbar-btn-theme" id="themeToggleBtn" title="Превключи между НАсветло и НАтъмно"><span class="theme-prefix">НА</span><span class="theme-suffix-dark">тъмно</span></button>
+        </>
+      )}
     </div>
   </div>
 </header>
@@ -140,7 +167,7 @@ const jsonLd = JSON.stringify({
     <div class="info-subbar-meta">
       <span class="civic-positioning-tag">Независима гражданска платформа върху отворените данни (CC-BY 4.0) на МИДТ / СИГМА 2.0</span>
       <span class="info-subbar-sep" aria-hidden="true">·</span>
-      <a class="info-subbar-sync" id="syncSubtitle" href="data/sigma3_judicial_6.json" target="_blank" rel="noopener" title="Преглед на актуалния JSON лог на последната синхронизация">Синхронизация: {asOf}</a>
+      <a class="info-subbar-sync" id="syncSubtitle" href={subpage ? 'data/nasvetlo_investigations.json' : 'data/sigma3_judicial_6.json'} target="_blank" rel="noopener" title="Преглед на актуалния JSON лог на последната синхронизация">Синхронизация: {asOf}</a>
     </div>
     <div class="info-subbar-links">
       <span class="info-subbar-visits" id="nasvetloVisitCounter" title="Общ постоянен брой посещения на nasvetlo.website (не се занулява)" hidden>
@@ -149,9 +176,20 @@ const jsonLd = JSON.stringify({
         <strong id="nasvetloVisitCount">—</strong>
       </span>
       <span class="info-subbar-sep" id="nasvetloVisitSep" aria-hidden="true" hidden>·</span>
-      <button type="button" class="subbar-link-btn" id="quickOpenProposalBtn">Архитектура &amp; Методология</button>
-      <a class="subbar-link" href="data/SIGMA_2_0_ALL_OFFICIALS_571.csv" download>CSV</a>
-      <a class="subbar-link" href="https://sigma.midt.bg" target="_blank" rel="noopener">СИГМА 2.0 ↗</a>
+      {subpage ? (
+        <>
+          <a class="subbar-link" href="./">&larr; Главна страница</a>
+          <a class="subbar-link" href="data/nasvetlo_50_admins.json" download>Одит 50 JSON</a>
+          <a class="subbar-link" href="data/nasvetlo_investigations.json" download>Разследвания JSON</a>
+        </>
+      ) : (
+        <>
+          <a class="subbar-link subbar-link-new" href="razsledvaniq.html">Нови разследвания ↗</a>
+          <button type="button" class="subbar-link-btn" id="quickOpenProposalBtn">Архитектура &amp; Методология</button>
+          <a class="subbar-link" href="data/SIGMA_2_0_ALL_OFFICIALS_571.csv" download>CSV</a>
+          <a class="subbar-link" href="https://sigma.midt.bg" target="_blank" rel="noopener">СИГМА 2.0 ↗</a>
+        </>
+      )}
     </div>
   </div>
 </div>
@@ -173,12 +211,63 @@ const jsonLd = JSON.stringify({
   </span>
 </footer>
 
-<ModalsAndDrawer />
+{subpage ? (
+  <script is:inline src="sigma3/razsledvaniq.js?v=20261122a"></script>
+) : (
+  <>
+    <aside class="nasvetlo-mini-win" id="nasvetloNewInvestigationsWin" aria-label="Нови разследвания в NAsvetlo">
+      <div class="mini-win-head">
+        <span class="mini-win-badge">
+          <span class="mini-win-dot" aria-hidden="true"></span>
+          <span>НОВИ РАЗСЛЕДВАНИЯ</span>
+        </span>
+        <div class="mini-win-controls">
+          <a href="razsledvaniq.html" class="mini-win-btn" id="miniWinQuickGo" style="text-decoration:none;display:none;">Отвори ↗</a>
+          <button type="button" class="mini-win-btn" id="miniWinMinBtn" aria-expanded="true" title="Свий / покажи прозорчето">—</button>
+        </div>
+      </div>
+      <div class="mini-win-body">
+        <a href="razsledvaniq.html" class="mini-win-title">Одит 50 &amp; Живи сечения на регистри</a>
+        <p class="mini-win-desc">Кръстосано засичане на 50 администрации (€23,74 млрд.) и отворени държавни регистри (МВР ЗЧОД, МЕ кариери, ДНСК, ИААА, Държавен резерв, ПВУ).</p>
+        <div class="mini-win-stats">
+          <span><strong>{blackBoxCount}</strong> черни кутии</span>
+          <span><strong>{crossRegCount}</strong> регистъра</span>
+          <span><strong>{singleOfferCnt}</strong> с 1 оферта</span>
+        </div>
+        <a href="razsledvaniq.html" class="mini-win-cta">Отвори отделната страница &rarr;</a>
+      </div>
+    </aside>
 
-<script is:inline src="sigma3/app.js?v=20261122a"></script>
-<script is:inline src="sigma3/semantic_dialog_engine.js?v=20261121b"></script>
-<script is:inline src="sigma3/sigma3_modules.js?v=20261121b"></script>
-<script is:inline src="sigma3/forensics7.js?v=20261120g"></script>
-<script is:inline src="sigma3/judicial6.js?v=20261120g"></script>
+    <script is:inline>
+      (function() {
+        var win = document.getElementById('nasvetloNewInvestigationsWin');
+        var btn = document.getElementById('miniWinMinBtn');
+        var go = document.getElementById('miniWinQuickGo');
+        if (!win || !btn) return;
+        function setCollapsed(c) {
+          win.classList.toggle('is-collapsed', c);
+          btn.setAttribute('aria-expanded', c ? 'false' : 'true');
+          btn.textContent = c ? '+' : '—';
+          if (go) go.style.display = c ? 'inline-flex' : 'none';
+          try { sessionStorage.setItem('nasvetlo_miniwin_collapsed', c ? '1' : '0'); } catch (_) {}
+        }
+        try {
+          if (sessionStorage.getItem('nasvetlo_miniwin_collapsed') === '1') setCollapsed(true);
+        } catch (_) {}
+        btn.addEventListener('click', function() {
+          setCollapsed(!win.classList.contains('is-collapsed'));
+        });
+      })();
+    </script>
+
+    <ModalsAndDrawer />
+
+    <script is:inline src="sigma3/app.js?v=20261122a"></script>
+    <script is:inline src="sigma3/semantic_dialog_engine.js?v=20261121b"></script>
+    <script is:inline src="sigma3/sigma3_modules.js?v=20261121b"></script>
+    <script is:inline src="sigma3/forensics7.js?v=20261120g"></script>
+    <script is:inline src="sigma3/judicial6.js?v=20261120g"></script>
+  </>
+)}
 </body>
 </html>

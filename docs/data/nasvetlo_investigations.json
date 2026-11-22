@@ -1,0 +1,4474 @@
+{
+  "generatedAtUtc": "2026-11-22T10:04:35Z",
+  "summary": {
+    "totalCrossLinkedRegistries": 11,
+    "mvrSecurityZopCompanies": 325,
+    "mvrNoActiveZopCompanies": 70,
+    "mvrExplicitRevokedNoActive": 7,
+    "mvrSecurityContractNoActiveCount": 2,
+    "mvrSecurityContractNoActiveEur": 98045.33,
+    "mvrSecurityZopEur": 3182845712.13,
+    "meConcessionsZopCompanies": 54,
+    "meConcessionsDirectEur": 1201427449.06,
+    "meConcessionsConsortiumEur": 3638988765.8,
+    "dnskConsultantsZopCompanies": 265,
+    "dnskExpiredInZop": 92,
+    "dnskIllegalOrdersTotal": 6250,
+    "dnskIllegalInProcedure": 5177,
+    "iaaaTransportZopCompanies": 916,
+    "iaaaTransportZopEur": 6476918659.38,
+    "reserveFuelZopCompanies": 110,
+    "reserveFuelZopEur": 642861978.61,
+    "ozobZopMatched": 14,
+    "babhZopMatched": 145,
+    "napGamblingZopMatched": 1,
+    "mfPvBudgetEur": 6533130849.14,
+    "mfPvPaidEur": 4970869028.77,
+    "mfPvExecutionPct": 76.09,
+    "blackBoxTotalSingleOfferCount": 3296,
+    "blackBoxTotalSingleOfferEur": 4106803608.18
+  },
+  "investigations": {
+    "mvrSecurity": {
+      "id": "mvr_security",
+      "title": "МВР (ЗЧОД) × Охранителни поръчки по ЗОП",
+      "datasetUrl": "https://data.egov.bg/organisation/dataset/fefb3301-7718-4ba9-b6f4-0700808ad769",
+      "totalRegistryRecords": 3934,
+      "uniqueEiksInRegistry": 2946,
+      "zopMatchedCompanies": 325,
+      "zopMatchedTotalEur": 3182845712.13,
+      "noActiveLicenseZopCount": 70,
+      "noActiveLicenseZopEur": 760609805.76,
+      "explicitRevokedNoActiveCount": 7,
+      "securityContractNoActiveCount": 2,
+      "securityContractNoActiveEur": 98045.33,
+      "securityContractTotalZopCount": 168,
+      "securityContractTotalZopEur": 604073684.58,
+      "politicianLinkedCount": 32,
+      "statusBreakdown": {
+        "Действащ": 2594,
+        "Прекратен-§4,АЛ.3": 550,
+        "Отнет": 525,
+        "Прекратен": 225,
+        "Анулиран": 5
+      },
+      "topFindings": [
+        {
+          "eik": "130548570",
+          "name": "БАТ СЕКЮРИТИ ЕООД",
+          "registryName": "\"БАТ СЕКЮРИТИ\" ЕООД",
+          "wonEur": 67490.53,
+          "contracts": 1,
+          "authorities": 1,
+          "sector": "79",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": true,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Отнет",
+          "latestDoc": "361 (10.09.2004)",
+          "licenseCount": 2,
+          "securityContracts": 1,
+          "securityContractsEur": 67490.53,
+          "securitySampleSubject": "Осигуряване на въоръжена денонощна физическа охрана и пропусквателен режим в сградата на РРС Благоевград на БНР и на РТВЦ Благоевтрад на БНТ",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "130997265",
+          "name": "СЕЛЕНА 52 ЕООД",
+          "registryName": "\"СЕЛЕНА 52\" ЕООД",
+          "wonEur": 30554.8,
+          "contracts": 1,
+          "authorities": 1,
+          "sector": "79",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": true,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Отнет",
+          "latestDoc": "704 (14.11.2005)",
+          "licenseCount": 3,
+          "securityContracts": 1,
+          "securityContractsEur": 30554.8,
+          "securitySampleSubject": "Охрана на сградите на Министерството на туризма, намиращи се в гр. София, ул. „Съборна\" № 1 и в гр. Пловдив, ул. „Железарска\" № 1 а и на при",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "831637711",
+          "name": "МУЛТИФОРС А.С. ЕООД",
+          "registryName": "\"МУЛТИФОРС А.С.\" ЕООД",
+          "wonEur": 83609732.39,
+          "contracts": 47,
+          "authorities": 18,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "240 (29.06.2004)",
+          "licenseCount": 4,
+          "securityContracts": 46,
+          "securityContractsEur": 82638152.05,
+          "securitySampleSubject": "„Осъществяване на денонощна въоръжена охрана на обекти от хидроенергиен комплекс „Белмекен-Сестримо-Чаира“, хотел-общежитие гр. Белово, скла",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "121819662",
+          "name": "ВИП СЕКЮРИТИ ЕООД",
+          "registryName": "\"ВИП СЕКЮРИТИ\" ЕООД",
+          "wonEur": 99509635.78,
+          "contracts": 36,
+          "authorities": 16,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Действащ",
+          "latestDoc": "38 (20.04.2004)",
+          "licenseCount": 3,
+          "securityContracts": 30,
+          "securityContractsEur": 59568930.31,
+          "securitySampleSubject": "„Избор на изпълнител за транспортиране и охрана на ценни пратки на територията на страната“",
+          "linkedOfficials": [
+            "ВАСКО БОРИСОВ БАЛАБАНОВ"
+          ]
+        },
+        {
+          "eik": "831404223",
+          "name": "КРЕМЪК ЕООД",
+          "registryName": "\"КРЕМЪК\" ЕООД",
+          "wonEur": 59307594.6,
+          "contracts": 48,
+          "authorities": 9,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "84 (12.05.2004)",
+          "licenseCount": 2,
+          "securityContracts": 47,
+          "securityContractsEur": 40924095.02,
+          "securitySampleSubject": "Осъществяване на денонощна невъоръжена, физическа охрана и охрана със СОТ на имоти - държавна собственост, предоставени за управление на АПИ",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "200974824",
+          "name": "ТРАФИК СОТ ООД",
+          "registryName": "\"ТРАФИК СОТ\" ООД",
+          "wonEur": 33175929.71,
+          "contracts": 24,
+          "authorities": 7,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "1574 (19.01.2011)",
+          "licenseCount": 4,
+          "securityContracts": 24,
+          "securityContractsEur": 33175929.73,
+          "securitySampleSubject": "Въоръжена и невъоръжена охрана на обекти на “ВиК” ЕООД – Пловдив в град Пловдив и област Пловдив",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "130068321",
+          "name": "Боду ЕООД",
+          "registryName": "\"Боду\" ООД",
+          "wonEur": 45839406.0,
+          "contracts": 43,
+          "authorities": 17,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "1379 (06.03.2009)",
+          "licenseCount": 5,
+          "securityContracts": 42,
+          "securityContractsEur": 33130189.64,
+          "securitySampleSubject": "„Осигуряване на физическа, въоръжена, денонощна охрана и охрана чрез технически системи за сигурност, мониторинг и реакция с автопатрулни ек",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "131395596",
+          "name": "ВТА СЕКЮРИТИ СЪРВИЗ ЕООД",
+          "registryName": "\"ВТА СЕКЮРИТИ СЪРВИЗ\" ЕООД",
+          "wonEur": 31096284.37,
+          "contracts": 21,
+          "authorities": 10,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "689 (12.10.2005)",
+          "licenseCount": 4,
+          "securityContracts": 21,
+          "securityContractsEur": 31096284.36,
+          "securitySampleSubject": "„ Осъществяване на обход и реакция от невъоръжен автомобилен патрул на 12-те студентски общежития на П“ССО“-УНСС”",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "825266290",
+          "name": "СИКЮРИТИ ГЛОБЪЛ ЕООД",
+          "registryName": "\"СИКЮРИТИ ГЛОБЪЛ\" ЕООД",
+          "wonEur": 24793832.5,
+          "contracts": 18,
+          "authorities": 9,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "993 (15.12.2006)",
+          "licenseCount": 6,
+          "securityContracts": 18,
+          "securityContractsEur": 24793832.49,
+          "securitySampleSubject": "„Осъществяване на денонощна въоръжена охрана на обекти от каскада „Доспат-Въча“",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "831661979",
+          "name": "ГРУП-7 ЕООД",
+          "registryName": "\"ГРУП-7\" ЕООД",
+          "wonEur": 24588401.42,
+          "contracts": 56,
+          "authorities": 18,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "86 (12.05.2004)",
+          "licenseCount": 2,
+          "securityContracts": 55,
+          "securityContractsEur": 24578226.73,
+          "securitySampleSubject": "„Осъществяване на денонощна въоръжена охрана на обекти от каскада „Баташки водносилов път“ и язовирен район „Белмекен“",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "131340055",
+          "name": "МОБА ЕООД",
+          "registryName": "\"МОБА\" ЕООД",
+          "wonEur": 20410994.65,
+          "contracts": 11,
+          "authorities": 4,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "466 (27.12.2004)",
+          "licenseCount": 2,
+          "securityContracts": 11,
+          "securityContractsEur": 20410994.66,
+          "securitySampleSubject": "Осигуряване на денонощна, въоръжена, физическа охрана на обект „Военно общежитие 5-ти километър–гаражи Комендантство – МО, град София",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "113546751",
+          "name": "САЛАМАНДЪР - АСО ООД",
+          "registryName": "\"САЛАМАНДЪР - АСО\" ООД",
+          "wonEur": 20332069.58,
+          "contracts": 188,
+          "authorities": 64,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "476 (21.01.2005)",
+          "licenseCount": 3,
+          "securityContracts": 189,
+          "securityContractsEur": 20332069.67,
+          "securitySampleSubject": "Осигуряване на охранителни услуги за обекти, стопанисвани от ЦСМП-Пловдив",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "131355648",
+          "name": "Д.М. СЕКЮРИТИ ГРУП ООД",
+          "registryName": "\"Д.М. СЕКЮРИТИ ГРУП\" ООД",
+          "wonEur": 16206799.05,
+          "contracts": 61,
+          "authorities": 25,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "526 (28.02.2005)",
+          "licenseCount": 4,
+          "securityContracts": 47,
+          "securityContractsEur": 16010984.14,
+          "securitySampleSubject": "Въоръжена физическа охрана на обекти, имущество, мероприятия и дейности на територията на Община Велико Търново",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "111030259",
+          "name": "АС СКОРПИО ООД",
+          "registryName": "\"АС СКОРПИО\" ООД",
+          "wonEur": 15164707.09,
+          "contracts": 6,
+          "authorities": 4,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "128 (28.05.2004)",
+          "licenseCount": 2,
+          "securityContracts": 6,
+          "securityContractsEur": 15164707.09,
+          "securitySampleSubject": "„Договаряне за осигуряване на физическа охрана и охрана с технически системи за сигурност на обекти на Агенция „Митници“, Обособена позиция ",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "121660480",
+          "name": "ЕГИДА-СОФИЯ ЕАД",
+          "registryName": "\"ЕГИДА - СОФИЯ\" ЕАД",
+          "wonEur": 21422571.67,
+          "contracts": 38,
+          "authorities": 3,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "618 (15.06.2005)",
+          "licenseCount": 2,
+          "securityContracts": 23,
+          "securityContractsEur": 14114010.97,
+          "securitySampleSubject": "Извършване на физическа охрана на обекти на \"Център за градска мобилност\" ЕАД",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "204049534",
+          "name": "БАТ СОТ ЕООД",
+          "registryName": "\"БАТ СОТ\" ЕООД",
+          "wonEur": 10010630.86,
+          "contracts": 22,
+          "authorities": 11,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "З/02 - 136 (28.11.2018)",
+          "licenseCount": 3,
+          "securityContracts": 22,
+          "securityContractsEur": 10010630.87,
+          "securitySampleSubject": "Осъществяване на денонощна въоръжена и невъоръжена охрана на обекти от язовирни райони Петрохан, Благоевград, ПД Енерго-Предел, ВЕЦ Мала цър",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "200870875",
+          "name": "ЕНИГМА ГАРД ЕООД",
+          "registryName": "\"ЕНИГМА ГАРД\" ЕООД",
+          "wonEur": 9410178.2,
+          "contracts": 21,
+          "authorities": 9,
+          "sector": "72",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "1448 (23.10.2009)",
+          "licenseCount": 2,
+          "securityContracts": 21,
+          "securityContractsEur": 9410178.22,
+          "securitySampleSubject": "„Осъществяване на охрана на мероприятия на УНСС и СК “Бонсист“",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "131350590",
+          "name": "МЕГА СЕКЮРИТИ ГРУП ЕООД",
+          "registryName": "\"МЕГА СЕКЮРИТИ ГРУП\" ЕООД",
+          "wonEur": 7218945.07,
+          "contracts": 17,
+          "authorities": 7,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "545 (25.03.2005)",
+          "licenseCount": 2,
+          "securityContracts": 17,
+          "securityContractsEur": 7218945.09,
+          "securitySampleSubject": "\"ОСЪЩЕСТВЯВАНЕ ФИЗИЧЕСКА, НЕВЪОРЪЖЕНА ОХРАНА И ОХРАНА СЪС СОТ И ВИДЕОНАБЛЮДЕНИЕ НА ИМОТИ – ДЪРЖАВНА СОБСТВЕНОСТ, СТОПАНИСВАНИ ОТ АПИ-ОПУ ВИД",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "121692528",
+          "name": "АСО СОФИЯ ООД",
+          "registryName": "\"АСО СОФИЯ\" ООД",
+          "wonEur": 7099417.15,
+          "contracts": 42,
+          "authorities": 15,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "9 (13.04.2004)",
+          "licenseCount": 1,
+          "securityContracts": 42,
+          "securityContractsEur": 7099417.17,
+          "securitySampleSubject": "„Организиране и осъщ. на денонощна физическа охрана на административната сграда на МРРБ, находяща се на ул. „Св. Св. Кирил и Методий“ № 17-1",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "200999966",
+          "name": "БГ СОД ООД",
+          "registryName": "\"БГ СОД\" ООД",
+          "wonEur": 5751113.5,
+          "contracts": 9,
+          "authorities": 2,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "1506 (03.05.2010)",
+          "licenseCount": 3,
+          "securityContracts": 9,
+          "securityContractsEur": 5751113.51,
+          "securitySampleSubject": "\"Осигуряване на физическа охрана и охрана със сигнално-охранителни системи и мобилни охранителни групи на имущество и недвижими имоти, в упр",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "205888432",
+          "name": "СПЕЙС СЕКЮРИТИ ЕООД",
+          "registryName": "\"СПЕЙС СЕКЮРИТИ\" ЕООД",
+          "wonEur": 5235656.94,
+          "contracts": 12,
+          "authorities": 5,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "З/02 - 476 (11.05.2020)",
+          "licenseCount": 3,
+          "securityContracts": 12,
+          "securityContractsEur": 5235656.93,
+          "securitySampleSubject": "Охрана на обекти на Столична община, Обособена позиция 3: Охрана на обекти „Пешеходни подлези“",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "119547647",
+          "name": "ОБЩИНСКА ОХРАНА И СОТ-СЛИВЕН ЕООД",
+          "registryName": "\"ОБЩИНСКА ОХРАНА И СОТ - СЛИВЕН\" ЕООД",
+          "wonEur": 5039544.94,
+          "contracts": 3,
+          "authorities": 2,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "267 (03.08.2004)",
+          "licenseCount": 2,
+          "securityContracts": 3,
+          "securityContractsEur": 5039544.94,
+          "securitySampleSubject": "„Охранителни услуги, включващи следните дейности:1.Физическа въоръжена и невъоръжена охрана на обекти на Община Сливен, посочени в Приложени",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "200307318",
+          "name": "АГЕНЦИЯ ЗА СИГУРНОСТ, ОХРАНА И ПРОУЧВАНЕ - ЩИТ ЕООД",
+          "registryName": "\"АГЕНЦИЯ ЗА СИГУРНОСТ, ОХРАНА И ПРОУЧВАНЕ - ЩИТ\" ЕООД",
+          "wonEur": 4754064.1,
+          "contracts": 14,
+          "authorities": 5,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "1321 (08.10.2008)",
+          "licenseCount": 4,
+          "securityContracts": 14,
+          "securityContractsEur": 4754064.1,
+          "securitySampleSubject": "Осигуряване на денонощна въоръжена физическа охрана и осигуряване на пропускателен режим в обекти на „Пристанищен комплекс – Русе“ ЕАД",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "831144160",
+          "name": "СОТ-СИГНАЛНО ОХРАНИТЕЛНА ТЕХНИКА ЕООД",
+          "registryName": "\"СОТ-СИГНАЛНО ОХРАНИТЕЛНА ТЕХНИКА\" ЕООД",
+          "wonEur": 7594001.83,
+          "contracts": 146,
+          "authorities": 39,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "615 (13.06.2005)",
+          "licenseCount": 2,
+          "securityContracts": 141,
+          "securityContractsEur": 4645460.93,
+          "securitySampleSubject": "Осъществяване на мониторинг и охрана със сигнално охранителна техника на обекти, собственост на НЕК ЕАД, Обособена позиция 4: Осъществяване ",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "040357088",
+          "name": "ВАДИМ ООД",
+          "registryName": "\"ВАДИМ\" ООД",
+          "wonEur": 4482869.97,
+          "contracts": 23,
+          "authorities": 16,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "85 (12.05.2004)",
+          "licenseCount": 6,
+          "securityContracts": 23,
+          "securityContractsEur": 4482869.97,
+          "securitySampleSubject": "Осигуряване на охрана на обектите, ползвани от Изпълнителна агенция „Автомобилна администрация“, прилежащите площи и имуществото в тях“, по ",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "204308136",
+          "name": "ЕВРОФОРС ГРУП ЕООД",
+          "registryName": "\"ЕВРОФОРС ГРУП\" ЕООД",
+          "wonEur": 4408174.38,
+          "contracts": 24,
+          "authorities": 13,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "3084 (23.01.2017)",
+          "licenseCount": 3,
+          "securityContracts": 24,
+          "securityContractsEur": 4408174.4,
+          "securitySampleSubject": "„Осигуряване на охрана на недвижими имоти и наличното имущество в тях, предоставени за стопанисване на Националния институт на правосъдието“",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "831144177",
+          "name": "СЕКТРОН ООД",
+          "registryName": "\"СЕКТРОН\" ООД",
+          "wonEur": 16215326.12,
+          "contracts": 109,
+          "authorities": 32,
+          "sector": "34",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "616 (13.06.2005)",
+          "licenseCount": 1,
+          "securityContracts": 62,
+          "securityContractsEur": 4352008.76,
+          "securitySampleSubject": "Доставка на материали и резервни части за изпълнение на обекти и ремонт на сигнално-охранителни системи и системи за видеонаблюдение в обосо",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "115656844",
+          "name": "РМ - ТИТАН СЕКЮРИТИ ООД",
+          "registryName": "\"РМ - ТИТАН СЕКЮРИТИ\" ЕООД",
+          "wonEur": 4227466.98,
+          "contracts": 13,
+          "authorities": 2,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "438 (30.11.2004)",
+          "licenseCount": 3,
+          "securityContracts": 13,
+          "securityContractsEur": 4227466.98,
+          "securitySampleSubject": "Осигуряване на охрана на обекти на Община Асеновград по две обособени позиции, Обособена позиция 1: „Извършване на физическа охрана (невъоръ",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "121100994",
+          "name": "АСО ПАНЕМА ООД",
+          "registryName": "\"АСО ПАНЕМА\" ООД",
+          "wonEur": 4082953.54,
+          "contracts": 7,
+          "authorities": 3,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "87 (12.05.2004)",
+          "licenseCount": 3,
+          "securityContracts": 7,
+          "securityContractsEur": 4082953.53,
+          "securitySampleSubject": "Охрана на обекти на Българското национално радио",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "200733848",
+          "name": "Експерт Секюрити ЕООД",
+          "registryName": "\"Експерт Секюрити\" ЕООД",
+          "wonEur": 4082799.64,
+          "contracts": 21,
+          "authorities": 8,
+          "sector": "79",
+          "hasActive": true,
+          "noActiveLicense": false,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": false,
+          "latestStatus": "Действащ",
+          "latestDoc": "1417 (19.06.2009)",
+          "licenseCount": 2,
+          "securityContracts": 21,
+          "securityContractsEur": 4082799.63,
+          "securitySampleSubject": "\"Предоставяне на услуги по охрана на имоти по обособени позиции: За обособена позиция №7 - Предоставяне на услуги по охрана на имоти за нужд",
+          "linkedOfficials": []
+        }
+      ],
+      "noActiveSecurityHighlights": [
+        {
+          "eik": "130548570",
+          "name": "БАТ СЕКЮРИТИ ЕООД",
+          "registryName": "\"БАТ СЕКЮРИТИ\" ЕООД",
+          "wonEur": 67490.53,
+          "contracts": 1,
+          "authorities": 1,
+          "sector": "79",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": true,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Отнет",
+          "latestDoc": "361 (10.09.2004)",
+          "licenseCount": 2,
+          "securityContracts": 1,
+          "securityContractsEur": 67490.53,
+          "securitySampleSubject": "Осигуряване на въоръжена денонощна физическа охрана и пропусквателен режим в сградата на РРС Благоевград на БНР и на РТВЦ Благоевтрад на БНТ",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "130997265",
+          "name": "СЕЛЕНА 52 ЕООД",
+          "registryName": "\"СЕЛЕНА 52\" ЕООД",
+          "wonEur": 30554.8,
+          "contracts": 1,
+          "authorities": 1,
+          "sector": "79",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": true,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Отнет",
+          "latestDoc": "704 (14.11.2005)",
+          "licenseCount": 3,
+          "securityContracts": 1,
+          "securityContractsEur": 30554.8,
+          "securitySampleSubject": "Охрана на сградите на Министерството на туризма, намиращи се в гр. София, ул. „Съборна\" № 1 и в гр. Пловдив, ул. „Железарска\" № 1 а и на при",
+          "linkedOfficials": []
+        }
+      ],
+      "revokedHighlights": [
+        {
+          "eik": "130548570",
+          "name": "БАТ СЕКЮРИТИ ЕООД",
+          "registryName": "\"БАТ СЕКЮРИТИ\" ЕООД",
+          "wonEur": 67490.53,
+          "contracts": 1,
+          "authorities": 1,
+          "sector": "79",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": true,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Отнет",
+          "latestDoc": "361 (10.09.2004)",
+          "licenseCount": 2,
+          "securityContracts": 1,
+          "securityContractsEur": 67490.53,
+          "securitySampleSubject": "Осигуряване на въоръжена денонощна физическа охрана и пропусквателен режим в сградата на РРС Благоевград на БНР и на РТВЦ Благоевтрад на БНТ",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "130997265",
+          "name": "СЕЛЕНА 52 ЕООД",
+          "registryName": "\"СЕЛЕНА 52\" ЕООД",
+          "wonEur": 30554.8,
+          "contracts": 1,
+          "authorities": 1,
+          "sector": "79",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": true,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Отнет",
+          "latestDoc": "704 (14.11.2005)",
+          "licenseCount": 3,
+          "securityContracts": 1,
+          "securityContractsEur": 30554.8,
+          "securitySampleSubject": "Охрана на сградите на Министерството на туризма, намиращи се в гр. София, ул. „Съборна\" № 1 и в гр. Пловдив, ул. „Железарска\" № 1 а и на при",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "115015062",
+          "name": "ПЪТИНЖЕНЕРИНГ ЕООД",
+          "registryName": "\"ПЪТИНЖЕНЕРИНГ\" ЕООД",
+          "wonEur": 21020898.18,
+          "contracts": 84,
+          "authorities": 13,
+          "sector": "45",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": true,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Отнет",
+          "latestDoc": "2144 (10.07.2012)",
+          "licenseCount": 1,
+          "securityContracts": 0,
+          "securityContractsEur": 0.0,
+          "securitySampleSubject": "",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "121707332",
+          "name": "ДЖИ ПИ ЕС БЪЛГАРИЯ АД",
+          "registryName": "\"ДЖИ ПИ ЕС БЪЛГАРИЯ\" АД",
+          "wonEur": 884605.28,
+          "contracts": 5,
+          "authorities": 3,
+          "sector": "50",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": true,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Отнет",
+          "latestDoc": "127 (28.05.2004)",
+          "licenseCount": 1,
+          "securityContracts": 0,
+          "securityContractsEur": 0.0,
+          "securitySampleSubject": "",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "115541870",
+          "name": "ИНФРАГРУП ООД",
+          "registryName": "\"МЕМ - 2000\" ЕООД",
+          "wonEur": 178619.31,
+          "contracts": 1,
+          "authorities": 1,
+          "sector": "45",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": true,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Отнет",
+          "latestDoc": "2143 (10.07.2012)",
+          "licenseCount": 1,
+          "securityContracts": 0,
+          "securityContractsEur": 0.0,
+          "securitySampleSubject": "",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "130994707",
+          "name": "БАРЕЗИ 1 ЕООД (в несъстоятелност)",
+          "registryName": "\"БАРЕЗИ 1\" ЕООД",
+          "wonEur": 83596.22,
+          "contracts": 1,
+          "authorities": 1,
+          "sector": "03",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": true,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Отнет",
+          "latestDoc": "1218 (05.11.2007)",
+          "licenseCount": 2,
+          "securityContracts": 0,
+          "securityContractsEur": 0.0,
+          "securitySampleSubject": "",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "123535874",
+          "name": "УНИВЕРСИТЕТСКА МНОГОПРОФИЛНА БОЛНИЦА ЗА АКТИВНО ЛЕЧЕНИЕ - ПРОФ., Д-Р СТОЯН КИРКОВИЧ АД",
+          "registryName": "\"УНИВЕРСИТЕТСТКА МНОГОПРОФИЛНА БОЛНИЦА ЗА АКТИВНО ЛЕЧЕНИЕ - ПРОФ. Д-Р СТОЯН КИРКОВИЧ АД\" ЮЛНЦ",
+          "wonEur": 18321.29,
+          "contracts": 1,
+          "authorities": 1,
+          "sector": "85",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": true,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Отнет",
+          "latestDoc": "2855 (20.07.2015)",
+          "licenseCount": 1,
+          "securityContracts": 0,
+          "securityContractsEur": 0.0,
+          "securitySampleSubject": "",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "104693344",
+          "name": "ПЪТНИ СТРОЕЖИ - ВЕЛИКО ТЪРНОВО ЕАД",
+          "registryName": "\"ПЪТНИ СТРОЕЖИ-ВЕЛИКО ТЪРНОВО\" АД",
+          "wonEur": 272976423.76,
+          "contracts": 107,
+          "authorities": 15,
+          "sector": "45",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Прекратен-§4,АЛ.3",
+          "latestDoc": "1951 (30.05.2012)",
+          "licenseCount": 1,
+          "securityContracts": 0,
+          "securityContractsEur": 0.0,
+          "securitySampleSubject": "",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "103029862",
+          "name": "ХИДРОСТРОЙ АД",
+          "registryName": "\"ХИДРОСТРОЙ\" АД",
+          "wonEur": 113684613.25,
+          "contracts": 157,
+          "authorities": 31,
+          "sector": "45",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Прекратен-§4,АЛ.3",
+          "latestDoc": "2418 (15.01.2013)",
+          "licenseCount": 1,
+          "securityContracts": 0,
+          "securityContractsEur": 0.0,
+          "securitySampleSubject": "",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "831914037",
+          "name": "ЦЕНТРАЛНА ЕНЕРГОРЕМОНТНА БАЗА ЕАД",
+          "registryName": "\"ЦЕНТРАЛНА ЕНЕРГОРЕМОНТНА БАЗА\" ЕАД",
+          "wonEur": 34241629.04,
+          "contracts": 96,
+          "authorities": 24,
+          "sector": "50",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Прекратен-§4,АЛ.3",
+          "latestDoc": "2947 (28.03.2016)",
+          "licenseCount": 1,
+          "securityContracts": 0,
+          "securityContractsEur": 0.0,
+          "securitySampleSubject": "",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "121856059",
+          "name": "БЪЛГАРСКА БАНКА ЗА РАЗВИТИЕ ЕАД",
+          "registryName": "\"БЪЛГАРСКА БАНКА ЗА РАЗВИТИЕ\" АД",
+          "wonEur": 32256318.9,
+          "contracts": 7,
+          "authorities": 6,
+          "sector": "66",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Прекратен-§4,АЛ.3",
+          "latestDoc": "2028 (11.06.2012)",
+          "licenseCount": 1,
+          "securityContracts": 0,
+          "securityContractsEur": 0.0,
+          "securitySampleSubject": "",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "831663282",
+          "name": "ИНВЕСТБАНК АД",
+          "registryName": "\"ИНВЕСТБАНК\" АД",
+          "wonEur": 28231944.15,
+          "contracts": 46,
+          "authorities": 20,
+          "sector": "66",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Прекратен-§4,АЛ.3",
+          "latestDoc": "2019 (11.06.2012)",
+          "licenseCount": 1,
+          "securityContracts": 0,
+          "securityContractsEur": 0.0,
+          "securitySampleSubject": "",
+          "linkedOfficials": [
+            "Стоян Цветков Цветков"
+          ]
+        },
+        {
+          "eik": "201208860",
+          "name": "ГРАНД ЕНЕРДЖИ ДИСТРИБЮШЪН ЕООД",
+          "registryName": "\"ГРАНД ЕНЕРДЖИ ДИСТРИБЮШЪН\" ЕООД",
+          "wonEur": 25333126.95,
+          "contracts": 63,
+          "authorities": 54,
+          "sector": "09",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Прекратен-§4,АЛ.3",
+          "latestDoc": "2903 (17.12.2015)",
+          "licenseCount": 1,
+          "securityContracts": 0,
+          "securityContractsEur": 0.0,
+          "securitySampleSubject": "",
+          "linkedOfficials": [
+            "ВЛАДИМИР БОЙЧОВ ВЛАДИМИРОВ"
+          ]
+        },
+        {
+          "eik": "121076907",
+          "name": "ЗАСТРАХОВАТЕЛНО АКЦИОНЕРНО ДРУЖЕСТВО АРМЕЕЦ АД",
+          "registryName": "\"ЗАСТРАХОВАТЕЛНО АКЦИОНЕРНО ДРУЖЕСТВО АРМЕЕЦ\" АД",
+          "wonEur": 24103533.48,
+          "contracts": 183,
+          "authorities": 63,
+          "sector": "66",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Прекратен-§4,АЛ.3",
+          "latestDoc": "1935 (23.05.2012)",
+          "licenseCount": 1,
+          "securityContracts": 0,
+          "securityContractsEur": 0.0,
+          "securitySampleSubject": "",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "126014905",
+          "name": "СИМАТ АД",
+          "registryName": "\"СИМАТ\" АД",
+          "wonEur": 22455332.86,
+          "contracts": 12,
+          "authorities": 3,
+          "sector": "44",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Прекратен-§4,АЛ.3",
+          "latestDoc": "1880 (11.05.2012)",
+          "licenseCount": 1,
+          "securityContracts": 0,
+          "securityContractsEur": 0.0,
+          "securitySampleSubject": "",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "115536179",
+          "name": "ПИМК ООД",
+          "registryName": "\"ПИМК\" ООД",
+          "wonEur": 22321779.25,
+          "contracts": 1,
+          "authorities": 1,
+          "sector": "45",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Прекратен-§4,АЛ.3",
+          "latestDoc": "2224 (15.08.2012)",
+          "licenseCount": 2,
+          "securityContracts": 0,
+          "securityContractsEur": 0.0,
+          "securitySampleSubject": "",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "114684488",
+          "name": "ВИАГРУП ЕООД",
+          "registryName": "\"ВИАГРУП\" ЕООД",
+          "wonEur": 18825230.66,
+          "contracts": 66,
+          "authorities": 15,
+          "sector": "45",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Прекратен-§4,АЛ.3",
+          "latestDoc": "2482 (02.04.2013)",
+          "licenseCount": 1,
+          "securityContracts": 0,
+          "securityContractsEur": 0.0,
+          "securitySampleSubject": "",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "121516626",
+          "name": "ПРИСТА ОЙЛ ХОЛДИНГ ЕАД",
+          "registryName": "\"ПРИСТА ОЙЛ ХОЛДИНГ\" ЕАД",
+          "wonEur": 14379539.79,
+          "contracts": 157,
+          "authorities": 25,
+          "sector": "09",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Прекратен-§4,АЛ.3",
+          "latestDoc": "1721 (12.01.2012)",
+          "licenseCount": 1,
+          "securityContracts": 0,
+          "securityContractsEur": 0.0,
+          "securitySampleSubject": "",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "819363781",
+          "name": "СТРОИТЕЛНА ФИРМА - РИЛА ЕООД",
+          "registryName": "\"СТОИТЕЛНА ФИРМА-РИЛА\" ЕООД",
+          "wonEur": 13539838.81,
+          "contracts": 74,
+          "authorities": 9,
+          "sector": "45",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Прекратен-§4,АЛ.3",
+          "latestDoc": "1840 (12.04.2012)",
+          "licenseCount": 1,
+          "securityContracts": 0,
+          "securityContractsEur": 0.0,
+          "securitySampleSubject": "",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "112122397",
+          "name": "ЕЛШИЦА-99 ЕАД",
+          "registryName": "\"ЕЛШИЦА-99\" АД",
+          "wonEur": 11497399.72,
+          "contracts": 9,
+          "authorities": 5,
+          "sector": "45",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Прекратен-§4,АЛ.3",
+          "latestDoc": "2327 (17.10.2012)",
+          "licenseCount": 1,
+          "securityContracts": 0,
+          "securityContractsEur": 0.0,
+          "securitySampleSubject": "",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "107051800",
+          "name": "ПЪТСТРОЙ-ГАБРОВО АД",
+          "registryName": "\"ПЪТСТРОЙ-ГАБРОВО\" АД",
+          "wonEur": 10350682.31,
+          "contracts": 25,
+          "authorities": 4,
+          "sector": "45",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Прекратен-§4,АЛ.3",
+          "latestDoc": "1945 (30.05.2012)",
+          "licenseCount": 1,
+          "securityContracts": 0,
+          "securityContractsEur": 0.0,
+          "securitySampleSubject": "",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "109003034",
+          "name": "ЕЛПРОМ - ТРАФО СН АД",
+          "registryName": "\"ЕЛПРОМ-ТРАФО СН\" АД",
+          "wonEur": 8389295.08,
+          "contracts": 11,
+          "authorities": 4,
+          "sector": "31",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Прекратен-§4,АЛ.3",
+          "latestDoc": "1921 (23.05.2012)",
+          "licenseCount": 1,
+          "securityContracts": 0,
+          "securityContractsEur": 0.0,
+          "securitySampleSubject": "",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "130638700",
+          "name": "МЕГА ЕЛ ЕООД",
+          "registryName": "\"МЕГА ЕЛ\" ЕООД",
+          "wonEur": 8224065.39,
+          "contracts": 27,
+          "authorities": 11,
+          "sector": "45",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Прекратен-§4,АЛ.3",
+          "latestDoc": "1947 (30.05.2012)",
+          "licenseCount": 1,
+          "securityContracts": 0,
+          "securityContractsEur": 0.0,
+          "securitySampleSubject": "",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "127556951",
+          "name": "НЕС - НОВИ ЕНЕРГИЙНИ СИСТЕМИ ООД",
+          "registryName": "\"НЕС-НОВИ ЕНЕРГИЙНИ СИСТЕМИ\" ООД",
+          "wonEur": 7629434.53,
+          "contracts": 14,
+          "authorities": 8,
+          "sector": "39",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Прекратен-§4,АЛ.3",
+          "latestDoc": "2738 (01.09.2014)",
+          "licenseCount": 1,
+          "securityContracts": 0,
+          "securityContractsEur": 0.0,
+          "securitySampleSubject": "",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "116042078",
+          "name": "СТРОЙМОНТАЖ ЕАД",
+          "registryName": "\"СТРОЙМОНТАЖ\" ЕАД",
+          "wonEur": 7534326.07,
+          "contracts": 29,
+          "authorities": 4,
+          "sector": "45",
+          "hasActive": false,
+          "noActiveLicense": true,
+          "explicitRevokedNoActive": false,
+          "hasHistoricalRevoked": true,
+          "latestStatus": "Прекратен-§4,АЛ.3",
+          "latestDoc": "2965 (27.04.2016)",
+          "licenseCount": 1,
+          "securityContracts": 0,
+          "securityContractsEur": 0.0,
+          "securitySampleSubject": "",
+          "linkedOfficials": []
+        }
+      ],
+      "politicianHits": [
+        {
+          "eik": "114540185",
+          "companyName": "ЕКСПРЕС СЕКЮРИТИ СОД ЕООД",
+          "wonEur": 3135081.32,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 3135081.32,
+          "officials": [
+            {
+              "name": "Десислава Иванова Иванова",
+              "slug": "aWRlbnRpdHk6ZGRhNzUzNjczMDQ2YWU3NWMyMGRiOTdjMGMxMDRjZGMzYzhkYTk3ZjM5NTk0ZDJlYzE2MzhiMmUwYTcxNjA3ZQ",
+              "institution": "Община / ОбС Плевен",
+              "circle": "Общини, Кметове и Общински съвети",
+              "riskScore": 30
+            }
+          ]
+        },
+        {
+          "eik": "203387159",
+          "companyName": "МИТ-СЕКЮРИТИ-85 ЕООД",
+          "wonEur": 92951.11,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 92951.11,
+          "officials": [
+            {
+              "name": "Иван Алексиев Тодоров",
+              "slug": "0JjQktCQ0J0g0JDQm9CV0JrQodCY0JXQkiDQotCe0JTQntCg0J7QknzQoNCe0JzQkNCd",
+              "institution": "Община / ОбС Роман",
+              "circle": "Общини, Кметове и Общински съвети",
+              "riskScore": 10
+            }
+          ]
+        },
+        {
+          "eik": "104618582",
+          "companyName": "ВЕЛТТЕД СЕКЮРИТИ ЕООД",
+          "wonEur": 1132056.59,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 1132056.58,
+          "officials": [
+            {
+              "name": "КАЛИНА МИХАЙЛОВА ШИРОКОВА",
+              "slug": "aWRlbnRpdHk6ODQxZjUwMmYyYjc3YThjZWFmNGQ2ZDRlMzE4ZjRlMmJkNTYzZWQ1MWFlMTIyMzQzNjZjY2NlYWIyNzAyYzFkMg",
+              "institution": "Община / ОбС Велико Търново",
+              "circle": "Общини, Кметове и Общински съвети",
+              "riskScore": 85
+            }
+          ]
+        },
+        {
+          "eik": "112028994",
+          "companyName": "РАДИО СОТ ООД",
+          "wonEur": 506007.66,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 501348.98,
+          "officials": [
+            {
+              "name": "ЕЛЕНА СТЕФАНОВА ПЕШЕВА",
+              "slug": "aWRlbnRpdHk6Y2U1MGNkOTYwZjhlMjliZTJhYjM4NjAxMzRhOGUzZWM0N2UyMzU1OTYyZjY1NmRlZGM1MGJkMmE0YTA1MjFhNg",
+              "institution": "Народно събрание",
+              "circle": "Народно събрание (Депутати)",
+              "riskScore": 25
+            }
+          ]
+        },
+        {
+          "eik": "204412537",
+          "companyName": "СЕКЮРИТИ СТРОНГ ГАРД - 78 ЕООД",
+          "wonEur": 2087841.98,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 2087841.98,
+          "officials": [
+            {
+              "name": "КРАСИМИР СЪБИНОВ ДЖИХАНОВ",
+              "slug": "aWRlbnRpdHk6NWJjMTdkOTE3NjJiMzU4MmE2NmQ2MmUzZDVhYThhOGQ1NDcyNjg5MWFmZmMxNzE2Y2QyMWVmMDljYTY2ZGY2Nw",
+              "institution": "Община / ОбС Велинград",
+              "circle": "Общини, Кметове и Общински съвети",
+              "riskScore": 30
+            }
+          ]
+        },
+        {
+          "eik": "206480580",
+          "companyName": "ВИП Кеш сълушънс ЕАД",
+          "wonEur": 230602.05,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 230602.05,
+          "officials": [
+            {
+              "name": "ВАСКО БОРИСОВ БАЛАБАНОВ",
+              "slug": "aWRlbnRpdHk6M2NkMTYxY2M5MjY2NWViZDhjNDZkYmE3MTc5MDExZDc4ZTc2Mjg3M2RkOTc0NTZmZDJmZTYxODcwODk5MGQyNQ",
+              "institution": "ДП НКЖИ",
+              "circle": "Държавни и общински дружества (ЕАД/ЕООД/ДП)",
+              "riskScore": 40
+            }
+          ]
+        },
+        {
+          "eik": "202809611",
+          "companyName": "ДИМАКС СОД ООД",
+          "wonEur": 770389.33,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 770389.33,
+          "officials": [
+            {
+              "name": "Валери Пламенов Лачовски",
+              "slug": "aWRlbnRpdHk6MTA5NWFiMWM4YjQzODY0OTYzZjJhNWYxOGJjNzA5NmMxMWQ4M2M4MTlkNmRmMmM3ZDMyMWIxZGM3OWIyYmQ4MA",
+              "institution": "Народно събрание",
+              "circle": "Народно събрание (Депутати)",
+              "riskScore": 40
+            }
+          ]
+        },
+        {
+          "eik": "200707650",
+          "companyName": "ДЕМАКС - ХОЛОГРАМИ АД",
+          "wonEur": 3301842.93,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 0.0,
+          "officials": [
+            {
+              "name": "ПЕТЪР ГЕОРГИЕВ КЪНЕВ",
+              "slug": "aWRlbnRpdHk6Mjg0NTEwMWFiNjI3ZjRiZmFmYWYyZDlmOWIzYTdiZGEwZmY5ZjQzYjVlMTE4MGE4NWNjYzUyMThiODdkYjcyOA",
+              "institution": "Народно събрание",
+              "circle": "Народно събрание (Депутати)",
+              "riskScore": 50
+            }
+          ]
+        },
+        {
+          "eik": "121819662",
+          "companyName": "ВИП СЕКЮРИТИ ЕООД",
+          "wonEur": 99509635.78,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 59568930.31,
+          "officials": [
+            {
+              "name": "ВАСКО БОРИСОВ БАЛАБАНОВ",
+              "slug": "aWRlbnRpdHk6M2NkMTYxY2M5MjY2NWViZDhjNDZkYmE3MTc5MDExZDc4ZTc2Mjg3M2RkOTc0NTZmZDJmZTYxODcwODk5MGQyNQ",
+              "institution": "ДП НКЖИ",
+              "circle": "Държавни и общински дружества (ЕАД/ЕООД/ДП)",
+              "riskScore": 40
+            }
+          ]
+        },
+        {
+          "eik": "203123056",
+          "companyName": "ВТА СЕКЮРИТИ ЕООД",
+          "wonEur": 2131500.71,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 2131500.71,
+          "officials": [
+            {
+              "name": "ИВАН ДИМИТРОВ КИЧЕВ",
+              "slug": "aWRlbnRpdHk6OWMyNWY0NDZhMmY0YTI3ZjE0OGQ0MDEzZTE2YzYyYzAyMzk5MDcxMWE5NmIyZjNmZDg0M2Q4NDg2OWFiZWI1Mw",
+              "institution": "Община / ОбС Средец",
+              "circle": "Общини, Кметове и Общински съвети",
+              "riskScore": 20
+            }
+          ]
+        },
+        {
+          "eik": "202262291",
+          "companyName": "АРКУС-СИГУРНОСТ БУРГАС ООД",
+          "wonEur": 125598.16,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 125598.16,
+          "officials": [
+            {
+              "name": "БЕНЧО ГЕОРГИЕВ БЕНЧЕВ",
+              "slug": "aWRlbnRpdHk6MmMxN2VjNzdiMTg2YTMyOWRmZGE5ZGRjYzA3NzI5NzBlNTI0MWE5NmY2MDk4NzQ5YzI0MzdmNmNhM2MxZDQzZQ",
+              "institution": "Община / ОбС Бургас",
+              "circle": "Общини, Кметове и Общински съвети",
+              "riskScore": 40
+            },
+            {
+              "name": "ГЕОРГИ ПЕТРОВ ЯНЕВ",
+              "slug": "aWRlbnRpdHk6MjM1NzYwZWZmZWI1ZDQ1MGNlNTNkZTlmZmMyOGY4ODhiYzNkNGJhMTJhYTczYTFkMDI4MDY4ZTgyMTQxN2EyNw",
+              "institution": "Община / ОбС Айтос",
+              "circle": "Общини, Кметове и Общински съвети",
+              "riskScore": 20
+            }
+          ]
+        },
+        {
+          "eik": "124599520",
+          "companyName": "СОД - АЛБЕНА ООД",
+          "wonEur": 51078.06,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 51078.06,
+          "officials": [
+            {
+              "name": "АТАНАС ИЛИЕВ АТАНАСОВ",
+              "slug": "aWRlbnRpdHk6MThiYzk4OWZmYWRlNDg4ZmM3ODY5NjhlNDMxNzk3ZjUzODljYjlmYjQ5Njg4NWFlZTkwNWFkNTk2YTI4NzgxNA",
+              "institution": "Община / ОбС Балчик",
+              "circle": "Общини, Кметове и Общински съвети",
+              "riskScore": 0
+            }
+          ]
+        },
+        {
+          "eik": "831453003",
+          "companyName": "ДЕМАКС АД",
+          "wonEur": 5117341.61,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 0.0,
+          "officials": [
+            {
+              "name": "ПЕТЪР ГЕОРГИЕВ КЪНЕВ",
+              "slug": "aWRlbnRpdHk6Mjg0NTEwMWFiNjI3ZjRiZmFmYWYyZDlmOWIzYTdiZGEwZmY5ZjQzYjVlMTE4MGE4NWNjYzUyMThiODdkYjcyOA",
+              "institution": "Народно събрание",
+              "circle": "Народно събрание (Депутати)",
+              "riskScore": 50
+            }
+          ]
+        },
+        {
+          "eik": "040454345",
+          "companyName": "ДАИКС ООД",
+          "wonEur": 129827.23,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 129827.23,
+          "officials": [
+            {
+              "name": "ЕЛЕНА СТЕФАНОВА ПЕШЕВА",
+              "slug": "aWRlbnRpdHk6Y2U1MGNkOTYwZjhlMjliZTJhYjM4NjAxMzRhOGUzZWM0N2UyMzU1OTYyZjY1NmRlZGM1MGJkMmE0YTA1MjFhNg",
+              "institution": "Народно събрание",
+              "circle": "Народно събрание (Депутати)",
+              "riskScore": 25
+            }
+          ]
+        },
+        {
+          "eik": "200686131",
+          "companyName": "АБ СОЛЮШЪН СЕКЮРИТИ ООД",
+          "wonEur": 492355.17,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 492355.16,
+          "officials": [
+            {
+              "name": "ГЕОРГИ ПЕТРОВ ЯНЕВ",
+              "slug": "aWRlbnRpdHk6MjM1NzYwZWZmZWI1ZDQ1MGNlNTNkZTlmZmMyOGY4ODhiYzNkNGJhMTJhYTczYTFkMDI4MDY4ZTgyMTQxN2EyNw",
+              "institution": "Община / ОбС Айтос",
+              "circle": "Общини, Кметове и Общински съвети",
+              "riskScore": 20
+            }
+          ]
+        },
+        {
+          "eik": "202099848",
+          "companyName": "СЕКЮРИТИ БУРГАС СОТ ООД",
+          "wonEur": 3385628.71,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 3384064.12,
+          "officials": [
+            {
+              "name": "ПЕТКО АНГЕЛОВ ИВАНОВ",
+              "slug": "aWRlbnRpdHk6MTRjYTg3MTJlNzIzM2I3NWI0NGY0MGQwMTViNDZhMTNjYWZhOTI1MGFlYTI0MWZmNTk3YzEzNTg5YWViYTlhNg",
+              "institution": "Национален съвет на ПП АБВ",
+              "circle": "Други публични институции",
+              "riskScore": 0
+            }
+          ]
+        },
+        {
+          "eik": "202078106",
+          "companyName": "СЕКЮРИТИ ХАСКОВО СОТ ООД",
+          "wonEur": 265781.97,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 265782.0,
+          "officials": [
+            {
+              "name": "ПЕТКО АНГЕЛОВ ИВАНОВ",
+              "slug": "aWRlbnRpdHk6MTRjYTg3MTJlNzIzM2I3NWI0NGY0MGQwMTViNDZhMTNjYWZhOTI1MGFlYTI0MWZmNTk3YzEzNTg5YWViYTlhNg",
+              "institution": "Национален съвет на ПП АБВ",
+              "circle": "Други публични институции",
+              "riskScore": 0
+            }
+          ]
+        },
+        {
+          "eik": "833067612",
+          "companyName": "\"АРСЕНАЛ\" АД",
+          "wonEur": 0.0,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 0.0,
+          "officials": [
+            {
+              "name": "ДОБРИН ЦВЕТАНОВ ДРАГНЕВ",
+              "slug": "aWRlbnRpdHk6NjMyZGE1NmI4MWUzYzA3MTljY2M1Njc1ZGFmODFkOTMwZGM0YmIxOGUxODVlNTg2ZTg1N2YzMWNlNjNjZWEyMw",
+              "institution": "Община / ОбС Казанлък",
+              "circle": "Общини, Кметове и Общински съвети",
+              "riskScore": 0
+            }
+          ]
+        },
+        {
+          "eik": "202674010",
+          "companyName": "УНИВЕРСАЛ СЕКЮРИТИ ООД",
+          "wonEur": 80679.59,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 80679.59,
+          "officials": [
+            {
+              "name": "ЛЮБЕН ИВАНОВ ИВАНОВ",
+              "slug": "aWRlbnRpdHk6OTI0NTU2ZWFjNmVhMjQ4YmJiNTAyMWRmNGI5Y2YyYTBlNTNkNTkwOTJiNTRiYmY4ZjEyY2QzYWQyMzM0NjEyYg",
+              "institution": "Народно събрание",
+              "circle": "Народно събрание (Депутати)",
+              "riskScore": 10
+            }
+          ]
+        },
+        {
+          "eik": "129007983",
+          "companyName": "САМЕЛ - 90 АД",
+          "wonEur": 2535948.0,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 0.0,
+          "officials": [
+            {
+              "name": "ПЕТЪР НИКОЛОВ ГЕОРГИЕВ",
+              "slug": "aWRlbnRpdHk6MTM0MGE3NjdhZWQxYzViOGM2NmQ2YjhkYzJjN2NjYTk3NGIxOWQ1MWY2Yzg2MWRhZDk4Y2ViMzg5NGU2ZmI3Ng",
+              "institution": "Община / ОбС Самоков",
+              "circle": "Общини, Кметове и Общински съвети",
+              "riskScore": 80
+            }
+          ]
+        },
+        {
+          "eik": "030216000",
+          "companyName": "ЕЛОС ООД",
+          "wonEur": 32900.61,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 32900.61,
+          "officials": [
+            {
+              "name": "Светослав Дачев Дачев",
+              "slug": "aWRlbnRpdHk6NjFjM2ZiMTZmMmU4NGFjYmY2ZmQxYzY3MzU5MDVmM2EwZjcyZTY4NDk5MGExNWJhODkxYTllMzljMWUwYzQ3Mg",
+              "institution": "СБАЛПФЗ ЕООД РУСЕ",
+              "circle": "Държавни и общински болници (Здравеопазване)",
+              "riskScore": 20
+            }
+          ]
+        },
+        {
+          "eik": "109513731",
+          "companyName": "ТЕЦ - БОБОВ ДОЛ АД",
+          "wonEur": 10886751.51,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 0.0,
+          "officials": [
+            {
+              "name": "ВЛАДИМИР БОЙЧОВ ВЛАДИМИРОВ",
+              "slug": "aWRlbnRpdHk6ZTUxMjVhZmY2YzgyMGIyZjYzOTZjNDkzNWIwNzZkYTkxYTIxNDgxN2ZmYTBhMTNiYmZkZjM2MDQwZDdmZDk0Zg",
+              "institution": "ПП Лидер",
+              "circle": "Други публични институции",
+              "riskScore": 20
+            }
+          ]
+        },
+        {
+          "eik": "106530686",
+          "companyName": "АТОМЕНЕРГОРЕМОНТ АД",
+          "wonEur": 232534905.19,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 0.0,
+          "officials": [
+            {
+              "name": "НИКОЛАЙ КРУМОВ ПЕТКОВ",
+              "slug": "aWRlbnRpdHk6NGU4M2Q0YWU5NmNjNjNiOTAyNDU2MGEyNjViNDEwMGVkMjE0Y2E4MTAzNDhhZDQzNDVlN2UzMWZkZDhkOTU5OQ",
+              "institution": "Община / ОбС Козлодуй",
+              "circle": "Общини, Кметове и Общински съвети",
+              "riskScore": 0
+            }
+          ]
+        },
+        {
+          "eik": "201574224",
+          "companyName": "ВИН - СЕКЮРИТИ ООД",
+          "wonEur": 1415150.6,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 1415150.6,
+          "officials": [
+            {
+              "name": "Иван Николаев Мечков",
+              "slug": "aWRlbnRpdHk6OGE3MjJiMzE5MWRjM2M3Nzc1OWYxYzYyYjBlMzEyZDlkNmM5MDRmNDkxNjk2OWNjMzk3N2U2MmIwNmE3NWEwNA",
+              "institution": "Столичен общивски съвет",
+              "circle": "Общини, Кметове и Общински съвети",
+              "riskScore": 30
+            }
+          ]
+        },
+        {
+          "eik": "107523901",
+          "companyName": "КОНТРАКТ ИНЖЕНЕРИНГ ООД",
+          "wonEur": 7693.92,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 3705.84,
+          "officials": [
+            {
+              "name": "ИВАН СТЕФАНОВ ИВАНОВ",
+              "slug": "aWRlbnRpdHk6OWUyNWJmNGExYTE5ODllZWFiY2IzMTliNzEzYmRkMGVjNTNmNmM0MzE0MzVmZmY0YjljYmQ5NjU2OTBlZmY5Yw",
+              "institution": "Община / ОбС Габрово",
+              "circle": "Общини, Кметове и Общински съвети",
+              "riskScore": 0
+            }
+          ]
+        },
+        {
+          "eik": "102694290",
+          "companyName": "БЕНМАР ЕООД",
+          "wonEur": 7105.01,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 0.0,
+          "officials": [
+            {
+              "name": "БЕНЧО ГЕОРГИЕВ БЕНЧЕВ",
+              "slug": "aWRlbnRpdHk6MmMxN2VjNzdiMTg2YTMyOWRmZGE5ZGRjYzA3NzI5NzBlNTI0MWE5NmY2MDk4NzQ5YzI0MzdmNmNhM2MxZDQzZQ",
+              "institution": "Община / ОбС Бургас",
+              "circle": "Общини, Кметове и Общински съвети",
+              "riskScore": 40
+            }
+          ]
+        },
+        {
+          "eik": "110006611",
+          "companyName": "МИРО ЕООД",
+          "wonEur": 339037.65,
+          "hasActive": true,
+          "noActiveLicense": false,
+          "securityContractsEur": 113557.93,
+          "officials": [
+            {
+              "name": "РОСИЦА НИКОЛАЕВА МИЛЧЕВА",
+              "slug": "aWRlbnRpdHk6ZGIyNzFjZWE2ZTQyOGNlYzRlODc0NTRmYmY3OGFjNDI3MmIwNTdjMTUxNDAzNTkzZGNjMzRiZjExZWFiOWNiOQ",
+              "institution": "РЗИ Ловеч",
+              "circle": "Централна власт, Министерства и Агенции",
+              "riskScore": 0
+            }
+          ]
+        },
+        {
+          "eik": "201208860",
+          "companyName": "ГРАНД ЕНЕРДЖИ ДИСТРИБЮШЪН ЕООД",
+          "wonEur": 25333126.95,
+          "hasActive": false,
+          "noActiveLicense": true,
+          "securityContractsEur": 0.0,
+          "officials": [
+            {
+              "name": "ВЛАДИМИР БОЙЧОВ ВЛАДИМИРОВ",
+              "slug": "aWRlbnRpdHk6ZTUxMjVhZmY2YzgyMGIyZjYzOTZjNDkzNWIwNzZkYTkxYTIxNDgxN2ZmYTBhMTNiYmZkZjM2MDQwZDdmZDk0Zg",
+              "institution": "ПП Лидер",
+              "circle": "Други публични институции",
+              "riskScore": 20
+            }
+          ]
+        },
+        {
+          "eik": "122072640",
+          "companyName": "БЕКАСТРОЙ ЕАД",
+          "wonEur": 5339881.75,
+          "hasActive": false,
+          "noActiveLicense": true,
+          "securityContractsEur": 0.0,
+          "officials": [
+            {
+              "name": "ЕМИЛ НИКОЛОВ КРИВОШИЕВ",
+              "slug": "aWRlbnRpdHk6ZDkwNjE0NzNhMmM5NTk0MDY5M2U5Mjk0ZTRlYWRiYTE2YTVmNDhmNzcwMGZiNWMxZjkwYzc3MmJkYjMwYjg4Mg",
+              "institution": "Община / ОбС Самоков",
+              "circle": "Общини, Кметове и Общински съвети",
+              "riskScore": 20
+            }
+          ]
+        },
+        {
+          "eik": "121086224",
+          "companyName": "ОБЩИНСКА БАНКА АД",
+          "wonEur": 1218535.25,
+          "hasActive": false,
+          "noActiveLicense": true,
+          "securityContractsEur": 0.0,
+          "officials": [
+            {
+              "name": "ЛИДИЯ СПАСОВА КОЦЕВА - СТАНКОВА",
+              "slug": "aWRlbnRpdHk6MGUyZGFkM2NkNzAwYTk5ZWY0N2YwOGMyNDRjYzI5Mjc4Yjg2M2Q3Zjg3NGI4NTg5OGRkMzJhYWJmMDdkNDU1MA",
+              "institution": "БАЕЗ ЕАД",
+              "circle": "Държавни и общински дружества (ЕАД/ЕООД/ДП)",
+              "riskScore": 20
+            },
+            {
+              "name": "ПЕТЪР ГЕОРГИЕВ ДЖЕЛЕПОВ",
+              "slug": "aWRlbnRpdHk6ZDBkNGQyNWQ4ZjMzOGVmN2JjOWZhMDhhOTczNGI4M2QyNTY3YjIwZjgyMTIzODgwMzc0OTc4OTIwNTAwMGY0Mw",
+              "institution": "Комисия за финансов надзор",
+              "circle": "Централна власт, Министерства и Агенции",
+              "riskScore": 0
+            }
+          ]
+        },
+        {
+          "eik": "831663282",
+          "companyName": "ИНВЕСТБАНК АД",
+          "wonEur": 28231944.15,
+          "hasActive": false,
+          "noActiveLicense": true,
+          "securityContractsEur": 0.0,
+          "officials": [
+            {
+              "name": "Стоян Цветков Цветков",
+              "slug": "aWRlbnRpdHk6ZTlhOGZlM2NjNDFmYTMyODJkNjBlZjNlNzI1NTQxN2U2OTgxZDNmMmQyZDJiN2E0NGM5ZTQ1MWIyNTdhZGQ4NQ",
+              "institution": "Българска агенция за експортно застраховане",
+              "circle": "Централна власт, Министерства и Агенции",
+              "riskScore": 0
+            }
+          ]
+        },
+        {
+          "eik": "825393416",
+          "companyName": "АВТОРЕМОНТНИ ЗАВОДИ АД",
+          "wonEur": 2027603.77,
+          "hasActive": false,
+          "noActiveLicense": true,
+          "securityContractsEur": 0.0,
+          "officials": [
+            {
+              "name": "ХРИСТО СТОИЛОВ ВЪЛЧЕВ",
+              "slug": "aWRlbnRpdHk6MjY5NTdmMDlmOWM1Y2FhYWEyOGJjYmNkMTBmNDE2N2JmNzJjNDdlODZkMzEwMmY4ZDk1NmZhMTUyYmY5ZTQ4OQ",
+              "institution": "Община / ОбС Първомай",
+              "circle": "Общини, Кметове и Общински съвети",
+              "riskScore": 0
+            }
+          ]
+        }
+      ]
+    },
+    "meConcessions": {
+      "id": "me_concessions",
+      "title": "МЕ (Кариери и подземни богатства) × Строители по ЗОП",
+      "datasetUrl": "https://data.egov.bg/organisation/dataset/63bb3f23-0df0-478d-b163-690f1b301742",
+      "totalConcessions": 530,
+      "mineralGroups": {
+        "Строителни материали": 321,
+        "Скално-облицовъчни материали": 78,
+        "Неметални полезни изкопаеми - индустриални минерали": 76,
+        "Метални полезни изкопаеми": 19,
+        "Твърди горива": 17,
+        "Нефт и природен газ": 17,
+        "Дълбоки геотермални ресурси": 1,
+        "Минни отпадъци": 1
+      },
+      "zopMatchedCompanies": 54,
+      "zopMatchedDirectEur": 1201427449.06,
+      "zopMatchedConsortiumEur": 3638988765.8,
+      "topFindings": [
+        {
+          "eik": "831652485",
+          "name": "ГЛАВБОЛГАРСТРОЙ АД",
+          "concessionaire": "\"Главболгарстрой\" АД, гр. София",
+          "deposit": "Бов",
+          "municipality": "Своге",
+          "region": "София",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Диабазови брекчи",
+          "term": "25 г. + 25 г.",
+          "signedDate": "19.01.1999 г.",
+          "wonEur": 22150179.49,
+          "contracts": 10,
+          "consortiumEur": 742029001.14,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": [
+            "Андрей Иванов Цеков"
+          ]
+        },
+        {
+          "eik": "115004094",
+          "name": "ЕВРОПЕЙСКИ ПЪТИЩА АД",
+          "concessionaire": "\"Европейски пътища\" АД, гр. Пловдив",
+          "deposit": "Белащица - юг",
+          "municipality": "Родопи",
+          "region": "Пловдив",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Мрамори",
+          "term": "25 г.",
+          "signedDate": "04.09.2008 г.",
+          "wonEur": 221911003.87,
+          "contracts": 33,
+          "consortiumEur": 509781735.05,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "835009611",
+          "name": "ПЪТИНЖЕНЕРИНГСТРОЙ-Т ЕАД",
+          "concessionaire": "\"Пътинженерингстрой-Т\" ЕАД, гр. Търговище",
+          "deposit": "Боаза",
+          "municipality": "Търговище",
+          "region": "Търговище",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Варовици",
+          "term": "25 г.",
+          "signedDate": "14.06.2010 г.",
+          "wonEur": 153347828.57,
+          "contracts": 115,
+          "consortiumEur": 552488706.06,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "101611650",
+          "name": "Грома Холд ЕООД",
+          "concessionaire": "\"Грома Холд\" ЕООД, с. Бело поле",
+          "deposit": "Лучище",
+          "municipality": "Благоевград",
+          "region": "Благоевград",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Варовици",
+          "term": "25 г.",
+          "signedDate": "30.05.2008 г.",
+          "wonEur": 43078292.1,
+          "contracts": 67,
+          "consortiumEur": 632302376.93,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "127001597",
+          "name": "АВТОМАГИСТРАЛИ - ЧЕРНО МОРЕ АД",
+          "concessionaire": "\"Автомагистрали - Черно море\" АД, гр. Шумен",
+          "deposit": "Кралево-2",
+          "municipality": "Търговище",
+          "region": "Търговище",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Варовици",
+          "term": "35 г.",
+          "signedDate": "31.07.2025 г.",
+          "wonEur": 134357599.92,
+          "contracts": 206,
+          "consortiumEur": 494060535.36,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "202920330",
+          "name": "ПЪТИНЖЕНЕРИНГ АД",
+          "concessionaire": "\"Пътинженеринг\" АД, гр. Русе",
+          "deposit": "Ломенска кория",
+          "municipality": "Павликени",
+          "region": "Велико Търново",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Базалти",
+          "term": "25 г.",
+          "signedDate": "02.07.2009 г.",
+          "wonEur": 145425231.51,
+          "contracts": 133,
+          "consortiumEur": 112799533.41,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "119524605",
+          "name": "ПЪТНО ПОДДЪРЖАНЕ-СЛИВЕН ЕООД",
+          "concessionaire": "\"Пътно поддържане-Сливен\" ЕООД, гр. София",
+          "deposit": "Бинкос",
+          "municipality": "Сливен",
+          "region": "Сливен",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Доломитни варовици",
+          "term": "35 г.",
+          "signedDate": "31.08.2012 г.",
+          "wonEur": 15656548.05,
+          "contracts": 22,
+          "consortiumEur": 139205672.17,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "207021725",
+          "name": "ТРЕЙС БГ ЕООД",
+          "concessionaire": "\"Трейс БГ\" ЕООД, гр. София",
+          "deposit": "Винарово",
+          "municipality": "Чирпан",
+          "region": "Стара Загора",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Варовици",
+          "term": "35 г.",
+          "signedDate": "16.09.2005 г.",
+          "wonEur": 6705350.23,
+          "contracts": 14,
+          "consortiumEur": 132662618.41,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "115816551",
+          "name": "ЗАПРЯНОВИ - 03 ООД",
+          "concessionaire": "\"Запрянови - 03\" ООД, гр. Асеновград",
+          "deposit": "Делчевото - 2, у-к \"Делчевото - 2 юг\"",
+          "municipality": "Асеновград",
+          "region": "Пловдив",
+          "mineralGroup": "Неметални полезни изкопаеми - индустриални минерали",
+          "mineralType": "Мрамори",
+          "term": "35 г.",
+          "signedDate": "26.03.2024 г.",
+          "wonEur": 110350784.69,
+          "contracts": 136,
+          "consortiumEur": 0.0,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "822148671",
+          "name": "ПЪТИЩА АД",
+          "concessionaire": "\"Пътища\" АД, гр. Шумен",
+          "deposit": "Мътница 2",
+          "municipality": "Шумен",
+          "region": "Шумен",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Варовици",
+          "term": "35 г.",
+          "signedDate": "16.01.2013 г.",
+          "wonEur": 12288771.95,
+          "contracts": 32,
+          "consortiumEur": 82452176.06,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "108001767",
+          "name": "ПЪТСТРОЙИНЖЕНЕРИНГ АД",
+          "concessionaire": "\"Пътстройинженеринг\" АД, гр. Кърджали",
+          "deposit": "Воденицата 4",
+          "municipality": "Ивайловград",
+          "region": "Хасково",
+          "mineralGroup": "Скално-облицовъчни материали",
+          "mineralType": "Гнайси",
+          "term": "25 г.",
+          "signedDate": "16.05.2011 г.",
+          "wonEur": 1182916.47,
+          "contracts": 9,
+          "consortiumEur": 79383805.14,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "124000579",
+          "name": "ПЪТНО СТРОИТЕЛСТВО АД",
+          "concessionaire": "\"Пътно строителство\" АД, гр. Разград",
+          "deposit": "Кубрат",
+          "municipality": "Кубрат",
+          "region": "Разград",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Варовици",
+          "term": "35 г.",
+          "signedDate": "08.12.2005 г.",
+          "wonEur": 34504066.58,
+          "contracts": 252,
+          "consortiumEur": 45306804.94,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "813029821",
+          "name": "ПЪТИЩА И МОСТОВЕ ЕООД",
+          "concessionaire": "\"Пътища и мостове\" ЕООД, гр. Провадия",
+          "deposit": "Суворово - 2",
+          "municipality": "Суворово",
+          "region": "Варна",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Варовици",
+          "term": "35 г.",
+          "signedDate": "07.01.2021 г.",
+          "wonEur": 19501403.94,
+          "contracts": 132,
+          "consortiumEur": 45649815.83,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "112580619",
+          "name": "ЕКО-ХИДРО-90 ООД",
+          "concessionaire": "\"Еко-Хидро-90\" ООД, гр. Пазарджик",
+          "deposit": "Конаговски чал",
+          "municipality": "Пазарджик",
+          "region": "Пазарджик",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Мраморизирани варовици",
+          "term": "25 г.",
+          "signedDate": "10.04.2023 г.",
+          "wonEur": 45430535.69,
+          "contracts": 95,
+          "consortiumEur": 9473470.7,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "831040520",
+          "name": "ИСА 2000 ЕООД",
+          "concessionaire": "\"ИСА 2000\" ЕООД, гр. София",
+          "deposit": "Аламура",
+          "municipality": "Стара Загора",
+          "region": "Стара Затора",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Варовици и долерити",
+          "term": "10 г. + 15 г.",
+          "signedDate": "09.02.2005 г.",
+          "wonEur": 46236744.92,
+          "contracts": 68,
+          "consortiumEur": 0.0,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "130463628",
+          "name": "ЩРАБАГ ЕАД",
+          "concessionaire": "\"Щрабаг\" ЕАД, гр. София",
+          "deposit": "Пери-2, у-ци \"Запад\" и \"Изток\"",
+          "municipality": "Перник",
+          "region": "Перник",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Доломити",
+          "term": "35 г.",
+          "signedDate": "15.07.2021 г.",
+          "wonEur": 39748019.35,
+          "contracts": 88,
+          "consortiumEur": 4906100.73,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "126658138",
+          "name": "ЕВРОПЪТ 2005 ООД",
+          "concessionaire": "\"Европът 2005\" ООД, гр. Хасково",
+          "deposit": "Янаклъка",
+          "municipality": "Димитровград",
+          "region": "Хасково",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Доломитни мрамори",
+          "term": "35 г.",
+          "signedDate": "04.08.2023 г.",
+          "wonEur": 43022668.52,
+          "contracts": 137,
+          "consortiumEur": 565009.93,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": [
+            "ЗЛАТКО РАДИНОВ МАРЧЕВ"
+          ]
+        },
+        {
+          "eik": "128046677",
+          "name": "ИНЕРТНИ МАТЕРИАЛИ - ЯМБОЛ АД",
+          "concessionaire": "\"Инертни материали - Ямбол\" АД, гр. Ямбол",
+          "deposit": "Ханово",
+          "municipality": "Тунджа",
+          "region": "Ямбол",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Пясък",
+          "term": "35 г.",
+          "signedDate": "26.7.2012 г.",
+          "wonEur": 17351666.56,
+          "contracts": 4,
+          "consortiumEur": 0.0,
+          "sector": "44",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "106577999",
+          "name": "СИМЕКС ЕООД",
+          "concessionaire": "\"Симекс\" ЕООД, гр. Криводол",
+          "deposit": "Дълбоки дол, у-ци \"Мишовец\" и \"Синия бряг\"",
+          "municipality": "Бяла Слатина",
+          "region": "Враца",
+          "mineralGroup": "Неметални полезни изкопаеми - индустриални минерали",
+          "mineralType": "Глауконитова суровина",
+          "term": "35 г.",
+          "signedDate": "06.01.2020 г.",
+          "wonEur": 2150365.83,
+          "contracts": 11,
+          "consortiumEur": 13523579.77,
+          "sector": "42",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "201082059",
+          "name": "ПСТ ВИДИН ЕООД",
+          "concessionaire": "\"ПСТ Видин\" ЕООД, гр. Видин",
+          "deposit": "Ошане",
+          "municipality": "Белоградчик",
+          "region": "Видин",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Габродиабази",
+          "term": "25 г.",
+          "signedDate": "21.02.2005 г.",
+          "wonEur": 5791964.05,
+          "contracts": 23,
+          "consortiumEur": 9210136.43,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "128555183",
+          "name": "ТЕХНОПЪТСТРОЙ ЕООД",
+          "concessionaire": "\"Технопътстрой\" ЕООД, гр. Ямбол",
+          "deposit": "Еневи могили",
+          "municipality": "Тунджа",
+          "region": "Ямбол",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Трахиандезити",
+          "term": "25 г.",
+          "signedDate": "10.11.2004 г.",
+          "wonEur": 12825584.9,
+          "contracts": 71,
+          "consortiumEur": 1647069.61,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "811132858",
+          "name": "ПИРИНСТРОЙИНЖЕНЕРИНГ ЕАД",
+          "concessionaire": "\"Пиринстройинженеринг\" ЕАД, гр. Благоевград",
+          "deposit": "Пещерата",
+          "municipality": "Благоевград",
+          "region": "Благоевград",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Варовици",
+          "term": "25 г.",
+          "signedDate": "14.10.2004 г.",
+          "wonEur": 6944057.39,
+          "contracts": 33,
+          "consortiumEur": 3523681.13,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "103044056",
+          "name": "ЕСКАНА АД",
+          "concessionaire": "\"Ескана\" АД, гр. Варна",
+          "deposit": "Градец-2",
+          "municipality": "Котел",
+          "region": "Сливен",
+          "mineralGroup": "Скално-облицовъчни материали",
+          "mineralType": "Аркозни пясъчници",
+          "term": "35 г.",
+          "signedDate": "06.07.2023 г.",
+          "wonEur": 6609604.41,
+          "contracts": 6,
+          "consortiumEur": 3678685.97,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "824033568",
+          "name": "ПРОУЧВАНЕ И ДОБИВ НА НЕФТ И ГАЗ АД",
+          "concessionaire": "\"Проучване и добив на нефт и газ\" АД, гр. София",
+          "deposit": "Искър - запад",
+          "municipality": "Кнежа, Искър",
+          "region": "Плевен",
+          "mineralGroup": "Нефт и природен газ",
+          "mineralType": "Природен газ и кондензат",
+          "term": "35 г.",
+          "signedDate": "30.06.2014 г.",
+          "wonEur": 7897299.86,
+          "contracts": 6,
+          "consortiumEur": 0.0,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "160110107",
+          "name": "ПЕРСЕНК ИНВЕСТ ООД",
+          "concessionaire": "\"Персенк Инвест\" ООД, гр. Пловдив",
+          "deposit": "Куртово Конаре",
+          "municipality": "Стамболийски, Кричим",
+          "region": "Пловдив",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Мрамори",
+          "term": "35 г.",
+          "signedDate": "14.05.2012 г.",
+          "wonEur": 170400.0,
+          "contracts": 1,
+          "consortiumEur": 7549337.0,
+          "sector": "44",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "122072640",
+          "name": "БЕКАСТРОЙ ЕАД",
+          "concessionaire": "\"Бекастрой\" ЕАД, гр. Самоков",
+          "deposit": "Идринизица",
+          "municipality": "Самоков",
+          "region": "София",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Пясъци и чакъли",
+          "term": "35 г.",
+          "signedDate": "12.05.2005 г.",
+          "wonEur": 5339881.75,
+          "contracts": 22,
+          "consortiumEur": 1823747.95,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": [
+            "ЕМИЛ НИКОЛОВ КРИВОШИЕВ"
+          ]
+        },
+        {
+          "eik": "119595538",
+          "name": "АРКО ИМПОРТ ЕООД",
+          "concessionaire": "\"Арко Импорт\" ЕООД, гр. София",
+          "deposit": "Дългия рид, участък \"Източен\" и участък \"Западен\"",
+          "municipality": "Нова Загора",
+          "region": "Сливен",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Доломити",
+          "term": "25 г.",
+          "signedDate": "12.07.2010 г.",
+          "wonEur": 130911.68,
+          "contracts": 3,
+          "consortiumEur": 6800182.02,
+          "sector": "14",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "107030335",
+          "name": "ДИМАС АД",
+          "concessionaire": "\"Димас\" АД, гр. Габрово",
+          "deposit": "Чириковец",
+          "municipality": "Габрово",
+          "region": "Габрово",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Варовици и пясъчници",
+          "term": "25 г. + 15 г.",
+          "signedDate": "17.09.2007 г.",
+          "wonEur": 1488425.16,
+          "contracts": 8,
+          "consortiumEur": 4957564.35,
+          "sector": "90",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "811047710",
+          "name": "БЛАГОУСТРОЙСТВЕНИ СТРОЕЖИ ЕООД",
+          "concessionaire": "\"Благоустройствени строежи\" ЕООД, гр. Бургас",
+          "deposit": "Банево",
+          "municipality": "Бургас",
+          "region": "Бургас",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Вулканити (андезити и андезитови туфи)",
+          "term": "35 г.",
+          "signedDate": "21.03.2018 г.",
+          "wonEur": 5162451.21,
+          "contracts": 19,
+          "consortiumEur": 1011436.84,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "127630597",
+          "name": "БАРС АД",
+          "concessionaire": "\"Барс\" АД гр. Шумен",
+          "deposit": "Ламбурлука",
+          "municipality": "Смядово",
+          "region": "Шумен",
+          "mineralGroup": "Строителни материали",
+          "mineralType": "Варовици",
+          "term": "21 г.",
+          "signedDate": "07.01.2021 г.",
+          "wonEur": 6052240.61,
+          "contracts": 31,
+          "consortiumEur": 0.0,
+          "sector": "45",
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        }
+      ]
+    },
+    "dnsk": {
+      "id": "dnsk",
+      "title": "ДНСК — Строителен надзор (чл. 166 ЗУТ) и Незаконни строежи",
+      "datasetUrlConsultants": "https://data.egov.bg/organisation/dataset/23d781fe-3eea-4426-b8a9-b360df323eaf",
+      "datasetUrlIllegal": "https://data.egov.bg/organisation/dataset/cc096ffe-47d6-4106-a489-aa339148ee0d",
+      "totalConsultantsRegistry": 967,
+      "zopMatchedConsultants": 265,
+      "zopConsultantsTotalEur": 242562104.84,
+      "expiredConsultantsInZop": 92,
+      "topConsultants": [
+        {
+          "eik": "114674768",
+          "name": "ЕВРОСТРОЙ РН ЕООД",
+          "city": "гр.Плевен",
+          "manager": "Калинка Иванова Иванова",
+          "cert": "Удостоверение",
+          "issued": "25.04.2023 г.",
+          "validUntil": "22.05.2024 г.",
+          "isExpired": true,
+          "wonEur": 14118345.03,
+          "contracts": 37,
+          "authorities": 15,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": [
+            "НИКИФОР ПЛАМЕНОВ БАНЕВСКИ"
+          ]
+        },
+        {
+          "eik": "200079448",
+          "name": "СЕТ ИНЖЕНЕРИНГ ЕООД",
+          "city": "гр.София",
+          "manager": "Янчо Христов Петков",
+          "cert": "Удостоверение",
+          "issued": "10.08.2020 г.",
+          "validUntil": "10.08.2025 г.",
+          "isExpired": true,
+          "wonEur": 3256805.68,
+          "contracts": 129,
+          "authorities": 41,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "203570057",
+          "name": "ИНТЕРПРОКОНСУЛТ ООД",
+          "city": "гр.София",
+          "manager": "Николай Николаев Грозев",
+          "cert": "Удостоверение",
+          "issued": "17.11.2021 г.",
+          "validUntil": "17.11.2026 г.",
+          "isExpired": true,
+          "wonEur": 3248907.52,
+          "contracts": 32,
+          "authorities": 13,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "126720807",
+          "name": "ЕН АР КОНСУЛТ ЕООД",
+          "city": "гр.Хасково",
+          "manager": "Николинка Атанасова ПанайотоваАнгел Христов Ангелов",
+          "cert": "Удостоверение",
+          "issued": "18.08.2021 г.",
+          "validUntil": "18.08.2026 г.",
+          "isExpired": true,
+          "wonEur": 3068257.37,
+          "contracts": 62,
+          "authorities": 13,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": [
+            "БОГДАНА ВЛАДИМИРОВА ПАНАЙОТОВА"
+          ]
+        },
+        {
+          "eik": "041061430",
+          "name": "ИНЖКОНСУЛТПРОЕКТ ООД",
+          "city": "гр.Варна",
+          "manager": "Ганка Атанасова КолелиеваИван Росенов Колелиев",
+          "cert": "Удостоверение",
+          "issued": "09.03.2020 г.",
+          "validUntil": "09.03.2025 г.",
+          "isExpired": true,
+          "wonEur": 2989549.43,
+          "contracts": 83,
+          "authorities": 26,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "040463255",
+          "name": "РИСК ИНЖЕНЕРИНГ АД",
+          "city": "гр.София",
+          "manager": "Нели Стоянова БешироваМанол Емилов ЧакъровЕмилия Красимирова Стефанова",
+          "cert": "Удостоверение",
+          "issued": "09.05.2017 г.",
+          "validUntil": "09.05.2022 г.",
+          "isExpired": true,
+          "wonEur": 2449564.83,
+          "contracts": 28,
+          "authorities": 7,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "000653802",
+          "name": "СЖС БЪЛГАРИЯ ЕООД",
+          "city": "гр.София",
+          "manager": "Димитър Христов Марикин",
+          "cert": "Удостоверение",
+          "issued": "06.04.2017 г.",
+          "validUntil": "06.04.2022 г.",
+          "isExpired": true,
+          "wonEur": 2345241.59,
+          "contracts": 89,
+          "authorities": 23,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "203987346",
+          "name": "БЛАГОЕВГРАД ИНВЕСТ 2016 ЕООД",
+          "city": "гр.Благоевград",
+          "manager": "Илия Благоев Илиев",
+          "cert": "Удостоверение",
+          "issued": "22.04.2021 г.",
+          "validUntil": "22.04.2026 г.",
+          "isExpired": true,
+          "wonEur": 1753345.33,
+          "contracts": 93,
+          "authorities": 1,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "206063907",
+          "name": "ПРАЙМ КОНТРОЛ ООД",
+          "city": "гр. София",
+          "manager": "Росица Русева Кукева",
+          "cert": "Удостоверение",
+          "issued": "30.09.2020 г.",
+          "validUntil": "30.09.2025 г.",
+          "isExpired": true,
+          "wonEur": 1692956.86,
+          "contracts": 33,
+          "authorities": 8,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "200775103",
+          "name": "ПЛАН ИНВЕСТ ПЛОВДИВ ЕООД",
+          "city": "гр.Пловдив",
+          "manager": "Николай Георгиев Костурков",
+          "cert": "Удостоверение",
+          "issued": "15.06.2021 г.",
+          "validUntil": "15.06.2026 г.",
+          "isExpired": true,
+          "wonEur": 1671009.73,
+          "contracts": 37,
+          "authorities": 14,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "108507750",
+          "name": "ЕКОИНЖЕНЕРИНГ ЕООД",
+          "city": "гр.Кърджали",
+          "manager": "Надя Кирилова Петкова",
+          "cert": "Удостоверение",
+          "issued": "22.04.2020 г.",
+          "validUntil": "22.04.2025 г.",
+          "isExpired": true,
+          "wonEur": 1638650.17,
+          "contracts": 169,
+          "authorities": 20,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "101753016",
+          "name": "АСТРА КОНСУЛТ ЕООД",
+          "city": "гр.София",
+          "manager": "Иван Василев Йорданов",
+          "cert": "Удостоверение",
+          "issued": "29.03.2021 г.",
+          "validUntil": "29.03.2026 г.",
+          "isExpired": true,
+          "wonEur": 1540423.85,
+          "contracts": 179,
+          "authorities": 68,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "200756124",
+          "name": "ЛАЙФ ЕНЕРДЖИ ООД",
+          "city": "гр.София",
+          "manager": "Кънчо Стойков Паскалев",
+          "cert": "Удостоверение",
+          "issued": "15.01.2019 г.",
+          "validUntil": "15.01.2024 г.",
+          "isExpired": true,
+          "wonEur": 1414833.52,
+          "contracts": 206,
+          "authorities": 68,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "175333219",
+          "name": "ЕН ПРО КОНСУЛТ-07 ЕООД",
+          "city": "гр.София",
+          "manager": "Екатерина Иванова Жабинска-Николова",
+          "cert": "Удостоверение",
+          "issued": "11.03.2016 г.",
+          "validUntil": "11.03.2021 г.",
+          "isExpired": true,
+          "wonEur": 1355788.16,
+          "contracts": 6,
+          "authorities": 2,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "206558220",
+          "name": "Мах Консулт ЕООД",
+          "city": "гр. София",
+          "manager": "Маргарита Янакиева Василева",
+          "cert": "Удостоверение",
+          "issued": "19.11.2021 г.",
+          "validUntil": "19.11.2026 г.",
+          "isExpired": true,
+          "wonEur": 1334360.79,
+          "contracts": 24,
+          "authorities": 10,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "204096338",
+          "name": "ИСК ИНЖЕНЕРИНГ ЕООД",
+          "city": "гр.София",
+          "manager": "Вяра Миладинова Колова",
+          "cert": "Удостоверение",
+          "issued": "15.06.2021 г.",
+          "validUntil": "15.06.2026 г.",
+          "isExpired": true,
+          "wonEur": 1103319.25,
+          "contracts": 58,
+          "authorities": 13,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "203656232",
+          "name": "ЕЛСТРОЙ КОНСУЛТ 77 ЕООД",
+          "city": "гр.София",
+          "manager": "Тинка Панчева Стоилова",
+          "cert": "Удостоверение",
+          "issued": "10.08.2020 г.",
+          "validUntil": "10.08.2025 г.",
+          "isExpired": true,
+          "wonEur": 1089089.05,
+          "contracts": 24,
+          "authorities": 11,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "204068723",
+          "name": "ПРОЕКТ ЕКСПЕРТ КОНТРОЛ ЕООД",
+          "city": "гр.Самоков",
+          "manager": "Ралица Христова Касабова",
+          "cert": "Удостоверение",
+          "issued": "22.07.2021 г.",
+          "validUntil": "22.07.2026 г.",
+          "isExpired": true,
+          "wonEur": 882575.64,
+          "contracts": 62,
+          "authorities": 13,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "130375847",
+          "name": "ЕРОУ ООД",
+          "city": "гр.София",
+          "manager": "Радостина Неделчева Нешева",
+          "cert": "Удостоверение",
+          "issued": "16.11.2020 г.",
+          "validUntil": "16.11.2025 г.",
+          "isExpired": true,
+          "wonEur": 874373.36,
+          "contracts": 6,
+          "authorities": 3,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "814191534",
+          "name": "ИНВЕСТСТРОЙ-92 ЕООД",
+          "city": "гр.Велико Търново",
+          "manager": "Свилен Иванов Димитров",
+          "cert": "Удостоверение",
+          "issued": "01.06.2020 г.",
+          "validUntil": "01.06.2025 г.",
+          "isExpired": true,
+          "wonEur": 834087.49,
+          "contracts": 2,
+          "authorities": 1,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "201425668",
+          "name": "КИМА КОНСУЛТ ЕООД",
+          "city": "гр.Пловдив",
+          "manager": "Марин Кирилов Младенов",
+          "cert": "Удостоверение",
+          "issued": "15.03.2021 г.",
+          "validUntil": "15.03.2026 г.",
+          "isExpired": true,
+          "wonEur": 700155.46,
+          "contracts": 118,
+          "authorities": 34,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "203129689",
+          "name": "Техникъл консултинг сървисис ЕООД",
+          "city": "гр.София",
+          "manager": "Пенка Милчева Каврошилова",
+          "cert": "Удостоверение",
+          "issued": "14.05.2020 г.",
+          "validUntil": "14.05.2025 г.",
+          "isExpired": true,
+          "wonEur": 604397.66,
+          "contracts": 16,
+          "authorities": 13,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "831615056",
+          "name": "ПЪТПРОЕКТ ЕООД",
+          "city": "гр.София",
+          "manager": "Венцислав Валентинов Зарев",
+          "cert": "Удостоверение",
+          "issued": "17.09.2021 г.",
+          "validUntil": "17.09.2026 г.",
+          "isExpired": true,
+          "wonEur": 603764.6,
+          "contracts": 18,
+          "authorities": 8,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "200211946",
+          "name": "ХЕЛИО СИТИ ЕООД",
+          "city": "гр.София",
+          "manager": "Веселин Добрев Маринов",
+          "cert": "Удостоверение",
+          "issued": "12.01.2021 г.",
+          "validUntil": "12.01.2026 г.",
+          "isExpired": true,
+          "wonEur": 595857.0,
+          "contracts": 3,
+          "authorities": 3,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        },
+        {
+          "eik": "131456138",
+          "name": "ЕКСПЕРТ ДИСИЖЪНС ООД",
+          "city": "гр.София",
+          "manager": "Мариета Ангелова Шолева",
+          "cert": "Удостоверение",
+          "issued": "22.03.2021 г.",
+          "validUntil": "22.03.2026 г.",
+          "isExpired": true,
+          "wonEur": 573664.23,
+          "contracts": 24,
+          "authorities": 9,
+          "matchMethod": "name_legal_exact",
+          "linkedOfficials": []
+        }
+      ],
+      "illegalOrdersTotal": 6250,
+      "illegalInProcedure": 5177,
+      "illegalExecuted": 1073,
+      "illegalSuspendedCourt": 0,
+      "illegalActions": {
+        "Сключен договор с изпълнител на премахването": 2491,
+        "В процедура по избор на изпълнител на премахването": 1276,
+        "Покана за доброволно изпълнение": 1034,
+        "В процедура": 643,
+        "В процедура по Наредба №13/2001 г.": 444,
+        "Непосочено": 110
+      },
+      "topCitiesUnexecuted": [
+        {
+          "city": "София",
+          "count": 258
+        },
+        {
+          "city": "Тност",
+          "count": 237
+        },
+        {
+          "city": "Варна",
+          "count": 206
+        },
+        {
+          "city": "Келе",
+          "count": 147
+        },
+        {
+          "city": "Хасково",
+          "count": 109
+        },
+        {
+          "city": "Марчево",
+          "count": 109
+        },
+        {
+          "city": "Обственост",
+          "count": 99
+        },
+        {
+          "city": "Пловдив",
+          "count": 93
+        },
+        {
+          "city": "Самоков",
+          "count": 87
+        },
+        {
+          "city": "Тъка",
+          "count": 76
+        },
+        {
+          "city": "Русе",
+          "count": 75
+        },
+        {
+          "city": "Бургас",
+          "count": 75
+        }
+      ],
+      "oldestUnexecutedOrders": [
+        {
+          "orderNo": "233/28.05.1998",
+          "year": 1998,
+          "object": "Снек-бар Корсар",
+          "location": "крайбрежната алея в Морска градина гр.Варна",
+          "action": "В процедура"
+        },
+        {
+          "orderNo": "357/16.06.1999",
+          "year": 1999,
+          "object": "Жилищна сграда на три и мансардни етажи",
+          "location": "м.Павлово-Бъкстон, р-н Витоша-СО, гр.София, общ.Столична, обл.София-град",
+          "action": "Сключен договор с изпълнител на премахването"
+        },
+        {
+          "orderNo": "501/13.08.1999",
+          "year": 1999,
+          "object": "Част от гаражи и работилница, реализиран В отклонение от издадените строителни книжа, както и пристройката, състояща се ",
+          "location": "гр.Костинброд, общ.Костинброд, обл.Софийска",
+          "action": "Сключен договор с изпълнител на премахването"
+        },
+        {
+          "orderNo": "498/10.04.2000",
+          "year": 2000,
+          "object": "Охраняем паркинг",
+          "location": "имот № 1920, кад. лист № 151 в терен м/у бензиностанция на Петрол на Околовръстен път, в участъка след бул. Европа и ж. ",
+          "action": ""
+        },
+        {
+          "orderNo": "893/20.06.2000",
+          "year": 2000,
+          "object": "Стопанска постройка, едноетажна сглобяема панелна сграда, ограда с бетонова основа",
+          "location": "кв.Продимчец, гр.Ловеч, общ.Ловеч, обл.Ловеч",
+          "action": "Сключен договор с изпълнител на премахването"
+        },
+        {
+          "orderNo": "1097/18.07.2000",
+          "year": 2000,
+          "object": "Надстройка, предназначена за гараж",
+          "location": "парцел ІІІ-1309, кв.105 по плана на с.Брестовица, общ.Родопи, обл.Пловдив",
+          "action": "В процедура"
+        },
+        {
+          "orderNo": "1666/11.10.2000",
+          "year": 2000,
+          "object": "Пристройка към партерен апартамент на жилищна сграда",
+          "location": "Център, гр.София, общ.Столична, обл.София-град",
+          "action": "Сключен договор с изпълнител на премахването"
+        },
+        {
+          "orderNo": "83/22.01.2001",
+          "year": 2001,
+          "object": "Масивна ограда",
+          "location": "гр.Созопол, общ.Созопол, обл.Бургас",
+          "action": ""
+        },
+        {
+          "orderNo": "933/05.07.2001",
+          "year": 2001,
+          "object": "Масивен гараж",
+          "location": "ІІ мр гр.Благоевград, общ.Благоевград, обл.Благоевград",
+          "action": "Сключен договор с изпълнител на премахването"
+        },
+        {
+          "orderNo": "1168/27.09.2001",
+          "year": 2001,
+          "object": "Сграда, предназначена за жилищни нужди",
+          "location": "гр.Елхово, общ.Елхово, обл.Ямбол",
+          "action": "В процедура по Наредба №13/2001 г."
+        },
+        {
+          "orderNo": "1326/10.12.2001",
+          "year": 2001,
+          "object": "Масивна двуетажна пристройка",
+          "location": "м.Павлово - Бъкстон, гр.София, общ.Столична, обл.София-град",
+          "action": "Сключен договор с изпълнител на премахването."
+        },
+        {
+          "orderNo": "222/20.09.2002",
+          "year": 2002,
+          "object": "Масивен гараж",
+          "location": "гр.Сандански, общ.Сандански, обл.Благоевград",
+          "action": "В процедура по избор на изпълнител на премахването"
+        },
+        {
+          "orderNo": "223/20.09.2002",
+          "year": 2002,
+          "object": "Масивен гараж",
+          "location": "гр.Сандански, общ.Сандански, обл.Благоевград",
+          "action": "В процедура по избор на изпълнител на премахването"
+        },
+        {
+          "orderNo": "224/20.09.2002",
+          "year": 2002,
+          "object": "Масивен гараж",
+          "location": "гр.Сандански, общ.Сандански, обл.Благоевград",
+          "action": "В процедура по избор на изпълнител на премахването"
+        },
+        {
+          "orderNo": "225/20.09.2002",
+          "year": 2002,
+          "object": "Масивен гараж",
+          "location": "гр.Сандански, общ.Сандански, обл.Благоевград",
+          "action": "В процедура по избор на изпълнител на премахването"
+        }
+      ]
+    },
+    "iaaa": {
+      "id": "iaaa",
+      "title": "ИААА (Автомобилна администрация) × Транспортни поръчки по ЗОП",
+      "datasetUrl": "https://data.egov.bg/organisation/dataset/8ae518c0-bce3-46ac-b151-a5609820e38e",
+      "busLicensesCount": 1208,
+      "cargoLicensesCount": 3458,
+      "zopMatchedCompanies": 916,
+      "zopMatchedTotalEur": 6476918659.38,
+      "topFindings": [
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "103267194",
+          "name": "СОФАРМА ТРЕЙДИНГ АД",
+          "licenseNo": "6415",
+          "vehicles": "—",
+          "region": "София (столица)",
+          "wonEur": 1407565811.42,
+          "contracts": 3348,
+          "authorities": 172,
+          "linkedOfficials": []
+        },
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "203283623",
+          "name": "ФЬОНИКС Фарма ЕООД",
+          "licenseNo": "10197",
+          "vehicles": "—",
+          "region": "София (столица)",
+          "wonEur": 769949167.8,
+          "contracts": 2213,
+          "authorities": 158,
+          "linkedOfficials": []
+        },
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "131268894",
+          "name": "МЕДЕКС ООД",
+          "licenseNo": "7110",
+          "vehicles": "—",
+          "region": "София (столица)",
+          "wonEur": 354652047.93,
+          "contracts": 1151,
+          "authorities": 81,
+          "linkedOfficials": []
+        },
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "106530686",
+          "name": "АТОМЕНЕРГОРЕМОНТ АД",
+          "licenseNo": "10505",
+          "vehicles": "—",
+          "region": "Враца",
+          "wonEur": 232534905.19,
+          "contracts": 57,
+          "authorities": 7,
+          "linkedOfficials": [
+            "НИКОЛАЙ КРУМОВ ПЕТКОВ"
+          ]
+        },
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "202920330",
+          "name": "ПЪТИНЖЕНЕРИНГ АД",
+          "licenseNo": "9962",
+          "vehicles": "—",
+          "region": "Русе",
+          "wonEur": 145425231.51,
+          "contracts": 133,
+          "authorities": 19,
+          "linkedOfficials": []
+        },
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "130131711",
+          "name": "ГБС - ИНФРАСТРУКТУРНО СТРОИТЕЛСТВО АД",
+          "licenseNo": "6483",
+          "vehicles": "—",
+          "region": "София (столица)",
+          "wonEur": 131517726.57,
+          "contracts": 31,
+          "authorities": 13,
+          "linkedOfficials": []
+        },
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "831609046",
+          "name": "ТОПЛОФИКАЦИЯ СОФИЯ ЕАД",
+          "licenseNo": "6774",
+          "vehicles": "—",
+          "region": "София (столица)",
+          "wonEur": 127673075.56,
+          "contracts": 352,
+          "authorities": 171,
+          "linkedOfficials": []
+        },
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "121396123",
+          "name": "БЪЛГАРСКИ ПОЩИ ЕАД",
+          "licenseNo": "8568",
+          "vehicles": "—",
+          "region": "София (столица)",
+          "wonEur": 124813270.57,
+          "contracts": 440,
+          "authorities": 199,
+          "linkedOfficials": []
+        },
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "130258609",
+          "name": "ИМПУЛС КО ООД",
+          "licenseNo": "7453",
+          "vehicles": "—",
+          "region": "София (столица)",
+          "wonEur": 114843588.39,
+          "contracts": 59,
+          "authorities": 8,
+          "linkedOfficials": []
+        },
+        {
+          "kind": "Пътнически превози (Общностен лиценз)",
+          "eik": "835013079",
+          "name": "ЕМУ АД",
+          "licenseNo": "1202",
+          "vehicles": "1",
+          "region": "Търговище",
+          "wonEur": 112912137.09,
+          "contracts": 67,
+          "authorities": 14,
+          "linkedOfficials": []
+        },
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "200706452",
+          "name": "ЗМБГ АД",
+          "licenseNo": "9101",
+          "vehicles": "—",
+          "region": "София (столица)",
+          "wonEur": 105458914.81,
+          "contracts": 11,
+          "authorities": 5,
+          "linkedOfficials": []
+        },
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "175410402",
+          "name": "ТЕХНО СТРОЙ БЪЛГАРИЯ ООД",
+          "licenseNo": "8164",
+          "vehicles": "—",
+          "region": "София (столица)",
+          "wonEur": 97603511.58,
+          "contracts": 137,
+          "authorities": 23,
+          "linkedOfficials": []
+        },
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "123121115",
+          "name": "ПЕЩОСТРОЙ ЕООД",
+          "licenseNo": "7588",
+          "vehicles": "—",
+          "region": "Стара Загора",
+          "wonEur": 93793996.95,
+          "contracts": 8,
+          "authorities": 3,
+          "linkedOfficials": []
+        },
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "131458468",
+          "name": "РАЙКОМЕРС КОНСТРУКШЪН ЕАД",
+          "licenseNo": "6586",
+          "vehicles": "—",
+          "region": "София (столица)",
+          "wonEur": 83177594.46,
+          "contracts": 96,
+          "authorities": 24,
+          "linkedOfficials": []
+        },
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "175251156",
+          "name": "ЛЮНИК ЕООД",
+          "licenseNo": "5356",
+          "vehicles": "—",
+          "region": "София",
+          "wonEur": 70920836.25,
+          "contracts": 93,
+          "authorities": 19,
+          "linkedOfficials": []
+        },
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "200255501",
+          "name": "ОРС - ИНФРАСТРУКТУРА ООД",
+          "licenseNo": "9818",
+          "vehicles": "—",
+          "region": "София (столица)",
+          "wonEur": 60153870.63,
+          "contracts": 13,
+          "authorities": 2,
+          "linkedOfficials": []
+        },
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "126729838",
+          "name": "ЕКО ТРАДЕКС ГРУП АД",
+          "licenseNo": "7514",
+          "vehicles": "—",
+          "region": "Хасково",
+          "wonEur": 59322909.43,
+          "contracts": 94,
+          "authorities": 17,
+          "linkedOfficials": [
+            "ДАНИЕЛ РУМЕНОВ ГАРГОВ"
+          ]
+        },
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "130169509",
+          "name": "СТРОЙМОНТАЖ ЕООД",
+          "licenseNo": "8137",
+          "vehicles": "—",
+          "region": "Пазарджик",
+          "wonEur": 57452987.36,
+          "contracts": 44,
+          "authorities": 22,
+          "linkedOfficials": []
+        },
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "102227154",
+          "name": "ФАРКОЛ АД",
+          "licenseNo": "8129",
+          "vehicles": "—",
+          "region": "Бургас",
+          "wonEur": 56321142.67,
+          "contracts": 1215,
+          "authorities": 145,
+          "linkedOfficials": []
+        },
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "120564924",
+          "name": "АРТСТРОЙ ООД",
+          "licenseNo": "4671",
+          "vehicles": "—",
+          "region": "Смолян",
+          "wonEur": 52039165.65,
+          "contracts": 91,
+          "authorities": 25,
+          "linkedOfficials": []
+        },
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "175329555",
+          "name": "МОНТАЖИ КО ЕООД",
+          "licenseNo": "8574",
+          "vehicles": "—",
+          "region": "София (столица)",
+          "wonEur": 50604789.05,
+          "contracts": 85,
+          "authorities": 6,
+          "linkedOfficials": []
+        },
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "112580619",
+          "name": "ЕКО-ХИДРО-90 ООД",
+          "licenseNo": "7610",
+          "vehicles": "—",
+          "region": "Пазарджик",
+          "wonEur": 45430535.69,
+          "contracts": 95,
+          "authorities": 9,
+          "linkedOfficials": []
+        },
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "126658138",
+          "name": "ЕВРОПЪТ 2005 ООД",
+          "licenseNo": "7504",
+          "vehicles": "—",
+          "region": "Хасково",
+          "wonEur": 43022668.52,
+          "contracts": 137,
+          "authorities": 11,
+          "linkedOfficials": [
+            "ЗЛАТКО РАДИНОВ МАРЧЕВ"
+          ]
+        },
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "020767877",
+          "name": "РАСТЕР-ЮГ ООД",
+          "licenseNo": "7197",
+          "vehicles": "—",
+          "region": "Благоевград",
+          "wonEur": 39943804.96,
+          "contracts": 95,
+          "authorities": 28,
+          "linkedOfficials": [
+            "Гергана Владимирова Муртова"
+          ]
+        },
+        {
+          "kind": "Обществен превоз на товари",
+          "eik": "130463628",
+          "name": "ЩРАБАГ ЕАД",
+          "licenseNo": "7803",
+          "vehicles": "—",
+          "region": "София (столица)",
+          "wonEur": 39748019.35,
+          "contracts": 88,
+          "authorities": 27,
+          "linkedOfficials": []
+        }
+      ]
+    },
+    "reserveAndEnergy": {
+      "id": "reserve_energy",
+      "title": "Държавен резерв (Горива/Складове) & МЕ (Енергийни помощи) × ЗОП",
+      "datasetUrl": "https://data.egov.bg/organisation/dataset/e73de8a3-2dbe-48b4-8705-059b35d5fac5",
+      "obligedCount": 800,
+      "warehousesCount": 358,
+      "zopMatchedFuelCompanies": 110,
+      "zopMatchedFuelEur": 642861978.61,
+      "ozobTotalRecords": 128,
+      "ozobZopMatched": 14,
+      "topFuelFindings": [
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "131245283",
+          "name": "САКСА ООД",
+          "detail": "чл. 23, ал. 2 и ал. 3 (01.07.2026 - 30.06.2027)",
+          "wonEur": 87109774.83,
+          "contracts": 93,
+          "linkedOfficials": []
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "205722229",
+          "name": "Хитачи Енерджи България ЕООД",
+          "detail": "чл. 23, ал. 2 и ал. 3 (01.07.2026 - 30.06.2027)",
+          "wonEur": 52094324.11,
+          "contracts": 14,
+          "linkedOfficials": []
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "115624227",
+          "name": "ИНСА ОЙЛ ЕООД",
+          "detail": "чл. 23, ал. 2 и ал. 3 (01.07.2026 - 30.06.2027)",
+          "wonEur": 49035204.82,
+          "contracts": 15,
+          "linkedOfficials": []
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "204917226",
+          "name": "„Мотобул“ ЕАД",
+          "detail": "чл. 23, ал. 3 (01.07.2025 - 30.06.2026)",
+          "wonEur": 46751770.98,
+          "contracts": 169,
+          "linkedOfficials": []
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "121699202",
+          "name": "ЛУКОЙЛ-БЪЛГАРИЯ ЕООД",
+          "detail": "чл. 23, ал. 2 и ал. 3 (01.07.2026 - 30.06.2027)",
+          "wonEur": 45571337.21,
+          "contracts": 118,
+          "linkedOfficials": []
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "200358273",
+          "name": "ЕКОСОЛ БЪЛГАРИЯ АД",
+          "detail": "чл. 23, ал. 3 (01.07.2026 - 30.06.2027)",
+          "wonEur": 44372302.36,
+          "contracts": 317,
+          "linkedOfficials": []
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "130948987",
+          "name": "ЕКО БЪЛГАРИЯ ЕАД",
+          "detail": "чл. 23, ал. 3 (01.07.2026 - 30.06.2027)",
+          "wonEur": 33284485.3,
+          "contracts": 54,
+          "linkedOfficials": []
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "822105378",
+          "name": "КАУЧУК АД",
+          "detail": "чл. 23, ал. 2 и ал. 3 (01.07.2024 - 30.06.2025)",
+          "wonEur": 29735444.95,
+          "contracts": 15,
+          "linkedOfficials": []
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "131433890",
+          "name": "ЕВРОМАРКЕТ КЪНСТРАКШЪН ЕАД",
+          "detail": "чл. 23, ал. 3 (01.07.2026 - 30.06.2027)",
+          "wonEur": 26366178.41,
+          "contracts": 152,
+          "linkedOfficials": []
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "201955499",
+          "name": "БЪЛГАРСКА АВТОМОБИЛНА ИНДУСТРИЯ ЕАД",
+          "detail": "чл. 23, ал. 2 и ал. 3 (01.07.2026 - 30.06.2027)",
+          "wonEur": 21662798.96,
+          "contracts": 27,
+          "linkedOfficials": []
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "200871895",
+          "name": "ДЖИ ТИ ЕЙ ПЕТРОЛИУМ ООД",
+          "detail": "чл. 23, ал. 2 и ал. 3 (01.07.2026 - 30.06.2027)",
+          "wonEur": 20776273.19,
+          "contracts": 68,
+          "linkedOfficials": []
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "121759222",
+          "name": "ОМВ БЪЛГАРИЯ ООД",
+          "detail": "чл. 23, ал. 3 (01.07.2026 - 30.06.2027)",
+          "wonEur": 18312064.66,
+          "contracts": 111,
+          "linkedOfficials": []
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "121516626",
+          "name": "ПРИСТА ОЙЛ ХОЛДИНГ ЕАД",
+          "detail": "чл. 23, ал. 2 и ал. 3 (01.07.2026 - 30.06.2027)",
+          "wonEur": 14379539.79,
+          "contracts": 157,
+          "linkedOfficials": []
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "813027681",
+          "name": "БУЛАВТО АД",
+          "detail": "чл. 23, ал. 2 (01.07.2026 - 30.06.2027)",
+          "wonEur": 13226133.46,
+          "contracts": 105,
+          "linkedOfficials": [
+            "НИКОЛАЙ ЖЕЛЯЗКОВ НЕДЯЛКОВ"
+          ]
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "040823148",
+          "name": "СОФИЯ ФРАНС АУТО АД",
+          "detail": "чл. 23, ал. 3 (01.07.2024 - 30.06.2025)",
+          "wonEur": 11339362.86,
+          "contracts": 51,
+          "linkedOfficials": []
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "207450735",
+          "name": "ЕС ЕФ ЕЙ АУТОМОТИВ",
+          "detail": "чл. 23, ал. 3 (01.07.2026 - 30.06.2027)",
+          "wonEur": 11138848.82,
+          "contracts": 51,
+          "linkedOfficials": []
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "205140969",
+          "name": "ЛОТУС ОЙЛ ТРЕЙД ЕООД",
+          "detail": "чл. 23, ал. 2 и ал. 3 (01.07.2026 - 30.06.2027)",
+          "wonEur": 10901011.87,
+          "contracts": 3,
+          "linkedOfficials": []
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "202096909",
+          "name": "СИ ЕМ ЕЛ БЪЛГАРИЯ АД",
+          "detail": "чл. 23, ал. 3 (01.07.2026 - 30.06.2027)",
+          "wonEur": 9223687.14,
+          "contracts": 96,
+          "linkedOfficials": []
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "109003034",
+          "name": "ЕЛПРОМ - ТРАФО СН АД",
+          "detail": "чл. 23, ал. 3 (01.07.2024 - 30.06.2025)",
+          "wonEur": 8389295.08,
+          "contracts": 11,
+          "linkedOfficials": []
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "204339263",
+          "name": "Силвър Стар Моторс ЕАД",
+          "detail": "чл. 23, ал. 3 (01.07.2026 - 30.06.2027)",
+          "wonEur": 7615993.96,
+          "contracts": 8,
+          "linkedOfficials": []
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "200901840",
+          "name": "ДМВ ПЕТРОЛ ЕООД",
+          "detail": "чл. 23, ал. 2 и ал. 3 (01.07.2026 - 30.06.2027)",
+          "wonEur": 5318062.27,
+          "contracts": 4,
+          "linkedOfficials": []
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "202845851",
+          "name": "ЛЕМИ - ТРАФО ЕАД",
+          "detail": "чл. 23, ал. 3 (01.07.2024 - 30.06.2025)",
+          "wonEur": 5285350.24,
+          "contracts": 20,
+          "linkedOfficials": []
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "204673957",
+          "name": "ЮНАЙТЕД ОЙЛС БЪЛГАРИЯ ООД",
+          "detail": "чл. 23, ал. 2 и ал. 3 (01.07.2026 - 30.06.2027)",
+          "wonEur": 4209863.57,
+          "contracts": 73,
+          "linkedOfficials": []
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "200507646",
+          "name": "КАРИО ООД",
+          "detail": "чл. 23, ал. 3 (01.07.2026 - 30.06.2027)",
+          "wonEur": 4182779.99,
+          "contracts": 114,
+          "linkedOfficials": []
+        },
+        {
+          "source": "Задължено лице по ЗЗНН (Държавен резерв)",
+          "eik": "040201751",
+          "name": "КАММАРТОН БЪЛГАРИЯ ЕООД",
+          "detail": "чл. 23, ал. 3 (01.07.2026 - 30.06.2027)",
+          "wonEur": 3854519.03,
+          "contracts": 73,
+          "linkedOfficials": []
+        }
+      ],
+      "topOzobFindings": [
+        {
+          "eik": "121803715",
+          "name": "СОЛ БЪЛГАРИЯ ЕАД",
+          "wonEur": 15721256.86,
+          "contracts": 143
+        },
+        {
+          "eik": "200369889",
+          "name": "ВМВ - МЕТАЛ ЕООД",
+          "wonEur": 4475772.43,
+          "contracts": 3
+        },
+        {
+          "eik": "130418266",
+          "name": "ЛИНДЕ ГАЗ БЪЛГАРИЯ ЕООД",
+          "wonEur": 3712416.93,
+          "contracts": 84
+        },
+        {
+          "eik": "816089656",
+          "name": "ХОЛСИМ БЪЛГАРИЯ АД",
+          "wonEur": 3435881.44,
+          "contracts": 4
+        },
+        {
+          "eik": "000065763",
+          "name": "СМА МИНЕРАЛ БУРГАС ВАР ЕООД",
+          "wonEur": 2957748.46,
+          "contracts": 13
+        },
+        {
+          "eik": "833067555",
+          "name": "ПРЕСКОВ АД",
+          "wonEur": 2746114.44,
+          "contracts": 4
+        },
+        {
+          "eik": "115167522",
+          "name": "ЧУГУНОЛЕЕНЕ - ПЪРВОМАЙ АД",
+          "wonEur": 2461244.08,
+          "contracts": 5
+        },
+        {
+          "eik": "112030625",
+          "name": "ОГНЯНОВО-К АД",
+          "wonEur": 2048450.02,
+          "contracts": 9
+        },
+        {
+          "eik": "115005545",
+          "name": "КАЛЦИТ АД",
+          "wonEur": 1213244.5,
+          "contracts": 7
+        },
+        {
+          "eik": "107526979",
+          "name": "НБИ КОНСОРЦИУМ ООД",
+          "wonEur": 343203.39,
+          "contracts": 20
+        },
+        {
+          "eik": "205870690",
+          "name": "ЯНЕВ И ЯНЕВИ ООД",
+          "wonEur": 77525.86,
+          "contracts": 3
+        },
+        {
+          "eik": "115076001",
+          "name": "ГОТМАР ЕООД",
+          "wonEur": 68196.11,
+          "contracts": 1
+        },
+        {
+          "eik": "120057853",
+          "name": "ГОРУБСО - МАДАН АД",
+          "wonEur": 35799.42,
+          "contracts": 3
+        },
+        {
+          "eik": "128055570",
+          "name": "ЗПТ АД",
+          "wonEur": 10225.84,
+          "contracts": 1
+        }
+      ]
+    },
+    "dfz2025": {
+      "id": "dfz_2025",
+      "title": "ДФЗ (Агросубсидии 2025) × Изпълнители по ЗОП и Свързани лица",
+      "datasetUrl": "https://data.egov.bg/organisation/dataset/f764215a-0a73-43b7-ae8a-d0acd7b0d7f4",
+      "headers": [],
+      "rowsScanned": 0,
+      "exportBlockedTimeout": true,
+      "zopMatchedBeneficiaries": 0,
+      "zopMatchedWonEur": 0,
+      "zopMatchedSubsidySum": 0,
+      "politicianLinked": [],
+      "topFindings": []
+    },
+    "otherRegistries": {
+      "napGamblingRows": 2118,
+      "napGamblingUniqueEiks": 664,
+      "napGamblingZopMatched": 1,
+      "napGamblingZopEur": 1942877.59,
+      "napGamblingTop": [
+        {
+          "eik": "200701708",
+          "name": "КОРЕКТ - ДЕ ЕООД",
+          "city": "Севлиево",
+          "activity": "Внос",
+          "status": "—",
+          "licenseCount": 1,
+          "wonEur": 1942877.59,
+          "contracts": 17,
+          "linkedOfficials": []
+        }
+      ],
+      "napDatasetUrl": "https://data.egov.bg/organisation/dataset/6181a5c3-ac0b-40c0-9bf8-53a0b5185adf",
+      "babhZopMatched": 145,
+      "babhZopEur": 444998514.89,
+      "babhTop": [
+        {
+          "eik": "040967273",
+          "name": "КОНТИНВЕСТ ООД",
+          "status": "ACTIVE",
+          "addr": "София (град)-Столична-София-гр. София 1111 район р-н Слатина ж.к. ГЕО МИЛЕВ, ул.",
+          "wonEur": 54666452.85,
+          "contracts": 92
+        },
+        {
+          "eik": "131318482",
+          "name": "ПАНДА-И.П. ЕООД",
+          "status": "ACTIVE",
+          "addr": "---Искър ул. Професор Цветан Лазаров № 33, ет. 3, ап. 10",
+          "wonEur": 49598170.52,
+          "contracts": 59
+        },
+        {
+          "eik": "107544354",
+          "name": "СТЕЛИТ 1 ЕООД",
+          "status": "ACTIVE",
+          "addr": "Габрово-Севлиево-Севлиево-ул. \"Стойчо Часовникаров\" № 1",
+          "wonEur": 35097240.14,
+          "contracts": 780
+        },
+        {
+          "eik": "116584586",
+          "name": "СТИНГ АД",
+          "status": "ACTIVE",
+          "addr": "София (град)-Столична-София-община Младост, бул. \"Асен Йорданов\" № 6",
+          "wonEur": 33211067.25,
+          "contracts": 13
+        },
+        {
+          "eik": "203022445",
+          "name": "КИЛТЕКС ЕООД",
+          "status": "ACTIVE",
+          "addr": "София (град)-Столична-София-р-н Оборище, ул. Врабча 10, ет. 5",
+          "wonEur": 22254633.12,
+          "contracts": 271
+        },
+        {
+          "eik": "126145986",
+          "name": "УИКЕНД ООД",
+          "status": "ACTIVE",
+          "addr": "Хасково-Димитровград-Димитровград-ул. \"Бузлуджа\" №42",
+          "wonEur": 15909277.37,
+          "contracts": 675
+        },
+        {
+          "eik": "122047217",
+          "name": "ВАКЛИНОВ ЕООД",
+          "status": "ACTIVE",
+          "addr": "---Р-Н \"СЕРДИКА\", УЛ. \"ПЪРВА БЪЛГАРСК АРМИЯ\" № 80",
+          "wonEur": 14356311.47,
+          "contracts": 35
+        },
+        {
+          "eik": "130642168",
+          "name": "КОТА-2001 ООД",
+          "status": "ACTIVE",
+          "addr": "София (град)-Столична-София-ж.к. Овча Купел, ул. Лечебен Извор 1",
+          "wonEur": 13774092.5,
+          "contracts": 14
+        },
+        {
+          "eik": "123732779",
+          "name": "НИК - ИНВЕСТ - КАЗАНЛЪК ЕООД",
+          "status": "ACTIVE",
+          "addr": "Стара Загора-Казанлък-Казанлък-бул. \"Розова долина\" №18",
+          "wonEur": 12207575.91,
+          "contracts": 157
+        },
+        {
+          "eik": "131449898",
+          "name": "ИЙТ УЕЛ ЕАД",
+          "status": "ACTIVE",
+          "addr": "---ул. Галичица 37",
+          "wonEur": 11995306.24,
+          "contracts": 19
+        },
+        {
+          "eik": "175270007",
+          "name": "КРИСИ 2007 ЕООД",
+          "status": "ACTIVE",
+          "addr": "София (град)-Столична-София-ул. \"Шопска комуна\" № 62",
+          "wonEur": 11034055.99,
+          "contracts": 242
+        },
+        {
+          "eik": "102182129",
+          "name": "ИВ ТРЕЙД ООД",
+          "status": "ACTIVE",
+          "addr": "Бургас-Бургас-Бургас-ул. \"Александър Велики\" № 3, вх. А",
+          "wonEur": 9110161.21,
+          "contracts": 189
+        },
+        {
+          "eik": "114613320",
+          "name": "ЕВЕЛИН КОМЕРС ООД",
+          "status": "ACTIVE",
+          "addr": "Плевен-Плевен-Плевен-ул. \"Копривщица\" 22",
+          "wonEur": 8098594.68,
+          "contracts": 199
+        },
+        {
+          "eik": "103275063",
+          "name": "ВАРНА ОБОРОТ ЕООД",
+          "status": "ACTIVE",
+          "addr": "---ул. Академик Курчатов 1",
+          "wonEur": 7509223.41,
+          "contracts": 357
+        },
+        {
+          "eik": "117620882",
+          "name": "БОРОИМПЕКС АД",
+          "status": "ACTIVE",
+          "addr": "Русе-Борово-Борово-ул. \"Патриарх Евтимий\" 3а",
+          "wonEur": 6443845.25,
+          "contracts": 248
+        }
+      ],
+      "babhDatasetUrl": "https://data.egov.bg/organisation/dataset/b119fd70-e1aa-456d-aa92-7b1f0f578533"
+    },
+    "mfPvu": {
+      "id": "mf_pvu",
+      "title": "МФ — Финансово изпълнение на Плана за възстановяване и устойчивост (ПВУ)",
+      "datasetUrl": "https://data.egov.bg/organisation/dataset/045c6ffa-6cbd-4416-a299-dad41120681e",
+      "investmentsCount": 57,
+      "totalBudgetEur": 6533130849.14,
+      "totalPaidEur": 4970869028.77,
+      "executionPct": 76.09,
+      "zeroPaidBigProjectsCount": 2,
+      "zeroPaidBigProjects": [
+        {
+          "code": "К10.И13",
+          "investment": "Цифровизация на Националната агенция за приходите",
+          "ministry": "НАП",
+          "budgetTotal": 23419805.0,
+          "paidTotal": 0.0,
+          "executionPct": 0.0
+        },
+        {
+          "code": "К10.И12",
+          "investment": "Цифровизация на Агенция \"Митници\"",
+          "ministry": "Агенция Митници",
+          "budgetTotal": 17605266.0,
+          "paidTotal": 0.0,
+          "executionPct": 0.0
+        }
+      ],
+      "topBudgetProjects": [
+        {
+          "code": "К3.И2",
+          "investment": "Програма за икономическа трансформация",
+          "ministry": "МИР СНД",
+          "budgetTotal": 735270997.0,
+          "paidTotal": 531665594.55,
+          "executionPct": 72.31
+        },
+        {
+          "code": "К4.И8",
+          "investment": "Национална инфраструктура за съхранение на електроенергия от възобновяеми енергийни източници (RESTORE)",
+          "ministry": "МЕ",
+          "budgetTotal": 603589054.5,
+          "paidTotal": 302315380.9,
+          "executionPct": 50.09
+        },
+        {
+          "code": "К8.И1",
+          "investment": "Железопътен подвижен състав",
+          "ministry": "МТС",
+          "budgetTotal": 506009585.09,
+          "paidTotal": 413129585.03,
+          "executionPct": 81.64
+        },
+        {
+          "code": "К4.И1",
+          "investment": "Подкрепа за обновяване на жилищния сграден фонд",
+          "ministry": "МРРБ СНД",
+          "budgetTotal": 438543397.47,
+          "paidTotal": 395483085.65,
+          "executionPct": 90.18
+        },
+        {
+          "code": "К4.И9",
+          "investment": "Схема за субсидиране на енергийно обновяване на жилищни сгради",
+          "ministry": "ББР",
+          "budgetTotal": 381766697.0,
+          "paidTotal": 332455452.0,
+          "executionPct": 87.08
+        },
+        {
+          "code": "К4.И6",
+          "investment": "Подкрепа за нови мощности за производство на електроенергия от възобновяеми източници и съхранение на електроенергия",
+          "ministry": "МЕ СНД",
+          "budgetTotal": 342969616.0,
+          "paidTotal": 115475105.64,
+          "executionPct": 33.67
+        },
+        {
+          "code": "К11.И1",
+          "investment": "Модернизиране на дългосрочната грижа",
+          "ministry": "МТСП СНД",
+          "budgetTotal": 338403708.0,
+          "paidTotal": 294632154.58,
+          "executionPct": 87.07
+        },
+        {
+          "code": "К1.И2",
+          "investment": "Модернизиране на образователната инфраструктура",
+          "ministry": "МОН СНД",
+          "budgetTotal": 331829391.0,
+          "paidTotal": 301348556.02,
+          "executionPct": 90.81
+        },
+        {
+          "code": "К4.И1",
+          "investment": "Подкрепа за обновяване на нежилищния сграден фонд",
+          "ministry": "МРРБ СНД",
+          "budgetTotal": 241056262.0,
+          "paidTotal": 217231809.61,
+          "executionPct": 90.12
+        },
+        {
+          "code": "К7.И1",
+          "investment": "Широкомащабно разгръщане на цифрова инфраструктура",
+          "ministry": "МТС СНД",
+          "budgetTotal": 240251787.22,
+          "paidTotal": 193746086.13,
+          "executionPct": 80.64
+        },
+        {
+          "code": "К6.И1",
+          "investment": "Фонд за насърчаване на технологичния и екологичния преход на селското стопанство",
+          "ministry": "МЗ СНД",
+          "budgetTotal": 203522287.72,
+          "paidTotal": 194412551.41,
+          "executionPct": 95.52
+        },
+        {
+          "code": "К4.И4",
+          "investment": "Цифрова трасформация на електропреносната мрежа",
+          "ministry": "МЕ СН (Електроенергиен системен оператор АД)",
+          "budgetTotal": 189177996.04,
+          "paidTotal": 105867816.66,
+          "executionPct": 55.96
+        },
+        {
+          "code": "К8.И6",
+          "investment": "Линия 3 на метрото в София",
+          "ministry": "Метрополитен ЕАД",
+          "budgetTotal": 144348456.16,
+          "paidTotal": 144348456.28,
+          "executionPct": 100.0
+        },
+        {
+          "code": "К12.И1",
+          "investment": "Модернизиране на болничните заведения",
+          "ministry": "МЗ",
+          "budgetTotal": 137155904.4,
+          "paidTotal": 97774937.88,
+          "executionPct": 71.29
+        },
+        {
+          "code": "К1.И3",
+          "investment": "Предоставяне на обучения за дигитални умения и създаване на платформа за обучение на възрастни",
+          "ministry": "МТСП СНД",
+          "budgetTotal": 130441911.41,
+          "paidTotal": 71980344.45,
+          "executionPct": 55.18
+        },
+        {
+          "code": "К2.И1",
+          "investment": "Програма за възстановяване на икономическото възстановяване и трансформация чрез научни изследвания и иновации",
+          "ministry": "МОН СНД",
+          "budgetTotal": 128978005.47,
+          "paidTotal": 113744781.4,
+          "executionPct": 88.19
+        },
+        {
+          "code": "К13.И2 МЕ",
+          "investment": "Национална инфраструктура за съхранение на ел. енергия RESTORE",
+          "ministry": "МЕ",
+          "budgetTotal": 120662239.0,
+          "paidTotal": 5322510.27,
+          "executionPct": 4.41
+        },
+        {
+          "code": "К12.И2",
+          "investment": "Центрове за интервенционална диагностика и ендоваскуларно лечение на мозъчно-съдови заболявания",
+          "ministry": "МЗ",
+          "budgetTotal": 112658022.0,
+          "paidTotal": 99057482.94,
+          "executionPct": 87.93
+        },
+        {
+          "code": "К8.И8",
+          "investment": "Дигитализация и визуализация на параметрите на железния път и контактната мрежа, чрез доставка на специализирана механизация",
+          "ministry": "НКЖИ",
+          "budgetTotal": 99836563.0,
+          "paidTotal": 99836563.0,
+          "executionPct": 100.0
+        },
+        {
+          "code": "К3.И1",
+          "investment": "Програма за публична подкрепа за развитието на индустриални зони, паркове и подобни територии и за привличане на инвестиции (\"AttractInvestBG\")",
+          "ministry": "МИР СНД",
+          "budgetTotal": 98905345.0,
+          "paidTotal": 88159846.48,
+          "executionPct": 89.14
+        }
+      ]
+    },
+    "blackBoxContracts": {
+      "available": true,
+      "totalBlackBoxContracts": 8919,
+      "totalBlackBoxEur": 13929388825.35,
+      "totalSingleOfferCount": 3296,
+      "totalSingleOfferEur": 4106803608.18,
+      "blackBoxBreakdown": [
+        {
+          "eik": "000695089",
+          "name": "Агенция „Пътна инфраструктура“ (АПИ)",
+          "contracts": 775,
+          "totalEur": 6172765294.55,
+          "singleOfferCount": 163,
+          "singleOfferEur": 1214929055.9,
+          "singleOfferSharePct": 21.0,
+          "nonCompetitiveCount": 55,
+          "nonCompetitiveEur": 551597471.91,
+          "topContractors": [
+            {
+              "name": "АВТОМАГИСТРАЛИ ЕАД",
+              "eik": "831646048",
+              "eur": 1017274385.97,
+              "contracts": 13,
+              "single": 8
+            },
+            {
+              "name": "ПЪТИНЖЕНЕРИНГСТРОЙ-Т ЕАД и др.",
+              "eik": "",
+              "eur": 448160167.62,
+              "contracts": 1,
+              "single": 0
+            },
+            {
+              "name": "ВОДНО СТРОИТЕЛСТВО - БЛАГОЕВГРАД АД и др.",
+              "eik": "",
+              "eur": 337670228.93,
+              "contracts": 1,
+              "single": 0
+            },
+            {
+              "name": "ТРЕЙС ГРУП ХОЛД АД и др.",
+              "eik": "",
+              "eur": 248693154.04,
+              "contracts": 3,
+              "single": 0
+            },
+            {
+              "name": "ЕВРОПЕЙСКИ ПЪТИЩА АД",
+              "eik": "115004094",
+              "eur": 210559377.34,
+              "contracts": 5,
+              "single": 1
+            }
+          ]
+        },
+        {
+          "eik": "175203478",
+          "name": "„Булгартрансгаз“ ЕАД",
+          "contracts": 461,
+          "totalEur": 1414695239.2,
+          "singleOfferCount": 212,
+          "singleOfferEur": 210472200.44,
+          "singleOfferSharePct": 46.0,
+          "nonCompetitiveCount": 35,
+          "nonCompetitiveEur": 4736680.68,
+          "topContractors": [
+            {
+              "name": "ХИЛ Интернешънал Н.В. и др.",
+              "eik": "",
+              "eur": 188268612.1,
+              "contracts": 1,
+              "single": 0
+            },
+            {
+              "name": "ДЗЗД \"ТЕХ ЕНЕРДЖИ ЕКСПАНЖЪН\" и др.",
+              "eik": "",
+              "eur": 157831921.22,
+              "contracts": 1,
+              "single": 0
+            },
+            {
+              "name": "ГАЗ ПРОДЖЕКТ ДЕВЕЛОПМЪНТ ЕООД и др.",
+              "eik": "",
+              "eur": 113110699.81,
+              "contracts": 1,
+              "single": 0
+            },
+            {
+              "name": "ИНТЕРНЕШЪНАЛ ГАЗ и др.",
+              "eik": "",
+              "eur": 93756279.24,
+              "contracts": 1,
+              "single": 0
+            },
+            {
+              "name": "ГБС Текнолоджис Инк и др.",
+              "eik": "",
+              "eur": 70234868.16,
+              "contracts": 1,
+              "single": 0
+            }
+          ]
+        },
+        {
+          "eik": "106513772",
+          "name": "„АЕЦ Козлодуй“ ЕАД",
+          "contracts": 2154,
+          "totalEur": 1367372990.0,
+          "singleOfferCount": 962,
+          "singleOfferEur": 843163833.69,
+          "singleOfferSharePct": 44.7,
+          "nonCompetitiveCount": 722,
+          "nonCompetitiveEur": 1083898017.48,
+          "topContractors": [
+            {
+              "name": "АТОМЕНЕРГОРЕМОНТ АД",
+              "eik": "106530686",
+              "eur": 228925415.55,
+              "contracts": 41,
+              "single": 29
+            },
+            {
+              "name": "Областна дирекция на МВР (ОДМВР) - Враца",
+              "eik": "129009781",
+              "eur": 133370875.15,
+              "contracts": 2,
+              "single": 2
+            },
+            {
+              "name": "И.Б.Л. - БЪЛГАРИЯ ЕАД",
+              "eik": "202990599",
+              "eur": 85091886.71,
+              "contracts": 10,
+              "single": 6
+            },
+            {
+              "name": "АДЕН ГРУП ООД",
+              "eik": "201639907",
+              "eur": 61861683.57,
+              "contracts": 43,
+              "single": 30
+            },
+            {
+              "name": "УЕСТИНГХАУС ЕЛЕКТРИК ШВЕЦИЯ АБ – КЛОН БЪЛГАРИЯ КЧТ",
+              "eik": "206016604",
+              "eur": 46242134.55,
+              "contracts": 16,
+              "single": 13
+            }
+          ]
+        },
+        {
+          "eik": "130823243",
+          "name": "НКЖИ",
+          "contracts": 716,
+          "totalEur": 1364169703.39,
+          "singleOfferCount": 227,
+          "singleOfferEur": 248566376.88,
+          "singleOfferSharePct": 31.7,
+          "nonCompetitiveCount": 44,
+          "nonCompetitiveEur": 60070716.52,
+          "topContractors": [
+            {
+              "name": "ДЗЗД ЖП Медковец-Срацимир и др.",
+              "eik": "",
+              "eur": 305542747.04,
+              "contracts": 1,
+              "single": 0
+            },
+            {
+              "name": "ДЗЗД МЕДКОВЕЦ ВО 2025 и др.",
+              "eik": "",
+              "eur": 88613105.89,
+              "contracts": 1,
+              "single": 0
+            },
+            {
+              "name": "ТРАНСПОРТНО СТРОИТЕЛСТВО И ВЪЗСТАНОВЯВАНЕ ЕАД",
+              "eik": "205677435",
+              "eur": 69610624.04,
+              "contracts": 28,
+              "single": 20
+            },
+            {
+              "name": "TESMEC RAIL S.R.L.",
+              "eik": "",
+              "eur": 64110509.15,
+              "contracts": 3,
+              "single": 0
+            },
+            {
+              "name": "ЕВОЛЮШЪН ООД и др.",
+              "eik": "",
+              "eur": 51062048.78,
+              "contracts": 1,
+              "single": 0
+            }
+          ]
+        },
+        {
+          "eik": "175201304",
+          "name": "ЕСО ЕАД",
+          "contracts": 1382,
+          "totalEur": 880363705.41,
+          "singleOfferCount": 490,
+          "singleOfferEur": 106654713.57,
+          "singleOfferSharePct": 35.5,
+          "nonCompetitiveCount": 39,
+          "nonCompetitiveEur": 11200796.21,
+          "topContractors": [
+            {
+              "name": "ИМПУЛС КО ООД",
+              "eik": "130258609",
+              "eur": 110187131.48,
+              "contracts": 37,
+              "single": 1
+            },
+            {
+              "name": "ЕМУ АД",
+              "eik": "835013079",
+              "eur": 106593020.1,
+              "contracts": 42,
+              "single": 0
+            },
+            {
+              "name": "Дружество по ЗЗД ,,Ел Сървис 2024",
+              "eik": "181370752",
+              "eur": 92926455.78,
+              "contracts": 1,
+              "single": 0
+            },
+            {
+              "name": "ЕСО ИНЖЕНЕРИНГ ЕООД",
+              "eik": "206401308",
+              "eur": 63477057.93,
+              "contracts": 207,
+              "single": 205
+            },
+            {
+              "name": "Хитачи Енерджи България ЕООД",
+              "eik": "205722229",
+              "eur": 50833125.89,
+              "contracts": 10,
+              "single": 3
+            }
+          ]
+        },
+        {
+          "eik": "831913661",
+          "name": "ДА „Държавен резерв и военновременни запаси“",
+          "contracts": 347,
+          "totalEur": 660728934.35,
+          "singleOfferCount": 212,
+          "singleOfferEur": 629138719.33,
+          "singleOfferSharePct": 61.1,
+          "nonCompetitiveCount": 115,
+          "nonCompetitiveEur": 557314444.12,
+          "topContractors": [
+            {
+              "name": "БЕНТ ОЙЛ АД",
+              "eik": "200852966",
+              "eur": 237458451.54,
+              "contracts": 40,
+              "single": 40
+            },
+            {
+              "name": "ПЕТРОЛ ЕНЕРДЖИ ЕООД",
+              "eik": "201109588",
+              "eur": 175153340.6,
+              "contracts": 31,
+              "single": 31
+            },
+            {
+              "name": "ПЪРВИ МАЙ АД",
+              "eik": "118006467",
+              "eur": 36658686.85,
+              "contracts": 5,
+              "single": 5
+            },
+            {
+              "name": "Боду ЕООД",
+              "eik": "130068321",
+              "eur": 31897387.13,
+              "contracts": 2,
+              "single": 2
+            },
+            {
+              "name": "ИНСА ОЙЛ ЕООД",
+              "eik": "115624227",
+              "eur": 27950754.74,
+              "contracts": 6,
+              "single": 6
+            }
+          ]
+        },
+        {
+          "eik": "833017552",
+          "name": "„Мини Марица-изток“ ЕАД",
+          "contracts": 741,
+          "totalEur": 477020843.99,
+          "singleOfferCount": 275,
+          "singleOfferEur": 192895169.54,
+          "singleOfferSharePct": 37.1,
+          "nonCompetitiveCount": 58,
+          "nonCompetitiveEur": 171919521.16,
+          "topContractors": [
+            {
+              "name": "Номад енерджи къмпани ЕООД",
+              "eik": "205606662",
+              "eur": 88771321.57,
+              "contracts": 3,
+              "single": 0
+            },
+            {
+              "name": "Смарт конвейер системс",
+              "eik": "181530915",
+              "eur": 53115084.36,
+              "contracts": 1,
+              "single": 1
+            },
+            {
+              "name": "КАУЧУК АД",
+              "eik": "822105378",
+              "eur": 26090467.57,
+              "contracts": 7,
+              "single": 0
+            },
+            {
+              "name": "ЛЕВ ОЙЛ ООД",
+              "eik": "123156568",
+              "eur": 25070052.1,
+              "contracts": 2,
+              "single": 1
+            },
+            {
+              "name": "БУЛСОР - ГРУП ООД",
+              "eik": "115299680",
+              "eur": 23621655.2,
+              "contracts": 1,
+              "single": 1
+            }
+          ]
+        },
+        {
+          "eik": "203740812",
+          "name": "Фонд на фондовете (ФМФИБ) ЕАД",
+          "contracts": 27,
+          "totalEur": 461174545.18,
+          "singleOfferCount": 9,
+          "singleOfferEur": 36274133.72,
+          "singleOfferSharePct": 33.3,
+          "nonCompetitiveCount": 0,
+          "nonCompetitiveEur": 0.0,
+          "topContractors": [
+            {
+              "name": "ДЗЗД \"Фонд за устойчиви градове\"",
+              "eik": "177236270",
+              "eur": 191378062.14,
+              "contracts": 2,
+              "single": 0
+            },
+            {
+              "name": "УниКредит Булбанк АД",
+              "eik": "831919536",
+              "eur": 82481392.55,
+              "contracts": 3,
+              "single": 0
+            },
+            {
+              "name": "Фонд за зелено и умно градско развитие",
+              "eik": "181257110",
+              "eur": 71143878.36,
+              "contracts": 1,
+              "single": 0
+            },
+            {
+              "name": "ДЗЗД \"Фонд за устойчиви градове\" и др.",
+              "eik": "",
+              "eur": 41240696.28,
+              "contracts": 1,
+              "single": 0
+            },
+            {
+              "name": "БЪЛГАРСКА КОНСУЛТАНТСКА ОРГАНИЗАЦИЯ ЕООД и др.",
+              "eik": "",
+              "eur": 38491316.73,
+              "contracts": 1,
+              "single": 0
+            }
+          ]
+        },
+        {
+          "eik": "129009070",
+          "name": "ДП „Фонд затворно дело“",
+          "contracts": 186,
+          "totalEur": 458557379.14,
+          "singleOfferCount": 94,
+          "singleOfferEur": 423912184.0,
+          "singleOfferSharePct": 50.5,
+          "nonCompetitiveCount": 34,
+          "nonCompetitiveEur": 23786820.44,
+          "topContractors": [
+            {
+              "name": "ТАБАКО ТРЕЙД СЪРВИСЕС ЕООД",
+              "eik": "201261845",
+              "eur": 395413123.81,
+              "contracts": 13,
+              "single": 13
+            },
+            {
+              "name": "НОВЕ ХОЛД ЕООД",
+              "eik": "207071685",
+              "eur": 12691709.99,
+              "contracts": 8,
+              "single": 6
+            },
+            {
+              "name": "А1 България ЕАД и др.",
+              "eik": "",
+              "eur": 10737129.51,
+              "contracts": 1,
+              "single": 0
+            },
+            {
+              "name": "Виваком България ЕАД",
+              "eik": "831642181",
+              "eur": 8675792.11,
+              "contracts": 6,
+              "single": 4
+            },
+            {
+              "name": "СТЕЛИТ 1 ЕООД",
+              "eik": "107544354",
+              "eur": 3754186.82,
+              "contracts": 2,
+              "single": 2
+            }
+          ]
+        },
+        {
+          "eik": "000649348",
+          "name": "„Национална електрическа компания“ (НЕК) ЕАД",
+          "contracts": 1323,
+          "totalEur": 290545864.17,
+          "singleOfferCount": 358,
+          "singleOfferEur": 72655423.09,
+          "singleOfferSharePct": 27.1,
+          "nonCompetitiveCount": 72,
+          "nonCompetitiveEur": 30425850.39,
+          "topContractors": [
+            {
+              "name": "ГБС ГЛОБАЛ КЪНСТРЪКШЪН ЕАД и др.",
+              "eik": "",
+              "eur": 44034028.05,
+              "contracts": 2,
+              "single": 0
+            },
+            {
+              "name": "МУЛТИФОРС А.С. ЕООД",
+              "eik": "831637711",
+              "eur": 27785689.34,
+              "contracts": 2,
+              "single": 2
+            },
+            {
+              "name": "ЗАСТРАХОВАТЕЛНО АКЦИОНЕРНО ДРУЖЕСТВО \"ОЗК - ЗАСТРАХОВАНЕ\" АД",
+              "eik": "121265177",
+              "eur": 17785586.69,
+              "contracts": 2,
+              "single": 1
+            },
+            {
+              "name": "СИКЮРИТИ ГЛОБЪЛ ЕООД",
+              "eik": "825266290",
+              "eur": 15378505.02,
+              "contracts": 1,
+              "single": 0
+            },
+            {
+              "name": "ГРУП-7 ЕООД",
+              "eik": "831661979",
+              "eur": 14758247.8,
+              "contracts": 3,
+              "single": 2
+            }
+          ]
+        },
+        {
+          "eik": "000697179",
+          "name": "ДП „Ръководство на въздушното движение“ (ДП РВД)",
+          "contracts": 516,
+          "totalEur": 205174815.71,
+          "singleOfferCount": 199,
+          "singleOfferEur": 95720376.63,
+          "singleOfferSharePct": 38.6,
+          "nonCompetitiveCount": 25,
+          "nonCompetitiveEur": 8430840.49,
+          "topContractors": [
+            {
+              "name": "Консорциум \"ТИС-АТ ДЦ\" и др.",
+              "eik": "",
+              "eur": 17423309.54,
+              "contracts": 1,
+              "single": 0
+            },
+            {
+              "name": "Leonardo S.p.А.",
+              "eik": "",
+              "eur": 15300000.0,
+              "contracts": 1,
+              "single": 1
+            },
+            {
+              "name": "ТЕЛЕЛИНК ИНФРА СЪРВИСИС ЕАД",
+              "eik": "204856684",
+              "eur": 11009060.28,
+              "contracts": 5,
+              "single": 1
+            },
+            {
+              "name": "Frequentis AG",
+              "eik": "",
+              "eur": 9953520.0,
+              "contracts": 2,
+              "single": 2
+            },
+            {
+              "name": "СИЕНСИС АД",
+              "eik": "121708078",
+              "eur": 9027150.52,
+              "contracts": 11,
+              "single": 0
+            }
+          ]
+        },
+        {
+          "eik": "130316140",
+          "name": "ДП „Пристанищна инфраструктура“ (ДППИ)",
+          "contracts": 291,
+          "totalEur": 176819510.26,
+          "singleOfferCount": 95,
+          "singleOfferEur": 32421421.39,
+          "singleOfferSharePct": 32.6,
+          "nonCompetitiveCount": 18,
+          "nonCompetitiveEur": 7988212.86,
+          "topContractors": [
+            {
+              "name": "КОНСОРЦИУМ КОСМОС ВАН ООРД и др.",
+              "eik": "",
+              "eur": 35782138.02,
+              "contracts": 1,
+              "single": 0
+            },
+            {
+              "name": "ТРАНССТРОЙ-БУРГАС АД",
+              "eik": "102003626",
+              "eur": 21162284.78,
+              "contracts": 1,
+              "single": 0
+            },
+            {
+              "name": "ТРАНСПОРТНО СТРОИТЕЛСТВО И ВЪЗСТАНОВЯВАНЕ ЕАД",
+              "eik": "205677435",
+              "eur": 18186438.86,
+              "contracts": 10,
+              "single": 0
+            },
+            {
+              "name": "БАЛКАНСКИ ООД",
+              "eik": "103982953",
+              "eur": 6722861.88,
+              "contracts": 9,
+              "single": 1
+            },
+            {
+              "name": "ЕИС - СТРОИТЕЛНА КОМПАНИЯ АД",
+              "eik": "205921868",
+              "eur": 6252437.67,
+              "contracts": 2,
+              "single": 0
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

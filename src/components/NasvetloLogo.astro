@@ -1,6 +1,10 @@
 ---
+interface Props {
+  href?: string;
+}
+const { href = '#top' } = Astro.props;
 ---
-<a href="#top" class="brand-logo" aria-label="NAsvetlo — Граждански одит · CC-BY 4.0">
+<a href={href} class="brand-logo" aria-label="NAsvetlo — Граждански одит · CC-BY 4.0">
   <img
     src="/logo-icon.png"
     alt=""
