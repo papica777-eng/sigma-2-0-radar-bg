@@ -368,7 +368,8 @@ code {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
-  gap: 14px;
+  flex-wrap: wrap;
+  gap: 12px;
   white-space: nowrap;
 }
 .subbar-link,
