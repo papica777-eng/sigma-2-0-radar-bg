@@ -214,8 +214,8 @@
               ${(c.experts && c.experts.length) ? `<div class="inst-line" style="color:#059669;">Вещи лица: ${esc(c.experts.join(', '))}</div>` : ''}
             </td>
             <td style="white-space:nowrap;">
-              <a class="btn" style="padding:3px 8px;font-size:11px;margin-bottom:4px;display:inline-block;" href="${esc(c.actDownloadUrl)}" target="_blank" rel="noopener">Акт HTML ↗</a><br/>
-              <a class="btn" style="padding:2px 7px;font-size:10.5px;" href="${esc(c.caseUrl)}" target="_blank" rel="noopener">ЕПЕП Карта ↗</a>
+              ${(c.actDownloadUrl && c.actDownloadUrl !== c.caseUrl) ? `<a class="btn" style="padding:3px 8px;font-size:11px;margin-bottom:4px;display:inline-block;" href="${esc(c.actDownloadUrl)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Акт HTML ↗</a><br/>` : ''}
+              <a class="btn" style="padding:3px 8px;font-size:11px;display:inline-block;" href="${esc(c.caseUrl)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ЕПЕП Карта ↗</a>
             </td>
           </tr>`).join('') || `<tr><td colspan="5" class="loading">Няма намерени търговски дела за филтъра.</td></tr>`}</tbody>
         </table></div>
@@ -321,8 +321,8 @@
               ${(c.lawyers && c.lawyers.length) ? `<div class="inst-line" style="color:#0284c7;">${esc(c.lawyers.join(' · '))}</div>` : ''}
             </td>
             <td style="white-space:nowrap;">
-              <a class="btn" style="padding:3px 8px;font-size:11px;margin-bottom:4px;display:inline-block;" href="${esc(c.actDownloadUrl)}" target="_blank" rel="noopener">Акт HTML ↗</a><br/>
-              <a class="btn" style="padding:2px 7px;font-size:10.5px;" href="${esc(c.caseUrl)}" target="_blank" rel="noopener">ЕПЕП ↗</a>
+              ${(c.actDownloadUrl && c.actDownloadUrl !== c.caseUrl) ? `<a class="btn" style="padding:3px 8px;font-size:11px;margin-bottom:4px;display:inline-block;" href="${esc(c.actDownloadUrl)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Акт HTML ↗</a><br/>` : ''}
+              <a class="btn" style="padding:3px 8px;font-size:11px;display:inline-block;" href="${esc(c.caseUrl)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ЕПЕП ↗</a>
             </td>
           </tr>`).join('') || `<tr><td colspan="6" class="loading">Няма намерени КАНД/АНД дела за филтъра.</td></tr>`}</tbody>
         </table></div>
@@ -601,8 +601,8 @@
           ${(v.lawyers && v.lawyers.length) ? `<div class="inst-line" style="color:#0284c7;">${esc(v.lawyers.join(' · '))}</div>` : ''}
         </td>
         <td style="white-space:nowrap;">
-          <a class="btn" style="padding:3px 8px;font-size:11px;margin-bottom:4px;display:inline-block;" href="${esc(v.actDownloadUrl)}" target="_blank" rel="noopener">ВАС Акт ↗</a><br/>
-          <a class="btn" style="padding:2px 7px;font-size:10.5px;" href="${esc(v.caseUrl)}" target="_blank" rel="noopener">ЕПЕП ↗</a>
+          ${(v.actDownloadUrl && v.actDownloadUrl !== v.caseUrl) ? `<a class="btn" style="padding:3px 8px;font-size:11px;margin-bottom:4px;display:inline-block;" href="${esc(v.actDownloadUrl)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ВАС Акт ↗</a><br/>` : ''}
+          <a class="btn" style="padding:3px 8px;font-size:11px;display:inline-block;" href="${esc(v.caseUrl)}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ЕПЕП ↗</a>
         </td>
       </tr>`).join('') || `<tr><td colspan="6" class="loading">Няма записи за филтъра.</td></tr>`}</tbody>
     </table></div>`;
@@ -619,7 +619,7 @@
         <td>
           <div>
             ${sevTag(r)}
-            ${r.vasOutcome ? `<a class="tag tag-plum" href="${esc(r.vasActUrl || '#')}" target="_blank" rel="noopener">ВАС д. ${esc(r.vasCaseNo)}: ${esc(r.vasOutcome)} ↗</a>` : (r.appealedToVas ? '<span class="tag tag-plum">Обжалвано пред ВАС</span>' : '')}
+            ${r.vasOutcome ? `<a class="tag tag-plum" href="${esc(r.vasActUrl || '#')}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ВАС д. ${esc(r.vasCaseNo)}: ${esc(r.vasOutcome)} ↗</a>` : (r.appealedToVas ? '<span class="tag tag-plum">Обжалвано пред ВАС</span>' : '')}
           </div>
           <div class="inst-line">${esc(r.disposition.slice(0, 175))}</div>
         </td>
