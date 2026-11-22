@@ -1448,6 +1448,71 @@
     });
   }
 
+  // ---------------------------------------------------------------------------
+  // PERMANENT, NEVER-RESETTING VISIT COUNTER (Cloudflare Worker + D1 SQLite)
+  // ---------------------------------------------------------------------------
+  function initVisitCounter() {
+    const ENDPOINT = 'https://nasvetlo-visits.anchialo-v2.workers.dev';
+    const SESSION_KEY = 'nasvetlo_visit_counted_v1';
+    const FLOOR_KEY = 'nasvetlo_visit_floor_v1';
+
+    const topWrap = document.getElementById('nasvetloVisitCounter');
+    const topSep = document.getElementById('nasvetloVisitSep');
+    const topVal = document.getElementById('nasvetloVisitCount');
+    const footWrap = document.getElementById('nasvetloFooterVisits');
+    const footVal = document.getElementById('nasvetloFooterVisitCount');
+    if (!topWrap && !footWrap) return;
+
+    const renderCount = (rawCount) => {
+      const n = Number(rawCount);
+      if (!Number.isFinite(n) || n < 0) return;
+      let floor = 0;
+      try {
+        floor = parseInt(localStorage.getItem(FLOOR_KEY) || '0', 10) || 0;
+      } catch (_) {}
+      const displayVal = Math.max(Math.floor(n), floor);
+      try {
+        if (displayVal > floor) localStorage.setItem(FLOOR_KEY, String(displayVal));
+      } catch (_) {}
+      const formatted = fmtInt(displayVal);
+      if (topVal) topVal.textContent = formatted;
+      if (topWrap) topWrap.hidden = false;
+      if (topSep) topSep.hidden = false;
+      if (footVal) footVal.textContent = formatted;
+      if (footWrap) footWrap.hidden = false;
+    };
+
+    let alreadyCounted = false;
+    try {
+      alreadyCounted = sessionStorage.getItem(SESSION_KEY) === '1';
+    } catch (_) {}
+
+    const url = alreadyCounted ? `${ENDPOINT}/stats` : `${ENDPOINT}/hit`;
+    const method = alreadyCounted ? 'GET' : 'POST';
+
+    fetch(url, { method, mode: 'cors', cache: 'no-store' })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data && data.ok && typeof data.total === 'number') {
+          if (!alreadyCounted) {
+            try { sessionStorage.setItem(SESSION_KEY, '1'); } catch (_) {}
+          }
+          renderCount(data.total);
+        } else {
+          try {
+            const cached = parseInt(localStorage.getItem(FLOOR_KEY) || '0', 10);
+            if (cached > 0) renderCount(cached);
+          } catch (_) {}
+        }
+      })
+      .catch(() => {
+        try {
+          const cached = parseInt(localStorage.getItem(FLOOR_KEY) || '0', 10);
+          if (cached > 0) renderCount(cached);
+        } catch (_) {}
+      });
+  }
+
   window.SIGMA3 = {
     state, fmtEur, fmtInt, esc, riskBadgeHtml,
     ensureAuthoritiesLoaded, ensureCompaniesLoaded,
@@ -1455,5 +1520,6 @@
     inspectContractLive, generateSignalBrief, renderAtlas,
   };
 
+  initVisitCounter();
   init();
 })();
