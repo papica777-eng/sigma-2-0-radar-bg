@@ -1,0 +1,305 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import adm50 from '../../docs/data/nasvetlo_50_admins.json';
+import inv from '../../docs/data/nasvetlo_investigations.json';
+
+const sum50 = (adm50 as any).summary || {};
+const adminsAll: any[] = Array.isArray((adm50 as any).administrations) ? (adm50 as any).administrations : [];
+const sumInv = (inv as any).summary || {};
+const invMods = (inv as any).investigations || {};
+const asOf = String((inv as any).generatedAtUtc || '2026-11-22').slice(0, 10);
+
+const fmtEur = (v: number) => {
+  const n = Number(v || 0);
+  if (Math.abs(n) >= 1e9) return (n / 1e9).toFixed(2).replace('.', ',') + ' млрд. €';
+  if (Math.abs(n) >= 1e6) return (n / 1e6).toFixed(2).replace('.', ',') + ' млн. €';
+  return Math.round(n).toLocaleString('bg-BG') + ' €';
+};
+const fmtInt = (v: number) => Number(v || 0).toLocaleString('bg-BG');
+
+// Exact computed totals (NEVER 0 €)
+const totalZopSpentEur = Number(sum50.totalZopSpentEur || 0)
+  || adminsAll.reduce((acc, a) => acc + Number(a?.procurement?.spentEur || 0), 0);
+
+const blackBoxZeroDataEur = adminsAll
+  .filter((a) => a?.antiCorruption?.accessStatus === 'CLOSED_BLOCKED')
+  .reduce((acc, a) => acc + Number(a?.procurement?.spentEur || 0), 0);
+
+const bbCount = Number(sum50.statusBreakdown?.CLOSED_BLOCKED ?? 9);
+const owCount = Number(sum50.statusBreakdown?.OPENWASHING_COSMETIC ?? 6);
+const readyCount = Number(sum50.statusBreakdown?.OPEN_READY_FOR_LINK ?? 17);
+const frozenCount = Number(sum50.statusBreakdown?.PARTIAL_FRAGMENTED ?? 10);
+const connCount = Number(sum50.statusBreakdown?.CONNECTED_IN_NASVETLO ?? 8);
+const totalAdmins = adminsAll.length || Number(sum50.totalAdministrations || 50);
+
+// Static SSG data for instant render & Googlebot indexability
+const mvr = invMods.mvrSecurity || {};
+const me = invMods.meConcessions || {};
+const dnsk = invMods.dnsk || {};
+const iaaa = invMods.iaaa || {};
+const resv = invMods.reserveAndEnergy || {};
+const pvu = invMods.mfPvu || {};
+const oth = invMods.otherRegistries || {};
+const bb = invMods.blackBoxContracts || {};
+const bbRows: any[] = bb.blackBoxBreakdown || [];
+const secNoAct: any[] = mvr.noActiveSecurityHighlights || [];
+
+const STATUS_META: Record<string, { label: string; cls: string }> = {
+  CLOSED_BLOCKED: { label: 'Черна кутия (0 масива)', cls: 'tag-crit' },
+  OPENWASHING_COSMETIC: { label: 'Фасадна прозрачност', cls: 'tag-warn' },
+  PARTIAL_FRAGMENTED: { label: 'Замръзнали / фрагментирани', cls: 'tag-warn' },
+  OPEN_READY_FOR_LINK: { label: 'Готова за свързване', cls: 'tag-ok' },
+  CONNECTED_IN_NASVETLO: { label: 'Свързана в NAsvetlo', cls: 'tag-ok' },
+};
+
+const sortedAdmins = [...adminsAll].sort(
+  (a, b) => Number(b?.antiCorruption?.blackBoxPriority || 0) - Number(a?.antiCorruption?.blackBoxPriority || 0)
+);
+const uniqueClusters = Array.from(new Set(adminsAll.map((a) => a.cluster).filter(Boolean))).sort();
+---
+
+<BaseLayout
+  title="NAsvetlo — Кръстосани разследвания и Индекс на институционалната прозрачност"
+  description={`Независим граждански анализ на NAsvetlo: кръстосани проверки на ${fmtInt(sumInv.totalCrossLinkedRegistries || 11)} отворени държавни регистъра срещу ЗОП и Индекс на институционалната прозрачност (${fmtEur(totalZopSpentEur)} обществен ресурс).`}
+  asOf={asOf}
+  subpage={true}
+  canonicalPath="/razsledvaniya.html"
+>
+  <section class="inv-hero" id="top">
+    <div class="inv-kicker-row">
+      <span class="inv-kicker">
+        <span class="mini-win-dot" aria-hidden="true"></span>
+        <span>КРЪСТОСАНИ РЕГИСТРИ &amp; ИНДЕКС НА ИНСТИТУЦИОНАЛНАТА ПРОЗРАЧНОСТ</span>
+      </span>
+      <span class="mono" style="font-size:0.74rem;color:var(--ink-muted);">Актуализирано: {asOf} · CC-BY 4.0 / CC0 (data.egov.bg × ЗОП)</span>
+    </div>
+    <h1 class="inv-hero-title">Кръстосани разследвания и Индекс на институционалната прозрачност</h1>
+    <p class="inv-hero-sub">
+      Автоматично детерминистично засичане по 9-цифрен ЕИК и точно правно наименование между <strong>{fmtInt(sumInv.totalCrossLinkedRegistries || 11)} отворени държавни регистъра</strong> от <code>data.egov.bg</code> и националния масив на NAsvetlo (17 428 изпълнители по ЗОП, 571 политически свързани лица и 206 907 договора), съчетано с оценка на отворения достъп и корупционния риск на водещите централни ведомства, регулатори и държавни дружества с общ договорен ресурс <strong>{fmtEur(totalZopSpentEur)}</strong> по ЗОП.
+    </p>
+    <div class="inv-nav-actions">
+      <a href="#invCrossSection" class="btn topbar-btn">1. Кръстосани разследвания ({fmtInt(sumInv.totalCrossLinkedRegistries || 11)} регистъра)</a>
+      <a href="#invAudit50Section" class="btn topbar-btn">2. Индекс на прозрачност ({totalAdmins} институции)</a>
+    </div>
+  </section>
+
+  <section class="inv-kpi-grid" aria-label="Ключови показатели от разследванията и Индекса на прозрачност">
+    <div class="inv-kpi-card accent-crimson" data-jump-status="CLOSED_BLOCKED">
+      <div class="inv-kpi-val">{bbCount} черни кутии</div>
+      <div class="inv-kpi-lbl">Институции с 0 масива в data.egov.bg</div>
+      <div class="inv-kpi-sub">{fmtEur(blackBoxZeroDataEur)} ресурс без отворени данни</div>
+    </div>
+    <div class="inv-kpi-card accent-crimson" data-jump-tab="blackbox">
+      <div class="inv-kpi-val">{fmtInt(sumInv.blackBoxTotalSingleOfferCount)} договора</div>
+      <div class="inv-kpi-lbl">Поръчки с 1 оферта (водещи затворени възложители)</div>
+      <div class="inv-kpi-sub">{fmtEur(sumInv.blackBoxTotalSingleOfferEur)} без реална конкуренция</div>
+    </div>
+    <div class="inv-kpi-card accent-ochre" data-jump-tab="mvr">
+      <div class="inv-kpi-val">{fmtInt(sumInv.mvrExplicitRevokedNoActive)} отнети лиценза</div>
+      <div class="inv-kpi-lbl">Охранителни фирми без активен лиценз (МВР)</div>
+      <div class="inv-kpi-sub">{fmtInt(sumInv.mvrSecurityContractNoActiveCount)} с преки охранителни поръчки ({fmtEur(sumInv.mvrSecurityContractNoActiveEur)})</div>
+    </div>
+    <div class="inv-kpi-card accent-teal" data-jump-tab="concessions">
+      <div class="inv-kpi-val">{fmtInt(sumInv.meConcessionsZopCompanies)} концесионери</div>
+      <div class="inv-kpi-lbl">Кариери и подземни богатства (МЕ) в ЗОП</div>
+      <div class="inv-kpi-sub">{fmtEur(sumInv.meConcessionsDirectEur)} директно + {fmtEur(sumInv.meConcessionsConsortiumEur)} ДЗЗД</div>
+    </div>
+    <div class="inv-kpi-card accent-ochre" data-jump-tab="dnsk">
+      <div class="inv-kpi-val">{fmtInt(sumInv.dnskIllegalInProcedure)} висящи събаряния</div>
+      <div class="inv-kpi-lbl">ДНСК: неизпълнени заповеди от общо {fmtInt(sumInv.dnskIllegalOrdersTotal)}</div>
+      <div class="inv-kpi-sub">+ {fmtInt(sumInv.dnskExpiredInZop)} фирми за строителен надзор с изтекъл срок в ЗОП</div>
+    </div>
+    <div class="inv-kpi-card accent-teal" data-jump-tab="reserve">
+      <div class="inv-kpi-val">{String(sumInv.mfPvExecutionPct || 76.09).replace('.', ',')}% ПВУ</div>
+      <div class="inv-kpi-lbl">{fmtEur(sumInv.mfPvPaidEur)} платени от {fmtEur(sumInv.mfPvBudgetEur)}</div>
+      <div class="inv-kpi-sub">Изпълнение на ПВУ (МФ) към 30.09.2026 г.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 1: LIVE CROSS-LINKED REGISTRIES (SSG PRE-RENDERED FOR INSTANT LOAD & GOOGLEBOT) -->
+  <section id="invCrossSection">
+    <div class="inv-section-header">
+      <h2>1. Кръстосани разследвания (Отворени държавни регистри × ЗОП)</h2>
+      <span class="inv-section-meta" id="crossSectionMeta">Източник: data.egov.bg + NAsvetlo (17 428 фирми / 206 907 договора)</span>
+    </div>
+
+    <div class="inv-tabs" id="invTabBar" role="tablist" aria-label="Избор на разследване по държавен регистър">
+      <button type="button" class="inv-tab-btn active" data-inv-tab="overview">Акценти &amp; Резюме</button>
+      <button type="button" class="inv-tab-btn" data-inv-tab="mvr">МВР Охранителни лицензи <span class="inv-tab-count">{fmtInt(sumInv.mvrSecurityZopCompanies)}</span></button>
+      <button type="button" class="inv-tab-btn" data-inv-tab="concessions">МЕ Кариери × Строители <span class="inv-tab-count">{fmtInt(sumInv.meConcessionsZopCompanies)}</span></button>
+      <button type="button" class="inv-tab-btn" data-inv-tab="dnsk">ДНСК Надзор &amp; Незаконни строежи <span class="inv-tab-count">{fmtInt(sumInv.dnskConsultantsZopCompanies)}</span></button>
+      <button type="button" class="inv-tab-btn" data-inv-tab="iaaa">ИААА Транспорт × ЗОП <span class="inv-tab-count">{fmtInt(sumInv.iaaaTransportZopCompanies)}</span></button>
+      <button type="button" class="inv-tab-btn" data-inv-tab="reserve">Резерв, ПВУ, БАБХ &amp; Хазарт</button>
+      <button type="button" class="inv-tab-btn" data-inv-tab="blackbox">Черни кутии (1 оферта)</button>
+    </div>
+
+    <div class="inv-panel-box" id="invCrossBody">
+      <div class="inv-highlight-grid">
+        <article class="inv-finding-card">
+          <span class="inv-tag tag-crit">МВР Охранителни лицензи × ЗОП</span>
+          <h3>Отнети лицензи с реални охранителни договори</h3>
+          <p>От <strong>{fmtInt(mvr.zopMatchedCompanies)}</strong> изпълнители по ЗОП с досие в регистъра за частна охранителна дейност (ЗЧОД) на МВР ({fmtEur(mvr.zopMatchedTotalEur)}), <strong>{fmtInt(mvr.noActiveLicenseZopCount)}</strong> нямат действащ лиценз ({fmtInt(mvr.explicitRevokedNoActive)} изрично <strong>„Отнет“ / „Отказ“</strong>). Фирмите с отнет лиценз и без активен документ ({fmtInt(mvr.securityContractNoActiveCount)} бр. — <em>БАТ СЕКЮРИТИ ЕООД</em> и <em>СЕЛЕНА 52 ЕООД</em>) са спечелили <strong>преки охранителни поръчки</strong> за {fmtEur(mvr.securityContractNoActiveEur)} (охрана на БНР/БНТ и Министерството на туризма).</p>
+        </article>
+
+        <article class="inv-finding-card">
+          <span class="inv-tag tag-ok">МЕ Кариери × Строители по ЗОП</span>
+          <h3>{fmtInt(me.zopMatchedCompanies)} концесионери държат {fmtEur(me.zopMatchedDirectEur)} + {fmtEur(me.zopMatchedConsortiumEur)} ДЗЗД</h3>
+          <p>Строителните компании с концесии за варовик, мрамор, баластра и диабази около пътните трасета (<em>Главболгарстрой АД</em>, <em>Европейски пътища АД</em>, <em>Пътинженерингстрой-Т ЕАД</em>, <em>Грома Холд ЕООД</em>, <em>Автомагистрали - Черно море АД</em>) концентрират мултимилиардни директни и консорциумни поръчки по ЗОП.</p>
+        </article>
+
+        <article class="inv-finding-card">
+          <span class="inv-tag tag-warn">ДНСК Надзор &amp; Незаконни строежи</span>
+          <h3>{fmtInt(dnsk.illegalInProcedure)} висящи събаряния + {fmtInt(dnsk.expiredConsultantsInZop)} надзорни фирми с изтекъл срок</h3>
+          <p>От {fmtInt(dnsk.illegalOrdersTotal)} влезли в сила заповеди за премахване на незаконни строежи, <strong>{fmtInt(dnsk.illegalInProcedure)}</strong> са висящи в процедура (някои от 2001–2002 г.). От {fmtInt(dnsk.totalConsultantsRegistry)} консултанти по чл. 166 ЗУТ, <strong>{fmtInt(dnsk.zopMatchedConsultants)}</strong> печелят по ЗОП ({fmtEur(dnsk.zopConsultantsTotalEur)}), като при <strong>{fmtInt(dnsk.expiredConsultantsInZop)}</strong> срокът в масива на ДНСК е изтекъл.</p>
+        </article>
+
+        <article class="inv-finding-card">
+          <span class="inv-tag tag-crit">Черни кутии (206 907 договора)</span>
+          <h3>{fmtInt(bb.totalSingleOfferCount)} договора с 1 оферта за {fmtEur(bb.totalSingleOfferEur)}</h3>
+          <p>Одитът на реалния брой оферти сред {bbRows.length} водещи затворени и инфраструктурни възложители ({fmtEur(bb.totalBlackBoxEur)}) показва: {bbRows.slice(0, 3).map((r, i) => (
+            <>{i > 0 ? ', ' : ''}<strong>{r.name}</strong> — {String(r.singleOfferSharePct).replace('.', ',')}% ({fmtInt(r.singleOfferCount)}/{fmtInt(r.contracts)})</>
+          ))}.</p>
+        </article>
+
+        <article class="inv-finding-card">
+          <span class="inv-tag tag-ok">Държавен резерв, ИААА, БАБХ &amp; Хазарт</span>
+          <h3>{fmtInt(iaaa.zopMatchedCompanies)} транспортни, {fmtInt(resv.zopMatchedFuelCompanies)} горивни и {fmtInt(oth.babhZopMatched)} хранителни фирми в ЗОП</h3>
+          <p>Пресичането с ИААА ({fmtEur(iaaa.zopMatchedTotalEur)}), задължените лица по ЗЗНН и петролни бази ({fmtEur(resv.zopMatchedFuelEur)}), БАБХ ({fmtEur(oth.babhZopEur)}), енергийните помощи ОЗОБ ({fmtInt(resv.ozobZopMatched)} фирми) и хазартните лицензи на НАП ({fmtInt(oth.napGamblingZopMatched)} фирма в ЗОП: {fmtEur(oth.napGamblingZopEur)}) разкрива пълния отпечатък на изпълнителите.</p>
+        </article>
+
+        <article class="inv-finding-card">
+          <span class="inv-tag tag-warn">МФ ПВУ &amp; Бариера при ДФЗ 2025</span>
+          <h3>{String(pvu.executionPct || 76.09).replace('.', ',')}% усвояване по ПВУ · {fmtInt(pvu.zeroPaidBigProjectsCount)} мега-проекта на 0 €</h3>
+          <p>Към 30.09.2026 г. от {fmtEur(pvu.totalBudgetEur)} по ПВУ са изплатени {fmtEur(pvu.totalPaidEur)}, но <em>Цифровизацията на НАП</em> (23,42 млн. €) и <em>Агенция „Митници“</em> (17,61 млн. €) стоят на <strong>0,00 €</strong>. Междувременно масивът за субсидии на ДФЗ за 2025 г. в <code>data.egov.bg</code> прекъсва с timeout (&gt;120s) при масов CSV експорт.</p>
+        </article>
+      </div>
+
+      {secNoAct.length > 0 && (
+        <>
+          <h3 style="font-size:0.95rem;color:var(--crimson);margin:14px 0 8px;">Фокус: Фирми с отнет охранителен лиценз (МВР) и преки охранителни поръчки по ЗОП</h3>
+          <div class="inv-table-wrap" style="margin-bottom:16px;">
+            <table class="inv-table">
+              <thead><tr><th>ЕИК</th><th>Фирма</th><th>Статус в МВР</th><th>Лиценз</th><th class="num">Охрана ЗОП (€)</th><th>Предмет на поръчката</th></tr></thead>
+              <tbody>
+                {secNoAct.map((x) => (
+                  <tr>
+                    <td class="mono">{x.eik}</td>
+                    <td><strong>{x.name}</strong></td>
+                    <td><span class="inv-tag tag-crit">{x.latestStatus} (няма активен)</span></td>
+                    <td class="mono">{x.latestDoc}</td>
+                    <td class="num"><strong>{fmtEur(x.securityContractsEur)}</strong></td>
+                    <td>{x.securitySampleSubject}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+
+      {bbRows.length > 0 && (
+        <>
+          <h3 style="font-size:0.95rem;margin:14px 0 8px;">Топ 5 затворени и инфраструктурни възложители по дял на договорите с 1 оферта</h3>
+          <div class="inv-table-wrap">
+            <table class="inv-table">
+              <thead><tr><th>ЕИК</th><th>Възложител</th><th class="num">Общо ЗОП</th><th class="num">1 оферта (бр. / %)</th><th class="num">Сума с 1 оферта</th></tr></thead>
+              <tbody>
+                {bbRows.slice(0, 5).map((a) => (
+                  <tr>
+                    <td class="mono">{a.eik}</td>
+                    <td><strong>{a.name}</strong></td>
+                    <td class="num">{fmtEur(a.totalEur)} ({fmtInt(a.contracts)})</td>
+                    <td class="num"><span class={`inv-tag ${a.singleOfferSharePct >= 40 ? 'tag-crit' : 'tag-warn'}`}>{fmtInt(a.singleOfferCount)} ({String(a.singleOfferSharePct).replace('.', ',')}%)</span></td>
+                    <td class="num"><strong>{fmtEur(a.singleOfferEur)}</strong></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+    </div>
+  </section>
+
+  <!-- SECTION 2: INSTITUTIONAL TRANSPARENCY INDEX (FULL SSG PRE-RENDERED TABLE) -->
+  <section id="invAudit50Section">
+    <div class="inv-section-header">
+      <h2>2. Индекс на институционалната прозрачност (Водещи администрации и публични предприятия)</h2>
+      <span class="inv-section-meta">Проверен обхват в data.egov.bg и официалните портали: {totalAdmins} ключови институции ({fmtEur(totalZopSpentEur)} по ЗОП)</span>
+    </div>
+
+    <div class="inv-tabs" id="audit50StatusBar" role="tablist" aria-label="Филтър по статус на прозрачност">
+      <button type="button" class="inv-tab-btn active" data-status-filter="ALL">Всички <span class="inv-tab-count">{totalAdmins}</span></button>
+      <button type="button" class="inv-tab-btn" data-status-filter="CLOSED_BLOCKED">Черни кутии (0 масива) <span class="inv-tab-count">{bbCount}</span></button>
+      <button type="button" class="inv-tab-btn" data-status-filter="OPENWASHING_COSMETIC">Фасадна прозрачност <span class="inv-tab-count">{owCount}</span></button>
+      <button type="button" class="inv-tab-btn" data-status-filter="OPEN_READY_FOR_LINK">Готови за свързване <span class="inv-tab-count">{readyCount}</span></button>
+      <button type="button" class="inv-tab-btn" data-status-filter="PARTIAL_FRAGMENTED">Замръзнали (2018–2024) <span class="inv-tab-count">{frozenCount}</span></button>
+      <button type="button" class="inv-tab-btn" data-status-filter="CONNECTED_IN_NASVETLO">Свързани в NAsvetlo <span class="inv-tab-count">{connCount}</span></button>
+    </div>
+
+    <div class="inv-panel-box">
+      <div class="inv-filter-toolbar">
+        <input type="search" id="audit50Search" class="inv-input" placeholder="Търсене по институция, ЕИК, корупционна схема или ключов регистър…" />
+        <select id="audit50Cluster" class="inv-select" aria-label="Филтър по ресорен клъстер">
+          <option value="ALL">Всички ресорни клъстери</option>
+          {uniqueClusters.map((c) => <option value={c}>{c}</option>)}
+        </select>
+        <select id="audit50Sort" class="inv-select" aria-label="Сортиране">
+          <option value="priority">Приоритет „Черна кутия“</option>
+          <option value="spent">Ресурс по ЗОП (€)</option>
+          <option value="exposure">Корупционна експозиция (0–100)</option>
+          <option value="open">Отворени данни рейтинг (0–100)</option>
+        </select>
+      </div>
+
+      <div id="audit50CountMeta" style="font-size:0.78rem;color:var(--ink-muted);margin-bottom:10px;">
+        Показани <strong>{sortedAdmins.length}</strong> от <strong>{totalAdmins}</strong> институции · Общ договорен ресурс: <strong>{fmtEur(totalZopSpentEur)}</strong> · Кликнете върху ред за пълно одитно досие и препоръчителни мерки.
+      </div>
+
+      <div class="inv-table-wrap">
+        <table class="inv-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Институция &amp; ЕИК</th>
+              <th>Ресор / Статус в NAsvetlo</th>
+              <th class="num">ЗОП (€)</th>
+              <th class="num">Масиви (data.egov.bg)</th>
+              <th class="num">Корупц. риск</th>
+              <th>Ключова бариера / Какво липсва</th>
+            </tr>
+          </thead>
+          <tbody id="audit50Tbody">
+            {sortedAdmins.map((a, idx) => {
+              const st = a?.antiCorruption?.accessStatus || 'PARTIAL_FRAGMENTED';
+              const stInfo = STATUS_META[st] || { label: st, cls: 'tag-muted' };
+              const od = a.openData || {};
+              const ac = a.antiCorruption || {};
+              const pr = a.procurement || {};
+              return (
+                <tr class="inv-admin-row" data-admin-id={a.id}>
+                  <td class="mono">{idx + 1}</td>
+                  <td>
+                    <strong>{a.name}</strong>
+                    <div class="mono" style="font-size:0.72rem;color:var(--ink-muted);">ЕИК: {a.eik} · {fmtInt(pr.contracts)} договора</div>
+                  </td>
+                  <td>
+                    <span class={`inv-tag ${stInfo.cls}`}>{stInfo.label}</span>
+                    <div style="font-size:0.72rem;color:var(--ink-muted);margin-top:3px;">{a.cluster}</div>
+                  </td>
+                  <td class="num"><strong>{fmtEur(pr.spentEur)}</strong></td>
+                  <td class="num">
+                    <strong>{fmtInt(od.totalDatasets || 0)}</strong>
+                    <div style="font-size:0.71rem;color:var(--ink-muted);">{od.latestUpdate || 'без данни'}</div>
+                  </td>
+                  <td class="num"><span class={`inv-tag ${(ac.corruptionExposureScore || 0) >= 85 ? 'tag-crit' : 'tag-warn'}`}>{ac.corruptionExposureScore}/100</span></td>
+                  <td style="font-size:0.78rem;color:var(--ink-secondary);">{ac.knownBarrier}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1475,11 +1475,20 @@
         if (displayVal > floor) localStorage.setItem(FLOOR_KEY, String(displayVal));
       } catch (_) {}
       const formatted = fmtInt(displayVal);
-      if (topVal) topVal.textContent = formatted;
-      if (topWrap) topWrap.hidden = false;
-      if (topSep) topSep.hidden = false;
-      if (footVal) footVal.textContent = formatted;
-      if (footWrap) footWrap.hidden = false;
+      if (topWrap) {
+        topWrap.innerHTML = `<span class="visit-dot" aria-hidden="true"></span><span>Посещения:</span><strong id="nasvetloVisitCount">${formatted}</strong>`;
+        topWrap.hidden = false;
+        topWrap.style.display = '';
+      }
+      if (topSep) {
+        topSep.hidden = false;
+        topSep.style.display = '';
+      }
+      if (footWrap) {
+        footWrap.innerHTML = `Посещения: <strong id="nasvetloFooterVisitCount">${formatted}</strong>`;
+        footWrap.hidden = false;
+        footWrap.style.display = '';
+      }
     };
 
     let alreadyCounted = false;

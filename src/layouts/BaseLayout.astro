@@ -26,6 +26,7 @@ const canonicalUrl = `https://nasvetlo.website${canonicalPath === '/' ? '/' : ca
 const blackBoxCount = Number((adm50Raw as any)?.summary?.statusBreakdown?.CLOSED_BLOCKED || 9);
 const crossRegCount = Number((invRaw as any)?.summary?.totalCrossLinkedRegistries || 11);
 const singleOfferCnt = Number((invRaw as any)?.summary?.blackBoxTotalSingleOfferCount || 0).toLocaleString('bg-BG');
+const totalAuditBln = (Number((adm50Raw as any)?.summary?.totalZopSpentEur || 0) / 1e9).toFixed(2).replace('.', ',');
 
 const jsonLd = JSON.stringify({
   '@context': 'https://schema.org',
@@ -120,7 +121,7 @@ const jsonLd = JSON.stringify({
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="sigma3/styles.css?v=20261122c" />
+  <link rel="stylesheet" href="sigma3/styles.css?v=20261122d" />
 </head>
 <body>
 
@@ -133,7 +134,7 @@ const jsonLd = JSON.stringify({
     <div class="topbar-center">
       {subpage ? (
         <a href="./" class="btn-cmd-center" style="text-decoration:none;justify-content:center;">
-          <span>&larr; Главна платформа NAsvetlo (12 модула · €53,22 млрд.)</span>
+          <span>&larr; Към главната платформа NAsvetlo</span>
         </a>
       ) : (
         <button type="button" class="btn-cmd-center" id="openCmdPaletteBtn" title="Бързо глобално търсене (Ctrl+K)">
@@ -147,7 +148,6 @@ const jsonLd = JSON.stringify({
     <div class="topbar-right">
       {subpage ? (
         <>
-          <a href="./" class="btn topbar-btn">Към главната страница</a>
           <button type="button" class="btn topbar-btn" onclick="window.print()">Печат / PDF</button>
           <button type="button" class="btn topbar-btn topbar-btn-theme" id="themeToggleBtn" title="Превключи между НАсветло и НАтъмно"><span class="theme-prefix">НА</span><span class="theme-suffix-dark">тъмно</span></button>
         </>
@@ -170,21 +170,17 @@ const jsonLd = JSON.stringify({
       <a class="info-subbar-sync" id="syncSubtitle" href={subpage ? 'data/nasvetlo_investigations.json' : 'data/sigma3_judicial_6.json'} target="_blank" rel="noopener" title="Преглед на актуалния JSON лог на последната синхронизация">Синхронизация: {asOf}</a>
     </div>
     <div class="info-subbar-links">
-      <span class="info-subbar-visits" id="nasvetloVisitCounter" title="Общ постоянен брой посещения на nasvetlo.website (не се занулява)" hidden>
-        <span class="visit-dot" aria-hidden="true"></span>
-        <span>Посещения:</span>
-        <strong id="nasvetloVisitCount">—</strong>
-      </span>
-      <span class="info-subbar-sep" id="nasvetloVisitSep" aria-hidden="true" hidden>·</span>
+      <span class="info-subbar-visits" id="nasvetloVisitCounter" title="Общ постоянен брой посещения на nasvetlo.website (не се занулява)" hidden style="display:none;"></span>
+      <span class="info-subbar-sep" id="nasvetloVisitSep" aria-hidden="true" hidden style="display:none;">·</span>
       {subpage ? (
         <>
-          <a class="subbar-link" href="./">&larr; Главна страница</a>
-          <a class="subbar-link" href="data/nasvetlo_50_admins.json" download>Одит 50 JSON</a>
+          <a class="subbar-link" href="data/nasvetlo_50_admins.json" download>Индекс JSON</a>
           <a class="subbar-link" href="data/nasvetlo_investigations.json" download>Разследвания JSON</a>
+          <a class="subbar-link" href="https://sigma.midt.bg" target="_blank" rel="noopener">СИГМА 2.0 ↗</a>
         </>
       ) : (
         <>
-          <a class="subbar-link subbar-link-new" href="razsledvaniq.html">Нови разследвания ↗</a>
+          <a class="subbar-link subbar-link-new" href="razsledvaniya.html">Разследвания &amp; Прозрачност ↗</a>
           <button type="button" class="subbar-link-btn" id="quickOpenProposalBtn">Архитектура &amp; Методология</button>
           <a class="subbar-link" href="data/SIGMA_2_0_ALL_OFFICIALS_571.csv" download>CSV</a>
           <a class="subbar-link" href="https://sigma.midt.bg" target="_blank" rel="noopener">СИГМА 2.0 ↗</a>
@@ -201,7 +197,7 @@ const jsonLd = JSON.stringify({
 <footer class="site-footer">
   <span><strong>NAsvetlo</strong> (<a href="https://nasvetlo.website">nasvetlo.website</a>) · Независима гражданска платформа, изградена върху отворените данни (CC-BY 4.0) на МИДТ / СИГМА 2.0 и първичните регистри (2026): АОП / ЦАИС ЕОП, Сметна палата &amp; ЕРИК, КПК (бивша КПКОНПИ), АДФИ, КЗК, ВСС — ЕПЕП / ЕИСС &amp; ВАС, ТРРЮЛНЦ, EPPO · Карта: GISCO NUTS 2021 © EuroGeographics</span>
   <span style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
-    <span class="footer-visits" id="nasvetloFooterVisits" title="Постоянен брояч на посещенията (без нулиране)" hidden>Посещения: <strong id="nasvetloFooterVisitCount">—</strong></span>
+    <span class="footer-visits" id="nasvetloFooterVisits" title="Постоянен брояч на посещенията (без нулиране)" hidden style="display:none;"></span>
     <a href="https://sigma.midt.bg" target="_blank" rel="noopener">sigma.midt.bg</a>
     <a href="https://sigma-budget.midt.bg" target="_blank" rel="noopener">СИГМА Бюджет</a>
     <a href="https://ecase.justice.bg" target="_blank" rel="noopener">ЕПЕП / ЕИСС</a>
@@ -212,7 +208,7 @@ const jsonLd = JSON.stringify({
 </footer>
 
 {subpage ? (
-  <script is:inline src="sigma3/razsledvaniq.js?v=20261122a"></script>
+  <script is:inline src="sigma3/razsledvaniya.js?v=20261122b"></script>
 ) : (
   <>
     <aside class="nasvetlo-mini-win" id="nasvetloNewInvestigationsWin" aria-label="Нови разследвания в NAsvetlo">
@@ -222,19 +218,19 @@ const jsonLd = JSON.stringify({
           <span>НОВИ РАЗСЛЕДВАНИЯ</span>
         </span>
         <div class="mini-win-controls">
-          <a href="razsledvaniq.html" class="mini-win-btn" id="miniWinQuickGo" style="text-decoration:none;display:none;">Отвори ↗</a>
+          <a href="razsledvaniya.html" class="mini-win-btn" id="miniWinQuickGo" style="text-decoration:none;display:none;">Отвори ↗</a>
           <button type="button" class="mini-win-btn" id="miniWinMinBtn" aria-expanded="true" title="Свий / покажи прозорчето">—</button>
         </div>
       </div>
       <div class="mini-win-body">
-        <a href="razsledvaniq.html" class="mini-win-title">Одит 50 &amp; Живи сечения на регистри</a>
-        <p class="mini-win-desc">Кръстосано засичане на 50 администрации (€23,74 млрд.) и отворени държавни регистри (МВР ЗЧОД, МЕ кариери, ДНСК, ИААА, Държавен резерв, ПВУ).</p>
+        <a href="razsledvaniya.html" class="mini-win-title">Кръстосани регистри &amp; Индекс на прозрачност</a>
+        <p class="mini-win-desc">Живи засичания между МВР (охранителни лицензи), МЕ (кариери), ДНСК, ИААА, Държавен резерв, ПВУ и ЗОП + оценка на достъпа до данни ({totalAuditBln} млрд. €).</p>
         <div class="mini-win-stats">
           <span><strong>{blackBoxCount}</strong> черни кутии</span>
           <span><strong>{crossRegCount}</strong> регистъра</span>
           <span><strong>{singleOfferCnt}</strong> с 1 оферта</span>
         </div>
-        <a href="razsledvaniq.html" class="mini-win-cta">Отвори отделната страница &rarr;</a>
+        <a href="razsledvaniya.html" class="mini-win-cta">Отвори разследванията &rarr;</a>
       </div>
     </aside>
 
@@ -262,7 +258,7 @@ const jsonLd = JSON.stringify({
 
     <ModalsAndDrawer />
 
-    <script is:inline src="sigma3/app.js?v=20261122a"></script>
+    <script is:inline src="sigma3/app.js?v=20261122b"></script>
     <script is:inline src="sigma3/semantic_dialog_engine.js?v=20261121b"></script>
     <script is:inline src="sigma3/sigma3_modules.js?v=20261121b"></script>
     <script is:inline src="sigma3/forensics7.js?v=20261120g"></script>
