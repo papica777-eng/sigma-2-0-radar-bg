@@ -16,6 +16,9 @@ const fmtEur = (v: number) => {
   return Math.round(n).toLocaleString('bg-BG') + ' €';
 };
 const fmtInt = (v: number) => Number(v || 0).toLocaleString('bg-BG');
+// Exact-cent formatter for small itemised amounts so table rows sum exactly to the KPI total
+const fmtEurCents = (v: number) =>
+  Number(v || 0).toLocaleString('bg-BG', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
 
 // Exact computed totals (NEVER 0 €)
 const totalZopSpentEur = Number(sum50.totalZopSpentEur || 0)
@@ -99,7 +102,7 @@ const uniqueClusters = Array.from(new Set(adminsAll.map((a) => a.cluster).filter
     <div class="inv-kpi-card accent-ochre" data-jump-tab="mvr">
       <div class="inv-kpi-val">{fmtInt(sumInv.mvrExplicitRevokedNoActive)} отнети лиценза</div>
       <div class="inv-kpi-lbl">Охранителни фирми без активен лиценз (МВР)</div>
-      <div class="inv-kpi-sub">{fmtInt(sumInv.mvrSecurityContractNoActiveCount)} с преки охранителни поръчки ({fmtEur(sumInv.mvrSecurityContractNoActiveEur)})</div>
+      <div class="inv-kpi-sub">{fmtInt(sumInv.mvrSecurityContractNoActiveCount)} с преки охранителни поръчки ({fmtEurCents(sumInv.mvrSecurityContractNoActiveEur)})</div>
     </div>
     <div class="inv-kpi-card accent-teal" data-jump-tab="concessions">
       <div class="inv-kpi-val">{fmtInt(sumInv.meConcessionsZopCompanies)} концесионери</div>
@@ -140,7 +143,7 @@ const uniqueClusters = Array.from(new Set(adminsAll.map((a) => a.cluster).filter
         <article class="inv-finding-card">
           <span class="inv-tag tag-crit">МВР Охранителни лицензи × ЗОП</span>
           <h3>Отнети лицензи с реални охранителни договори</h3>
-          <p>От <strong>{fmtInt(mvr.zopMatchedCompanies)}</strong> изпълнители по ЗОП с досие в регистъра за частна охранителна дейност (ЗЧОД) на МВР ({fmtEur(mvr.zopMatchedTotalEur)}), <strong>{fmtInt(mvr.noActiveLicenseZopCount)}</strong> нямат действащ лиценз (<strong>{fmtInt(mvr.explicitRevokedNoActiveCount)}</strong> изрично <strong>„Отнет“ / „Отказ“</strong>). Фирмите с отнет лиценз и без активен документ ({fmtInt(mvr.securityContractNoActiveCount)} бр. — <em>БАТ СЕКЮРИТИ ЕООД</em> и <em>СЕЛЕНА 52 ЕООД</em>) са спечелили <strong>преки охранителни поръчки</strong> за {fmtEur(mvr.securityContractNoActiveEur)} (охрана на БНР/БНТ и Министерството на туризма).</p>
+          <p>От <strong>{fmtInt(mvr.zopMatchedCompanies)}</strong> изпълнители по ЗОП с досие в регистъра за частна охранителна дейност (ЗЧОД) на МВР ({fmtEur(mvr.zopMatchedTotalEur)}), <strong>{fmtInt(mvr.noActiveLicenseZopCount)}</strong> нямат действащ лиценз (<strong>{fmtInt(mvr.explicitRevokedNoActiveCount)}</strong> изрично <strong>„Отнет“ / „Отказ“</strong>). Фирмите с отнет лиценз и без активен документ ({fmtInt(mvr.securityContractNoActiveCount)} бр. — <em>БАТ СЕКЮРИТИ ЕООД</em> и <em>СЕЛЕНА 52 ЕООД</em>) са спечелили <strong>преки охранителни поръчки</strong> за {fmtEurCents(mvr.securityContractNoActiveEur)} (охрана на БНР/БНТ и Министерството на туризма).</p>
           <div style="margin-top:8px;"><button type="button" class="btn" style="padding:3px 9px;font-size:0.74rem;" data-signal-doc="sig_mvr">Генерирай сигнал (МВР / АДФИ) &rarr;</button></div>
         </article>
 
@@ -195,7 +198,7 @@ const uniqueClusters = Array.from(new Set(adminsAll.map((a) => a.cluster).filter
                     <td><strong>{x.name}</strong></td>
                     <td><span class="inv-tag tag-crit">{x.latestStatus} (няма активен)</span></td>
                     <td class="mono">{x.latestDoc}</td>
-                    <td class="num"><strong>{fmtEur(x.securityContractsEur)}</strong></td>
+                    <td class="num"><strong>{fmtEurCents(x.securityContractsEur)}</strong></td>
                     <td>{x.securitySampleSubject}</td>
                   </tr>
                 ))}

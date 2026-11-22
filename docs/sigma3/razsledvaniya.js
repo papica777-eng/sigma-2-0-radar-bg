@@ -11,6 +11,10 @@
 
   const fmtInt = (n) => Number(n || 0).toLocaleString('bg-BG');
 
+  // Exact-cent formatter for small itemised amounts so table rows sum exactly to the KPI total
+  const fmtEurCents = (n) =>
+    Number(n || 0).toLocaleString('bg-BG', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+
   const esc = (s) =>
     String(s ?? '')
       .replace(/&/g, '&amp;')
@@ -132,7 +136,7 @@
           <article class="inv-finding-card">
             <span class="inv-tag tag-crit">МВР Охранителни лицензи × ЗОП</span>
             <h3>Отнети лицензи с реални охранителни договори</h3>
-            <p>От <strong>${fmtInt(mvr.zopMatchedCompanies)}</strong> изпълнители по ЗОП с досие в регистъра за частна охранителна дейност (ЗЧОД) на МВР (${fmtEur(mvr.zopMatchedTotalEur)}), <strong>${fmtInt(mvr.noActiveLicenseZopCount)}</strong> нямат действащ лиценз (<strong>${fmtInt(mvr.explicitRevokedNoActiveCount)}</strong> изрично <strong>„Отнет“ / „Отказ“</strong>). Фирмите с отнет лиценз и без активен документ (${fmtInt(mvr.securityContractNoActiveCount)} бр. — <em>БАТ СЕКЮРИТИ ЕООД</em> и <em>СЕЛЕНА 52 ЕООД</em>) са спечелили <strong>преки охранителни поръчки</strong> за ${fmtEur(mvr.securityContractNoActiveEur)} (охрана на БНР/БНТ и Министерството на туризма).</p>
+            <p>От <strong>${fmtInt(mvr.zopMatchedCompanies)}</strong> изпълнители по ЗОП с досие в регистъра за частна охранителна дейност (ЗЧОД) на МВР (${fmtEur(mvr.zopMatchedTotalEur)}), <strong>${fmtInt(mvr.noActiveLicenseZopCount)}</strong> нямат действащ лиценз (<strong>${fmtInt(mvr.explicitRevokedNoActiveCount)}</strong> изрично <strong>„Отнет“ / „Отказ“</strong>). Фирмите с отнет лиценз и без активен документ (${fmtInt(mvr.securityContractNoActiveCount)} бр. — <em>БАТ СЕКЮРИТИ ЕООД</em> и <em>СЕЛЕНА 52 ЕООД</em>) са спечелили <strong>преки охранителни поръчки</strong> за ${fmtEurCents(mvr.securityContractNoActiveEur)} (охрана на БНР/БНТ и Министерството на туризма).</p>
             <div style="margin-top:8px;"><button type="button" class="btn" style="padding:3px 9px;font-size:0.74rem;" data-signal-doc="sig_mvr">Генерирай сигнал (МВР / АДФИ) &rarr;</button></div>
           </article>
 
@@ -183,7 +187,7 @@
                     <td><strong>${esc(x.name)}</strong></td>
                     <td><span class="inv-tag tag-crit">${esc(x.latestStatus)} (няма активен)</span></td>
                     <td class="mono">${esc(x.latestDoc)}</td>
-                    <td class="num"><strong>${fmtEur(x.securityContractsEur)}</strong></td>
+                    <td class="num"><strong>${fmtEurCents(x.securityContractsEur)}</strong></td>
                     <td>${esc(x.securitySampleSubject)}</td>
                   </tr>
                 `).join('')}
@@ -237,7 +241,7 @@
                     <td><strong>${esc(x.name)}</strong></td>
                     <td><span class="inv-tag tag-crit">${esc(x.latestStatus)} (няма активен)</span></td>
                     <td class="mono">${esc(x.latestDoc)}</td>
-                    <td class="num"><strong>${fmtEur(x.securityContractsEur)}</strong></td>
+                    <td class="num"><strong>${fmtEurCents(x.securityContractsEur)}</strong></td>
                     <td>${esc(x.securitySampleSubject)}</td>
                   </tr>
                 `).join('')}
