@@ -28,10 +28,6 @@ const {
 } = Astro.props;
 
 const canonicalUrl = `https://nasvetlo.website${canonicalPath === '/' ? '/' : canonicalPath}`;
-const blackBoxCount = Number((adm50Raw as any)?.summary?.statusBreakdown?.CLOSED_BLOCKED || 9);
-const crossRegCount = Number((invRaw as any)?.summary?.totalCrossLinkedRegistries || 11);
-const singleOfferCnt = Number((invRaw as any)?.summary?.blackBoxTotalSingleOfferCount || 0).toLocaleString('bg-BG');
-const totalAuditBln = (Number((adm50Raw as any)?.summary?.totalZopSpentEur || 0) / 1e9).toFixed(2).replace('.', ',');
 
 const jsonLd = JSON.stringify({
   '@context': 'https://schema.org',
@@ -126,7 +122,7 @@ const jsonLd = JSON.stringify({
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="sigma3/styles.css?v=20261122d" />
+  <link rel="stylesheet" href="sigma3/styles.css?v=20261122e" />
 </head>
 <body>
 
@@ -161,6 +157,7 @@ const jsonLd = JSON.stringify({
           <button type="button" class="btn topbar-btn-ai" id="quickOpenOracleBtn">AI Асистент</button>
           <button type="button" class="btn topbar-btn" id="densityToggleBtn" title="Превключи между компактен одиторски изглед и презентационен изглед">Одиторски изглед</button>
           <button type="button" class="btn topbar-btn topbar-btn-theme" id="themeToggleBtn" title="Превключи между НАсветло и НАтъмно"><span class="theme-prefix">НА</span><span class="theme-suffix-dark">тъмно</span></button>
+          <a href="razsledvaniya.html" class="btn topbar-btn-inv" title="Кръстосани разследвания по държавни регистри и Индекс на институционалната прозрачност">Нови разследвания ↗</a>
         </>
       )}
     </div>
@@ -185,7 +182,6 @@ const jsonLd = JSON.stringify({
         </>
       ) : (
         <>
-          <a class="subbar-link subbar-link-new" href="razsledvaniya.html">Разследвания &amp; Прозрачност ↗</a>
           <button type="button" class="subbar-link-btn" id="quickOpenProposalBtn">Архитектура &amp; Методология</button>
           <a class="subbar-link" href="data/SIGMA_2_0_ALL_OFFICIALS_571.csv" download>CSV</a>
           <a class="subbar-link" href="https://sigma.midt.bg" target="_blank" rel="noopener">СИГМА 2.0 ↗</a>
@@ -216,48 +212,6 @@ const jsonLd = JSON.stringify({
   <script is:inline src="sigma3/razsledvaniya.js?v=20261122c"></script>
 ) : (
   <>
-    <aside class="nasvetlo-mini-win" id="nasvetloNewInvestigationsWin" aria-label="Нови разследвания в NAsvetlo">
-      <div class="mini-win-head">
-        <a href="razsledvaniya.html" class="mini-win-badge" style="text-decoration:none;">
-          <span class="mini-win-dot" aria-hidden="true"></span>
-          <span>НОВИ РАЗСЛЕДВАНИЯ</span>
-        </a>
-        <div class="mini-win-controls">
-          <button type="button" class="mini-win-btn" id="miniWinMinBtn" aria-expanded="true" title="Свий или разгъни прозорчето">Свий ▾</button>
-        </div>
-      </div>
-      <div class="mini-win-body">
-        <a href="razsledvaniya.html" class="mini-win-title">Кръстосани регистри &amp; Индекс на прозрачност</a>
-        <p class="mini-win-desc">Живи засичания между МВР (охранителни лицензи), МЕ (кариери), ДНСК, ИААА, Държавен резерв, ПВУ и ЗОП + оценка на достъпа до данни ({totalAuditBln} млрд. €).</p>
-        <div class="mini-win-stats">
-          <span><strong>{blackBoxCount}</strong> черни кутии</span>
-          <span><strong>{crossRegCount}</strong> регистъра</span>
-          <span><strong>{singleOfferCnt}</strong> с 1 оферта</span>
-        </div>
-        <a href="razsledvaniya.html" class="mini-win-cta">Отвори разследванията &rarr;</a>
-      </div>
-    </aside>
-
-    <script is:inline>
-      (function() {
-        var win = document.getElementById('nasvetloNewInvestigationsWin');
-        var btn = document.getElementById('miniWinMinBtn');
-        if (!win || !btn) return;
-        function setCollapsed(c) {
-          win.classList.toggle('is-collapsed', c);
-          btn.setAttribute('aria-expanded', c ? 'false' : 'true');
-          btn.textContent = c ? 'Разгъни ▴' : 'Свий ▾';
-          try { sessionStorage.setItem('nasvetlo_miniwin_collapsed', c ? '1' : '0'); } catch (_) {}
-        }
-        try {
-          if (sessionStorage.getItem('nasvetlo_miniwin_collapsed') === '1') setCollapsed(true);
-        } catch (_) {}
-        btn.addEventListener('click', function() {
-          setCollapsed(!win.classList.contains('is-collapsed'));
-        });
-      })();
-    </script>
-
     <ModalsAndDrawer />
 
     <script is:inline src="sigma3/app.js?v=20261122c"></script>

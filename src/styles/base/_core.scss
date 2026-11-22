@@ -186,10 +186,10 @@ code {
 
 /* Center Search Bar in Header */
 .topbar-center {
-  flex: 1 1 280px;
+  flex: 1 1 200px;
   display: flex;
   justify-content: center;
-  max-width: 420px;
+  max-width: 340px;
 }
 .btn-cmd-center {
   width: 100%;
@@ -281,6 +281,29 @@ code {
   background: #fbbf24;
   border-color: #fbbf24;
   color: #0b111c;
+}
+.topbar .btn.topbar-btn-inv {
+  background: #dc2626;
+  border: 1px solid #dc2626;
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 6px 13px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+.topbar .btn.topbar-btn-inv:hover {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: #ffffff;
+}
+@media (max-width: 980px) {
+  .topbar-right {
+    flex-wrap: wrap;
+  }
 }
 
 /* Single-Line Thin Informational Subbar Under Header */
