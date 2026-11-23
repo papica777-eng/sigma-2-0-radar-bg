@@ -4,8 +4,29 @@
   const api = () => window.SIGMA3;
   let f7Data = null;
   let f7Loading = null;
+  let telkData = null;
+  let telkLoading = null;
+  let telkSortBy = 'telkRiskScore';
   let activeSub = 'annex';
   let f7Wired = false;
+
+  async function ensureTelkLoaded() {
+    if (telkData) return telkData;
+    if (api() && api().ensureTelkRadarLoaded) {
+      telkData = await api().ensureTelkRadarLoaded();
+      if (telkData) return telkData;
+    }
+    if (!telkLoading) {
+      telkLoading = fetch('data/nasvetlo_telk_radar.json')
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d) => {
+          telkData = d;
+          return d;
+        })
+        .catch(() => null);
+    }
+    return telkLoading;
+  }
 
   async function ensureForensics7Loaded() {
     if (f7Data) return f7Data;
@@ -43,8 +64,10 @@
     const host = document.getElementById('f7BodyHost');
     if (!host) return;
     if (!f7Data) {
-      host.innerHTML = `<div class="loading">Зареждане на 7-те криминалистични радара върху 206 907 договора…</div>`;
-      await ensureForensics7Loaded();
+      host.innerHTML = `<div class="loading">Зареждане на 8-те криминалистични радара върху 206 907 договора и 28-те области (НОИ × НСИ)…</div>`;
+      await Promise.all([ensureForensics7Loaded(), ensureTelkLoaded()]);
+    } else if (!telkData) {
+      await ensureTelkLoaded();
     }
     if (!f7Data) {
       host.innerHTML = `<div class="loading" style="color:var(--crimson);">Грешка при зареждане на data/sigma3_forensics_7.json.</div>`;
@@ -52,6 +75,18 @@
     }
     renderTopSummaryStrip();
     renderActiveSubPanel();
+  }
+
+  async function openSubTab(sub, query) {
+    activeSub = sub || 'annex';
+    wireSubTabs();
+    const nav = document.getElementById('f7SubTabs');
+    if (nav) {
+      nav.querySelectorAll('.pill').forEach((p) => p.classList.toggle('active', p.dataset.f7Sub === activeSub));
+    }
+    const inp = document.getElementById('f7SearchInput');
+    if (inp && typeof query === 'string') inp.value = query;
+    await loadAndRenderForensics7();
   }
 
   function renderTopSummaryStrip() {
@@ -72,7 +107,8 @@
       <div class="kpi-card"><div class="kpi-label">4. Партийни PR / Медии (ЕРИК)</div><div class="kpi-val">${fmtInt(e4.partyAgenciesWinningProcurement)} агенции</div><div class="kpi-sub">${fmtEur(e4.partyAgenciesTotalEur)} · ${fmtInt(e4.donorsIndexed)} дарители</div></div>
       <div class="kpi-card"><div class="kpi-label">5. Ное–Дек Дъмпинг / Петък</div><div class="kpi-val">${fmtInt(e5.yearendDumpersCount)} инст.</div><div class="kpi-sub">${fmtInt((e5.fridayHolidayMega || []).length)} пет./дек. мега-дог.</div></div>
       <div class="kpi-card"><div class="kpi-label">6. Картелна ротация и адреси</div><div class="kpi-val">${fmtInt(e6.rotationRingsCount)} пръстена</div><div class="kpi-sub">${e6.sharedAddressesCount} общи адреса · ${e6.sharedPersonsCount} лица</div></div>
-      <div class="kpi-card"><div class="kpi-label">7. NLP „Шити“ поръчки</div><div class="kpi-val">${fmtInt(e7.totalHighRiskSpecs)} дог.</div><div class="kpi-sub">${fmtEur(e7.totalHighRiskEur)} марково заключване</div></div>`;
+      <div class="kpi-card"><div class="kpi-label">7. NLP „Шити“ поръчки</div><div class="kpi-val">${fmtInt(e7.totalHighRiskSpecs)} дог.</div><div class="kpi-sub">${fmtEur(e7.totalHighRiskEur)} марково заключване</div></div>
+      <div class="kpi-card emphasis"><div class="kpi-label">8. ТЕЛК Аномалии (28 обл.)</div><div class="kpi-val" style="color:var(--crimson);">${telkData && telkData.national ? fmtInt(telkData.national.invPensioners2025) : '409 145'}</div><div class="kpi-sub">${telkData && telkData.national ? fmtEur(telkData.national.invSpendEur2025) + '/год. · ' + telkData.national.criticalOblastsCount + ' крит. / ' + telkData.national.highOblastsCount + ' вис. обл.' : 'НОИ 2023–2025 × НСИ'}</div></div>`;
   }
 
   function renderActiveSubPanel() {
@@ -86,6 +122,7 @@
     else if (activeSub === 'time') renderEngine5Time(host, q);
     else if (activeSub === 'cartels') renderEngine6Cartels(host, q);
     else if (activeSub === 'nlp') renderEngine7Nlp(host, q);
+    else if (activeSub === 'telk') renderEngine8Telk(host, q);
   }
 
   // ---- ENGINE 1: POST-AWARD INFLATION ----
@@ -561,9 +598,186 @@
     runClientNlpAudit(NLP_PRESETS.med);
   }
 
+  // ---- ENGINE 8: 28-OBLAST TELK / DISABILITY PENSION ANOMALY RADAR (NOI × NSI × CAIS EOP) ----
+  function buildTelkSignalText(data) {
+    const nat = data.national || {};
+    const top5 = (data.oblasts || []).slice(0, 5);
+    const lines = [
+      'СИГНАЛ № 6 (NAsvetlo — Радар №8: ТЕЛК Аномалии по 28 области)',
+      'ДО: Министерство на здравеопазването, НОИ, Министерство на електронното управление, ГДБОП-МВР и Прокуратурата на РБ',
+      'ОТНОСНО: Регионални статистически аномалии при пенсиите за инвалидност и добавките за чужда помощ (2023–2025 г.) и внедряване на коренов графов контрол ЕИСМЕ × НЗИС × НОИ',
+      '',
+      `1. Национален мащаб (НОИ Статистически годишник „Пенсии“ 2025, Раздел 9 × НСИ Pop_6.1.1):`,
+      `   - Лични първи пенсии за инвалидност: ${nat.invPensioners2025?.toLocaleString('bg-BG')} (${nat.per1000Pop2025}/1 000 души; 2-год. ръст +${nat.growth2yPct}%)`,
+      `   - Годишен разход на ДОО само за инвалидност общо заболяване: ${(nat.invSpendBgn2025 / 1e9).toFixed(2)} млрд. лв. (€${(nat.invSpendEur2025 / 1e9).toFixed(2)} млрд.)`,
+      `   - Активни добавки за чужда помощ (>90% ТНР): ${nat.careAllowanceActive2025?.toLocaleString('bg-BG')} (${nat.careAllowanceNew2025?.toLocaleString('bg-BG')} новоотпуснати само през 2025 г.)`,
+      '',
+      '2. Топ 5 области с критичен и висок индекс на отклонение:',
+      ...top5.map((r, i) =>
+        `   ${i + 1}. Област ${r.name} (${r.nuts3}) — Риск ${r.telkRiskScore}/100 [${r.riskTier}]: ${r.invPensioners2025.toLocaleString('bg-BG')} пенс. (${r.per1000Pop2025}/1 000 д., Z=${r.zPrevalence >= 0 ? '+' : ''}${r.zPrevalence}σ), 2-год. ръст ${r.growth2yPct >= 0 ? '+' : ''}${r.growth2yPct}%, >90% ТНР: ${r.tnrOver90Pct}%, нови „чужда помощ“: ${r.careAllowanceNewPer10kPop}/10хил.`
+      ),
+      '',
+      '3. Искане за отворени данни и коренов графов контрол (0% лични данни в публичния слой):',
+      ...(data.rootCauseProtocol?.institutionalDataRequests || []).map((req, idx) => `   ${idx + 1}) ${req}`),
+      '',
+      'Източник: https://nasvetlo.website/ (100% агрегирани публични данни от НОИ, НСИ и ЦАИС ЕОП, без ЕГН/здравни данни по чл. 9 GDPR).',
+    ];
+    return lines.join('\n');
+  }
+
+  function renderEngine8Telk(host, q) {
+    const { fmtEur, fmtInt, esc, riskBadgeHtml } = api();
+    if (!telkData || !Array.isArray(telkData.oblasts)) {
+      host.innerHTML = `<div class="loading">Зареждане на 28-областния ТЕЛК масив (НОИ 2023–2025 × НСИ)…</div>`;
+      ensureTelkLoaded().then(() => renderActiveSubPanel());
+      return;
+    }
+
+    const nat = telkData.national || {};
+    const proto = telkData.rootCauseProtocol || {};
+    let rows = [...telkData.oblasts];
+    if (q) {
+      rows = rows.filter((r) => {
+        const hospText = (r.topMedicalAuthorities || []).map((h) => `${h.name} ${h.eik}`).join(' ');
+        return `${r.name} ${r.nuts3} ${r.nuts2} ${(r.anomalyFlags || []).join(' ')} ${hospText}`.toLowerCase().includes(q);
+      });
+    }
+    rows.sort((a, b) => Number(b[telkSortBy] || 0) - Number(a[telkSortBy] || 0));
+
+    const sortDefs = [
+      { key: 'telkRiskScore', label: 'ТЕЛК Риск (0–100)' },
+      { key: 'per1000Pop2025', label: 'На 1 000 д. (Z-Score)' },
+      { key: 'growth2yPct', label: '2-год. прираст (2023→2025)' },
+      { key: 'tnrOver90Pct', label: 'Дял >90% ТНР (%)' },
+      { key: 'careAllowanceNewPer10kPop', label: 'Нови „Чужда помощ“ / 10к' },
+      { key: 'invSpendEur2025', label: 'Годишен разход (€)' },
+    ];
+
+    host.innerHTML = `
+      <div class="editorial-note note-crimson">
+        <div>
+          <strong>Радар №8 — Национален ТЕЛК &amp; Инвалидност криминалистичен анализ (28 области · НОИ 2023–2025 × НСИ × ЦАИС ЕОП):</strong>
+          След полицейските акции срещу фалшиви ТЕЛК решения (София, 9 задържани лекари и посредници), <strong>NAsvetlo</strong> документира статистическите отклонения по всички 28 области на България.
+          <strong>Парадоксът на столичния хъб:</strong> София-град концентрира <strong>70 919</strong> инвалидни пенсионери (17,3% от страната), но изглежда ниска на глава (54,4/1 000 д.) — защото посредници насочват кандидати от страната към столични клиники за входни епикризи, докато пенсиите се изплащат по постоянен адрес в <strong>регионалните ТП на НОИ</strong> (Кърджали: +37,8% за 2 г., Силистра: 150,3/1 000 д., Враца: 25,1% над 90% ТНР).
+          <div style="margin-top:6px;font-size:11.5px;color:var(--ink-muted);">
+            <strong>GDPR чл. 9 гаранция:</strong> 100% официални агрегирани държавни масиви (НОИ Годишници „Пенсии“ 2023–2025, Раздел 9; НСИ <code>Pop_6.1.1</code>). Нула лични данни и нула медицински картони. Обективни статистически индикатори за проверка от МЗ, НОИ, ГДБОП и Прокуратурата.
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex-shrink:0;">
+          <button type="button" class="btn btn-dark" id="btnCopyTelkSignal">Копирай Сигнал №6 (МЗ / НОИ / ГДБОП)</button>
+          <a href="data/nasvetlo_telk_radar.json" download class="btn" style="font-size:11px;">Изтегли JSON (28 области) &darr;</a>
+        </div>
+      </div>
+
+      <div class="kpi-grid" style="margin-bottom:14px;">
+        <div class="kpi-card emphasis"><div class="kpi-label">Лични инв. пенсионери (2025)</div><div class="kpi-val">${fmtInt(nat.invPensioners2025)}</div><div class="kpi-sub">${nat.per1000Pop2025}/1 000 д. · 2-год. ръст <strong style="color:var(--crimson);">+${nat.growth2yPct}%</strong></div></div>
+        <div class="kpi-card emphasis"><div class="kpi-label">Годишен разход ДОО (Инв. ОЗ)</div><div class="kpi-val" style="color:var(--crimson);">${fmtEur(nat.invSpendEur2025)}</div><div class="kpi-sub">3,88 млрд. лв. · Табл. 9.7 НОИ 2025</div></div>
+        <div class="kpi-card"><div class="kpi-label">Тежка степен &gt;90% ТНР</div><div class="kpi-val">${fmtInt(nat.tnrOver90)}</div><div class="kpi-sub">${nat.tnrOver90Pct}% от всички · 71–90%: ${fmtInt(nat.tnr71to90)}</div></div>
+        <div class="kpi-card"><div class="kpi-label">Добавки „Чужда помощ“</div><div class="kpi-val">${fmtInt(nat.careAllowanceActive2025)}</div><div class="kpi-sub"><strong>+${fmtInt(nat.careAllowanceNew2025)}</strong> нови само през 2025 г.</div></div>
+        <div class="kpi-card"><div class="kpi-label">Аномални области (Риск &ge; 52)</div><div class="kpi-val" style="color:var(--crimson);">${nat.criticalOblastsCount} крит. / ${nat.highOblastsCount} вис.</div><div class="kpi-sub">Кърджали (83), Силистра (72), Враца (57), Габрово (52), Разград (52)</div></div>
+      </div>
+
+      <div class="panel-box" style="margin-bottom:16px;">
+        <div class="chart-head">
+          <div>
+            <h3 style="margin:0;border:none;padding:0;">Пълна криминалистична разбивка на 28-те области (НОИ 2023–2025 × НСИ × Болници по ЗОП)</h3>
+            <p class="chart-caption" style="margin-bottom:0;">Оцененият пълен годишен разход разпределя централно изплатените по банков път суми (ред „29. ЦУ на НОИ“ в Табл. 9.7) пропорционално на броя пенсии за инвалидност ОЗ (Табл. 9.2).</p>
+          </div>
+          <div class="pill-row" id="telkSortPills">
+            ${sortDefs.map((s) => `<button type="button" class="pill ${telkSortBy === s.key ? 'active' : ''}" data-telk-sort="${s.key}">${s.label}</button>`).join('')}
+          </div>
+        </div>
+        <div class="table-wrap" style="border:none;max-height:620px;overflow-y:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Област / Регионални болници (ЗОП)</th>
+                <th class="num">Инв. пенс. 2025</th>
+                <th class="num">На 1 000 д. (Z)</th>
+                <th class="num">2-год. ръст</th>
+                <th class="num">&gt;90% ТНР</th>
+                <th class="num">Нови ЧП / 10к</th>
+                <th class="num">Оц. разход / год.</th>
+                <th class="num">ТЕЛК Риск</th>
+                <th>Атлас</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows.map((r, i) => `
+                <tr>
+                  <td class="mono muted">${i + 1}</td>
+                  <td>
+                    <div><strong>${esc(r.name)}</strong> <span class="eik-tag">${esc(r.nuts3)}</span> <span class="muted" style="font-size:11px;">· нас. ${fmtInt(r.population2025)}</span></div>
+                    ${(r.anomalyFlags || []).length ? `<div class="badges" style="margin-top:4px;">${r.anomalyFlags.map((fl) => `<span class="tag ${r.telkRiskScore >= 70 ? 'tag-crimson' : 'tag-ochre'}">${esc(fl)}</span>`).join('')}</div>` : ''}
+                    ${(r.topMedicalAuthorities || []).length ? `<div class="telk-hosp-strip"><span class="muted" style="font-size:10px;align-self:center;">Болници/Здраве (${r.medicalAuthoritiesCount} · ${fmtEur(r.medicalAuthoritiesZopEur)}):</span>${r.topMedicalAuthorities.slice(0, 3).map((h) => `<a href="#" class="telk-hosp-chip" data-open-authority="${esc(h.eik)}" title="Отвори ЗОП досие (${fmtEur(h.spentEur)})">${esc(h.name.slice(0, 44))}${h.name.length > 44 ? '…' : ''}</a>`).join('')}</div>` : ''}
+                  </td>
+                  <td class="num"><strong>${fmtInt(r.invPensioners2025)}</strong><div class="muted" style="font-size:10.5px;">${r.invShareOfAllPensionsPct.toFixed(1)}% от пенсиите</div></td>
+                  <td class="num"><strong style="color:${r.zPrevalence >= 1.25 ? 'var(--crimson)' : r.zPrevalence >= 0.75 ? 'var(--ochre)' : 'inherit'};">${r.per1000Pop2025.toFixed(1)}</strong><div class="mono muted" style="font-size:10.5px;">Z=${r.zPrevalence >= 0 ? '+' : ''}${r.zPrevalence.toFixed(2)}σ</div></td>
+                  <td class="num" style="font-weight:700;color:${r.growth2yPct >= 16 ? 'var(--crimson)' : r.growth2yPct >= 12 ? 'var(--ochre)' : 'inherit'};">${r.growth2yPct >= 0 ? '+' : ''}${r.growth2yPct.toFixed(1)}%</td>
+                  <td class="num"><strong style="color:${r.tnrOver90Pct >= 22 ? 'var(--crimson)' : 'inherit'};">${r.tnrOver90Pct.toFixed(1)}%</strong><div class="muted" style="font-size:10.5px;">${fmtInt(r.tnrOver90)} д.</div></td>
+                  <td class="num"><strong>${r.careAllowanceNewPer10kPop.toFixed(1)}</strong><div class="muted" style="font-size:10.5px;">+${fmtInt(r.careAllowanceNew2025)} бр.</div></td>
+                  <td class="num"><strong>${fmtEur(r.invSpendEur2025)}</strong><div class="muted" style="font-size:10.5px;">каса ТП: ${fmtEur(r.invSpendPostalEur2025)}</div></td>
+                  <td class="num">${riskBadgeHtml(r.telkRiskScore)}</td>
+                  <td><button type="button" class="btn" style="padding:3px 7px;font-size:10.5px;" data-jump-atlas-telk="${esc(r.nuts3)}">Карта</button></td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel-box" style="border-left:4px solid var(--crimson);">
+        <h3 style="margin-top:0;">${esc(proto.title || 'Коренов форензик протокол „От къде тръгва схемата“')}</h3>
+        <p class="chart-caption">${esc(proto.summary || '')}</p>
+        <div class="telk-chain-grid">
+          ${(proto.chainSteps || []).map((st) => `
+            <div class="telk-step-card">
+              <div class="telk-step-num">Стъпка ${st.step}</div>
+              <div class="telk-step-title">${esc(st.node)}</div>
+              <div>${esc(st.risk)}</div>
+              <div class="telk-step-det"><strong>Детектор:</strong> ${esc(st.detector)}</div>
+            </div>
+          `).join('')}
+        </div>
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);">
+          <strong style="font-size:12px;text-transform:uppercase;letter-spacing:0.04em;">Необходими отворени агрегати и институционален контрол (МЕУ / МЗ / НОИ / ГДБОП):</strong>
+          <ul style="margin:6px 0 0;padding-left:18px;font-size:12px;line-height:1.6;">
+            ${(proto.institutionalDataRequests || []).map((req) => `<li>${esc(req)}</li>`).join('')}
+          </ul>
+        </div>
+      </div>
+    `;
+
+    host.querySelectorAll('[data-telk-sort]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        telkSortBy = btn.dataset.telkSort;
+        renderEngine8Telk(host, q);
+      });
+    });
+
+    document.getElementById('btnCopyTelkSignal')?.addEventListener('click', async (ev) => {
+      const txt = buildTelkSignalText(telkData);
+      try {
+        await navigator.clipboard.writeText(txt);
+        ev.currentTarget.textContent = 'Сигнал №6 е копиран ✓';
+        setTimeout(() => { ev.currentTarget.textContent = 'Копирай Сигнал №6 (МЗ / НОИ / ГДБОП)'; }, 2500);
+      } catch {
+        const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'NASVETLO_SIGNAL_6_TELK_28_OBLASTS.txt';
+        a.click();
+      }
+    });
+  }
+
   window.SIGMA3_F7 = {
     ensureForensics7Loaded,
+    ensureTelkLoaded,
     loadAndRenderForensics7,
+    openSubTab,
     getData: () => f7Data,
+    getTelkData: () => telkData,
   };
 })();

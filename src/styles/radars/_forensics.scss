@@ -20,6 +20,70 @@
   .table-wrap {
     @include m.thin-scrollbar();
   }
+
+  .telk-chain-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .telk-step-card {
+    background: var(--surface-alt, #f8fafc);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--crimson);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12px;
+    line-height: 1.48;
+
+    .telk-step-num {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--crimson);
+      margin-bottom: 4px;
+    }
+
+    .telk-step-title {
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--ink);
+      margin-bottom: 5px;
+    }
+
+    .telk-step-det {
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px dashed var(--border);
+      color: var(--ink-muted);
+      font-size: 11px;
+    }
+  }
+
+  .telk-hosp-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 5px;
+  }
+
+  .telk-hosp-chip {
+    font-size: 10.5px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--ink);
+    text-decoration: none;
+
+    &:hover {
+      border-color: var(--crimson);
+      color: var(--crimson);
+    }
+  }
 }
 
 // High-Density Auditor Mode vs. Presentation Mode (switched via body[data-density="compact"])

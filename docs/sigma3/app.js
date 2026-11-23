@@ -17,6 +17,8 @@
     companiesByEik: new Map(),
     forensics7: null,
     judicial6: null,
+    telkRadar: null,
+    telkByNuts3: new Map(),
     investigations: null,
     admins50: null,
     invByCompanyEik: new Map(),
@@ -65,6 +67,34 @@
     const cls = sc >= 70 ? 'risk-crit' : sc >= 45 ? 'risk-high' : sc >= 20 ? 'risk-mid' : 'risk-low';
     return `<span class="risk-badge ${cls}">${sc}/100</span>`;
   };
+
+  let telkPromise = null;
+  async function ensureTelkRadarLoaded() {
+    if (state.telkRadar) return state.telkRadar;
+    if (!telkPromise) {
+      telkPromise = fetch('data/nasvetlo_telk_radar.json')
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d) => {
+          if (!d || !Array.isArray(d.oblasts)) return null;
+          state.telkRadar = d;
+          state.telkByNuts3.clear();
+          d.oblasts.forEach((o) => { if (o.nuts3) state.telkByNuts3.set(o.nuts3, o); });
+          if (state.macro && state.macro.mapGeo && Array.isArray(state.macro.mapGeo.oblasts)) {
+            state.macro.mapGeo.oblasts.forEach((ob) => {
+              const t = state.telkByNuts3.get(ob.nuts3);
+              if (t) {
+                ob.telkRiskScore = t.telkRiskScore;
+                ob.telkPer1000 = t.per1000Pop2025;
+              }
+            });
+            renderAtlas();
+          }
+          return d;
+        })
+        .catch(() => null);
+    }
+    return telkPromise;
+  }
 
   async function ensureAuthoritiesLoaded() {
     if (state.authorities) return state.authorities;
@@ -339,6 +369,7 @@
       if (window.SIGMA3_F7) window.SIGMA3_F7.ensureForensics7Loaded();
       if (window.SIGMA3_J6) window.SIGMA3_J6.ensureJudicial6Loaded();
       ensureInvestigationsLoaded();
+      ensureTelkRadarLoaded();
       setupEvents();
     } catch (err) {
       console.error(err);
@@ -821,15 +852,25 @@
       ownHits: 'Случаи на самовъзлагане (От собствената институция)',
       officialCount: 'Брой свързани длъжностни лица (СИГМА)',
       hiddenDzzdEur: 'Скрити ДЗЗД консорциуми на политици (€)',
+      telkRiskScore: 'ТЕЛК Аномалии по 28 области (НОИ 2023–2025 × НСИ, 0–100)',
+      telkPer1000: 'Лични пенсии за инвалидност на 1 000 души (НОИ 2025 × НСИ)',
     };
-    document.getElementById('atlasMapTitle').textContent = `Карта на България — ${titles[metric]}`;
+    document.getElementById('atlasMapTitle').textContent = `Карта на България — ${titles[metric] || titles.valueEur}`;
 
-    const vals = mg.oblasts.map((o) => Number(o[metric] || 0));
+    const metricVal = (o) => {
+      if (metric === 'telkRiskScore') return Number((state.telkByNuts3.get(o.nuts3) || {}).telkRiskScore || o.telkRiskScore || 0);
+      if (metric === 'telkPer1000') return Number((state.telkByNuts3.get(o.nuts3) || {}).per1000Pop2025 || o.telkPer1000 || 0);
+      return Number(o[metric] || 0);
+    };
+
+    const vals = mg.oblasts.map((o) => metricVal(o));
     const maxV = Math.max(...vals, 1);
     const useLog = metric === 'valueEur' || metric === 'hiddenDzzdEur';
 
-    const palette = metric === 'riskScore' || metric === 'ownHits'
+    const palette = metric === 'riskScore' || metric === 'ownHits' || metric === 'telkRiskScore'
       ? ['#fef2f2', '#fecaca', '#f87171', '#dc2626', '#991b1b']
+      : metric === 'telkPer1000'
+      ? ['#fffbeb', '#fde68a', '#f59e0b', '#d97706', '#92400e']
       : metric === 'hiddenDzzdEur'
       ? ['#faf5ff', '#e9d5ff', '#c084fc', '#9333ea', '#581c87']
       : ['#eff6ff', '#bfdbfe', '#60a5fa', '#2563eb', '#1e3a8a'];
@@ -842,30 +883,54 @@
     };
 
     const polys = mg.oblasts.map((ob) => {
-      const v = Number(ob[metric] || 0);
+      const v = metricVal(ob);
+      const t = state.telkByNuts3.get(ob.nuts3);
       const sel = ob.nuts3 === state.selectedNuts3 ? 'selected' : '';
       const shortN = ob.name.replace(' (столица)', ' (гр.)');
+      const tipExtra = t ? ` · ТЕЛК ${t.per1000Pop2025}/1000 д. (Риск ${t.telkRiskScore}/100)` : '';
       return `<g data-select-oblast="${esc(ob.nuts3)}">
         <path class="oblast-poly ${sel}" d="${esc(ob.d)}" fill="${colorFor(v)}">
-          <title>${esc(ob.name)} (${ob.nuts3}): ${useLog ? fmtEur(v) : v} · Риск ${ob.riskScore}/100</title>
+          <title>${esc(ob.name)} (${ob.nuts3}): ${useLog ? fmtEur(v) : v}${tipExtra}</title>
         </path>
         <text class="oblast-lbl" x="${ob.cx}" y="${ob.cy}">${esc(shortN)}</text>
       </g>`;
     }).join('');
 
     document.getElementById('bulgariaSvgHost').innerHTML = `<svg class="bg-map-svg" viewBox="${esc(mg.viewBox)}" role="img" aria-label="Карта на 28-те области в България">${polys}</svg>`;
-    document.getElementById('atlasLegend').innerHTML = `<span>Ниско</span>${palette.map((c) => `<i class="atlas-swatch" style="background:${c};"></i>`).join('')}<span>Високо (${useLog ? fmtEur(maxV) : maxV})</span>`;
+    const maxLbl = useLog ? fmtEur(maxV) : metric === 'telkPer1000' ? `${maxV.toFixed(1)}/1000` : maxV;
+    document.getElementById('atlasLegend').innerHTML = `<span>Ниско</span>${palette.map((c) => `<i class="atlas-swatch" style="background:${c};"></i>`).join('')}<span>Високо (${maxLbl})</span>`;
 
     // Render Selected Oblast Detail Panel
     const ob = mg.oblasts.find((x) => x.nuts3 === state.selectedNuts3) || mg.oblasts[0];
     if (ob) {
+      const t = state.telkByNuts3.get(ob.nuts3);
+      const telkCardHtml = t ? `
+        <div class="drawer-section" style="margin-bottom:12px;padding:10px;border:1px solid var(--border);border-left:3px solid ${t.telkRiskScore >= 70 ? 'var(--crimson)' : t.telkRiskScore >= 52 ? 'var(--ochre)' : 'var(--teal)'};border-radius:8px;background:var(--surface-alt, #f8fafc);">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;">
+            <strong style="font-size:12px;text-transform:uppercase;letter-spacing:0.04em;">ТЕЛК &amp; НОИ профил (2023–2025)</strong>
+            ${riskBadgeHtml(t.telkRiskScore)}
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;font-size:11.5px;">
+            <div>Инв. пенсионери: <strong>${fmtInt(t.invPensioners2025)}</strong></div>
+            <div>На 1 000 д.: <strong>${t.per1000Pop2025.toFixed(1)}</strong> <span class="mono muted">(Z=${t.zPrevalence >= 0 ? '+' : ''}${t.zPrevalence.toFixed(2)}σ)</span></div>
+            <div>2-год. прираст: <strong style="color:${t.growth2yPct >= 16 ? 'var(--crimson)' : 'inherit'};">${t.growth2yPct >= 0 ? '+' : ''}${t.growth2yPct.toFixed(1)}%</strong></div>
+            <div>Дял &gt;90% ТНР: <strong>${t.tnrOver90Pct.toFixed(1)}%</strong></div>
+            <div>Чужда помощ (нови): <strong>${fmtInt(t.careAllowanceNew2025)}</strong> <span class="muted">(${t.careAllowanceNewPer10kPop.toFixed(1)}/10к)</span></div>
+            <div>Годишен разход: <strong>${fmtEur(t.invSpendEur2025)}</strong></div>
+          </div>
+          ${(t.anomalyFlags || []).length ? `<div class="badges" style="margin-top:6px;">${t.anomalyFlags.map((fl) => `<span class="tag tag-crimson">${esc(fl)}</span>`).join('')}</div>` : ''}
+          <div style="margin-top:8px;">
+            <button type="button" class="btn" style="padding:4px 8px;font-size:11px;" data-open-telk-radar="${esc(ob.name)}">Отвори Радар №8: ТЕЛК Аномалии &rarr;</button>
+          </div>
+        </div>` : '';
+
       document.getElementById('atlasDetailBox').innerHTML = `
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
           <div>
             <div class="kpi-label">${esc(ob.nuts3)} · ${esc(ob.nuts2Name)}</div>
             <h3 style="margin:4px 0 6px;border:none;padding:0;font-size:22px;">Област ${esc(ob.name)}</h3>
           </div>
-          ${riskBadgeHtml(ob.riskScore)}
+          ${riskBadgeHtml(metric === 'telkRiskScore' && t ? t.telkRiskScore : ob.riskScore)}
         </div>
         <div class="kpi-grid" style="grid-template-columns:repeat(2,1fr);margin:10px 0 14px;">
           <div class="kpi-card"><div class="kpi-label">Общо поръчки</div><div class="kpi-val" style="font-size:17px;">${fmtEur(ob.valueEur)}</div><div class="kpi-sub">${fmtInt(ob.contracts)} дог. · ${ob.authorities} възл.</div></div>
@@ -873,6 +938,7 @@
           <div class="kpi-card"><div class="kpi-label">Скрити ДЗЗД (политици)</div><div class="kpi-val" style="font-size:16px;color:var(--plum);">${fmtEur(ob.hiddenDzzdEur)}</div></div>
           <div class="kpi-card"><div class="kpi-label">Средно на възложител</div><div class="kpi-val" style="font-size:16px;">${fmtEur(ob.avgPerAuthority)}</div></div>
         </div>
+        ${telkCardHtml}
         <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;">
           <button type="button" class="btn btn-dark" data-atlas-jump-auth="${esc(ob.name)}">Виж всички ${ob.authorities} възложители</button>
           <button type="button" class="btn" data-atlas-jump-off="${esc(ob.name.replace(' (столица)', ''))}">Филтрирай 571 лица</button>
@@ -895,8 +961,10 @@
         </div>`;
     }
 
-    const sortedOb = [...mg.oblasts].sort((a, b) => Number(b[metric] || 0) - Number(a[metric] || 0));
-    document.getElementById('atlasTableTbody').innerHTML = sortedOb.map((o, idx) => `
+    const sortedOb = [...mg.oblasts].sort((a, b) => metricVal(b) - metricVal(a));
+    document.getElementById('atlasTableTbody').innerHTML = sortedOb.map((o, idx) => {
+      const t = state.telkByNuts3.get(o.nuts3);
+      return `
       <tr data-select-oblast="${esc(o.nuts3)}" style="${o.nuts3 === state.selectedNuts3 ? 'background:var(--surface-hover);' : ''}">
         <td class="mono muted">${idx + 1}</td>
         <td><strong>${esc(o.name)}</strong> <span class="eik-tag">${esc(o.nuts3)}</span></td>
@@ -907,8 +975,11 @@
         <td class="num">${o.officialCount}</td>
         <td class="num" style="color:${o.ownHits > 0 ? 'var(--crimson)' : 'var(--ink-muted)'};font-weight:700;">${o.ownHits}</td>
         <td class="num" style="color:var(--plum);">${o.hiddenDzzdEur > 0 ? '+' + fmtEur(o.hiddenDzzdEur) : '—'}</td>
+        <td class="num mono">${t ? t.per1000Pop2025.toFixed(1) : '—'}</td>
+        <td class="num">${t ? riskBadgeHtml(t.telkRiskScore) : '—'}</td>
         <td class="num">${riskBadgeHtml(o.riskScore)}</td>
-      </tr>`).join('');
+      </tr>`;
+    }).join('');
   }
 
   // ===== TAB 3: DIRECTORY OF 571 OFFICIALS =====
@@ -1505,6 +1576,23 @@
       }
       const jOff = e.target.closest('[data-atlas-jump-off]');
       if (jOff) { jumpToDirectory({ filter: 'all', search: jOff.dataset.atlasJumpOff }); return; }
+      const openTelk = e.target.closest('[data-open-telk-radar]');
+      if (openTelk && window.SIGMA3_F7) {
+        switchTab('forensics7');
+        if (window.SIGMA3_F7.openSubTab) window.SIGMA3_F7.openSubTab('telk', openTelk.dataset.openTelkRadar || '');
+        document.getElementById('mainTabs')?.scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+      const jumpAtlasTelk = e.target.closest('[data-jump-atlas-telk]');
+      if (jumpAtlasTelk) {
+        state.selectedNuts3 = jumpAtlasTelk.dataset.jumpAtlasTelk;
+        state.atlasMetric = 'telkRiskScore';
+        document.querySelectorAll('#atlasMetricPills .pill').forEach((p) => p.classList.toggle('active', p.dataset.atlasMetric === 'telkRiskScore'));
+        switchTab('atlas');
+        renderAtlas();
+        document.getElementById('mainTabs')?.scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
       const gf = e.target.closest('[data-graph-focus]');
       if (gf && window.SIGMA3_MOD) {
         closeDossier();
@@ -1673,7 +1761,7 @@
   window.SIGMA3 = {
     state, fmtEur, fmtInt, esc, riskBadgeHtml,
     ensureAuthoritiesLoaded, ensureCompaniesLoaded,
-    ensureInvestigationsLoaded, indexCrossInvestigations,
+    ensureInvestigationsLoaded, indexCrossInvestigations, ensureTelkRadarLoaded,
     switchTab, jumpToDirectory, openDossier, closeDossier,
     inspectContractLive, generateSignalBrief, renderAtlas,
   };
