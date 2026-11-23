@@ -3574,6 +3574,208 @@ tbody td {
     display: none !important;
   }
 }
+.atlas-sector-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border);
+}
+
+.atlas-sector-bar-lbl {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-muted);
+  margin-right: 4px;
+}
+
+.sector-xray-box {
+  margin-top: 18px;
+  border-top: 3px solid var(--crimson);
+}
+
+.sector-xray-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sector-xray-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.sector-xray-select {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-strong, var(--border));
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.sector-xray-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 14px;
+}
+
+.sector-xray-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--sector-accent, var(--crimson));
+  border-radius: 10px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.sector-xray-card.is-active-sphere {
+  box-shadow: 0 0 0 2px var(--sector-accent, var(--crimson));
+}
+.sector-xray-card:hover {
+  border-color: var(--sector-accent, var(--crimson));
+}
+
+.sector-xray-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.sector-xray-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+  line-height: 1.25;
+}
+
+.sector-xray-vol {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 8px;
+  border-radius: 6px;
+  background: var(--surface-alt, rgba(15, 23, 42, 0.03));
+  font-size: 11px;
+}
+.sector-xray-vol strong {
+  display: block;
+  font-size: 13px;
+  color: var(--ink);
+  font-family: var(--font-mono);
+}
+
+.sector-xray-kv {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px 10px;
+  font-size: 11.5px;
+  padding-top: 4px;
+  border-top: 1px dashed var(--border);
+}
+.sector-xray-kv .kv-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.sector-xray-kv .kv-k {
+  font-size: 10px;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.sector-xray-kv .kv-v {
+  font-weight: 600;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+}
+
+.sector-xray-entities {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+}
+.sector-xray-entities h5 {
+  margin: 0 0 5px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-muted);
+}
+.sector-xray-entities ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sector-xray-entities li {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  align-items: baseline;
+}
+.sector-xray-entities a {
+  color: var(--ink);
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 135px;
+}
+.sector-xray-entities a:hover {
+  color: var(--crimson);
+  text-decoration: underline;
+}
+.sector-xray-entities .ent-val {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--ink-muted);
+  font-size: 10.5px;
+}
+
+.sector-xray-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 6px;
+  border-top: 1px dashed var(--border);
+}
+
+@media (max-width: 640px) {
+  .sector-xray-grid {
+    grid-template-columns: 1fr;
+  }
+  .sector-xray-entities {
+    grid-template-columns: 1fr;
+  }
+}
 .judicial-radar-scope .eiss-live-panel {
   background: #ffffff;
   border: 1px solid #e2e8f0;

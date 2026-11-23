@@ -19,6 +19,8 @@
     judicial6: null,
     telkRadar: null,
     telkByNuts3: new Map(),
+    oblastSectors: null,
+    oblastSectorsByNuts3: new Map(),
     investigations: null,
     admins50: null,
     invByCompanyEik: new Map(),
@@ -27,7 +29,7 @@
     sharedEiks: new Set(),
     trendMode: 'months',
     liveContractMode: 'top',
-    atlasMetric: 'valueEur',
+    atlasMetric: 'sectorOverall',
     selectedNuts3: 'BG411',
     deepTier: 'missed',
     deepConsSearch: '',
@@ -93,7 +95,28 @@
         })
         .catch(() => null);
     }
-    return telkPromise;
+      return telkPromise;
+  }
+
+  let sectorsPromise = null;
+  async function ensureOblastSectorsLoaded() {
+    if (state.oblastSectors) return state.oblastSectors;
+    if (!sectorsPromise) {
+      sectorsPromise = fetch('data/nasvetlo_oblast_sectors.json')
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d) => {
+          if (!d || !Array.isArray(d.oblasts)) return null;
+          state.oblastSectors = d;
+          state.oblastSectorsByNuts3.clear();
+          d.oblasts.forEach((o) => { if (o.nuts3) state.oblastSectorsByNuts3.set(o.nuts3, o); });
+          if (state.macro && state.macro.mapGeo) {
+            renderAtlas();
+          }
+          return d;
+        })
+        .catch(() => null);
+    }
+    return sectorsPromise;
   }
 
   async function ensureAuthoritiesLoaded() {
@@ -370,6 +393,7 @@
       if (window.SIGMA3_J6) window.SIGMA3_J6.ensureJudicial6Loaded();
       ensureInvestigationsLoaded();
       ensureTelkRadarLoaded();
+      ensureOblastSectorsLoaded();
       setupEvents();
     } catch (err) {
       console.error(err);
@@ -847,17 +871,30 @@
     if (!mg || !mg.oblasts) return;
     const metric = state.atlasMetric;
     const titles = {
+      sectorOverall: 'Общ 7-сферен корупционен риск по области (0–100)',
       valueEur: 'Общи разходи по обществени поръчки (€)',
-      riskScore: 'NAsvetlo Съставен индекс на риска (0–100)',
+      riskScore: 'NAsvetlo ЗОП Индекс на риска (0–100)',
       ownHits: 'Случаи на самовъзлагане (От собствената институция)',
       officialCount: 'Брой свързани длъжностни лица (СИГМА)',
       hiddenDzzdEur: 'Скрити ДЗЗД консорциуми на политици (€)',
       telkRiskScore: 'ТЕЛК Аномалии по 28 области (НОИ 2023–2025 × НСИ, 0–100)',
       telkPer1000: 'Лични пенсии за инвалидност на 1 000 души (НОИ 2025 × НСИ)',
+      'sector:health': 'Сфера: Здравеопазване & ТЕЛК (ЗОП CPV 33/85 × НОИ × НСИ)',
+      'sector:infrastructure': 'Сфера: Инфраструктура, Строителство, Кариери & ДНСК',
+      'sector:agriculture': 'Сфера: Земеделие, Гори, Храни & БАБХ',
+      'sector:energy': 'Сфера: Енергетика, Горива, ВиК & ЗЗНН',
+      'sector:transport': 'Сфера: Транспорт, Отпадъци, Чистота & ИААА',
+      'sector:municipalities': 'Сфера: Общини, Местна власт, Самовъзлагане & ДЗЗД',
+      'sector:security_it': 'Сфера: Сигурност, Охрана, ИТ, NLP & EPPO',
     };
-    document.getElementById('atlasMapTitle').textContent = `Карта на България — ${titles[metric] || titles.valueEur}`;
+    document.getElementById('atlasMapTitle').textContent = `Карта на България — ${titles[metric] || titles.sectorOverall}`;
+
+    const activeSphereId = metric.startsWith('sector:') ? metric.slice(7) : null;
 
     const metricVal = (o) => {
+      const os = state.oblastSectorsByNuts3.get(o.nuts3);
+      if (metric === 'sectorOverall') return Number(os ? os.overallCorruptionIndex : o.riskScore || 0);
+      if (activeSphereId) return Number(os && os.sectors && os.sectors[activeSphereId] ? os.sectors[activeSphereId].riskScore : 0);
       if (metric === 'telkRiskScore') return Number((state.telkByNuts3.get(o.nuts3) || {}).telkRiskScore || o.telkRiskScore || 0);
       if (metric === 'telkPer1000') return Number((state.telkByNuts3.get(o.nuts3) || {}).per1000Pop2025 || o.telkPer1000 || 0);
       return Number(o[metric] || 0);
@@ -867,11 +904,13 @@
     const maxV = Math.max(...vals, 1);
     const useLog = metric === 'valueEur' || metric === 'hiddenDzzdEur';
 
-    const palette = metric === 'riskScore' || metric === 'ownHits' || metric === 'telkRiskScore'
+    const palette = metric === 'riskScore' || metric === 'ownHits' || metric === 'telkRiskScore' || metric === 'sectorOverall' || activeSphereId === 'health' || activeSphereId === 'municipalities'
       ? ['#fef2f2', '#fecaca', '#f87171', '#dc2626', '#991b1b']
-      : metric === 'telkPer1000'
+      : metric === 'telkPer1000' || activeSphereId === 'infrastructure'
       ? ['#fffbeb', '#fde68a', '#f59e0b', '#d97706', '#92400e']
-      : metric === 'hiddenDzzdEur'
+      : activeSphereId === 'agriculture'
+      ? ['#f0fdf4', '#bbf7d0', '#4ade80', '#16a34a', '#14532d']
+      : metric === 'hiddenDzzdEur' || activeSphereId === 'energy'
       ? ['#faf5ff', '#e9d5ff', '#c084fc', '#9333ea', '#581c87']
       : ['#eff6ff', '#bfdbfe', '#60a5fa', '#2563eb', '#1e3a8a'];
 
@@ -884,10 +923,15 @@
 
     const polys = mg.oblasts.map((ob) => {
       const v = metricVal(ob);
-      const t = state.telkByNuts3.get(ob.nuts3);
+      const os = state.oblastSectorsByNuts3.get(ob.nuts3);
+      const sp = activeSphereId && os && os.sectors ? os.sectors[activeSphereId] : null;
       const sel = ob.nuts3 === state.selectedNuts3 ? 'selected' : '';
       const shortN = ob.name.replace(' (столица)', ' (гр.)');
-      const tipExtra = t ? ` · ТЕЛК ${t.per1000Pop2025}/1000 д. (Риск ${t.telkRiskScore}/100)` : '';
+      const tipExtra = sp
+        ? ` · ${sp.short}: Риск ${sp.riskScore}/100 · ${fmtEur(sp.valueEur)} (${sp.singleOfferValPct}% с 1 оферта)`
+        : os
+        ? ` · 7-сферен риск ${os.overallCorruptionIndex}/100 · Най-гореща сфера: ${os.hottestSectorLabel}`
+        : '';
       return `<g data-select-oblast="${esc(ob.nuts3)}">
         <path class="oblast-poly ${sel}" d="${esc(ob.d)}" fill="${colorFor(v)}">
           <title>${esc(ob.name)} (${ob.nuts3}): ${useLog ? fmtEur(v) : v}${tipExtra}</title>
@@ -980,6 +1024,156 @@
         <td class="num">${riskBadgeHtml(o.riskScore)}</td>
       </tr>`;
     }).join('');
+
+    renderOblastSectorXray(ob ? ob.nuts3 : state.selectedNuts3);
+  }
+
+  function buildOblastSectorReportMd(ob) {
+    const order = ['health', 'infrastructure', 'agriculture', 'energy', 'transport', 'municipalities', 'security_it'];
+    const lines = [
+      `# NAsvetlo — Пълен 7-сферен корупционен профил: Област ${ob.name} (${ob.nuts3})`,
+      `- Макрорегион: ${ob.nuts2} · Население (НСИ 2025): ${fmtInt(ob.population2025)}`,
+      `- Общ 7-сферен индекс на риска: ${ob.overallCorruptionIndex}/100 (${ob.overallTier})`,
+      `- Най-рискова сфера: ${ob.hottestSectorLabel} (${ob.hottestSectorScore}/100)`,
+      `- Общо обществени поръчки: ${fmtEur(ob.totalZopEur)} (${fmtInt(ob.totalContracts)} дог., ${ob.authoritiesCount} възложители)`,
+      `- Политически свързани лица: ${ob.officialCount} | Самовъзлагане: ${ob.ownHits} | Скрити ДЗЗД: ${fmtEur(ob.hiddenDzzdEur)}`,
+      '',
+    ];
+    for (const sid of order) {
+      const s = ob.sectors && ob.sectors[sid];
+      if (!s) continue;
+      lines.push(`## ${s.label} — Риск ${s.riskScore}/100 (${s.riskTier})`);
+      lines.push(`- Обем: ${fmtEur(s.valueEur)} (${fmtInt(s.contracts)} дог.) | 1 оферта: ${s.singleOfferValPct}% | Неконкурентни: ${s.nonCompPct}%`);
+      (s.extraMetrics || []).forEach((m) => lines.push(`- ${m.k}: ${m.v}`));
+      if ((s.signals || []).length) lines.push(`- Флагове: ${s.signals.join('; ')}`);
+      if ((s.topAuthorities || []).length) {
+        lines.push(`- Топ възложители: ${s.topAuthorities.map((a) => `${a.name} (${fmtEur(a.eur)})`).join(' · ')}`);
+      }
+      if ((s.topContractors || []).length) {
+        lines.push(`- Топ изпълнители: ${s.topContractors.map((c) => `${c.name} (${fmtEur(c.eur)})`).join(' · ')}`);
+      }
+      lines.push('');
+    }
+    lines.push('Източник: https://nasvetlo.website/ (100% официални публични регистри: ЦАИС ЕОП, СИГМА 2.0, НОИ, НСИ, ДНСК, МЕ, БАБХ, ИААА, ЗЗНН).');
+    return lines.join('\n');
+  }
+
+  function renderOblastSectorXray(nuts3) {
+    const host = document.getElementById('oblastSectorXrayHost');
+    if (!host) return;
+    if (!state.oblastSectors || !state.oblastSectorsByNuts3.size) {
+      host.innerHTML = `<div class="loading">Зареждане на 7-сферния корупционен рентген по области (200 338 договора × 22 регистъра)…</div>`;
+      ensureOblastSectorsLoaded();
+      return;
+    }
+
+    const ob = state.oblastSectorsByNuts3.get(nuts3) || state.oblastSectors.oblasts[0];
+    if (!ob) return;
+
+    const allSortedAlpha = [...state.oblastSectors.oblasts].sort((a, b) => a.name.localeCompare(b.name, 'bg'));
+    const activeSphereId = state.atlasMetric.startsWith('sector:') ? state.atlasMetric.slice(7) : null;
+    const sphereOrder = ['health', 'infrastructure', 'agriculture', 'energy', 'transport', 'municipalities', 'security_it'];
+    const cards = sphereOrder.map((sid) => ob.sectors[sid]).filter(Boolean).sort((a, b) => b.riskScore - a.riskScore);
+
+    host.innerHTML = `
+      <div class="sector-xray-head">
+        <div>
+          <div class="kpi-label">${esc(ob.nuts3)} · ${esc(ob.nuts2)} · Нас. ${fmtInt(ob.population2025)}</div>
+          <h3 style="margin:3px 0 4px;border:none;padding:0;font-size:20px;">Пълен 7-сферен корупционен рентген: Област ${esc(ob.name)}</h3>
+          <div class="muted" style="font-size:12px;">
+            Най-гореща сфера: <strong style="color:var(--crimson);">${esc(ob.hottestSectorLabel)} (${ob.hottestSectorScore}/100)</strong> ·
+            Сортирано автоматично от най-висок към най-нисък корупционен риск в областта.
+          </div>
+        </div>
+        <div class="sector-xray-controls">
+          <label for="oblastXraySelect" class="muted" style="font-size:11.5px;font-weight:600;">Избери област:</label>
+          <select id="oblastXraySelect" class="sector-xray-select" aria-label="Изберете област за 7-сферен анализ">
+            ${allSortedAlpha.map((o) => `<option value="${esc(o.nuts3)}" ${o.nuts3 === ob.nuts3 ? 'selected' : ''}>${esc(o.name)} (${o.overallCorruptionIndex}/100)</option>`).join('')}
+          </select>
+          <span title="Общ 7-сферен корупционен индекс">${riskBadgeHtml(ob.overallCorruptionIndex)}</span>
+          <button type="button" class="btn btn-dark" id="btnCopyOblastSectorReport" style="font-size:11.5px;">Копирай доклада</button>
+          <a href="data/nasvetlo_oblast_sectors.json" download class="btn" style="font-size:11.5px;">JSON (28×7) &darr;</a>
+        </div>
+      </div>
+
+      <div class="sector-xray-grid">
+        ${cards.map((s) => `
+          <article class="sector-xray-card ${activeSphereId === s.id ? 'is-active-sphere' : ''}" style="--sector-accent:${esc(s.color)};">
+            <div class="sector-xray-card-top">
+              <h4 class="sector-xray-title">${esc(s.label)}</h4>
+              ${riskBadgeHtml(s.riskScore)}
+            </div>
+
+            <div class="sector-xray-vol">
+              <div><span class="muted">Обем ЗОП</span><strong>${fmtEur(s.valueEur)}</strong></div>
+              <div><span class="muted">1 оферта</span><strong style="color:${s.singleOfferValPct >= 45 ? 'var(--crimson)' : 'var(--ink)'};">${s.singleOfferValPct}%</strong></div>
+              <div><span class="muted">Договори</span><strong>${fmtInt(s.contracts)}</strong></div>
+            </div>
+
+            <div class="sector-xray-kv">
+              ${(s.extraMetrics || []).map((m) => `
+                <div class="kv-row">
+                  <span class="kv-k">${esc(m.k)}</span>
+                  <span class="kv-v">${esc(m.v)}</span>
+                </div>
+              `).join('')}
+            </div>
+
+            ${(s.signals || []).length ? `<div class="badges">${s.signals.map((fl) => `<span class="tag ${s.riskScore >= 65 ? 'tag-crimson' : 'tag-ochre'}">${esc(fl)}</span>`).join('')}</div>` : ''}
+
+            <div class="sector-xray-entities">
+              <div>
+                <h5>Топ възложители</h5>
+                <ul>
+                  ${(s.topAuthorities || []).length ? s.topAuthorities.map((a) => `
+                    <li>
+                      <a href="#" data-open-authority="${esc(a.eik)}" title="${esc(a.name)}">${esc(a.name)}</a>
+                      <span class="ent-val">${fmtEur(a.eur)}</span>
+                    </li>
+                  `).join('') : '<li class="muted">—</li>'}
+                </ul>
+              </div>
+              <div>
+                <h5>Топ изпълнители</h5>
+                <ul>
+                  ${(s.topContractors || []).length ? s.topContractors.map((c) => `
+                    <li>
+                      ${c.eik ? `<a href="#" data-open-company="${esc(c.eik)}" title="${esc(c.name)}">${esc(c.name)}</a>` : `<span title="${esc(c.name)}" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:135px;">${esc(c.name)}</span>`}
+                      <span class="ent-val">${fmtEur(c.eur)}</span>
+                    </li>
+                  `).join('') : '<li class="muted">—</li>'}
+                </ul>
+              </div>
+            </div>
+
+            <div class="sector-xray-foot">
+              <button type="button" class="btn" style="padding:3px 8px;font-size:11px;" data-activate-sphere="sector:${esc(s.id)}">Оцвети картата по „${esc(s.short)}“</button>
+              ${s.id === 'health' ? `<button type="button" class="btn" style="padding:3px 8px;font-size:11px;" data-open-telk-radar="${esc(ob.name)}">ТЕЛК Радар №8 &rarr;</button>` : `<span class="muted" style="font-size:10.5px;">Пряко: ${s.nonCompPct}%</span>`}
+            </div>
+          </article>
+        `).join('')}
+      </div>
+    `;
+
+    document.getElementById('oblastXraySelect')?.addEventListener('change', (ev) => {
+      state.selectedNuts3 = ev.target.value;
+      renderAtlas();
+    });
+
+    document.getElementById('btnCopyOblastSectorReport')?.addEventListener('click', async (ev) => {
+      const md = buildOblastSectorReportMd(ob);
+      try {
+        await navigator.clipboard.writeText(md);
+        ev.currentTarget.textContent = 'Докладът е копиран ✓';
+        setTimeout(() => { ev.currentTarget.textContent = 'Копирай доклада'; }, 2400);
+      } catch {
+        const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `NASVETLO_${ob.nuts3}_7_SPHERES.md`;
+        a.click();
+      }
+    });
   }
 
   // ===== TAB 3: DIRECTORY OF 571 OFFICIALS =====
@@ -1536,12 +1730,22 @@
       document.querySelectorAll('#liveContractsPills .pill').forEach((p) => p.classList.toggle('active', p === b));
       renderLiveSingleOfferFeed();
     });
+    const setAtlasMetric = (metricKey) => {
+      state.atlasMetric = metricKey;
+      document.querySelectorAll('#atlasMetricPills .pill, #atlasSectorPills .pill').forEach((p) => {
+        p.classList.toggle('active', p.dataset.atlasMetric === metricKey);
+      });
+      renderAtlas();
+    };
     document.getElementById('atlasMetricPills').addEventListener('click', (e) => {
       const b = e.target.closest('[data-atlas-metric]');
       if (!b) return;
-      state.atlasMetric = b.dataset.atlasMetric;
-      document.querySelectorAll('#atlasMetricPills .pill').forEach((p) => p.classList.toggle('active', p === b));
-      renderAtlas();
+      setAtlasMetric(b.dataset.atlasMetric);
+    });
+    document.getElementById('atlasSectorPills')?.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-atlas-metric]');
+      if (!b) return;
+      setAtlasMetric(b.dataset.atlasMetric);
     });
 
     // Global delegated clicks
@@ -1587,10 +1791,19 @@
       if (jumpAtlasTelk) {
         state.selectedNuts3 = jumpAtlasTelk.dataset.jumpAtlasTelk;
         state.atlasMetric = 'telkRiskScore';
-        document.querySelectorAll('#atlasMetricPills .pill').forEach((p) => p.classList.toggle('active', p.dataset.atlasMetric === 'telkRiskScore'));
+        document.querySelectorAll('#atlasMetricPills .pill, #atlasSectorPills .pill').forEach((p) => p.classList.toggle('active', p.dataset.atlasMetric === 'telkRiskScore'));
         switchTab('atlas');
         renderAtlas();
         document.getElementById('mainTabs')?.scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+      const actSphere = e.target.closest('[data-activate-sphere]');
+      if (actSphere) {
+        const mk = actSphere.dataset.activateSphere;
+        state.atlasMetric = mk;
+        document.querySelectorAll('#atlasMetricPills .pill, #atlasSectorPills .pill').forEach((p) => p.classList.toggle('active', p.dataset.atlasMetric === mk));
+        renderAtlas();
+        document.getElementById('atlasMapTitle')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
       const gf = e.target.closest('[data-graph-focus]');

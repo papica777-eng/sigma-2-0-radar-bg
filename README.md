@@ -4,7 +4,7 @@
 [![Investigations Hub](https://img.shields.io/badge/%D0%A0%D0%90%D0%97%D0%A1%D0%9B%D0%95%D0%94%D0%92%D0%90%D0%9D%D0%98%D0%AF-20%2B%20REGISTRIES-dc2626?style=for-the-badge)](https://nasvetlo.website/razsledvaniya.html)
 [![Open Data CC-BY 4.0](https://img.shields.io/badge/DATA-MIDT%20%2F%20SIGMA%202.0%20%2B%20EPEP%20%2F%20ADFI%20%2F%20MVR-0b111c?style=for-the-badge)](https://nasvetlo.website/)
 [![GDPR & Data Audit](https://img.shields.io/badge/GDPR%20%2F%20%D0%97%D0%97%D0%9B%D0%94-0%20RAW%20EGN%20%7C%204--POINT%20VERIFIED-059669?style=for-the-badge)](https://nasvetlo.website/)
-[![Architecture](https://img.shields.io/badge/ASTRO%205%20%2B%20DART%20SASS-ZERO--SERVER%20%7C%2019%2F19%20TESTS-0284c7?style=for-the-badge)](https://nasvetlo.website/)
+[![Architecture](https://img.shields.io/badge/ASTRO%205%20%2B%20DART%20SASS-ZERO--SERVER%20%7C%2021%2F21%20TESTS-0284c7?style=for-the-badge)](https://nasvetlo.website/)
 
 **NAsvetlo** ([https://nasvetlo.website/](https://nasvetlo.website/)) е **независима гражданска аналитична платформа**, изградена върху отворените данни (**CC-BY 4.0**) на МИДТ / СИГМА 2.0 и **22+ първични публични регистъра** на Република България: **АОП / ЦАИС ЕОП**, **Сметна палата & ЕРИК**, **Търговски регистър (ТРРЮЛНЦ)**, **АДФИ**, **КЗК**, **ВСС — ЕПЕП / ЕИСС (`ecase.justice.bg`)**, **Върховен административен съд (ВАС)**, **EPPO (ЕС средства)**, **`data.egov.bg` (`11 843` масива)**, **МВР (ЗЧОД)**, **МЕ (Концесии)**, **ДНСК**, **ИААА**, **ДА „Държавен резерв“ (ЗЗНН)**, **МФ (ПВУ/ИСУН)**, **БАБХ**, **ОЗОБ**, **НАП**, **НОИ (Годишници „Пенсии“ 2023–2025)** и **НСИ (Демография по 28 области)**.
 
@@ -44,7 +44,9 @@
 Интерфейсът е изграден като модулно **Astro 5** статично приложение (`src/pages/index.astro`), където вторичните секции са семантично скрити с HTML `hidden` до избирането им за мигновен executive преглед:
 
 1. **Таб 1 — Команден пулт (`Tab01Dashboard.astro`):** Национална макрорамка, 6-степенна интерактивна фуния на риска, 8 аналитични диаграми и Йерархичен профил на концентрацията (Топ 50).
-2. **Таб 2 — Атлас 28 области (`Tab02Atlas.astro`):** 7-слоен интерактивен NUTS-3 атлас на България (разходи, ЗОП риск, самовъзлагане, свързани лица, скрити ДЗЗД, **ТЕЛК аномалии 0–100** и **ТЕЛК на 1 000 души**) с интегрирано областно **ТЕЛК & НОИ досие (`2023–2025`)**.
+2. **Таб 2 — Национален корупционен радар: Атлас 28 области × 7 сфери (`Tab02Atlas.astro` + `nasvetlo_oblast_sectors.json`):**
+   - Избираема карта на всички **28 области (NUTS-3)** с директно оцветяване по **Общ 7-сферен корупционен риск (0–100)** или по всяка отделна сфера (**Здравеопазване & ТЕЛК**, **Инфраструктура, Строителство & Кариери**, **Земеделие, Гори & Храни**, **Енергетика, Горива & ВиК**, **Транспорт, Отпадъци & Чистота**, **Общини & Политически мрежи**, **Сигурност, Охрана & ИТ**).
+   - При избор на област (от картата или падащото меню) се отваря **Пълен 7-сферен корупционен рентген на областта** с обем по ЗОП (`200 338` обвързани договора), % с 1 оферта, кръстосани броячи от външни регистри (НОИ ТЕЛК, ДНСК незаконни строежи, МЕ кариери, БАБХ, ИААА, ЗЗНН, Самовъзлагане, ДЗЗД, NLP, EPPO), кликаеми Топ 3 възложители и Топ 3 изпълнители за всяка сфера + 1-клик експорт на областен доклад.
 3. **Таб 3 — Свързани лица (`Tab03Directory.astro`):** Пълен филтърен регистър на **571** длъжностни лица с 8-годишна хронология „Мандат vs. Договори“ и 1-клик генератор на сигнал (MD / PDF).
 4. **Таб 4 — Отвъд СИГМА 2.0 (`Tab04Deep.astro`):** Разбиване на **3 427 ДЗЗД** (+€1,92 млрд.), Топ 23 мега-консорциума с партиди от ТР и **26** нови връзки от **3 035** XML декларации пред Сметната палата (Табл. 6/7, Табл. 9, Табл. 11 и чл. 35).
 5. **Таб 5 — 8 Криминалистични радара (`Tab05Forensics7.astro` + `forensics7.js`):**
@@ -175,6 +177,7 @@ sigma-2-0-radar-bg/
 │       ├── nasvetlo_investigations.json      # 11 кръстосани регистъра (МВР ЗЧОД, МЕ, ДНСК, ИААА, ЗЗНН, ПВУ, БАБХ, НАП)
 │       ├── nasvetlo_50_admins.json           # Одит на Топ 50 администрации в data.egov.bg × ЦАИС ЕОП (€23,74 млрд.)
 │       ├── nasvetlo_telk_radar.json          # 28-областен ТЕЛК форензик масив (НОИ 2023–2025 × НСИ × Болници по ЗОП)
+│       ├── nasvetlo_oblast_sectors.json      # 28 области × 7 сфери Национален корупционен радар (200 338 дог. × 22 регистъра)
 │       ├── NASVETLO_INSTITUTIONAL_ACTION_PACK_2026.md # План за 48 ч., 6 готови сигнала (вкл. Сигнал №6 ТЕЛК), ЗДОИ и 4 медийни вълни
 │       ├── circles_graph.json                # Институционални кръгове и връзки
 │       ├── competition_stats.json            # Конкуренция, 1 оферта и HHI
@@ -188,13 +191,15 @@ sigma-2-0-radar-bg/
 │   ├── sync_sigma3_finality.py               # Индексиране на 4 344 възложители, 17 428 фирми и макрорамка
 │   ├── sync_sigma3_forensics_7.py            # Генератор на 7-те ЗОП криминалистични радара
 │   ├── sync_nasvetlo_telk_radar.py           # Генератор на Радар №8: 28-областен ТЕЛК одит (НОИ 2023–2025 × НСИ)
+│   ├── sync_nasvetlo_oblast_sectors.py       # Генератор на 28 области × 7 сфери Национален корупционен радар
 │   ├── sync_sigma3_judicial_6.py             # Live синхронизатор за ЕПЕП, ВАС, АДФИ, КЗК, ТР и EPPO
 │   ├── sync_nasvetlo_investigations.py       # Кръстосване на 11 секторни регистъра (МВР, МЕ, ДНСК, ИААА, ПВУ)
 │   └── sync_nasvetlo_50_admins.py            # Live одит на 50-те администрации в data.egov.bg
 └── tests/
     ├── oracle_calibration.test.mjs           # 9/9 автоматизирани теста за NAsvetlo ORACLE върху живите JSON масиви
     ├── visit_counter.test.mjs                # 6/6 автоматизирани теста за Cloudflare Worker брояча на посещения
-    └── telk_radar.test.mjs                   # 4/4 автоматизирани теста за 28-областния ТЕЛК масив (НОИ × НСИ, 0 PII)
+    ├── telk_radar.test.mjs                   # 4/4 автоматизирани теста за 28-областния ТЕЛК масив (НОИ × НСИ, 0 PII)
+    └── oblast_sectors.test.mjs               # 2/2 автоматизирани теста за 28×7 секторния корупционен радар (196 клетки)
 ```
 
 ### Команди за компилация, тестване и синхронизация
@@ -204,16 +209,17 @@ sigma-2-0-radar-bg/
 npm install
 npm run build
 
-# 2. Автоматични тестове (9/9 ORACLE + 6/6 брояч + 4/4 ТЕЛК радар = 19/19)
-node --test tests/oracle_calibration.test.mjs tests/visit_counter.test.mjs tests/telk_radar.test.mjs
+# 2. Автоматични тестове (9 ORACLE + 6 брояч + 4 ТЕЛК + 2 28×7 сектори = 21/21)
+node --test tests/oracle_calibration.test.mjs tests/visit_counter.test.mjs tests/telk_radar.test.mjs tests/oblast_sectors.test.mjs
 
 # 3. Локален преглед на production версията
 python -m http.server 8080 --directory docs
 
-# 4. Обновяване на кръстосаните, криминалистичните, ТЕЛК и съдебните пакети
+# 4. Обновяване на кръстосаните, криминалистичните, ТЕЛК, 28×7 секторните и съдебните пакети
 python scripts/sync_nasvetlo_investigations.py
 python scripts/sync_nasvetlo_50_admins.py
 python scripts/sync_nasvetlo_telk_radar.py
+python scripts/sync_nasvetlo_oblast_sectors.py
 python scripts/sync_sigma3_forensics_7.py
 python scripts/sync_sigma3_judicial_6.py
 ```

@@ -103,6 +103,12 @@ const jsonLd = JSON.stringify({
         },
         {
           '@type': 'DataDownload',
+          encodingFormat: 'application/json',
+          contentUrl: 'https://nasvetlo.website/data/nasvetlo_oblast_sectors.json',
+          name: 'NAsvetlo — Национален корупционен радар по 28 области и 7 сфери (200 338 договора × 22 регистъра)',
+        },
+        {
+          '@type': 'DataDownload',
           encodingFormat: 'text/csv',
           contentUrl: 'https://nasvetlo.website/data/SIGMA_2_0_ALL_OFFICIALS_571.csv',
           name: 'NAsvetlo — Свързани длъжностни лица (571 записа, CSV)',
@@ -165,7 +171,7 @@ const jsonLd = JSON.stringify({
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="sigma3/styles.css?v=20261123a" />
+  <link rel="stylesheet" href="sigma3/styles.css?v=20261123b" />
 </head>
 <body>
 
@@ -257,7 +263,7 @@ const jsonLd = JSON.stringify({
   <>
     <ModalsAndDrawer />
 
-    <script is:inline src="sigma3/app.js?v=20261123a"></script>
+    <script is:inline src="sigma3/app.js?v=20261123b"></script>
     <script is:inline src="sigma3/semantic_dialog_engine.js?v=20261122f"></script>
     <script is:inline src="sigma3/sigma3_modules.js?v=20261122g"></script>
     <script is:inline src="sigma3/forensics7.js?v=20261123a"></script>
