@@ -1,12 +1,28 @@
 ---
 import j6Raw from '../../docs/data/sigma3_judicial_6.json';
+import edpRaw from '../../docs/data/nasvetlo_fiscal_edp.json';
 import HeroEmblem from './HeroEmblem.astro';
 
 interface Props {
   asOf?: string;
 }
-const defaultAsOf = String((j6Raw as any).generatedAtUtc || '2026-11-20').slice(0, 10);
+const defaultAsOf = String((j6Raw as any).generatedAtUtc || '2026-11-23').slice(0, 10);
 const { asOf = defaultAsOf } = Astro.props;
+
+const edp: any = edpRaw || {};
+const t1Nac = edp.edpt1_nac || {};
+const t1Pct = edp.edpt1_pct || {};
+const t3 = edp.edpt3_s13_nac || {};
+const b9Pct24 = Math.abs(Number(t1Pct?.B9?.['2024'] ?? -3.0)).toFixed(2).replace('.', ',');
+const b9Pct25 = Math.abs(Number(t1Pct?.B9?.['2025'] ?? -4.0)).toFixed(2).replace('.', ',');
+const b9_25 = Math.abs(Number(t1Nac?.B9?.['2025'] ?? -4664.3));
+const f5_25 = Number(t3?.F5_ASS?.years?.['2025'] ?? 2233.4);
+const gdCh25 = Number(t3?.GD_CH?.years?.['2025'] ?? 9820.1);
+const gdPct25 = Number(t1Pct?.GD?.['2025'] ?? 29.9).toFixed(1).replace('.', ',');
+const real25EurB = ((b9_25 + f5_25) / 1000).toFixed(2).replace('.', ',');
+const gdCh25B = (gdCh25 / 1000).toFixed(2).replace('.', ',');
+const f5_25B = (f5_25 / 1000).toFixed(2).replace('.', ',');
+const b9_25B = (b9_25 / 1000).toFixed(2).replace('.', ',');
 ---
 <!-- EXECUTIVE SOVEREIGN HERO (SIGMA.MIDT.BG SWISS EDITORIAL ARCHITECTURE) -->
 <section class="hero" id="top">
@@ -35,6 +51,7 @@ const { asOf = defaultAsOf } = Astro.props;
           <button class="city-chip" data-quick="Стара Загора">Стара Загора</button>
           <button class="city-chip" data-quick="Народно събрание">Депутати (57)</button>
           <button class="city-chip" data-quick="ДАНС">ДАНС / ДАТО</button>
+          <button class="city-chip chip-accent" data-jump-tab="fiscal">Фискален рентген (Дефицит)</button>
           <button class="city-chip chip-accent" data-jump-tab="atlas">Карта 28 области</button>
           <button class="city-chip chip-accent" data-jump-tab="forensics7">8 Кримин. радара</button>
           <button class="city-chip chip-accent" data-jump-tab="judicial6">Съдебен радар (АДФИ/КЗК)</button>
@@ -93,6 +110,48 @@ const { asOf = defaultAsOf } = Astro.props;
           <div class="funnel-step-lbl">6. Картели и Бенфорд</div>
           <div class="funnel-step-sub" id="heroCartelSub">60 ДЗЗД двойки · Топ 1% държат 48,3% (Gini 0,91)</div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURED EDITORIAL BANNER: FISCAL X-RAY (REAL DEFICIT & PUBLIC DEBT 2024–2026) -->
+  <div class="fiscal-hero-banner" id="fiscalHeroBanner" role="region" aria-label="Фискален рентген: Реален дефицит и държавен дълг (2024–2026)">
+    <div class="fhb-top">
+      <div>
+        <div class="fhb-badge-row">
+          <span class="fhb-pill">ФИСКАЛЕН РЕНТГЕН · РЕАЛЕН ДЕФИЦИТ</span>
+          <span class="fhb-src">Евростат EDP Табл. 1/2/3 (gov_10dd_edpt1/2/3 · gov_10q_ggdebt) × МФ × БНБ</span>
+        </div>
+        <h2 class="fhb-title">Официален дефицит {b9Pct25}% vs. 5,92%–5,99% реален фискален натиск (2024–2026)</h2>
+        <p class="fhb-desc">
+          Независимо кръстосване на официалните отчети на Евростат, МФ и БНБ: през 2024 г. официалният дефицит по ESA 2010 е точно <strong>{b9Pct24}%</strong> (при <strong>3,78%</strong> с изтеглените депозити), а през 2025 г. нараства до <strong>{b9Pct25}% (€{b9_25B} млрд.)</strong> — докато държавният дълг скача с <strong>+€{gdCh25B} млрд.</strong> за 12 месеца, а операциите „под чертата“ (<strong>F5_ASS</strong>: капиталови инжекции в държавни дружества и ББР) достигат <strong>€{f5_25B} млрд.</strong> (50&times; скок спрямо 2024 г.).
+        </p>
+      </div>
+      <button type="button" class="btn btn-dark" data-jump-tab="fiscal" style="white-space:nowrap;align-self:center;">
+        Отвори Фискален рентген &rarr;
+      </button>
+    </div>
+
+    <div class="fhb-metrics">
+      <div class="fhb-metric is-alert" data-jump-tab="fiscal" role="button" tabindex="0">
+        <div class="fhb-m-lbl">2025 Реален дефицит (B9 + F5_ASS)</div>
+        <div class="fhb-m-val">5,92% – 5,99% БВП</div>
+        <div class="fhb-m-sub">€{real25EurB}–€6,99 млрд. · vs. {b9Pct25}% ESA 2010</div>
+      </div>
+      <div class="fhb-metric" data-jump-tab="fiscal" role="button" tabindex="0">
+        <div class="fhb-m-lbl">2024 Конвергенция (ESA vs. Нетни заеми)</div>
+        <div class="fhb-m-val">{b9Pct24}% &rarr; 3,78% БВП</div>
+        <div class="fhb-m-sub">€3,19 млрд. официален · €4,02 млрд. с F2_ASS (-€719 млн.)</div>
+      </div>
+      <div class="fhb-metric is-alert" data-jump-tab="fiscal" role="button" tabindex="0">
+        <div class="fhb-m-lbl">Скок на дълга за 1 г. (2025)</div>
+        <div class="fhb-m-val">+€{gdCh25B} млрд.</div>
+        <div class="fhb-m-sub">От 23,7% до {gdPct25}% БВП (+8,42% БВП брутен дълг)</div>
+      </div>
+      <div class="fhb-metric" data-jump-tab="fiscal" role="button" tabindex="0">
+        <div class="fhb-m-lbl">„Под чертата“ (F5_ASS) &amp; Лихви</div>
+        <div class="fhb-m-val">€{f5_25B} млрд. (50&times;)</div>
+        <div class="fhb-m-sub">Лихви: €908 млн. (+67,6%) · Задължения: €2,33 млрд.</div>
       </div>
     </div>
   </div>

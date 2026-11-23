@@ -1,0 +1,857 @@
+{
+  "generatedAtUtc": "2026-11-23T16:04:53Z",
+  "source": "Eurostat Official EDP & Government Finance Accounts (gov_10dd_edpt1/2/3, gov_10a_main, gov_10q_ggdebt, geo=BG)",
+  "edpt1_nac": {
+    "AF_81L": {
+      "2022": 1218.1,
+      "2023": 1232.9,
+      "2024": 1572.0,
+      "2025": 2330.3
+    },
+    "B9": {
+      "2020": -2368.1,
+      "2021": -2825.5,
+      "2022": -2527.9,
+      "2023": -1883.5,
+      "2024": -3191.5,
+      "2025": -4664.3
+    },
+    "D41PAY": {
+      "2020": 324.3,
+      "2021": 346.4,
+      "2022": 332.7,
+      "2023": 467.4,
+      "2024": 541.9,
+      "2025": 908.4
+    },
+    "GD": {
+      "2020": 15131.5,
+      "2021": 17015.3,
+      "2022": 19354.9,
+      "2023": 21675.0,
+      "2024": 24976.9,
+      "2025": 34797.0
+    },
+    "GD_F2": {
+      "2025": 2454.2
+    },
+    "GD_F3": {
+      "2020": 11720.7,
+      "2021": 13234.7,
+      "2022": 15354.6,
+      "2023": 17847.9,
+      "2024": 21430.0,
+      "2025": 28362.7
+    },
+    "GD_F31": {
+      "2020": 0.0,
+      "2021": 0.0,
+      "2022": 0.0,
+      "2023": 0.0,
+      "2024": 0.0,
+      "2025": 0.0
+    },
+    "GD_F32": {
+      "2020": 11720.7,
+      "2021": 13234.7,
+      "2022": 15354.6,
+      "2023": 17847.9,
+      "2024": 21430.0,
+      "2025": 28362.7
+    },
+    "GD_F4": {
+      "2020": 3410.7,
+      "2021": 3780.6,
+      "2022": 4000.3,
+      "2023": 3827.1,
+      "2024": 3546.9,
+      "2025": 3980.1
+    },
+    "GD_F41": {
+      "2020": 4.3,
+      "2021": 19.4,
+      "2022": 7.7,
+      "2023": 54.4,
+      "2024": 48.4,
+      "2025": 49.5
+    },
+    "GD_F42": {
+      "2020": 3406.4,
+      "2021": 3761.2,
+      "2022": 3992.6,
+      "2023": 3772.7,
+      "2024": 3498.5,
+      "2025": 3930.7
+    },
+    "IGL_F4_EA19": {
+      "2020": 0.0,
+      "2021": 0.0,
+      "2022": 0.0,
+      "2023": 0.0,
+      "2024": 0.0,
+      "2025": 0.0
+    },
+    "IGL_F4_EA20": {
+      "2020": 0.0,
+      "2021": 0.0,
+      "2022": 0.0,
+      "2023": 0.0,
+      "2024": 0.0,
+      "2025": 0.0
+    },
+    "IGL_F4_EA21": {
+      "2020": 0.0,
+      "2021": 0.0,
+      "2022": 0.0,
+      "2023": 0.0,
+      "2024": 0.0,
+      "2025": 0.0
+    },
+    "IGL_F4_EU27_2020": {
+      "2020": 0.0,
+      "2021": 0.0,
+      "2022": 0.0,
+      "2023": 0.0,
+      "2024": 0.0,
+      "2025": 0.0
+    },
+    "P51G": {
+      "2020": 2053.8,
+      "2021": 1933.5,
+      "2022": 2033.1,
+      "2023": 3608.1,
+      "2024": 3311.3,
+      "2025": 5574.9
+    }
+  },
+  "edpt1_pct": {
+    "AF_81L": {
+      "2022": 1.4,
+      "2023": 1.3,
+      "2024": 1.5,
+      "2025": 2.0
+    },
+    "B9": {
+      "2020": -3.8,
+      "2021": -4.0,
+      "2022": -2.9,
+      "2023": -2.0,
+      "2024": -3.0,
+      "2025": -4.0
+    },
+    "D41PAY": {
+      "2020": 0.5,
+      "2021": 0.5,
+      "2022": 0.4,
+      "2023": 0.5,
+      "2024": 0.5,
+      "2025": 0.8
+    },
+    "GD": {
+      "2020": 24.4,
+      "2021": 23.8,
+      "2022": 22.4,
+      "2023": 22.8,
+      "2024": 23.7,
+      "2025": 29.9
+    },
+    "GD_F2": {
+      "2025": 2.1
+    },
+    "GD_F3": {
+      "2020": 18.9,
+      "2021": 18.5,
+      "2022": 17.8,
+      "2023": 18.8,
+      "2024": 20.4,
+      "2025": 24.3
+    },
+    "GD_F31": {
+      "2020": 0.0,
+      "2021": 0.0,
+      "2022": 0.0,
+      "2023": 0.0,
+      "2024": 0.0,
+      "2025": 0.0
+    },
+    "GD_F32": {
+      "2020": 18.9,
+      "2021": 18.5,
+      "2022": 17.8,
+      "2023": 18.8,
+      "2024": 20.4,
+      "2025": 24.3
+    },
+    "GD_F4": {
+      "2020": 5.5,
+      "2021": 5.3,
+      "2022": 4.6,
+      "2023": 4.0,
+      "2024": 3.4,
+      "2025": 3.4
+    },
+    "GD_F41": {
+      "2020": 0.0,
+      "2021": 0.0,
+      "2022": 0.0,
+      "2023": 0.1,
+      "2024": 0.0,
+      "2025": 0.0
+    },
+    "GD_F42": {
+      "2020": 5.5,
+      "2021": 5.3,
+      "2022": 4.6,
+      "2023": 4.0,
+      "2024": 3.3,
+      "2025": 3.4
+    },
+    "IGL_F4_EA19": {
+      "2020": 0.0,
+      "2021": 0.0,
+      "2022": 0.0,
+      "2023": 0.0,
+      "2024": 0.0,
+      "2025": 0.0
+    },
+    "IGL_F4_EA20": {
+      "2020": 0.0,
+      "2021": 0.0,
+      "2022": 0.0,
+      "2023": 0.0,
+      "2024": 0.0,
+      "2025": 0.0
+    },
+    "IGL_F4_EA21": {
+      "2020": 0.0,
+      "2021": 0.0,
+      "2022": 0.0,
+      "2023": 0.0,
+      "2024": 0.0,
+      "2025": 0.0
+    },
+    "IGL_F4_EU27_2020": {
+      "2020": 0.0,
+      "2021": 0.0,
+      "2022": 0.0,
+      "2023": 0.0,
+      "2024": 0.0,
+      "2025": 0.0
+    },
+    "P51G": {
+      "2020": 3.3,
+      "2021": 2.7,
+      "2022": 2.4,
+      "2023": 3.8,
+      "2024": 3.1,
+      "2025": 4.8
+    }
+  },
+  "edpt2_s1311_nac": {
+    "B9": {
+      "label": "Net lending (+)/net borrowing (-)",
+      "years": {
+        "2022": -2434.3,
+        "2023": -1830.7,
+        "2024": -2722.8,
+        "2025": -4545.8
+      }
+    },
+    "B9_OB": {
+      "label": "Net lending (+)/net borrowing (-) of other bodies of the subsector included in the working balance",
+      "years": {
+        "2022": 325.8,
+        "2023": -121.5,
+        "2024": 273.9,
+        "2025": 219.7
+      }
+    },
+    "F5_DIS_ORWB": {
+      "label": "\"Financial transactions included in the working balance - equity and investment fund shares; disposal/reduction (-)\"",
+      "years": {
+        "2022": -7.1,
+        "2023": -7.5,
+        "2024": -7.3,
+        "2025": -0.4
+      }
+    },
+    "F8_ASS_ORWB": {
+      "label": "Other accounts receivable (+) included in the working balance",
+      "years": {
+        "2022": 776.3,
+        "2023": 740.5,
+        "2024": 1245.5,
+        "2025": 761.2
+      }
+    },
+    "F8_LIAB_ORWB": {
+      "label": "Other accounts payable (-) included in the working balance",
+      "years": {
+        "2022": -810.8,
+        "2023": 121.8,
+        "2024": -93.0,
+        "2025": -1142.0
+      }
+    },
+    "FNDX_ORWB": {
+      "label": "Financial transactions included in the working balance - other financial transactions (+/-)",
+      "years": {
+        "2022": 15.0,
+        "2023": 20.7,
+        "2024": 13.6,
+        "2025": 29.1
+      }
+    },
+    "FT": {
+      "label": "Financial transactions included in the working balance",
+      "years": {
+        "2022": 7.9,
+        "2023": 13.2,
+        "2024": 6.3,
+        "2025": 28.8
+      }
+    },
+    "ORD41A_ORWB": {
+      "label": "Difference between interest (D.41) paid (+) and accrued (-) included in the working balance",
+      "years": {
+        "2022": -26.7,
+        "2023": -83.8,
+        "2024": -136.0,
+        "2025": -222.7
+      }
+    },
+    "ORNF_ORWB": {
+      "label": "Non-financial transactions not included in the working balance",
+      "years": {
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 0.0,
+        "2025": 0.0
+      }
+    },
+    "OROA_ORWB": {
+      "label": "Other adjustments (+/-) included in the working balance",
+      "years": {
+        "2022": 205.3,
+        "2023": 192.9,
+        "2024": -734.1,
+        "2025": -1078.1
+      }
+    },
+    "ORWB": {
+      "label": "Working balance",
+      "years": {
+        "2022": -2912.2,
+        "2023": -2693.8,
+        "2024": -3285.5,
+        "2025": -3112.6
+      }
+    },
+    "ORWB_E": {
+      "label": "Working balance (+/-) of entities not part of the subsector",
+      "years": {
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 0.0,
+        "2025": 0.0
+      }
+    }
+  },
+  "edpt3_s13_nac": {
+    "B9FX9": {
+      "label": "Discrepancy with the financial net lending/net borrowing (B9F-B9)",
+      "years": {
+        "2022": 15.7,
+        "2023": 3.7,
+        "2024": 6.5,
+        "2025": -21.9
+      }
+    },
+    "B9_T3": {
+      "label": "Net lending (-)/net borrowing (+) (reversed sign)",
+      "years": {
+        "2022": 2527.9,
+        "2023": 1883.5,
+        "2024": 3191.5,
+        "2025": 4664.3
+      }
+    },
+    "F2_ASS": {
+      "label": "Net acquisition (+) of financial assets - currency and deposits",
+      "years": {
+        "2022": 1463.0,
+        "2023": 303.8,
+        "2024": -718.9,
+        "2025": 2347.3
+      }
+    },
+    "F3_ASS": {
+      "label": "Net acquisition (+) of financial assets - debt securities",
+      "years": {
+        "2022": -12.2,
+        "2023": 37.0,
+        "2024": 132.0,
+        "2025": 666.8
+      }
+    },
+    "F41_ASS": {
+      "label": "Net acquisition (+) of financial assets - short-term - loans",
+      "years": {
+        "2022": 1.4,
+        "2023": 27.9,
+        "2024": 31.9,
+        "2025": 12.9
+      }
+    },
+    "F42_ACQ_ASS": {
+      "label": "Net acquisition (+) of financial assets - long-term loans; acquisition/increase (+)",
+      "years": {
+        "2022": 496.7,
+        "2023": 179.1,
+        "2024": 16.1,
+        "2025": 4.6
+      }
+    },
+    "F42_ASS": {
+      "label": "Net acquisition (+) of financial assets - long-term - loans",
+      "years": {
+        "2022": -119.3,
+        "2023": 171.9,
+        "2024": -21.1,
+        "2025": 4.0
+      }
+    },
+    "F42_DIS_ASS": {
+      "label": "Net acquisition (+) of financial assets - long-term loans; disposal/reduction (-)",
+      "years": {
+        "2022": -616.0,
+        "2023": -7.2,
+        "2024": -37.1,
+        "2025": -0.5
+      }
+    },
+    "F4_ACQ_ASS": {
+      "label": "Net acquisition (+) of financial assets - loans - acquisition/increase (+)",
+      "years": {
+        "2022": 507.3,
+        "2023": 215.7,
+        "2024": 26.9,
+        "2025": 73.8
+      }
+    },
+    "F4_ASS": {
+      "label": "Net acquisition (+) of financial assets - loans",
+      "years": {
+        "2022": -118.0,
+        "2023": 199.8,
+        "2024": 10.8,
+        "2025": 16.9
+      }
+    },
+    "F4_DIS_ASS": {
+      "label": "Net acquisition (+) of financial assets - loans; disposal/reduction (-)",
+      "years": {
+        "2022": -625.3,
+        "2023": -15.9,
+        "2024": -16.1,
+        "2025": -57.0
+      }
+    },
+    "F5OP_ACQ_ASS": {
+      "label": "Net acquisition (+) of financial assets - equity and investment fund shares/units other than portfolio investments; acquisition/increase (+)",
+      "years": {
+        "2022": 47.8,
+        "2023": 115.4,
+        "2024": 54.3,
+        "2025": 2235.9
+      }
+    },
+    "F5OP_ASS": {
+      "label": "Net acquisition (+) of financial assets - equity and investment fund shares/units other than portfolio investments",
+      "years": {
+        "2022": 21.7,
+        "2023": 105.6,
+        "2024": 44.3,
+        "2025": 2233.4
+      }
+    },
+    "F5OP_DIS_ASS": {
+      "label": "Net acquisition (+) of financial assets - equity and investment fund shares/units other than portfolio investments; disposal/reduction (-)",
+      "years": {
+        "2022": -26.1,
+        "2023": -9.8,
+        "2024": -10.1,
+        "2025": -2.5
+      }
+    },
+    "F5PN_ASS": {
+      "label": "Net acquisition (+) of financial assets - equity and investment fund shares/units - portfolio investments, net",
+      "years": {
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 0.0,
+        "2025": 0.0
+      }
+    },
+    "F5_ASS": {
+      "label": "Net acquisition (+) of financial assets - equity and investment fund shares/units",
+      "years": {
+        "2022": 21.7,
+        "2023": 105.6,
+        "2024": 44.3,
+        "2025": 2233.4
+      }
+    },
+    "F71_ADJ_LIAB": {
+      "label": "Adjustments: net incurrence (-) of liabilities in financial derivatives",
+      "years": {
+        "2022": 0.0,
+        "2023": 1.3,
+        "2024": 0.7,
+        "2025": 0.5
+      }
+    },
+    "F71_ASS": {
+      "label": "Net acquisition (+) of financial assets - financial derivatives",
+      "years": {
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 0.0,
+        "2025": 0.0
+      }
+    },
+    "F8_ADJ_LIAB": {
+      "label": "Adjustments: net incurrence (-) of other accounts payable",
+      "years": {
+        "2022": -2083.1,
+        "2023": -198.8,
+        "2024": -497.3,
+        "2025": -1636.3
+      }
+    },
+    "F8_ASS": {
+      "label": "Net acquisition (+) of financial assets - other accounts receivable (+)",
+      "years": {
+        "2022": 461.3,
+        "2023": -2.7,
+        "2024": 1091.2,
+        "2025": 1797.0
+      }
+    },
+    "FN_ASS": {
+      "label": "Net acquisition (+) of financial assets - other financial assets (F.1, F.6)",
+      "years": {
+        "2022": 1.1,
+        "2023": -1.5,
+        "2024": 2.3,
+        "2025": 2.6
+      }
+    },
+    "FV_ADJ_LIAB": {
+      "label": "Adjustments: net incurrence (-) of other liabilities (F.1, F.5, F.6  and F.72)",
+      "years": {
+        "2022": -0.6,
+        "2023": 0.2,
+        "2024": 0.1,
+        "2025": 0.1
+      }
+    },
+    "F_ASS": {
+      "label": "Net acquisition (+) of financial assets",
+      "years": {
+        "2022": 1816.9,
+        "2023": 642.0,
+        "2024": 561.7,
+        "2025": 7064.0
+      }
+    },
+    "GD_CH": {
+      "label": "Change in consolidated gross debt",
+      "years": {
+        "2022": 2339.6,
+        "2023": 2320.1,
+        "2024": 3301.9,
+        "2025": 9820.1
+      }
+    },
+    "K61": {
+      "label": "Changes in sector classification and structure (+/-)",
+      "years": {
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 0.0,
+        "2025": 0.0
+      }
+    },
+    "KX": {
+      "label": "Adjustments: other volume changes in financial liabilities (-)",
+      "years": {
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 0.0,
+        "2025": -4.3
+      }
+    },
+    "ORADJ": {
+      "label": "Total adjustments",
+      "years": {
+        "2022": -2020.9,
+        "2023": -209.2,
+        "2024": -457.8,
+        "2025": -1886.3
+      }
+    },
+    "ORD41A_ADJ": {
+      "label": "Adjustments: difference between interest expenditure (D.41) accrued (-) and paid (+)",
+      "years": {
+        "2022": -26.9,
+        "2023": -84.3,
+        "2024": -135.7,
+        "2025": -222.3
+      }
+    },
+    "ORFCD": {
+      "label": "Adjustments: appreciation (+)/depreciation (-) of foreign currency debt",
+      "years": {
+        "2022": -6.2,
+        "2023": -7.0,
+        "2024": 89.8,
+        "2025": -172.5
+      }
+    },
+    "ORINV": {
+      "label": "Adjustments: issuances above (-)/below (+) nominal value",
+      "years": {
+        "2022": 95.9,
+        "2023": 79.3,
+        "2024": 84.7,
+        "2025": 148.5
+      }
+    },
+    "ORRNV": {
+      "label": "Adjustments: redemptions/repurchase of debt above (+)/below (-) nominal value",
+      "years": {
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 0.0,
+        "2025": 0.0
+      }
+    },
+    "YA3": {
+      "label": "Total statistical discrepancies",
+      "years": {
+        "2022": 15.7,
+        "2023": 3.7,
+        "2024": 6.5,
+        "2025": -21.9
+      }
+    },
+    "YA3O": {
+      "label": "Statistical discrepancies: other statistical discrepancies (+/-)",
+      "years": {
+        "2022": 0.0,
+        "2023": 0.0,
+        "2024": 0.0,
+        "2025": 0.0
+      }
+    }
+  },
+  "gov_10a_main_eur": {
+    "B9": {
+      "label": "Net lending (+)/net borrowing (-)",
+      "years": {
+        "2021": -2825.5,
+        "2022": -2527.9,
+        "2023": -1883.5,
+        "2024": -3191.5,
+        "2025": -4664.5
+      }
+    },
+    "D1PAY": {
+      "label": "Compensation of employees, expenditure",
+      "years": {
+        "2021": 7881.8,
+        "2022": 8656.7,
+        "2023": 9989.8,
+        "2024": 11886.3,
+        "2025": 14357.5
+      }
+    },
+    "D2REC": {
+      "label": "Taxes on production and imports, revenue",
+      "years": {
+        "2021": 10559.8,
+        "2022": 13818.4,
+        "2023": 13813.9,
+        "2024": 15341.8,
+        "2025": 16704.8
+      }
+    },
+    "D3PAY": {
+      "label": "Subsidies, expenditure",
+      "years": {
+        "2021": 2667.3,
+        "2022": 4563.3,
+        "2023": 2288.7,
+        "2024": 2311.8,
+        "2025": 2094.7
+      }
+    },
+    "D41PAY": {
+      "label": "Interest, expenditure",
+      "years": {
+        "2021": 346.4,
+        "2022": 332.7,
+        "2023": 467.4,
+        "2024": 541.9,
+        "2025": 908.4
+      }
+    },
+    "D5REC": {
+      "label": "Current taxes on income, wealth, etc., revenue",
+      "years": {
+        "2021": 4547.2,
+        "2022": 5308.4,
+        "2023": 6017.5,
+        "2024": 6782.5,
+        "2025": 7679.7
+      }
+    },
+    "D61REC": {
+      "label": "Net social contributions, revenue",
+      "years": {
+        "2021": 6296.3,
+        "2022": 7097.6,
+        "2023": 8054.8,
+        "2024": 9284.7,
+        "2025": 10637.9
+      }
+    },
+    "D62PAY": {
+      "label": "Social benefits other than social transfers in kind, expenditure",
+      "years": {
+        "2021": 8274.3,
+        "2022": 10330.3,
+        "2023": 11764.5,
+        "2024": 13406.5,
+        "2025": 14909.2
+      }
+    },
+    "D9PAY": {
+      "label": "Capital transfers, expenditure",
+      "years": {
+        "2021": 287.7,
+        "2022": 430.0,
+        "2023": 300.2,
+        "2024": 902.8,
+        "2025": 1065.9
+      }
+    },
+    "P2": {
+      "label": "Intermediate consumption",
+      "years": {
+        "2021": 3690.9,
+        "2022": 4448.3,
+        "2023": 4606.7,
+        "2024": 4875.6,
+        "2025": 5648.5
+      }
+    },
+    "P51G": {
+      "label": "Gross fixed capital formation",
+      "years": {
+        "2021": 1933.5,
+        "2022": 2033.1,
+        "2023": 3608.0,
+        "2024": 3311.3,
+        "2025": 5574.9
+      }
+    },
+    "TE": {
+      "label": "Total general government expenditure",
+      "years": {
+        "2021": 29625.6,
+        "2022": 35554.6,
+        "2023": 36729.5,
+        "2024": 41067.5,
+        "2025": 49012.0
+      }
+    },
+    "TR": {
+      "label": "Total general government revenue",
+      "years": {
+        "2021": 26800.1,
+        "2022": 33026.7,
+        "2023": 34846.0,
+        "2024": 37876.0,
+        "2025": 44347.5
+      }
+    }
+  },
+  "gov_10q_ggdebt": {
+    "MIO_EUR": {
+      "2023-Q1": 19769.2,
+      "2023-Q2": 19625.3,
+      "2023-Q3": 19459.0,
+      "2023-Q4": 21675.0,
+      "2024-Q1": 21557.6,
+      "2024-Q2": 21889.2,
+      "2024-Q3": 24918.3,
+      "2024-Q4": 24976.9,
+      "2025-Q1": 25046.0,
+      "2025-Q2": 28385.7,
+      "2025-Q3": 31825.0,
+      "2025-Q4": 34797.0,
+      "2026-Q1": 34395.1,
+      "2026-Q2": 35396.3
+    },
+    "MIO_NAC": {
+      "2023-Q1": 19769.2,
+      "2023-Q2": 19625.3,
+      "2023-Q3": 19459.0,
+      "2023-Q4": 21675.0,
+      "2024-Q1": 21557.6,
+      "2024-Q2": 21889.2,
+      "2024-Q3": 24918.3,
+      "2024-Q4": 24976.9,
+      "2025-Q1": 25046.0,
+      "2025-Q2": 28385.7,
+      "2025-Q3": 31825.0,
+      "2025-Q4": 34797.0,
+      "2026-Q1": 34395.1,
+      "2026-Q2": 35396.3
+    },
+    "PC_GDP": {
+      "2023-Q1": 22.2,
+      "2023-Q2": 21.5,
+      "2023-Q3": 21.0,
+      "2023-Q4": 22.9,
+      "2024-Q1": 22.4,
+      "2024-Q2": 22.0,
+      "2024-Q3": 24.3,
+      "2024-Q4": 23.8,
+      "2025-Q1": 23.7,
+      "2025-Q2": 26.3,
+      "2025-Q3": 28.4,
+      "2025-Q4": 30.0,
+      "2026-Q1": 28.6,
+      "2026-Q2": 28.7
+    },
+    "PC_TOT": {
+      "2023-Q1": 100.0,
+      "2023-Q2": 100.0,
+      "2023-Q3": 100.0,
+      "2023-Q4": 100.0,
+      "2024-Q1": 100.0,
+      "2024-Q2": 100.0,
+      "2024-Q3": 100.0,
+      "2024-Q4": 100.0,
+      "2025-Q1": 100.0,
+      "2025-Q2": 100.0,
+      "2025-Q3": 100.0,
+      "2025-Q4": 100.0,
+      "2026-Q1": 100.0,
+      "2026-Q2": 100.0
+    }
+  }
+}

@@ -14,14 +14,17 @@ import Tab09Companies from '../components/tabs/Tab09Companies.astro';
 import Tab10Graph9Node from '../components/tabs/Tab10Graph9Node.astro';
 import Tab11Oracle from '../components/tabs/Tab11Oracle.astro';
 import Tab12Proposal from '../components/tabs/Tab12Proposal.astro';
+import Tab13FiscalXray from '../components/tabs/Tab13FiscalXray.astro';
 import j6Raw from '../../docs/data/sigma3_judicial_6.json';
 import invRaw from '../../docs/data/nasvetlo_investigations.json';
 import telkRaw from '../../docs/data/nasvetlo_telk_radar.json';
+import fiscalRaw from '../../docs/data/nasvetlo_fiscal_edp.json';
 
 const dynamicAsOf = [
   String((j6Raw as any).generatedAtUtc || '').slice(0, 10),
   String((invRaw as any).generatedAtUtc || '').slice(0, 10),
   String((telkRaw as any).generatedAtUtc || '').slice(0, 10),
+  String((fiscalRaw as any).generatedAtUtc || '').slice(0, 10),
   '2026-11-23',
 ].filter(Boolean).sort().pop() || '2026-11-23';
 ---
@@ -29,6 +32,7 @@ const dynamicAsOf = [
   <HeroFunnel asOf={dynamicAsOf} />
   <NavTabs />
   <Tab01Dashboard />
+  <Tab13FiscalXray />
   <Tab02Atlas />
   <Tab03Directory />
   <Tab04Deep />

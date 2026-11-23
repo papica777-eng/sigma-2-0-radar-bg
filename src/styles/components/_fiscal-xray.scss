@@ -1,0 +1,287 @@
+// =============================================================================
+// NAsvetlo — Featured Hero Banner & Tab 13 Fiscal X-Ray (Real Deficit & Debt)
+// =============================================================================
+
+.fiscal-hero-banner {
+  margin-top: 16px;
+  border: 1px solid rgba(185, 28, 28, 0.35);
+  border-left: 5px solid var(--crimson);
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(185, 28, 28, 0.06) 0%, var(--surface) 62%);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 6px 22px rgba(15, 23, 42, 0.05);
+}
+
+.fhb-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.fhb-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.fhb-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--crimson);
+  color: #fff;
+}
+
+.fhb-src {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-muted);
+}
+
+.fhb-title {
+  margin: 0;
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: clamp(18px, 2vw, 22px);
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+.fhb-desc {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-secondary, var(--ink-muted));
+  max-width: 920px;
+}
+
+.fhb-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.fhb-metric {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.12s ease;
+
+  &:hover {
+    border-color: var(--crimson);
+    transform: translateY(-1px);
+  }
+
+  &.is-alert {
+    border-color: rgba(185, 28, 28, 0.45);
+  }
+}
+
+.fhb-m-lbl {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-muted);
+  margin-bottom: 3px;
+}
+
+.fhb-m-val {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--crimson);
+  line-height: 1.2;
+}
+
+.fhb-m-sub {
+  font-size: 11px;
+  color: var(--ink-muted);
+  margin-top: 3px;
+  line-height: 1.35;
+}
+
+.tab-btn-fiscal {
+  border-color: rgba(185, 28, 28, 0.4) !important;
+  color: var(--crimson) !important;
+  font-weight: 700 !important;
+
+  &.active {
+    background: var(--crimson) !important;
+    color: #fff !important;
+    border-color: var(--crimson) !important;
+  }
+}
+
+.fiscal-xray-scope {
+  .fiscal-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  .fiscal-kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--ink-muted);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    &.is-crimson {
+      border-top-color: var(--crimson);
+    }
+
+    &.is-ochre {
+      border-top-color: var(--ochre, #b45309);
+    }
+  }
+
+  .fk-kicker {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-muted);
+  }
+
+  .fk-val {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--crimson);
+    line-height: 1.2;
+    margin-top: 2px;
+  }
+
+  .fk-eur {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .fk-sub {
+    font-size: 11.5px;
+    line-height: 1.48;
+    color: var(--ink-muted);
+    margin-top: 4px;
+  }
+
+  .fiscal-q-bars {
+    display: grid;
+    grid-template-columns: repeat(14, minmax(40px, 1fr));
+    gap: 6px;
+    align-items: end;
+    height: 210px;
+    padding: 16px 6px 4px;
+    overflow-x: auto;
+  }
+
+  .fq-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+    gap: 3px;
+
+    &.is-surge .fq-bar {
+      background: linear-gradient(180deg, #dc2626 0%, #991b1b 100%);
+    }
+
+    &.is-surge .fq-val {
+      color: var(--crimson);
+      font-weight: 700;
+    }
+  }
+
+  .fq-bar-wrap {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .fq-bar {
+    width: 74%;
+    min-width: 18px;
+    border-radius: 4px 4px 0 0;
+    background: linear-gradient(180deg, #475569 0%, #1e293b 100%);
+    transition: opacity 0.15s ease;
+  }
+
+  .fq-val {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .fq-pct {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: var(--ink-muted);
+  }
+
+  .fq-lbl {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  tr.row-crit {
+    background: rgba(185, 28, 28, 0.06);
+  }
+
+  tr.row-warn {
+    background: rgba(180, 83, 9, 0.05);
+  }
+
+  .fiscal-cross-box {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: var(--surface-alt, rgba(15, 23, 42, 0.03));
+    border: 1px dashed var(--border);
+    font-size: 12px;
+    line-height: 1.55;
+
+    ul {
+      margin: 6px 0 0;
+      padding-left: 18px;
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .fhb-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 540px) {
+  .fhb-metrics {
+    grid-template-columns: 1fr;
+  }
+}

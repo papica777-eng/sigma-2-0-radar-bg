@@ -109,6 +109,12 @@ const jsonLd = JSON.stringify({
         },
         {
           '@type': 'DataDownload',
+          encodingFormat: 'application/json',
+          contentUrl: 'https://nasvetlo.website/data/nasvetlo_fiscal_edp.json',
+          name: 'NAsvetlo — Фискален рентген: Реален дефицит, операции под чертата (F5_ASS) и държавен дълг (Евростат EDP 1/2/3 × МФ × БНБ, 2021–2026)',
+        },
+        {
+          '@type': 'DataDownload',
           encodingFormat: 'text/csv',
           contentUrl: 'https://nasvetlo.website/data/SIGMA_2_0_ALL_OFFICIALS_571.csv',
           name: 'NAsvetlo — Свързани длъжностни лица (571 записа, CSV)',
@@ -171,7 +177,7 @@ const jsonLd = JSON.stringify({
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="sigma3/styles.css?v=20261123b" />
+  <link rel="stylesheet" href="sigma3/styles.css?v=20261123d" />
 </head>
 <body>
 

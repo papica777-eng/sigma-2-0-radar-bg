@@ -1,0 +1,359 @@
+---
+import edpRaw from '../../../docs/data/nasvetlo_fiscal_edp.json';
+
+const edp: any = edpRaw || {};
+const t1Nac = edp.edpt1_nac || {};
+const t1Pct = edp.edpt1_pct || {};
+const t2 = edp.edpt2_s1311_nac || {};
+const t3 = edp.edpt3_s13_nac || {};
+const main = edp.gov_10a_main_eur || {};
+const qDebtNac: Record<string, number> = (edp.gov_10q_ggdebt && edp.gov_10q_ggdebt.MIO_NAC) || {};
+const qDebtPct: Record<string, number> = (edp.gov_10q_ggdebt && edp.gov_10q_ggdebt.PC_GDP) || {};
+
+const getY = (obj: any, y: string, fb = 0) => Number((obj && obj[y]) ?? fb);
+const getSubY = (obj: any, key: string, y: string, fb = 0) =>
+  Number((obj && obj[key] && obj[key].years && obj[key].years[y]) ?? fb);
+
+const fmtM = (v: number) => {
+  const sign = v < 0 ? '-' : '';
+  const abs = Math.abs(v);
+  if (abs >= 1000) return `${sign}€${(abs / 1000).toFixed(2).replace('.', ',')} млрд.`;
+  return `${sign}€${abs.toFixed(1).replace('.', ',')} млн.`;
+};
+const fmtSignedM = (v: number) => {
+  const sign = v > 0 ? '+' : v < 0 ? '-' : '';
+  const abs = Math.abs(v);
+  if (abs >= 1000) return `${sign}€${(abs / 1000).toFixed(2).replace('.', ',')} млрд.`;
+  return `${sign}€${abs.toFixed(1).replace('.', ',')} млн.`;
+};
+
+// Official Eurostat values (in MIO EUR)
+const b9_24 = getY(t1Nac.B9, '2024', -3191.5);
+const b9_25 = getY(t1Nac.B9, '2025', -4664.3);
+const b9Pct_24 = Math.abs(getY(t1Pct.B9, '2024', -3.0));
+const b9Pct_25 = Math.abs(getY(t1Pct.B9, '2025', -4.0));
+
+const gd_24 = getY(t1Nac.GD, '2024', 24976.9);
+const gd_25 = getY(t1Nac.GD, '2025', 34797.0);
+const gdPct_24 = getY(t1Pct.GD, '2024', 23.7);
+const gdPct_25 = getY(t1Pct.GD, '2025', 29.9);
+const gdCh_24 = getSubY(t3, 'GD_CH', '2024', 3301.9);
+const gdCh_25 = getSubY(t3, 'GD_CH', '2025', 9820.1);
+
+const f2_24 = getSubY(t3, 'F2_ASS', '2024', -718.9);
+const f2_25 = getSubY(t3, 'F2_ASS', '2025', 2347.3);
+const f5_24 = getSubY(t3, 'F5_ASS', '2024', 44.3);
+const f5_25 = getSubY(t3, 'F5_ASS', '2025', 2233.4);
+const f3_25 = getSubY(t3, 'F3_ASS', '2025', 666.8);
+
+const af81_23 = getY(t1Nac.AF_81L, '2023', 1232.9);
+const af81_24 = getY(t1Nac.AF_81L, '2024', 1572.0);
+const af81_25 = getY(t1Nac.AF_81L, '2025', 2330.3);
+
+const d41_24 = getY(t1Nac.D41PAY, '2024', 541.9);
+const d41_25 = getY(t1Nac.D41PAY, '2025', 908.4);
+const d41GrowthPct = d41_24 > 0 ? ((d41_25 - d41_24) / d41_24 * 100) : 67.6;
+
+// Implicit nominal GDP from official Eurostat ratio B9 / (PC_GDP/100)
+const gdp24 = b9Pct_24 > 0 ? Math.abs(b9_24) / (b9Pct_24 / 100) : 106383;
+const gdp25 = b9Pct_25 > 0 ? Math.abs(b9_25) / (b9Pct_25 / 100) : 116607;
+
+// Independent calculations
+const netDebtFlow24 = gdCh_24 - f2_24; // 3301.9 - (-718.9) = 4020.8 M EUR
+const netDebtFlow24Pct = (netDebtFlow24 / gdp24) * 100; // ~3.78%
+
+const extendedDeficit25 = Math.abs(b9_25) + f5_25; // 4664.3 + 2233.4 = 6897.7 M EUR
+const extendedDeficit25Pct = (extendedDeficit25 / gdp25) * 100; // ~5.92%
+
+// Independent MF/BNB Fiscal Reserve check: 2024-12 = 6.07B EUR, 2025-12 = 8.90B EUR -> delta +2.83B EUR
+const netDebtFlow25MfReserve = gdCh_25 - 2830.0; // ~6990.1 M EUR
+const netDebtFlow25MfPct = (netDebtFlow25MfReserve / gdp25) * 100; // ~5.99%
+
+const netDebtExclDeposits25 = gdCh_25 - f2_25; // 7472.8 M EUR (~6.41%)
+const netDebtExclDepSec25 = gdCh_25 - f2_25 - f3_25; // 6806.0 M EUR (~5.84%)
+
+const quarters = Object.keys(qDebtNac).sort();
+const maxQDebt = Math.max(...quarters.map((q) => Number(qDebtNac[q] || 0)), 36000);
+
+const accountingRows = [
+  {
+    code: 'ORWB (Табл. 2А)',
+    label: 'Централен касов работен баланс (национална касова база)',
+    y22: getSubY(t2, 'ORWB', '2022'),
+    y23: getSubY(t2, 'ORWB', '2023'),
+    y24: getSubY(t2, 'ORWB', '2024'),
+    y25: getSubY(t2, 'ORWB', '2025'),
+    note: 'Паричен баланс преди начисленията по ESA 2010',
+    accent: '',
+  },
+  {
+    code: 'B9 (Табл. 1)',
+    label: 'Официален дефицит на сектор „Държавно управление“ (ESA 2010)',
+    y22: getY(t1Nac.B9, '2022'),
+    y23: getY(t1Nac.B9, '2023'),
+    y24: b9_24,
+    y25: b9_25,
+    note: '2024: -3,00% БВП · 2025: -4,00% БВП (открита EDP)',
+    accent: 'row-warn',
+  },
+  {
+    code: 'F8_LIAB (Табл. 2А)',
+    label: 'Отложени / неразплатени задължения (корекция към B9)',
+    y22: getSubY(t2, 'F8_LIAB_ORWB', '2022'),
+    y23: getSubY(t2, 'F8_LIAB_ORWB', '2023'),
+    y24: getSubY(t2, 'F8_LIAB_ORWB', '2024'),
+    y25: getSubY(t2, 'F8_LIAB_ORWB', '2025'),
+    note: 'Рязко натрупване на неразплатени сметки през 2025 г.',
+    accent: '',
+  },
+  {
+    code: 'OROA (Табл. 2А)',
+    label: 'Други корекции на начислена основа (вкл. АПИ / доставки)',
+    y22: getSubY(t2, 'OROA_ORWB', '2022'),
+    y23: getSubY(t2, 'OROA_ORWB', '2023'),
+    y24: getSubY(t2, 'OROA_ORWB', '2024'),
+    y25: getSubY(t2, 'OROA_ORWB', '2025'),
+    note: 'Отчитане на реалните ангажименти извън касовите плащания',
+    accent: '',
+  },
+  {
+    code: 'F5_ASS (Табл. 3)',
+    label: 'Капиталови инжекции „под чертата“ (акции и дялове — ББР, БЕХ, ДП)',
+    y22: getSubY(t3, 'F5_ASS', '2022'),
+    y23: getSubY(t3, 'F5_ASS', '2023'),
+    y24: f5_24,
+    y25: f5_25,
+    note: '50-кратен скок през 2025 г. (+1,92% БВП, извън заглавния B9)',
+    accent: 'row-crit',
+  },
+  {
+    code: 'F2_ASS (Табл. 3)',
+    label: 'Промяна на депозитите / ликвидния фискален буфер',
+    y22: getSubY(t3, 'F2_ASS', '2022'),
+    y23: getSubY(t3, 'F2_ASS', '2023'),
+    y24: f2_24,
+    y25: f2_25,
+    note: '2024: изхарчени €718,9 млн. · 2025: натрупани €2,35 млрд.',
+    accent: '',
+  },
+  {
+    code: 'AF_81L (Табл. 1)',
+    label: 'Натрупани търговски кредити и неразплатени фактури към доставчици',
+    y22: getY(t1Nac.AF_81L, '2022'),
+    y23: af81_23,
+    y24: af81_24,
+    y25: af81_25,
+    note: 'Достигат 2,00% от БВП в края на 2025 г. (+€758,3 млн. за 1 г.)',
+    accent: '',
+  },
+  {
+    code: 'GD_CH (Табл. 3)',
+    label: 'Годишно увеличение на брутния държавен дълг',
+    y22: getSubY(t3, 'GD_CH', '2022'),
+    y23: getSubY(t3, 'GD_CH', '2023'),
+    y24: gdCh_24,
+    y25: gdCh_25,
+    note: '2025: +€9,82 млрд. нов дълг (+8,42% от БВП за една година)',
+    accent: 'row-crit',
+  },
+  {
+    code: 'D41PAY (Табл. 1)',
+    label: 'Годишни лихвени разходи по държавния дълг',
+    y22: getY(t1Nac.D41PAY, '2022'),
+    y23: getY(t1Nac.D41PAY, '2023'),
+    y24: d41_24,
+    y25: d41_25,
+    note: `Скок с +${d41GrowthPct.toFixed(1).replace('.', ',')}% само за една година (до 0,8% БВП)`,
+    accent: 'row-warn',
+  },
+];
+
+const expLines = [
+  { code: 'TR', label: 'Общи държавни приходи', y21: getSubY(main, 'TR', '2021'), y24: getSubY(main, 'TR', '2024'), y25: getSubY(main, 'TR', '2025'), kind: 'rev' },
+  { code: 'D2REC', label: 'Косвени данъци (ДДС и акцизи)', y21: getSubY(main, 'D2REC', '2021'), y24: getSubY(main, 'D2REC', '2024'), y25: getSubY(main, 'D2REC', '2025'), kind: 'rev' },
+  { code: 'D5REC', label: 'Преки данъци (доходи и печалби)', y21: getSubY(main, 'D5REC', '2021'), y24: getSubY(main, 'D5REC', '2024'), y25: getSubY(main, 'D5REC', '2025'), kind: 'rev' },
+  { code: 'D61REC', label: 'Социални и здравни осигуровки', y21: getSubY(main, 'D61REC', '2021'), y24: getSubY(main, 'D61REC', '2024'), y25: getSubY(main, 'D61REC', '2025'), kind: 'rev' },
+  { code: 'TE', label: 'Общи държавни разходи', y21: getSubY(main, 'TE', '2021'), y24: getSubY(main, 'TE', '2024'), y25: getSubY(main, 'TE', '2025'), kind: 'exp' },
+  { code: 'D1PAY', label: 'Заплати в публичния сектор', y21: getSubY(main, 'D1PAY', '2021'), y24: getSubY(main, 'D1PAY', '2024'), y25: getSubY(main, 'D1PAY', '2025'), kind: 'exp' },
+  { code: 'D62PAY', label: 'Пенсии и социални плащания', y21: getSubY(main, 'D62PAY', '2021'), y24: getSubY(main, 'D62PAY', '2024'), y25: getSubY(main, 'D62PAY', '2025'), kind: 'exp' },
+  { code: 'P51G', label: 'Капиталови разходи и инвестиции', y21: getSubY(main, 'P51G', '2021'), y24: getSubY(main, 'P51G', '2024'), y25: getSubY(main, 'P51G', '2025'), kind: 'exp' },
+  { code: 'P2', label: 'Текуща издръжка (междинно потребление)', y21: getSubY(main, 'P2', '2021'), y24: getSubY(main, 'P2', '2024'), y25: getSubY(main, 'P2', '2025'), kind: 'exp' },
+  { code: 'D41PAY', label: 'Лихви по държавния дълг', y21: getSubY(main, 'D41PAY', '2021'), y24: getSubY(main, 'D41PAY', '2024'), y25: getSubY(main, 'D41PAY', '2025'), kind: 'exp' },
+];
+---
+
+<!-- =================================================================== -->
+<!-- TAB 13 (FEATURED): FISCAL X-RAY — REAL DEFICIT & DEBT AUDIT         -->
+<!-- =================================================================== -->
+<section class="tab-panel fiscal-xray-scope" id="tab-fiscal" hidden>
+  <div class="editorial-note note-crimson">
+    <div>
+      <strong>Фискален рентген: Реален дефицит, операции „под чертата“ (SFA) и динамика на държавния дълг (2021–2026):</strong>
+      Този независим модул на <strong>NAsvetlo</strong> засича едновременно четири първични източника — официалните EDP таблици на <strong>Евростат</strong> (<code>gov_10dd_edpt1</code>, <code>edpt2</code>, <code>edpt3</code>, <code>gov_10a_main</code>, <code>gov_10q_ggdebt</code>), отчетите на <strong>МФ/БНБ за фискалния резерв</strong>, изпълнението на <strong>ПВУ</strong> (<code>-€971,02 млн.</code> касов разрив към 30.09.2026 г.) и <strong>ЦАИС ЕОП</strong>. Целта е да се види както официалният дефицит по <code>ESA 2010</code>, така и <strong>реалното нетно дългово натоварване</strong>, включително капитализациите „под чертата“ (ББР/БЕХ/ДП).
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex-shrink:0;">
+      <a href="data/nasvetlo_fiscal_edp.json" download class="btn btn-dark" style="font-size:11.5px;">Изтегли Евростат JSON &darr;</a>
+      <a href="https://ec.europa.eu/eurostat/databrowser/view/gov_10dd_edpt1/default/table" target="_blank" rel="noopener" class="btn" style="font-size:11px;">Провери в Eurostat &rarr;</a>
+    </div>
+  </div>
+
+  <!-- TOP 4 INDEPENDENT REAL-DEFICIT METERS -->
+  <div class="fiscal-kpi-grid">
+    <div class="fiscal-kpi-card is-crimson">
+      <div class="fk-kicker">2025 · Разширен дефицит (ESA 2010 + „под чертата“)</div>
+      <div class="fk-val">{extendedDeficit25Pct.toFixed(2).replace('.', ',')}% – {netDebtFlow25MfPct.toFixed(2).replace('.', ',')}% БВП</div>
+      <div class="fk-eur">{fmtM(extendedDeficit25)} – {fmtM(netDebtFlow25MfReserve)}</div>
+      <div class="fk-sub">
+        Две независими сметки съвпадат до 0,07%: <strong>B9 (€4,66 млрд.) + F5_ASS (€2,23 млрд.) = €6,90 млрд. (5,92%)</strong> и <strong>ΔДълг (€9,82 млрд.) − ΔРезерв МФ (€2,83 млрд.) = €6,99 млрд. (5,99%)</strong>.
+      </div>
+    </div>
+
+    <div class="fiscal-kpi-card is-ochre">
+      <div class="fk-kicker">2024 · Годината на Маастрихтския праг (3,0%)</div>
+      <div class="fk-val">3,00% офиц. → {netDebtFlow24Pct.toFixed(2).replace('.', ',')}% нетен отток</div>
+      <div class="fk-eur">{fmtM(Math.abs(b9_24))} офиц. vs. {fmtM(netDebtFlow24)} реално</div>
+      <div class="fk-sub">
+        Докато начисленият дефицит <code>B9</code> е точно <strong>-3,00%</strong>, държавата изтегли <strong>+€3,30 млрд.</strong> нов дълг и изхарчи <strong>€718,9 млн.</strong> от депозитите си (<code>F2_ASS</code>), а неразплатените фактури (<code>AF_81L</code>) скочиха с +€339 млн.
+      </div>
+    </div>
+
+    <div class="fiscal-kpi-card is-crimson">
+      <div class="fk-kicker">Дългов взрив (2025) и ниво към Q2 2026</div>
+      <div class="fk-val">+{fmtM(gdCh_25)} за 1 год.</div>
+      <div class="fk-eur">{fmtM(gd_24)} ({gdPct_24.toFixed(1).replace('.', ',')}%) → {fmtM(gd_25)} ({gdPct_25.toFixed(1).replace('.', ',')}%)</div>
+      <div class="fk-sub">
+        99% от ръста (+€9,75 млрд.) се случва за 9 месеца между <strong>Q2 и Q4 2025</strong>. Към <strong>Q2 2026</strong> брутният дълг достига <strong>{fmtM(Number(qDebtNac['2026-Q2'] || 35396.3))}</strong> ({String(qDebtPct['2026-Q2'] || 28.7).replace('.', ',')}% БВП).
+      </div>
+    </div>
+
+    <div class="fiscal-kpi-card">
+      <div class="fk-kicker">Скритият буфер: Операции „под чертата“ &amp; Лихви</div>
+      <div class="fk-val">50× скок на F5_ASS</div>
+      <div class="fk-eur">{fmtM(f5_25)} инжекции · {fmtM(d41_25)} лихви</div>
+      <div class="fk-sub">
+        Капиталовите вноски (<code>F5_ASS</code> — ББР, БЕХ, ДП) скачат от €44,3 млн. (2024) на <strong>€2,23 млрд.</strong> (2025). Лихвите по дълга растат с <strong>+{d41GrowthPct.toFixed(1).replace('.', ',')}%</strong> само за една година.
+      </div>
+    </div>
+  </div>
+
+  <!-- QUARTERLY DEBT TIMELINE CHART (2023-Q1 -> 2026-Q2) -->
+  <div class="panel-box" style="margin-top:16px;">
+    <div class="chart-head">
+      <div>
+        <h3 style="margin:0;border:none;padding:0;">Тримесечна траектория на брутния държавен дълг (2023-Q1 → 2026-Q2 · Евростат <code>gov_10q_ggdebt</code>)</h3>
+        <p class="chart-caption" style="margin-bottom:0;">Вижда се отчетливото задържане около €25 млрд. до Q1 2025 и последващият скок с +€9,75 млрд. между Q2 и Q4 2025.</p>
+      </div>
+      <span class="tag tag-crimson">Q2 2026: {fmtM(Number(qDebtNac['2026-Q2'] || 35396.3))}</span>
+    </div>
+    <div class="fiscal-q-bars" role="img" aria-label="Тримесечен брутен държавен дълг на България 2023-2026">
+      {quarters.map((q) => {
+        const v = Number(qDebtNac[q] || 0);
+        const pct = Number(qDebtPct[q] || 0);
+        const hPct = Math.max(12, Math.round((v / maxQDebt) * 100));
+        const isSurge = q >= '2025-Q2';
+        return (
+          <div class={`fq-col ${isSurge ? 'is-surge' : ''}`} title={`${q}: €${(v / 1000).toFixed(2)} млрд. (${pct}% БВП)`}>
+            <div class="fq-val">€{(v / 1000).toFixed(1).replace('.', ',')}B</div>
+            <div class="fq-bar-wrap">
+              <div class="fq-bar" style={`height:${hPct}%;`}></div>
+            </div>
+            <div class="fq-pct">{pct.toFixed(1).replace('.', ',')}%</div>
+            <div class="fq-lbl">{q.replace('20', "'")}</div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+
+  <!-- TWO-COLUMN AUDIT TABLES: EUROSTAT EDP BRIDGE + REVENUE/EXPENDITURE ANATOMY -->
+  <div class="two-col" style="margin-top:16px;">
+    <div class="panel-box">
+      <h3 style="margin-top:0;">1. Счетоводен мост: Касов баланс → ESA 2010 → Дълг (EDP 1 / 2А / 3)</h3>
+      <p class="chart-caption">Всички суми са официални от <strong>Евростат</strong> в милиони евро (<code>MIO_NAC</code>).</p>
+      <div class="table-wrap" style="border:none;">
+        <table>
+          <thead>
+            <tr>
+              <th>Показател (Евростат)</th>
+              <th class="num">2023</th>
+              <th class="num">2024</th>
+              <th class="num">2025</th>
+            </tr>
+          </thead>
+          <tbody>
+            {accountingRows.map((r) => (
+              <tr class={r.accent} style="cursor:default;">
+                <td>
+                  <div><strong>{r.label}</strong> <span class="eik-tag">{r.code}</span></div>
+                  <div class="muted" style="font-size:11px;">{r.note}</div>
+                </td>
+                <td class="num mono">{r.y23.toLocaleString('bg-BG', { maximumFractionDigits: 1 })}</td>
+                <td class="num mono">{r.y24.toLocaleString('bg-BG', { maximumFractionDigits: 1 })}</td>
+                <td class="num mono" style="font-weight:700;">{r.y25.toLocaleString('bg-BG', { maximumFractionDigits: 1 })}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel-box">
+      <h3 style="margin-top:0;">2. Анатомия на дупката: Приходи vs. Разходи (<code>gov_10a_main</code>)</h3>
+      <p class="chart-caption">Докато ДДС/акцизите растат с <strong>+8,9%</strong>, общите разходи избухват с <strong>+19,3% (+€7,94 млрд.)</strong>, водени от заплатите (+20,8%), капиталовите (+68,4%) и лихвите (+67,6%).</p>
+      <div class="table-wrap" style="border:none;">
+        <table>
+          <thead>
+            <tr>
+              <th>Бюджетно перо (млн. €)</th>
+              <th class="num">2021</th>
+              <th class="num">2024</th>
+              <th class="num">2025</th>
+              <th class="num">24→25</th>
+            </tr>
+          </thead>
+          <tbody>
+            {expLines.map((l) => {
+              const g25 = l.y24 ? ((l.y25 - l.y24) / Math.abs(l.y24)) * 100 : 0;
+              const isHot = l.kind === 'exp' && g25 >= 18;
+              return (
+                <tr style="cursor:default;">
+                  <td>
+                    <strong style={l.code === 'TR' || l.code === 'TE' ? 'color:var(--ink);' : ''}>{l.label}</strong>
+                    <span class="eik-tag">{l.code}</span>
+                  </td>
+                  <td class="num mono muted">{l.y21.toLocaleString('bg-BG', { maximumFractionDigits: 0 })}</td>
+                  <td class="num mono">{l.y24.toLocaleString('bg-BG', { maximumFractionDigits: 0 })}</td>
+                  <td class="num mono" style="font-weight:700;">{l.y25.toLocaleString('bg-BG', { maximumFractionDigits: 0 })}</td>
+                  <td class="num mono" style={`font-weight:700;color:${isHot ? 'var(--crimson)' : 'inherit'};`}>{g25 >= 0 ? '+' : ''}{g25.toFixed(1).replace('.', ',')}%</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <div class="fiscal-cross-box">
+        <strong>Допълнителен натиск от регистрите на NAsvetlo (извън ESA 2010 B9):</strong>
+        <ul>
+          <li><strong>ПВУ касов разрив (МФ към 30.09.2026):</strong> Платени <code>€5 249,57 млн.</code> срещу получени от ЕК <code>€4 278,55 млн.</code> &rarr; <strong>€971,02 млн.</strong> нетно бюджетно натоварване.</li>
+          <li><strong>Неразплатени фактури към доставчици (<code>AF_81L</code>):</strong> <strong>€2 330,3 млн.</strong> (<code>2,0%</code> от БВП; +€758,3 млн. ръст за 2025 г.).</li>
+          <li><strong>Загуба от липса на конкуренция в ЗОП:</strong> <code>€18,50 млрд.</code> (<code>40,7%</code>) с 1 оферта + <strong>+€1,29 млрд.</strong> доказани анекси по чл. 116 ЗОП.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- BALANCED INSTITUTIONAL METHODOLOGY EXPLANATION -->
+  <div class="panel-box" style="margin-top:16px;border-left:4px solid var(--ink);">
+    <h3 style="margin-top:0;">Методологична рамка: Защо официалният дефицит е 4,00%, а реалното дългово натоварване е ~5,9%–6,0%?</h3>
+    <div class="two-col" style="gap:16px;">
+      <div style="font-size:12.5px;line-height:1.6;">
+        <strong>1. По европейския стандарт ESA 2010 (Евростат / МФ):</strong>
+        Капиталовите инжекции в държавни структури (<code>F5_ASS = €2 233,4 млн.</code> през 2025 г.) и натрупаните депозити (<code>F2_ASS = €2 347,3 млн.</code>) се отчитат като <em>финансови транзакции („под чертата“)</em>. Те увеличават <strong>брутния държавен дълг</strong> (от 23,7% на 29,9% БВП), но не влизат в заглавния дефицит <code>B9</code> (<code>4,00%</code>), освен ако Евростат не ги прекласифицира като невъзвръщаеми капиталови трансфери. Ревизията на 2025 г. до 4,00% вече доведе до официална <strong>Процедура при прекомерен дефицит (EDP)</strong> от Съвета на ЕС.
+      </div>
+      <div style="font-size:12.5px;line-height:1.6;">
+        <strong>2. По независимия тест за нетен дългов отток (Фискален съвет, ИПИ, NAsvetlo SFA):</strong>
+        Когато се приложи международният тест <code>Stock-Flow Adjustment</code> — <em>нов брутен дълг минус ръст на ликвидния буфер</em> — реалният фискален недостиг възлиза на <strong>~3,78% от БВП за 2024 г.</strong> и <strong>~5,84%–5,99% от БВП (€6,81–6,99 млрд.) за 2025 г.</strong> (или <strong>6,41%</strong> преди приспадане на портфейлните книжа <code>F3_ASS</code>). Независимите одитори отбелязват, че финансирането на общински и инфраструктурни програми чрез капитализация на държавни банки/холдинги носи реален дългов и лихвен риск, равен на бюджетен дефицит.
+      </div>
+    </div>
+  </div>
+</section>

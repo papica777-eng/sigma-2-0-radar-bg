@@ -3776,6 +3776,263 @@ tbody td {
     grid-template-columns: 1fr;
   }
 }
+.fiscal-hero-banner {
+  margin-top: 16px;
+  border: 1px solid rgba(185, 28, 28, 0.35);
+  border-left: 5px solid var(--crimson);
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(185, 28, 28, 0.06) 0%, var(--surface) 62%);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 6px 22px rgba(15, 23, 42, 0.05);
+}
+
+.fhb-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.fhb-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.fhb-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--crimson);
+  color: #fff;
+}
+
+.fhb-src {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-muted);
+}
+
+.fhb-title {
+  margin: 0;
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: clamp(18px, 2vw, 22px);
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+.fhb-desc {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-secondary, var(--ink-muted));
+  max-width: 920px;
+}
+
+.fhb-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.fhb-metric {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.12s ease;
+}
+.fhb-metric:hover {
+  border-color: var(--crimson);
+  transform: translateY(-1px);
+}
+.fhb-metric.is-alert {
+  border-color: rgba(185, 28, 28, 0.45);
+}
+
+.fhb-m-lbl {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-muted);
+  margin-bottom: 3px;
+}
+
+.fhb-m-val {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--crimson);
+  line-height: 1.2;
+}
+
+.fhb-m-sub {
+  font-size: 11px;
+  color: var(--ink-muted);
+  margin-top: 3px;
+  line-height: 1.35;
+}
+
+.tab-btn-fiscal {
+  border-color: rgba(185, 28, 28, 0.4) !important;
+  color: var(--crimson) !important;
+  font-weight: 700 !important;
+}
+.tab-btn-fiscal.active {
+  background: var(--crimson) !important;
+  color: #fff !important;
+  border-color: var(--crimson) !important;
+}
+
+.fiscal-xray-scope .fiscal-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+.fiscal-xray-scope .fiscal-kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--ink-muted);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.fiscal-xray-scope .fiscal-kpi-card.is-crimson {
+  border-top-color: var(--crimson);
+}
+.fiscal-xray-scope .fiscal-kpi-card.is-ochre {
+  border-top-color: var(--ochre, #b45309);
+}
+.fiscal-xray-scope .fk-kicker {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-muted);
+}
+.fiscal-xray-scope .fk-val {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--crimson);
+  line-height: 1.2;
+  margin-top: 2px;
+}
+.fiscal-xray-scope .fk-eur {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.fiscal-xray-scope .fk-sub {
+  font-size: 11.5px;
+  line-height: 1.48;
+  color: var(--ink-muted);
+  margin-top: 4px;
+}
+.fiscal-xray-scope .fiscal-q-bars {
+  display: grid;
+  grid-template-columns: repeat(14, minmax(40px, 1fr));
+  gap: 6px;
+  align-items: end;
+  height: 210px;
+  padding: 16px 6px 4px;
+  overflow-x: auto;
+}
+.fiscal-xray-scope .fq-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+  gap: 3px;
+}
+.fiscal-xray-scope .fq-col.is-surge .fq-bar {
+  background: linear-gradient(180deg, #dc2626 0%, #991b1b 100%);
+}
+.fiscal-xray-scope .fq-col.is-surge .fq-val {
+  color: var(--crimson);
+  font-weight: 700;
+}
+.fiscal-xray-scope .fq-bar-wrap {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.fiscal-xray-scope .fq-bar {
+  width: 74%;
+  min-width: 18px;
+  border-radius: 4px 4px 0 0;
+  background: linear-gradient(180deg, #475569 0%, #1e293b 100%);
+  transition: opacity 0.15s ease;
+}
+.fiscal-xray-scope .fq-val {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.fiscal-xray-scope .fq-pct {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--ink-muted);
+}
+.fiscal-xray-scope .fq-lbl {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.fiscal-xray-scope tr.row-crit {
+  background: rgba(185, 28, 28, 0.06);
+}
+.fiscal-xray-scope tr.row-warn {
+  background: rgba(180, 83, 9, 0.05);
+}
+.fiscal-xray-scope .fiscal-cross-box {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--surface-alt, rgba(15, 23, 42, 0.03));
+  border: 1px dashed var(--border);
+  font-size: 12px;
+  line-height: 1.55;
+}
+.fiscal-xray-scope .fiscal-cross-box ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
+}
+
+@media (max-width: 900px) {
+  .fhb-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 540px) {
+  .fhb-metrics {
+    grid-template-columns: 1fr;
+  }
+}
 .judicial-radar-scope .eiss-live-panel {
   background: #ffffff;
   border: 1px solid #e2e8f0;
