@@ -4,6 +4,7 @@ import NasvetloLogo from '../components/NasvetloLogo.astro';
 import j6Raw from '../../docs/data/sigma3_judicial_6.json';
 import adm50Raw from '../../docs/data/nasvetlo_50_admins.json';
 import invRaw from '../../docs/data/nasvetlo_investigations.json';
+import telkRaw from '../../docs/data/nasvetlo_telk_radar.json';
 
 interface Props {
   title?: string;
@@ -17,8 +18,9 @@ const defaultAsOf = [
   String((j6Raw as any).generatedAtUtc || '').slice(0, 10),
   String((adm50Raw as any).generatedAtUtc || '').slice(0, 10),
   String((invRaw as any).generatedAtUtc || '').slice(0, 10),
-  '2026-11-22',
-].filter(Boolean).sort().pop() || '2026-11-22';
+  String((telkRaw as any).generatedAtUtc || '').slice(0, 10),
+  '2026-11-23',
+].filter(Boolean).sort().pop() || '2026-11-23';
 const {
   title = 'NAsvetlo — Независима гражданска платформа за прозрачност на обществените поръчки',
   description = 'NAsvetlo (nasvetlo.website) — Независима гражданска платформа, изградена върху отворените данни (CC-BY 4.0) на МИДТ / СИГМА 2.0: €53,22 млрд. (206 907 договора), 4 344 възложители, 17 428 изпълнители, 571 свързани лица, +€1,92 млрд. скрити ДЗЗД, 28-областен атлас, картелна лаборатория, Закон на Бенфорд и жив AI асистент.',
@@ -56,10 +58,29 @@ const jsonLd = JSON.stringify({
     },
     {
       '@type': 'Dataset',
-      '@id': 'https://nasvetlo.website/#dataset',
-      name: 'NAsvetlo — Отворен одитен масив за обществени поръчки в България (€53,22 млрд., 206 907 договора)',
-      description: 'Кръстосан граждански одитен масив върху отворените данни (CC-BY 4.0) на МИДТ / СИГМА 2.0, АОП / ЦАИС ЕОП, Сметна палата и ЕРИК, КПК, АДФИ, КЗК, ВСС (ЕПЕП/ЕИСС), ВАС и ТРРЮЛНЦ.',
+      '@id': `${canonicalUrl}#dataset`,
+      name: 'NAsvetlo — Отворен одитен масив за обществени поръчки и публични регистри в България (€53,22 млрд., 206 907 договора)',
+      description: 'Кръстосан граждански одитен масив върху отворените данни (CC-BY 4.0) на МИДТ / СИГМА 2.0, АОП / ЦАИС ЕОП, Сметна палата и ЕРИК, КПК, АДФИ, КЗК, ВСС (ЕПЕП/ЕИСС), ВАС, ТРРЮЛНЦ, НОИ и НСИ.',
       url: canonicalUrl,
+      creator: {
+        '@type': 'Person',
+        name: 'Димитър Ставрев Продромов',
+        alternateName: 'Dimitar Stavrev Prodromov',
+        url: 'https://nasvetlo.website/',
+        sameAs: [
+          'https://orcid.org/0009-0004-8070-1348',
+          'https://github.com/papica777-eng/sigma-2-0-radar-bg',
+        ],
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'NAsvetlo — Независима гражданска платформа',
+        url: 'https://nasvetlo.website/',
+        logo: {
+          '@type': 'ImageObject',
+          url: 'https://nasvetlo.website/sigma3/nasvetlo-official-logo.jpg',
+        },
+      },
       license: 'https://creativecommons.org/licenses/by/4.0/',
       isBasedOn: 'https://sigma.midt.bg/',
       inLanguage: 'bg-BG',
@@ -67,6 +88,26 @@ const jsonLd = JSON.stringify({
       temporalCoverage: '2019/2026',
       dateModified: asOf,
       isAccessibleForFree: true,
+      distribution: [
+        {
+          '@type': 'DataDownload',
+          encodingFormat: 'application/json',
+          contentUrl: 'https://nasvetlo.website/data/nasvetlo_investigations.json',
+          name: 'NAsvetlo — Кръстосани разследвания (11 държавни регистъра × ЗОП)',
+        },
+        {
+          '@type': 'DataDownload',
+          encodingFormat: 'application/json',
+          contentUrl: 'https://nasvetlo.website/data/nasvetlo_telk_radar.json',
+          name: 'NAsvetlo — 28-областен ТЕЛК форензик масив (НОИ 2023–2025 × НСИ)',
+        },
+        {
+          '@type': 'DataDownload',
+          encodingFormat: 'text/csv',
+          contentUrl: 'https://nasvetlo.website/data/SIGMA_2_0_ALL_OFFICIALS_571.csv',
+          name: 'NAsvetlo — Свързани длъжностни лица (571 записа, CSV)',
+        },
+      ],
       keywords: [
         'NAsvetlo',
         'обществени поръчки',
@@ -76,6 +117,7 @@ const jsonLd = JSON.stringify({
         'КЗК',
         'Сметна палата',
         'ДЗЗД',
+        'ТЕЛК статистика НОИ',
         'прозрачност',
         'отворени данни България',
       ],
@@ -123,7 +165,7 @@ const jsonLd = JSON.stringify({
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="sigma3/styles.css?v=20261122e" />
+  <link rel="stylesheet" href="sigma3/styles.css?v=20261123a" />
 </head>
 <body>
 
@@ -215,10 +257,10 @@ const jsonLd = JSON.stringify({
   <>
     <ModalsAndDrawer />
 
-    <script is:inline src="sigma3/app.js?v=20261122f"></script>
+    <script is:inline src="sigma3/app.js?v=20261123a"></script>
     <script is:inline src="sigma3/semantic_dialog_engine.js?v=20261122f"></script>
     <script is:inline src="sigma3/sigma3_modules.js?v=20261122g"></script>
-    <script is:inline src="sigma3/forensics7.js?v=20261120g"></script>
+    <script is:inline src="sigma3/forensics7.js?v=20261123a"></script>
     <script is:inline src="sigma3/judicial6.js?v=20261122a"></script>
   </>
 )}
