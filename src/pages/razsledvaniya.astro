@@ -7,7 +7,10 @@ const sum50 = (adm50 as any).summary || {};
 const adminsAll: any[] = Array.isArray((adm50 as any).administrations) ? (adm50 as any).administrations : [];
 const sumInv = (inv as any).summary || {};
 const invMods = (inv as any).investigations || {};
-const asOf = String((inv as any).generatedAtUtc || '2026-11-22').slice(0, 10);
+const asOf = [
+  String((inv as any).generatedAtUtc || '').slice(0, 10),
+  '2026-11-23',
+].filter(Boolean).sort().pop() || '2026-11-23';
 
 const fmtEur = (v: number) => {
   const n = Number(v || 0);
@@ -247,7 +250,7 @@ const uniqueClusters = Array.from(new Set(adminsAll.map((a) => a.cluster).filter
       <button type="button" class="inv-tab-btn" data-status-filter="CLOSED_BLOCKED">Черни кутии (0 масива) <span class="inv-tab-count">{bbCount}</span></button>
       <button type="button" class="inv-tab-btn" data-status-filter="OPENWASHING_COSMETIC">Фасадна прозрачност <span class="inv-tab-count">{owCount}</span></button>
       <button type="button" class="inv-tab-btn" data-status-filter="OPEN_READY_FOR_LINK">Готови за свързване <span class="inv-tab-count">{readyCount}</span></button>
-      <button type="button" class="inv-tab-btn" data-status-filter="PARTIAL_FRAGMENTED">Замръзнали (2018–2024) <span class="inv-tab-count">{frozenCount}</span></button>
+      <button type="button" class="inv-tab-btn" data-status-filter="PARTIAL_FRAGMENTED">Замръзнали / фрагментирани <span class="inv-tab-count">{frozenCount}</span></button>
       <button type="button" class="inv-tab-btn" data-status-filter="CONNECTED_IN_NASVETLO">Свързани в NAsvetlo <span class="inv-tab-count">{connCount}</span></button>
     </div>
 
@@ -326,7 +329,7 @@ const uniqueClusters = Array.from(new Set(adminsAll.map((a) => a.cluster).filter
     <div class="contract-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="invSignalModalTitle">
       <div class="drawer-header">
         <div>
-          <div class="kpi-label">ГЕНЕРАТОР НА ОФИЦИАЛНИ СИГНАЛИ, ЗДОИ &amp; ПЛАН 48 ЧАСА (АДФИ · КЗК · КПК · ДНСК · ЕППО)</div>
+          <div class="kpi-label">ГЕНЕРАТОР НА ОФИЦИАЛНИ СИГНАЛИ, ЗДОИ &amp; ПЛАН 48 ЧАСА (АДФИ · КЗК · КПК · ДНСК · EPPO)</div>
           <h2 id="invSignalModalTitle" style="font-size:18px;">Екзекутивен доклад &amp; Сигнали</h2>
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;">

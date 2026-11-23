@@ -44,10 +44,8 @@
     try { localStorage.setItem('sigma3_theme', theme); } catch {}
     const btn = document.getElementById('themeToggleBtn');
     if (btn) {
-      btn.innerHTML = theme === 'dark'
-        ? '<span class="theme-prefix">НА</span><span class="theme-suffix-light">светло</span>'
-        : '<span class="theme-prefix">НА</span><span class="theme-suffix-dark">тъмно</span>';
-      btn.title = theme === 'dark' ? 'Превключи на НАсветло' : 'Превключи на НАтъмно';
+      btn.textContent = theme === 'dark' ? 'Светъл режим' : 'Тъмен режим';
+      btn.title = theme === 'dark' ? 'Превключи на Светъл режим' : 'Превключи на Тъмен режим';
     }
   }
 
@@ -595,7 +593,7 @@
   let lastSignalFile = 'NASVETLO_SIGNAL.md';
 
   function getSignalTemplates() {
-    const today = (invData && invData.generatedAtUtc ? String(invData.generatedAtUtc).slice(0, 10) : '2026-11-22');
+    const today = '2026-11-23';
     const sum50 = (admData && admData.summary) || {};
     const admins = (admData && admData.administrations) || [];
     const bbAdmins = admins.filter((a) => a.antiCorruption?.accessStatus === 'CLOSED_BLOCKED');
@@ -763,7 +761,7 @@
   }
 
   function buildAdminZdoiSignal(a) {
-    const today = (invData && invData.generatedAtUtc ? String(invData.generatedAtUtc).slice(0, 10) : '2026-11-22');
+    const today = '2026-11-23';
     const allEiks = [a.eik, ...(Array.isArray(a.extraEiks) ? a.extraEiks : [])].filter(Boolean);
     const od = a.openData || {};
     const ac = a.antiCorruption || {};

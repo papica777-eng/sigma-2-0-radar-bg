@@ -16,12 +16,14 @@ import Tab11Oracle from '../components/tabs/Tab11Oracle.astro';
 import Tab12Proposal from '../components/tabs/Tab12Proposal.astro';
 import j6Raw from '../../docs/data/sigma3_judicial_6.json';
 import invRaw from '../../docs/data/nasvetlo_investigations.json';
+import telkRaw from '../../docs/data/nasvetlo_telk_radar.json';
 
 const dynamicAsOf = [
   String((j6Raw as any).generatedAtUtc || '').slice(0, 10),
   String((invRaw as any).generatedAtUtc || '').slice(0, 10),
-  '2026-11-22',
-].filter(Boolean).sort().pop() || '2026-11-22';
+  String((telkRaw as any).generatedAtUtc || '').slice(0, 10),
+  '2026-11-23',
+].filter(Boolean).sort().pop() || '2026-11-23';
 ---
 <BaseLayout asOf={dynamicAsOf}>
   <HeroFunnel asOf={dynamicAsOf} />

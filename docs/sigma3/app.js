@@ -328,10 +328,8 @@
     try { localStorage.setItem('sigma3_theme', theme); } catch {}
     const btn = document.getElementById('themeToggleBtn');
     if (btn) {
-      btn.innerHTML = theme === 'dark'
-        ? '<span class="theme-prefix">НА</span><span class="theme-suffix-light">светло</span>'
-        : '<span class="theme-prefix">НА</span><span class="theme-suffix-dark">тъмно</span>';
-      btn.title = theme === 'dark' ? 'Превключи на НАсветло' : 'Превключи на НАтъмно';
+      btn.textContent = theme === 'dark' ? 'Светъл режим' : 'Тъмен режим';
+      btn.title = theme === 'dark' ? 'Превключи на Светъл режим' : 'Превключи на Тъмен режим';
     }
   }
 
@@ -409,9 +407,9 @@
     const f7Date = (state.forensics7 && state.forensics7.generatedAtUtc) ? String(state.forensics7.generatedAtUtc).slice(0, 10) : '';
     const syncEl = document.getElementById('syncSubtitle');
     const domDate = syncEl ? ((syncEl.textContent || '').match(/\d{4}-\d{2}-\d{2}/) || [''])[0] : '';
-    const latestDate = [j6Date, f7Date, domDate, (mm && mm.asOf) || '', (state.meta && state.meta.asOf) || '', '2026-11-22'].filter(Boolean).sort().pop();
-    const refreshed = latestDate || '2026-11-22';
-    const asOf = latestDate || '2026-11-22';
+    const latestDate = [j6Date, f7Date, domDate, (mm && mm.asOf) || '', (state.meta && state.meta.asOf) || '', '2026-11-23'].filter(Boolean).sort().pop();
+    const refreshed = latestDate || '2026-11-23';
+    const asOf = latestDate || '2026-11-23';
     if (syncEl) syncEl.textContent = `Синхронизация: ${refreshed}`;
     const chipEl = document.getElementById('asOfChip');
     if (chipEl) chipEl.textContent = `Данни към: ${asOf}`;

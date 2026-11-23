@@ -199,13 +199,13 @@ const jsonLd = JSON.stringify({
       {subpage ? (
         <>
           <button type="button" class="btn topbar-btn" onclick="window.print()">Печат / PDF</button>
-          <button type="button" class="btn topbar-btn topbar-btn-theme" id="themeToggleBtn" title="Превключи между НАсветло и НАтъмно"><span class="theme-prefix">НА</span><span class="theme-suffix-dark">тъмно</span></button>
+          <button type="button" class="btn topbar-btn topbar-btn-theme" id="themeToggleBtn" title="Превключи между Светъл и Тъмен режим">Тъмен режим</button>
         </>
       ) : (
         <>
           <button type="button" class="btn topbar-btn-ai" id="quickOpenOracleBtn">AI Асистент</button>
           <button type="button" class="btn topbar-btn" id="densityToggleBtn" title="Превключи между компактен одиторски изглед и презентационен изглед">Одиторски изглед</button>
-          <button type="button" class="btn topbar-btn topbar-btn-theme" id="themeToggleBtn" title="Превключи между НАсветло и НАтъмно"><span class="theme-prefix">НА</span><span class="theme-suffix-dark">тъмно</span></button>
+          <button type="button" class="btn topbar-btn topbar-btn-theme" id="themeToggleBtn" title="Превключи между Светъл и Тъмен режим">Тъмен режим</button>
           <a href="razsledvaniya.html" class="btn topbar-btn-inv" title="Кръстосани разследвания по държавни регистри и Индекс на институционалната прозрачност">Нови разследвания ↗</a>
         </>
       )}
@@ -258,16 +258,16 @@ const jsonLd = JSON.stringify({
 </footer>
 
 {subpage ? (
-  <script is:inline src="sigma3/razsledvaniya.js?v=20261122g"></script>
+  <script is:inline src="sigma3/razsledvaniya.js?v=20261123c"></script>
 ) : (
   <>
     <ModalsAndDrawer />
 
-    <script is:inline src="sigma3/app.js?v=20261123b"></script>
+    <script is:inline src="sigma3/app.js?v=20261123c"></script>
     <script is:inline src="sigma3/semantic_dialog_engine.js?v=20261122f"></script>
-    <script is:inline src="sigma3/sigma3_modules.js?v=20261122g"></script>
+    <script is:inline src="sigma3/sigma3_modules.js?v=20261123c"></script>
     <script is:inline src="sigma3/forensics7.js?v=20261123a"></script>
-    <script is:inline src="sigma3/judicial6.js?v=20261122a"></script>
+    <script is:inline src="sigma3/judicial6.js?v=20261123c"></script>
   </>
 )}
 </body>
