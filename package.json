@@ -7,7 +7,7 @@
     "dev": "astro dev",
     "build:sass": "sass --no-source-map src/styles/main.scss docs/sigma3/styles.css",
     "build:astro": "astro build",
-    "sync:docs": "node -e \"const fs=require('fs'); for (const f of ['index.html','razsledvaniya.html','razsledvaniq.html']) { if (fs.existsSync('dist/'+f)) fs.copyFileSync('dist/'+f,'docs/'+f); }\"",
+    "sync:docs": "node -e \"const fs=require('fs'); for (const f of ['index.html','razsledvaniya.html','razsledvaniq.html','telk-skener.html']) { if (fs.existsSync('dist/'+f)) fs.copyFileSync('dist/'+f,'docs/'+f); }\"",
     "build": "npm run build:sass && npm run build:astro && npm run sync:docs",
     "preview": "astro preview"
   },

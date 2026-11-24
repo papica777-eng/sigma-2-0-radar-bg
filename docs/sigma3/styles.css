@@ -4234,3 +4234,333 @@ body[data-density=compact] .kpi-val {
 body[data-density=compact] .panel-box {
   padding: 10px 12px;
 }
+
+.topbar-btn-telk {
+  border-color: var(--teal);
+  color: var(--teal);
+  font-weight: 700;
+}
+.topbar-btn-telk:hover {
+  background: var(--teal);
+  color: #fff;
+}
+
+.telk-hero {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 5px solid var(--teal);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-top: 16px;
+  margin-bottom: 18px;
+}
+
+.telk-hero-kicker {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.telk-hero-title {
+  font-size: clamp(1.35rem, 2.4vw, 1.95rem);
+  font-weight: 800;
+  color: var(--ink);
+  margin: 0 0 8px 0;
+  line-height: 1.25;
+}
+
+.telk-hero-sub {
+  font-size: 0.94rem;
+  color: var(--ink-secondary);
+  line-height: 1.55;
+  margin: 0 0 14px 0;
+  max-width: 92ch;
+}
+
+.telk-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.telk-ssev-banner {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--crimson);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  margin-bottom: 18px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.telk-kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.telk-kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+}
+.telk-kpi-card.is-crimson {
+  border-top-color: var(--crimson);
+}
+.telk-kpi-card.is-ochre {
+  border-top-color: var(--ochre);
+}
+.telk-kpi-card.is-teal {
+  border-top-color: var(--teal);
+}
+
+.telk-kpi-val {
+  font-size: 1.28rem;
+  font-weight: 800;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.telk-kpi-lbl {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink-secondary);
+  margin-top: 2px;
+}
+
+.telk-kpi-sub {
+  font-size: 0.74rem;
+  color: var(--ink-muted);
+  margin-top: 4px;
+}
+
+.telk-stage-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+@media (max-width: 900px) {
+  .telk-stage-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.telk-stage-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+.telk-stage-card h3 {
+  margin: 0 0 8px 0;
+  font-size: 1rem;
+  color: var(--ink);
+}
+.telk-stage-card p {
+  margin: 0;
+  font-size: 0.86rem;
+  color: var(--ink-secondary);
+  line-height: 1.5;
+}
+
+.telk-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  margin-bottom: 20px;
+}
+
+.telk-scenario-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.telk-scn-btn {
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.telk-scn-btn:hover {
+  border-color: var(--accent);
+}
+.telk-scn-btn.active {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+
+.telk-verdict-box {
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  border: 2px solid var(--border);
+  margin-bottom: 14px;
+}
+.telk-verdict-box.is-auth {
+  border-color: var(--teal);
+  background: rgba(15, 118, 110, 0.08);
+}
+.telk-verdict-box.is-susp {
+  border-color: var(--ochre);
+  background: rgba(180, 83, 9, 0.1);
+}
+.telk-verdict-box.is-fake {
+  border-color: var(--crimson);
+  background: rgba(185, 28, 28, 0.1);
+}
+
+.telk-verdict-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.telk-pipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.telk-pipe-node {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  font-size: 0.82rem;
+}
+.telk-pipe-node.is-anomaly {
+  border-color: var(--ochre);
+  background: rgba(180, 83, 9, 0.08);
+}
+.telk-pipe-node.is-clear {
+  border-color: var(--teal);
+}
+
+.telk-sandbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.telk-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.telk-field label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.telk-field input,
+.telk-field select {
+  font: inherit;
+  font-size: 0.88rem;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.telk-signal-pre {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  font-size: 0.79rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 10px 0 0 0;
+}
+
+.telk-two-col {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+@media (max-width: 820px) {
+  .telk-two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+.telk-arch-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+@media (max-width: 960px) {
+  .telk-arch-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 580px) {
+  .telk-arch-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.telk-ai-meters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.telk-ai-card {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  font-size: 0.82rem;
+}
+
+.telk-meter-track {
+  height: 7px;
+  border-radius: 4px;
+  background: var(--border);
+  overflow: hidden;
+  margin-top: 6px;
+}
+.telk-meter-track > span {
+  display: block;
+  height: 100%;
+}
+
+.telk-nme-callout {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--ochre);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  margin: 10px 0;
+}
+.telk-nme-callout.is-ok {
+  border-left-color: var(--teal);
+}
+.telk-nme-callout.is-violation {
+  border-left-color: var(--crimson);
+}

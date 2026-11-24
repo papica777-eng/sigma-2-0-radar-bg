@@ -12,6 +12,8 @@ interface Props {
   asOf?: string;
   subpage?: boolean;
   canonicalPath?: string;
+  subpageScript?: string;
+  subpageSyncHref?: string;
 }
 
 const defaultAsOf = [
@@ -27,6 +29,8 @@ const {
   asOf = defaultAsOf,
   subpage = false,
   canonicalPath = '/',
+  subpageScript = 'sigma3/razsledvaniya.js?v=20261123c',
+  subpageSyncHref = 'data/nasvetlo_investigations.json',
 } = Astro.props;
 
 const canonicalUrl = `https://nasvetlo.website${canonicalPath === '/' ? '/' : canonicalPath}`;
@@ -177,7 +181,7 @@ const jsonLd = JSON.stringify({
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="sigma3/styles.css?v=20261124b" />
+  <link rel="stylesheet" href="sigma3/styles.css?v=20261124c" />
 </head>
 <body>
 
@@ -212,6 +216,7 @@ const jsonLd = JSON.stringify({
           <button type="button" class="btn topbar-btn-ai" id="quickOpenOracleBtn">AI Асистент</button>
           <button type="button" class="btn topbar-btn" id="densityToggleBtn" title="Превключи между компактен одиторски изглед и презентационен изглед">Одиторски изглед</button>
           <button type="button" class="btn topbar-btn topbar-btn-theme" id="themeToggleBtn" title="Превключи между Светъл и Тъмен режим">Тъмен режим</button>
+          <a href="telk-skener.html" class="btn topbar-btn-telk" title="Интерактивно демо на платформата за проверка на ТЕЛК решения — оферта за безвъзмездно дарение на държавата по ССЕВ">ТЕЛК Скенер (Демо) ↗</a>
           <a href="razsledvaniya.html" class="btn topbar-btn-inv" title="Кръстосани разследвания по държавни регистри и Индекс на институционалната прозрачност">Нови разследвания ↗</a>
         </>
       )}
@@ -224,13 +229,14 @@ const jsonLd = JSON.stringify({
     <div class="info-subbar-meta">
       <span class="civic-positioning-tag">Независима гражданска платформа върху отворените данни (CC-BY 4.0) на МИДТ / СИГМА 2.0</span>
       <span class="info-subbar-sep" aria-hidden="true">·</span>
-      <a class="info-subbar-sync" id="syncSubtitle" href={subpage ? 'data/nasvetlo_investigations.json' : 'data/sigma3_judicial_6.json'} target="_blank" rel="noopener" title="Преглед на актуалния JSON лог на последната синхронизация">Синхронизация: {asOf}</a>
+      <a class="info-subbar-sync" id="syncSubtitle" href={subpage ? subpageSyncHref : 'data/sigma3_judicial_6.json'} target="_blank" rel="noopener" title="Преглед на актуалния JSON лог на последната синхронизация">Синхронизация: {asOf}</a>
     </div>
     <div class="info-subbar-links">
       <span class="info-subbar-visits" id="nasvetloVisitCounter" title="Общ постоянен брой посещения на nasvetlo.website (не се занулява)" hidden style="display:none;"></span>
       <span class="info-subbar-sep" id="nasvetloVisitSep" aria-hidden="true" hidden style="display:none;"></span>
       {subpage ? (
         <>
+          <a class="subbar-link" href="data/nasvetlo_telk_radar.json" download>ТЕЛК 28-областен JSON</a>
           <a class="subbar-link" href="data/nasvetlo_50_admins.json" download>Индекс JSON</a>
           <a class="subbar-link" href="data/nasvetlo_investigations.json" download>Разследвания JSON</a>
           <a class="subbar-link" href="https://sigma.midt.bg" target="_blank" rel="noopener">СИГМА 2.0 ↗</a>
@@ -264,7 +270,7 @@ const jsonLd = JSON.stringify({
 </footer>
 
 {subpage ? (
-  <script is:inline src="sigma3/razsledvaniya.js?v=20261123c"></script>
+  <script is:inline src={subpageScript}></script>
 ) : (
   <>
     <ModalsAndDrawer />
