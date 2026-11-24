@@ -3643,6 +3643,8 @@ tbody td {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-width: 0;
+  overflow: hidden;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .sector-xray-card.is-active-sphere {
@@ -3711,11 +3713,19 @@ tbody td {
 
 .sector-xray-entities {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 9px;
   padding-top: 8px;
   border-top: 1px solid var(--border);
   font-size: 11px;
+  min-width: 0;
+}
+.sector-xray-entities > div {
+  min-width: 0;
+}
+.sector-xray-entities > div + div {
+  padding-top: 7px;
+  border-top: 1px dashed var(--border);
 }
 .sector-xray-entities h5 {
   margin: 0 0 5px;
@@ -3731,41 +3741,48 @@ tbody td {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
 }
 .sector-xray-entities li {
   display: flex;
   justify-content: space-between;
-  gap: 6px;
+  gap: 8px;
   align-items: baseline;
+  min-width: 0;
 }
 .sector-xray-entities a {
+  flex: 1 1 0;
+  min-width: 0;
   color: var(--ink);
   text-decoration: none;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 135px;
 }
 .sector-xray-entities a:hover {
   color: var(--crimson);
   text-decoration: underline;
 }
 .sector-xray-entities .ent-val {
+  flex-shrink: 0;
   font-family: var(--font-mono);
   font-weight: 600;
   white-space: nowrap;
   color: var(--ink-muted);
   font-size: 10.5px;
+  text-align: right;
 }
 
 .sector-xray-foot {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 8px;
   margin-top: auto;
   padding-top: 6px;
   border-top: 1px dashed var(--border);
+  min-width: 0;
 }
 
 @media (max-width: 640px) {
