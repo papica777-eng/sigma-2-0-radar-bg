@@ -3,6 +3,11 @@ import f7Raw from '../../../docs/data/sigma3_forensics_7.json';
 
 const e1: any = (f7Raw as any).engine1_annexInflation || {};
 const fc: any = e1.flagCounts || {};
+const flagBg: Record<string, string> = {
+  annex_total_suspect: 'Индикация за общо оскъпяване',
+  annex_suspect: 'Съмнителен анекс',
+  value_low: 'Подценена начална стойност',
+};
 const previewRows: any[] = (e1.contracts || []).slice(0, 15);
 const fmtInt = (n: any) => Number(n || 0).toLocaleString('bg-BG');
 const fmtEur = (n: any) => {
@@ -35,9 +40,9 @@ const fmtEur = (n: any) => {
   <div id="f7BodyHost">
     <div class="editorial-note note-crimson">
       <div>
-        <strong>1. Анализ на анекси и оскъпяване (Post-Award Inflation):</strong>
-        Кръстосана жива проверка директно в <code>sigma.midt.bg/contracts/&#123;id&#125;.json</code>. Разкрива договори, подписани на по-ниска цена и анексирани с <strong>+20% до +142,8%</strong> нагоре (общо доказано оскъпяване <strong>+{fmtEur(e1.totalInflationEur)}</strong>).
-        В целия корпус от 206 907 договора: <code>annex_total_suspect</code>: <strong>{fmtInt(fc.annex_total_suspect || 0)}</strong> · <code>annex_suspect</code>: <strong>{fmtInt(fc.annex_suspect || 0)}</strong> · <code>value_low</code>: <strong>{fmtInt(fc.value_low || 0)}</strong>.
+        <strong>1. Анализ на анекси и оскъпяване (чл. 116 ЗОП):</strong>
+        Кръстосана жива проверка директно в първичните записи на ЦАИС ЕОП / СИГМА 2.0. Разкрива договори, подписани на по-ниска цена и анексирани с <strong>+20% до +142,8%</strong> нагоре (общо доказано оскъпяване <strong>+{fmtEur(e1.totalInflationEur)}</strong>).
+        В целия корпус от 206 907 договора: <strong>{fmtInt(fc.annex_total_suspect || 0)}</strong> с индикация за общо оскъпяване · <strong>{fmtInt(fc.annex_suspect || 0)}</strong> със съмнителни анекси · <strong>{fmtInt(fc.value_low || 0)}</strong> с подценена начална стойност.
       </div>
     </div>
     <div class="table-wrap">
@@ -65,7 +70,7 @@ const fmtEur = (n: any) => {
               <td class="num">{fmtEur(c.signingEur)}</td>
               <td class="num" style="font-weight:700;">{fmtEur(c.currentEur)}</td>
               <td class="num">
-                {c.inflationEur > 0 ? <strong style="color:var(--crimson);">+{fmtEur(c.inflationEur)} (+{c.inflationPct}%)</strong> : <span class="muted">{c.valueFlag}</span>}
+                {c.inflationEur > 0 ? <strong style="color:var(--crimson);">+{fmtEur(c.inflationEur)} (+{c.inflationPct}%)</strong> : <span class="muted">{flagBg[c.valueFlag] || c.valueFlag}</span>}
               </td>
             </tr>
           ))}

@@ -132,12 +132,18 @@
     let rows = e1.contracts || [];
     if (q) rows = rows.filter((c) => `${c.authority} ${c.contractor} ${c.subject} ${c.unp} ${c.contractorEik}`.toLowerCase().includes(q));
     const fc = e1.flagCounts || {};
+    const flagBg = {
+      annex_total_suspect: 'Индикация за общо оскъпяване',
+      annex_suspect: 'Съмнителен анекс',
+      value_low: 'Подценена начална стойност',
+    };
+    const trFlag = (f) => flagBg[f] || f || '';
     host.innerHTML = `
       <div class="editorial-note note-crimson">
         <div>
-          <strong>1. Анализ на анекси и оскъпяване (Post-Award Inflation):</strong>
-          Кръстосана жива проверка директно в <code>sigma.midt.bg/contracts/{id}.json</code>. Разкрива договори, подписани на по-ниска цена и анексирани с <strong>+20% до +142,8%</strong> нагоре (общо доказано оскъпяване <strong>+${fmtEur(e1.totalInflationEur)}</strong>).
-          В целия корпус от 206 907 договора: <code>annex_total_suspect</code>: <strong>${fmtInt(fc.annex_total_suspect || 0)}</strong> · <code>annex_suspect</code>: <strong>${fmtInt(fc.annex_suspect || 0)}</strong> · <code>value_low</code>: <strong>${fmtInt(fc.value_low || 0)}</strong>.
+          <strong>1. Анализ на анекси и оскъпяване (чл. 116 ЗОП):</strong>
+          Кръстосана жива проверка директно в първичните записи на ЦАИС ЕОП / СИГМА 2.0. Разкрива договори, подписани на по-ниска цена и анексирани с <strong>+20% до +142,8%</strong> нагоре (общо доказано оскъпяване <strong>+${fmtEur(e1.totalInflationEur)}</strong>).
+          В целия корпус от 206 907 договора: <strong>${fmtInt(fc.annex_total_suspect || 0)}</strong> с индикация за общо оскъпяване · <strong>${fmtInt(fc.annex_suspect || 0)}</strong> със съмнителни анекси · <strong>${fmtInt(fc.value_low || 0)}</strong> с подценена начална стойност.
         </div>
       </div>
       <div class="table-wrap">
@@ -156,12 +162,12 @@
               </td>
               <td>
                 <a href="#" data-open-company="${esc(c.contractorEik || c.contractor)}">${esc((c.contractor || '').slice(0, 68))}</a>
-                ${c.amendmentCount > 0 ? `<div class="badges"><span class="tag tag-ochre">${c.amendmentCount} анекса</span>${c.suspect ? '<span class="tag tag-crimson">SUSPECT</span>' : ''}</div>` : `<div class="badges"><span class="tag tag-crimson">${esc(c.valueFlag)}</span></div>`}
+                ${c.amendmentCount > 0 ? `<div class="badges"><span class="tag tag-ochre">${c.amendmentCount} анекса</span>${c.suspect ? '<span class="tag tag-crimson">Съмнителен анекс</span>' : ''}</div>` : `<div class="badges"><span class="tag tag-crimson">${esc(trFlag(c.valueFlag))}</span></div>`}
               </td>
               <td class="num">${fmtEur(c.signingEur)}</td>
               <td class="num" style="font-weight:700;">${fmtEur(c.currentEur)}</td>
               <td class="num">
-                ${c.inflationEur > 0 ? `<strong style="color:var(--crimson);">+${fmtEur(c.inflationEur)}</strong><div class="inst-line"><span class="tag ${c.inflationPct >= 25 ? 'tag-crimson' : 'tag-ochre'}">+${c.inflationPct}%</span></div>` : `<span class="muted">${esc(c.valueFlag)}</span>`}
+                ${c.inflationEur > 0 ? `<strong style="color:var(--crimson);">+${fmtEur(c.inflationEur)}</strong><div class="inst-line"><span class="tag ${c.inflationPct >= 25 ? 'tag-crimson' : 'tag-ochre'}">+${c.inflationPct}%</span></div>` : `<span class="muted">${esc(trFlag(c.valueFlag))}</span>`}
               </td>
               <td><button type="button" class="btn btn-oracle" style="padding:3px 8px;font-size:11px;" data-inspect-contract="${esc(c.id)}">Жив JSON ↗</button></td>
             </tr>`).join('') || `<tr><td colspan="7" class="loading">Няма съвпадения за филтъра.</td></tr>`}
