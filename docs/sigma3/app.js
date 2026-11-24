@@ -1416,13 +1416,21 @@
       <div class="drawer-section"><h4>Най-големи договори (Топ ${o.topContracts.length})</h4>${contractsHtml}</div>
       <div class="drawer-section" style="border-bottom:none;"><h4>Декларации в Сметната палата (register.cacbg.bg)</h4>${declsHtml}</div>
     `;
-    document.getElementById('drawerBackdrop').classList.add('open');
-    document.getElementById('dossierDrawer').classList.add('open');
+    const drwBd = document.getElementById('drawerBackdrop');
+    const drw = document.getElementById('dossierDrawer');
+    drwBd.classList.add('open');
+    drwBd.setAttribute('aria-hidden', 'false');
+    drw.classList.add('open');
+    drw.setAttribute('aria-hidden', 'false');
   }
 
   function closeDossier() {
-    document.getElementById('drawerBackdrop').classList.remove('open');
-    document.getElementById('dossierDrawer').classList.remove('open');
+    const drwBd = document.getElementById('drawerBackdrop');
+    const drw = document.getElementById('dossierDrawer');
+    drwBd.classList.remove('open');
+    drwBd.setAttribute('aria-hidden', 'true');
+    drw.classList.remove('open');
+    drw.setAttribute('aria-hidden', 'true');
   }
 
   // ===== LEGAL AUDIT / SIGNAL GENERATOR (ADFI / KPKONPI / NAO / EPPO) =====
@@ -1439,7 +1447,7 @@
       ``,
       `ДО:`,
       `  - Агенция за държавна финансова инспекция (АДФИ)`,
-      `  - Комисия за противодействие на корупцията (КПК, правоприемник на КПКОНПИ)`,
+      `  - Комисия за противодействие на корупцията (КПК)`,
       `  - Сметна палата на Република България`,
       `  - Европейска прокуратура (EPPO) — при наличие на ЕС финансиране`,
       ``,

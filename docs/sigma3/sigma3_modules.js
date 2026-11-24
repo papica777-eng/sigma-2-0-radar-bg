@@ -1702,7 +1702,7 @@
       const target = ents.officials[0] ? ents.officials[0].item : oracleContext.lastOfficial;
       if (target) {
         generateSignalBrief(target.slug);
-        appendOracleMsg('ai', `Генерирах официална одитна справка / сигнал до <strong>АДФИ, КПК (бивша КПКОНПИ), Сметната палата и EPPO</strong> за <strong>${esc(target.name)}</strong> (${esc(target.primaryInstitution)}, Риск ${riskBadgeHtml(target.sigma3Score)}, Комбиниран обем: <strong class="mono">${fmtEur(target.combinedEur)}</strong>). Модалният прозорец за копиране, изтегляне (.md) и печат (PDF) е отворен.` +
+        appendOracleMsg('ai', `Генерирах официална одитна справка / сигнал до <strong>АДФИ, КПК, Сметната палата и EPPO</strong> за <strong>${esc(target.name)}</strong> (${esc(target.primaryInstitution)}, Риск ${riskBadgeHtml(target.sigma3Score)}, Комбиниран обем: <strong class="mono">${fmtEur(target.combinedEur)}</strong>). Модалният прозорец за копиране, изтегляне (.md) и печат (PDF) е отворен.` +
           renderFollowUpChips([`Покажи всички договори на ${target.name}`, `Какви АДФИ проверки има в ${target.primaryInstitution}?`]), nluMeta);
         return;
       }

@@ -52,5 +52,44 @@ const fmtEurB = (n: any) => '€' + (Number(n || 0) / 1e9).toFixed(2).replace('.
       <button class="pill" data-j6-sub="eppo">6. ЗМИП и EPPO рисков профил</button>
     </div>
   </div>
-  <div id="j6BodyHost"><div class="loading">Натиснете раздела за зареждане на съдебния радар…</div></div>
+  <div id="j6BodyHost">
+    <div class="editorial-note note-crimson">
+      <div>
+        <strong>1. Съдебни спорове Изпълнител &harr; Възложител (Директен ЕПЕП / ЕИСС API достъп + Анекс радар):</strong>
+        Автоматично извличане на пълните диспозитиви, страни и процесуални представители по <strong>{(m1.liveEissCommercialDisputes || []).length} търговски и въззивни търговски дела (ТД / ВТД)</strong> между изпълнители и публични възложители от <code>ecase.justice.bg</code>.
+      </div>
+    </div>
+    <div class="panel-box">
+      <h3>Живи Търговски и Въззивни дела (ТД / ВТД) между Изпълнители и Възложители в ЕПЕП / ЕИСС ({(m1.liveEissCommercialDisputes || []).length} дела)</h3>
+      <div class="table-wrap" style="border:none;">
+        <table>
+          <thead>
+            <tr>
+              <th>Съд / Дело / Акт</th>
+              <th>Страни (Ищец &harr; Ответник)</th>
+              <th>Възложител</th>
+              <th>Извлечен диспозитив от ЕИСС</th>
+            </tr>
+          </thead>
+          <tbody>
+            {((m1.liveEissCommercialDisputes || []).slice(0, 12)).map((c: any) => (
+              <tr>
+                <td style="white-space:nowrap;">
+                  <strong>{c.court}</strong>
+                  <div class="inst-line mono">{c.caseNo} · {c.actNo}</div>
+                  <div class="inst-line mono muted">{c.actDate}</div>
+                </td>
+                <td>
+                  <div style="font-size:12px;"><strong>Ищец:</strong> {c.sideLeft}</div>
+                  <div style="font-size:12px;"><strong>Ответник:</strong> {c.sideRight}</div>
+                </td>
+                <td><strong>{c.authorityName}</strong></td>
+                <td style="font-size:12px;">{String(c.disposition || '').slice(0, 220)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </section>

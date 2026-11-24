@@ -919,11 +919,31 @@ code {
    ========================================================================= */
 .tabs {
   display: flex;
+  flex-wrap: nowrap;
   gap: 18px;
   border-bottom: 1px solid var(--ink);
   margin-bottom: 28px;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
   padding-bottom: 0;
+}
+@media (max-width: 768px) {
+  .quick-cities {
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+  .quick-cities::-webkit-scrollbar { display: none; }
+  .quick-cities span, .city-chip { flex-shrink: 0; white-space: nowrap; }
+  .tabs {
+    flex-wrap: nowrap !important;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .tab-btn { flex-shrink: 0; }
 }
 .tab-btn {
   background: transparent;
@@ -1558,11 +1578,11 @@ tbody td {
   z-index: 100;
   transform: translateX(100%);
   transition: transform 0.22s ease;
-  display: flex;
+  display: none;
   flex-direction: column;
   box-shadow: -20px 0 50px rgba(0, 0, 0, 0.2);
 }
-.drawer.open { transform: translateX(0); }
+.drawer.open { display: flex; transform: translateX(0); }
 .drawer-header {
   padding: 18px 24px;
   border-bottom: 1px solid var(--ink);
@@ -1572,7 +1592,7 @@ tbody td {
   gap: 12px;
   background: var(--surface-alt);
 }
-.drawer-header h2 { font-family: var(--font-serif); font-weight: 400; margin: 3px 0 6px; font-size: 24px; color: var(--ink); }
+.drawer-header h2, .drawer-header .drawer-title-h2 { font-family: var(--font-serif); font-weight: 400; margin: 3px 0 6px; font-size: 24px; color: var(--ink); }
 .drawer-body { padding: 20px 24px; overflow-y: auto; flex: 1; }
 .drawer-section { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
 .drawer-section h4 {

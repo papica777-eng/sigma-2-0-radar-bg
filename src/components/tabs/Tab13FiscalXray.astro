@@ -248,11 +248,11 @@ const expLines = [
     <div class="fiscal-q-bars" role="img" aria-label="Тримесечен брутен държавен дълг на България 2023-2026">
       {quarters.map((q) => {
         const v = Number(qDebtNac[q] || 0);
-        const pct = Number(qDebtPct[q] || 0);
+        const pct = q === '2025-Q4' ? Number(gdPct_25 || 29.9) : Number(qDebtPct[q] || 0);
         const hPct = Math.max(12, Math.round((v / maxQDebt) * 100));
         const isSurge = q >= '2025-Q2';
         return (
-          <div class={`fq-col ${isSurge ? 'is-surge' : ''}`} title={`${q}: €${(v / 1000).toFixed(2)} млрд. (${pct}% БВП)`}>
+          <div class={`fq-col ${isSurge ? 'is-surge' : ''}`} title={`${q}: €${(v / 1000).toFixed(2)} млрд. (${pct.toFixed(1)}% БВП)`}>
             <div class="fq-val">€{(v / 1000).toFixed(1).replace('.', ',')}B</div>
             <div class="fq-bar-wrap">
               <div class="fq-bar" style={`height:${hPct}%;`}></div>

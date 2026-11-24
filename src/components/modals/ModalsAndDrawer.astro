@@ -19,7 +19,7 @@
     <div class="drawer-header">
       <div>
         <div class="kpi-label">УДОСТОВЕРЯВАНЕ В РЕАЛНО ВРЕМЕ · ЦАИС ЕОП / СИГМА</div>
-        <h2 id="contractModalTitle" style="font-size:18px;">Зареждане на договор…</h2>
+        <div class="drawer-title-h2" id="contractModalTitle" role="heading" aria-level="2" style="font-size:18px;">Детайли по договор</div>
       </div>
       <button type="button" class="close-btn" id="contractModalClose" aria-label="Затвори">&times;</button>
     </div>
@@ -32,7 +32,7 @@
   <div class="contract-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="signalModalTitle">
     <div class="drawer-header">
       <div>
-        <div class="kpi-label">ГЕНЕРАТОР НА ОФИЦИАЛНА ОДИТНА СПРАВКА / СИГНАЛ (АДФИ · КПК / БИВША КПКОНПИ · СМЕТНА ПАЛАТА · EPPO)</div>
+        <div class="kpi-label">ГЕНЕРАТОР НА ОФИЦИАЛНА ОДИТНА СПРАВКА / СИГНАЛ (АДФИ · КПК / КОНПИ · СМЕТНА ПАЛАТА · EPPO)</div>
         <h2 id="signalModalTitle" style="font-size:18px;">Одитна справка</h2>
       </div>
       <div style="display:flex;gap:6px;">
@@ -55,7 +55,7 @@
       <div class="hof-inner">
         <button type="button" class="hof-modal-close" id="hofCloseBtn" aria-label="Затвори">&times; Затвори</button>
         <div class="hof-header">
-          <span class="hof-kicker">NAsvetlo · Йерархия по обем и риск · Топ 50 по официални данни</span>
+          <span class="hof-kicker">NAsvetlo · Национална класация по обем и риск (официални данни)</span>
           <h2 class="hof-title" id="hofModalTitle">ЙЕРАРХИЧЕН ПРОФИЛ НА КОНЦЕНТРАЦИЯТА (ТОП 50)</h2>
           <p class="hof-subtitle">
             Топ 50 лица във властта с най-големи обеми обществени поръчки по публичните регистри на <strong>СИГМА (МИДТ)</strong>, <strong>ЦАИС ЕОП</strong>, <strong>Сметната палата</strong> и скритите <strong>ДЗЗД консорциуми</strong>. Кликнете върху плочка за пълното досие.
@@ -68,11 +68,9 @@
             <button class="hof-mode-btn" data-hof-mode="risk">NAsvetlo Риск индекс</button>
           </div>
         </div>
-        <div class="hof-pyramid" id="hofPyramid">
-          <div class="loading" style="color:#94a3b8;">Изграждане на йерархията Топ 50…</div>
-        </div>
+        <div class="hof-pyramid" id="hofPyramid"></div>
         <div class="hof-footer">
-          <span id="hofSummaryText">Общ обем на Топ 50 в йерархията: зареждане…</span>
+          <span id="hofSummaryText">Топ 50 по официално декларирани и регистрови данни</span>
           <span>Източник: СИГМА (МИДТ / АОП) и Сметна палата (CC-BY 4.0) · Официално декларирани и регистрови данни.</span>
         </div>
       </div>
@@ -81,12 +79,12 @@
 </div>
 
 <!-- UNIVERSAL SLIDE-OVER DOSSIER DRAWER (Officials, Authorities & Companies) -->
-<div class="drawer-backdrop" id="drawerBackdrop"></div>
+<div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
 <aside class="drawer" id="dossierDrawer" aria-hidden="true">
   <div class="drawer-header">
     <div>
-      <div class="kpi-label" id="drawerCircle">—</div>
-      <h2 id="drawerName">—</h2>
+      <div class="kpi-label" id="drawerCircle"></div>
+      <div class="drawer-title-h2" id="drawerName" role="heading" aria-level="2"></div>
       <div class="badges" id="drawerBadges"></div>
     </div>
     <button class="close-btn" id="drawerClose" aria-label="Затвори">&times;</button>
