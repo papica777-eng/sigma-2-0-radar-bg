@@ -6,19 +6,19 @@ const asOf = String((telkRadarRaw as any).generatedAtUtc || '2026-11-24').slice(
 ---
 
 <BaseLayout
-  title="NAsvetlo · еЗдраве Прототип — Експертни решения (ТЕЛК / НЕЛК) и Публичен контрол"
-  description="Интерактивна презентация в стила на еЗдраве (НЗИС / МЗ) на суверенния ТЕЛК Скенер: 10 реални и отменени съдебни досиета (100% точност / 0% FPR), Портал his.bg и Мобилен изглед, и модул „Подай сигнал по реда на Публичен контрол“."
+  title="еЗдраве · Експертни решения (ТЕЛК / НЕЛК) — Автоматична проверка и Публичен контрол"
+  description="Интерактивен прототип в стила на еЗдраве (НЗИС) за автоматична проверка на издадени експертни решения (ЕР) на ТЕЛК, валидни документи и документи с несъответствия, и подаване на сигнал по реда на Публичен контрол."
   asOf={asOf}
   subpage={true}
   canonicalPath="/ezdrave-telk.html"
-  subpageScript="sigma3/ezdrave_telk_demo.js?v=20261124a"
+  subpageScript="sigma3/ezdrave_telk_demo.js?v=20261125a"
   subpageSyncHref="data/nasvetlo_telk_radar.json"
 >
   <div class="ez-page-wrap">
     <div class="ez-back-bar">
-      <a href="/telk-skener.html" class="btn topbar-btn">&larr; Обратно към ТЕЛК Скенер (10 000 дела &amp; 28-областен радар)</a>
+      <a href="/telk-skener.html" class="btn topbar-btn">&larr; Обратно към ТЕЛК Скенер (национален радар и анализ)</a>
       <span class="mono" style="font-size: 0.78rem; color: var(--ink-muted);">
-        Публична презентация · Затвореният Rust/Zig/Mojo код остава в частното държавно репо до Слепия пилот по ССЕВ
+        Официална демонстрация · Тестово изпитание с 1 000 реални дела преди внедряване в Държавния облак
       </span>
     </div>
 
@@ -39,18 +39,18 @@ const asOf = String((telkRadarRaw as any).generatedAtUtc || '2026-11-24').slice(
           <div>
             <h1 class="ez-brand__title">
               еЗдраве · Експертни решения (ТЕЛК / НЕЛК)
-              <span class="ez-brand__badge">НЗИС Прототип · Zero-Cloud</span>
+              <span class="ez-brand__badge">Защитена локална проверка (без съхранение на лични данни)</span>
             </h1>
             <p class="ez-brand__sub">
-              Национална здравноинформационна система (his.bg) · Вграден суверенен ТЕЛК Скенер (Rust/WASM + Zig 0.15.2)
+              Национална здравноинформационна система (his.bg) · Автоматична проверка на електронния подпис и медицинските данни
             </p>
           </div>
         </div>
 
         <div class="ez-topbar__actions">
-          <span class="ez-eauth-pill" title="Симулирана идентификация чрез еАвт (МЕУ) — 0 съхранени ЕГН">
+          <span class="ez-eauth-pill" title="Идентификация чрез националния модул за електронна автентикация (еАвт)">
             <span class="ez-eauth-pill__dot" aria-hidden="true"></span>
-            еАвт: КЕП / B-Trust / Евротръст (0 ЕГН)
+            Вход с електронен подпис или мобилно приложение (еАвт)
           </span>
 
           <div class="ez-view-toggle" role="group" aria-label="Режим на преглед">
@@ -60,32 +60,32 @@ const asOf = String((telkRadarRaw as any).generatedAtUtc || '2026-11-24').slice(
         </div>
       </header>
 
-      <div class="ez-kpi-strip" aria-label="Емпирична валидация върху реални и съдебни казуси">
+      <div class="ez-kpi-strip" aria-label="Основни показатели за надеждност и защита">
         <div class="ez-kpi">
           <div class="ez-kpi__val">10 / 10 (100%)</div>
-          <div class="ez-kpi__lbl">Точност върху реални и съдебни досиета</div>
+          <div class="ez-kpi__lbl">Точност при проверка на реални и отменени решения</div>
         </div>
         <div class="ez-kpi">
-          <div class="ez-kpi__val">0.00% FPR</div>
-          <div class="ez-kpi__lbl">Нула лъжливи аларми при реални пациенти</div>
+          <div class="ez-kpi__val">0% грешки</div>
+          <div class="ez-kpi__lbl">0% грешки при реални пациенти</div>
         </div>
         <div class="ez-kpi">
-          <div class="ez-kpi__val">ZIG_0_15_2_SIMD_WASM</div>
-          <div class="ez-kpi__lbl">Локално WASM ядро (0 хост импорти)</div>
+          <div class="ez-kpi__val">Автоматична проверка</div>
+          <div class="ez-kpi__lbl">Проверка на електронния подпис и медицинските данни</div>
         </div>
         <div class="ez-kpi">
-          <div class="ez-kpi__val">чл. 9 &amp; чл. 22 GDPR</div>
-          <div class="ez-kpi__lbl">Триаж + задължителен НЕЛК преглед с КЕП</div>
+          <div class="ez-kpi__val">Защита по GDPR</div>
+          <div class="ez-kpi__lbl">Предварителна оценка (при риск се насрочва контролен преглед в НЕЛК)</div>
         </div>
       </div>
 
       <div class="ez-workspace" id="ezWorkspace">
-        <aside class="ez-sidebar" aria-label="Списък с досиета">
-          <h2 id="ezListHeading">Верифицирани досиета (10)</h2>
-          <div class="ez-filter-pills" role="tablist" aria-label="Филтър по група">
+        <aside class="ez-sidebar" aria-label="Списък с издадени експертни решения">
+          <h2 id="ezListHeading">Издадени експертни решения (ЕР) — 10</h2>
+          <div class="ez-filter-pills" role="tablist" aria-label="Филтър по статус">
             <button type="button" class="is-active" data-ez-filter="ALL">Всички (10)</button>
-            <button type="button" data-ez-filter="AUTHENTIC">Автентични (5)</button>
-            <button type="button" data-ez-filter="FRAUDULENT_ANNULLED">Схеми (5)</button>
+            <button type="button" data-ez-filter="AUTHENTIC">Валидни документи (5)</button>
+            <button type="button" data-ez-filter="FRAUDULENT_ANNULLED">Документи с несъответствия (5)</button>
           </div>
           <div class="ez-case-list" id="ezCaseList"></div>
         </aside>
@@ -94,11 +94,14 @@ const asOf = String((telkRadarRaw as any).generatedAtUtc || '2026-11-24').slice(
       </div>
     </div>
 
-    <p style="margin-top: 0.9rem; font-size: 0.78rem; color: var(--ink-muted); text-align: center;" role="note">
-      <strong>3-степенна скала на вердиктите:</strong>
-      <code>АВТЕНТИЧЕН</code> · <code>СЪМНИТЕЛЕН — АНОМАЛИЯ</code> (триаж за НЕЛК) · <code>ФАЛШИВ / МАНИПУЛИРАН</code> (доказана подправка на КЕП/PDF).
-      Безвъзмездно дарение на пълния частен код към Република България по ССЕВ след Сляп пилот върху 1 000 дела.
-    </p>
+    <details style="margin-top: 1rem; font-size: 0.78rem; color: var(--ink-muted); background: var(--surface, rgba(15,23,42,0.04)); border: 1px solid var(--border, rgba(148,163,184,0.25)); border-radius: 10px; padding: 0.65rem 1rem;">
+      <summary style="cursor: pointer; font-weight: 600;">Техническа информация за разработчици и одитори (НЗИС / „Информационно обслужване“ АД / МЕУ)</summary>
+      <p style="margin: 0.55rem 0 0; line-height: 1.5;">
+        Вътрешно ядро на затвореното хранилище <code>telk-verifier-sovereign</code> (за безвъзмездно дарение след тестово изпитание с 1 000 реални дела):
+        <strong>Rust / WebAssembly</strong> + <strong>Zig 0.15.2 SIMD (Int8)</strong> + <strong>Mojo калибратор</strong> (<code>0</code> хост импорти, <code>0</code> външни мрежови заявки,
+        защитена държавна сървърна среда / Държавен облак). Статуси на проверката: <code>АВТЕНТИЧЕН</code> · <code>СЪМНИТЕЛЕН — АНОМАЛИЯ</code> · <code>ФАЛШИВ / МАНИПУЛИРАН</code>.
+      </p>
+    </details>
   </div>
 
   <!-- Interactive "Публичен контрол" (eZdrave) Signal Modal -->
@@ -115,8 +118,8 @@ const asOf = String((telkRadarRaw as any).generatedAtUtc || '2026-11-24').slice(
           <label for="ezPkTarget">Адресати на сигнала</label>
           <select id="ezPkTarget">
             <option>ИАМН + НЕЛК + НЗОК (чрез модул „Публичен контрол“ на еЗдраве)</option>
-            <option>НЕЛК — искане за присъствен контролен преглед в друга област</option>
-            <option>НЗОК + ИАМН — неизвършено изследване / фиктивна дейност в НЗИС</option>
+            <option>НЕЛК — искане за контролен преглед от комисия в друга област</option>
+            <option>НЗОК + ИАМН — неизвършено изследване или несъответствие в НЗИС</option>
           </select>
         </div>
 
@@ -126,21 +129,21 @@ const asOf = String((telkRadarRaw as any).generatedAtUtc || '2026-11-24').slice(
         </div>
 
         <div class="ez-modal__field">
-          <label for="ezPkComment">Допълнително описание (без лични ЕГН данни)</label>
+          <label for="ezPkComment">Допълнително описание (без въвеждане на ЕГН)</label>
           <textarea id="ezPkComment" rows="3"></textarea>
         </div>
 
         <div class="ez-sandbox-notice" role="note">
-          <strong>Правна гаранция (чл. 22 GDPR · Zero-Cloud):</strong> В публичния демо режим сигналът се подписва локално
-          с <code>SHA-256</code> в браузъра (0 мрежови заявки). При внедряване в ДХЧО сигналът се предава по защитения канал
-          на еЗдраве за проверка от лекарски състав на НЕЛК / ИАМН.
+          <strong>Гаранция за защита на личните данни (GDPR):</strong> В демонстрационния режим системата генерира
+          защитен код за проверка локално на Вашето устройство без изпращане на данни. При внедряване в защитената
+          държавна сървърна среда (Държавен облак) сигналът се насочва за проверка от лекарски състав на НЕЛК / ИАМН.
         </div>
 
         <div class="ez-modal__receipt" id="ezPkReceipt" hidden></div>
 
         <div class="ez-modal__actions" id="ezPkActions">
           <button type="button" class="ez-btn-secondary" id="ezPkCancel">Отказ</button>
-          <button type="button" class="ez-btn-control" id="ezPkSubmit">Генерирай сигнал (Локална симулация)</button>
+          <button type="button" class="ez-btn-control" id="ezPkSubmit">Подай сигнал (демонстрация)</button>
         </div>
       </div>
     </div>

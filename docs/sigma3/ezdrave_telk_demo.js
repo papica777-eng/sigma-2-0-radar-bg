@@ -485,7 +485,7 @@
     if (!listEl) return;
 
     const items = state.filter === 'ALL' ? CASES : CASES.filter((c) => c.cohort === state.filter);
-    if (headingEl) headingEl.textContent = 'Верифицирани досиета (' + items.length + ')';
+    if (headingEl) headingEl.textContent = 'Издадени експертни решения (ЕР) — ' + items.length;
 
     listEl.innerHTML = items
       .map((item) => {
@@ -506,14 +506,14 @@
           '<span class="ez-pill ' +
           (ok ? 'ez-pill--ok' : 'ez-pill--danger') +
           '">' +
-          (ok ? 'Автентичен' : 'Аномалия') +
+          (ok ? 'Валиден документ' : 'Несъответствие') +
           '</span></div>' +
           '<p class="ez-case-btn__title">' +
           esc(item.titleBg) +
           '</p>' +
           '<div class="ez-case-btn__meta"><span>' +
           esc(item.oblastName) +
-          '</span><span>' +
+          '</span><span>Проверено за ' +
           item.elapsedMs.toFixed(1) +
           ' ms</span></div></button>'
         );
@@ -526,7 +526,7 @@
     if (state.tab === 'audit') {
       const flagsHtml =
         c.flags.length > 0
-          ? '<div class="ez-card"><h3>Засечени криминалистични и клинични флагове</h3><ul class="ez-flag-list">' +
+          ? '<div class="ez-card"><h3>Установени несъответствия в медицинското досие</h3><ul class="ez-flag-list">' +
             c.flags.map((f) => '<li><code>[' + esc(f.code) + ']</code> ' + esc(f.msg) + '</li>').join('') +
             '</ul></div>'
           : '';
@@ -535,40 +535,34 @@
         (isAnomaly ? 'ez-verdict-box--danger' : 'ez-verdict-box--ok') +
         '"><div><h3 class="ez-verdict-box__title">' +
         (isAnomaly
-          ? 'ЗАСЕЧЕНО НЕСЪОТВЕТСТВИЕ (' + c.flags.length + ' флага) — Препоръчан триаж към НЕЛК'
-          : 'АВТЕНТИЧНО ЕКСПЕРТНО РЕШЕНИЕ — Потвърдено криптографски и клинично') +
-        '</h3><p class="ez-verdict-box__desc">Двигател: <strong>ZIG_0_15_2_SIMD_WASM</strong> · Време: <strong>' +
+          ? 'УСТАНОВЕНО НЕСЪОТВЕТСТВИЕ (' + c.flags.length + ' сигнала) — Насочено за контролен преглед в НЕЛК'
+          : 'ВАЛИДНО ЕКСПЕРТНО РЕШЕНИЕ — Потвърден електронен подпис и медицинска история') +
+        '</h3><p class="ez-verdict-box__desc">Автоматична проверка на електронния подпис и медицинските данни · Време: <strong>' +
         c.elapsedMs.toFixed(2) +
-        ' ms</strong> · 95% CI: <strong>[' +
-        pct(c.ci95Lower) +
-        ' – ' +
-        pct(c.ci95Upper) +
-        ']</strong></p></div>' +
+        ' ms</strong> · Предварителна оценка (при риск се насрочва контролен преглед в НЕЛК)</p></div>' +
         '<button type="button" class="' +
         (isAnomaly ? 'ez-btn-control' : 'ez-btn-secondary') +
         '" data-ez-open-pk="1">' +
         (isAnomaly ? 'Подай сигнал по реда на „Публичен контрол“' : 'Преглед на модул „Публичен контрол“') +
         '</button></div>' +
-        '<div class="ez-card"><h3>Оценка на Zig 0.15.2 Int8 Tiny-AI (Чатушкоти: ' +
-        esc(c.catuskotiState) +
-        ')</h3><div class="ez-prob-grid">' +
-        '<div class="ez-prob-bar"><div class="ez-prob-bar__head"><span>Автентичност</span><strong>' +
+        '<div class="ez-card"><h3>Автоматична оценка на клиничното съответствие</h3><div class="ez-prob-grid">' +
+        '<div class="ez-prob-bar"><div class="ez-prob-bar__head"><span>Съответствие с медицинската история</span><strong>' +
         pct(c.pAuthentic) +
         '</strong></div><div class="ez-prob-bar__track"><div class="ez-prob-bar__fill ez-prob-bar__fill--ok" style="width:' +
         Math.max(2, c.pAuthentic * 100) +
         '%"></div></div></div>' +
-        '<div class="ez-prob-bar"><div class="ez-prob-bar__head"><span>Фиктивна диагноза</span><strong>' +
+        '<div class="ez-prob-bar"><div class="ez-prob-bar__head"><span>Риск от липсваща клинична история</span><strong>' +
         pct(c.pFabricatedDiagnosis) +
         '</strong></div><div class="ez-prob-bar__track"><div class="ez-prob-bar__fill ez-prob-bar__fill--danger" style="width:' +
         Math.max(2, c.pFabricatedDiagnosis * 100) +
         '%"></div></div></div>' +
-        '<div class="ez-prob-bar"><div class="ez-prob-bar__head"><span>НМЕ аритметична инфлация</span><strong>' +
+        '<div class="ez-prob-bar"><div class="ez-prob-bar__head"><span>Отклонение във формулата по НМЕ</span><strong>' +
         pct(c.pSystemicOrNmeInflation) +
         '</strong></div><div class="ez-prob-bar__track"><div class="ez-prob-bar__fill ez-prob-bar__fill--warn" style="width:' +
         Math.max(2, c.pSystemicOrNmeInflation * 100) +
         '%"></div></div></div></div></div>' +
-        '<div class="ez-card"><h3>Нормативна проверка по НМЕ (Приложение № 2, т. III)</h3>' +
-        '<p style="margin:0 0 0.4rem;font-size:0.79rem;color:#52687c;">Формула: <code>' +
+        '<div class="ez-card"><h3>Проверка на процента ТНР по Наредбата за медицинската експертиза (НМЕ)</h3>' +
+        '<p style="margin:0 0 0.4rem;font-size:0.79rem;color:#52687c;">Законова формула: <code>' +
         esc(c.nme.formula) +
         '</code></p><p style="margin:0;font-size:0.84rem;font-weight:600;">' +
         esc(c.nme.message) +
@@ -579,7 +573,7 @@
 
     if (state.tab === 'exams') {
       return (
-        '<div class="ez-card"><h3>Амбулаторни прегледи и направления в НЗИС (X001 / R001)</h3><div class="ez-record-list">' +
+        '<div class="ez-card"><h3>Амбулаторни прегледи и направления в НЗИС</h3><div class="ez-record-list">' +
         c.exams
           .map(
             (ex) =>
@@ -590,7 +584,7 @@
               '</span><span class="ez-pill ' +
               (ex.ok ? 'ez-pill--ok' : 'ez-pill--danger') +
               '">' +
-              (ex.ok ? 'Потвърден в НЗИС' : 'Аномалия / Липса') +
+              (ex.ok ? 'Потвърден в НЗИС' : 'Установено несъответствие') +
               '</span></div><small>' +
               esc(ex.date) +
               ' · ' +
@@ -606,14 +600,14 @@
 
     if (state.tab === 'hospital') {
       return (
-        '<div class="ez-card"><h3>Болничен престой, епикризи (H001) и Zig 64-bit SimHash</h3><div class="ez-record-list">' +
+        '<div class="ez-card"><h3>Болничен престой и епикризи</h3><div class="ez-record-list">' +
         c.hospitals
           .map((h) => {
             const badge =
               h.simhash === 'UNIQUE'
-                ? '<span class="ez-pill ez-pill--ok">SimHash: Уникална епикриза</span>'
+                ? '<span class="ez-pill ez-pill--ok">Уникална епикриза</span>'
                 : h.simhash === 'CLONE_DETECTED'
-                  ? '<span class="ez-pill ez-pill--danger">SimHash: Клониран шаблон (&gt;92%)</span>'
+                  ? '<span class="ez-pill ez-pill--danger">Повтарящ се шаблон (&gt;92%)</span>'
                   : '<span class="ez-pill ez-pill--danger">Липсва болнична епикриза</span>';
             return (
               '<div class="ez-record-item"><div class="ez-record-item__head"><span class="ez-record-item__nrn">НРН ' +
@@ -638,7 +632,7 @@
 
     if (state.tab === 'rxlabs') {
       return (
-        '<div class="ez-card"><h3>Обективни изследвания и изпълнени е-Рецепти (P001) — ' +
+        '<div class="ez-card"><h3>Обективни изследвания и изпълнени е-Рецепти — ' +
         c.rxCount24m +
         ' рецепти за 24 мес.</h3><div class="ez-record-list">' +
         c.rxlabs
@@ -651,7 +645,7 @@
               '</span><span class="ez-pill ' +
               (r.ok ? 'ez-pill--ok' : 'ez-pill--danger') +
               '">' +
-              (r.ok ? 'Потвърдено' : 'Липсва / Противоречие') +
+              (r.ok ? 'Потвърдено' : 'Липсва / Несъответствие') +
               '</span></div><small>Дата: ' +
               esc(r.date) +
               '</small><p>' +
@@ -664,15 +658,15 @@
     }
 
     return (
-      '<div class="ez-card"><h3>Адаптерна спецификация за НЗИС (his.bg), RegiX и ДХЧО</h3>' +
-      '<div class="ez-sandbox-notice" role="note"><strong>Важно техническо уточнение за одиторите (МЕУ / „Информационно обслужване“ АД):</strong> ' +
-      'Имената на крайните точки и обменните структури са <strong>шаблонни (mock/sandbox)</strong> и следват публичната номенклатура на НЗИС ' +
+      '<div class="ez-card"><h3>Свързване с държавните регистри (НЗИС, RegiX и Държавен облак)</h3>' +
+      '<div class="ez-sandbox-notice" role="note"><strong>Техническа бележка за одиторите („Информационно обслужване“ АД и МЕУ):</strong> ' +
+      'Имената на крайните точки в демонстрационната среда са <strong>шаблонни (mock/sandbox)</strong> и следват публичната номенклатура на НЗИС ' +
       '(<code>X001/X002</code> за прегледи, <code>P001/P002</code> за е-рецепти, <code>R001/R002</code> за направления, <code>H001/H002</code> за хоспитализации) ' +
-      'до предоставяне на официален X.509 достъп и продукционни схеми от „Информационно обслужване“ АД в ДХЧО.</div>' +
+      'до получаване на официален достъп и внедряване в защитената държавна сървърна среда (Държавен облак).</div>' +
       '<div class="ez-record-list" style="margin-top:0.75rem;">' +
-      '<div class="ez-record-item"><div class="ez-record-item__head"><span class="ez-record-item__nrn">НЗИС (his.bg) · FHIR/XML адаптер (Sandbox)</span><span class="ez-pill ez-pill--info">X001 · P001 · R001 · H001</span></div><p>Валидация на 12-цифрен НРН (Mod-11) и наличие на обективни ЕМГ/КАГ/Хистология/е-рецепти в реално време.</p></div>' +
-      '<div class="ez-record-item"><div class="ez-record-item__head"><span class="ez-record-item__nrn">RegiX · ИБД-ТЕЛК / НОИ / ЕСГРАОН (Sandbox)</span><span class="ez-pill ez-pill--info">ДХЧО Air-Gapped Ready</span></div><p>Кръстосана проверка на постоянен адрес (ЕСГРАОН), активни плащания (НОИ) и предходни ЕР (ИБД-ТЕЛК) без външен облак.</p></div>' +
-      '<div class="ez-record-item"><div class="ez-record-item__head"><span class="ez-record-item__nrn">еАвт (МЕУ) · КЕП / Евротръст / B-Trust</span><span class="ez-pill ez-pill--ok">GDPR чл. 9 &amp; чл. 22</span></div><p>Пациентът достъпва собственото си ЕР и може с 1 клик да подаде сигнал по реда на „Публичен контрол“.</p></div>' +
+      '<div class="ez-record-item"><div class="ez-record-item__head"><span class="ez-record-item__nrn">НЗИС (his.bg) — Проверка на НРН и изследвания</span><span class="ez-pill ez-pill--info">X001 · P001 · R001 · H001</span></div><p>Проверка в реално време дали 12-цифреният НРН на прегледа, изследването или е-рецептата съществува в системата.</p></div>' +
+      '<div class="ez-record-item"><div class="ez-record-item__head"><span class="ez-record-item__nrn">RegiX — ИБД-ТЕЛК, НОИ и ЕСГРАОН</span><span class="ez-pill ez-pill--info">Държавен облак</span></div><p>Сверка на адресна регистрация (ЕСГРАОН), активни плащания (НОИ) и предходни експертни решения (ИБД-ТЕЛК).</p></div>' +
+      '<div class="ez-record-item"><div class="ez-record-item__head"><span class="ez-record-item__nrn">Вход с електронен подпис или мобилно приложение (еАвт)</span><span class="ez-pill ez-pill--ok">Защита по GDPR</span></div><p>Пациентът преглежда собственото си експертно решение и може с 1 клик да подаде сигнал по реда на „Публичен контрол“.</p></div>' +
       '</div></div>'
     );
   }
@@ -686,11 +680,11 @@
     const c = currentCase();
     const isAnomaly = c.verdict !== 'АВТЕНТИЧЕН';
     const tabs = [
-      ['audit', '1. Одит & Щит'],
-      ['exams', '2. Прегледи (X001)'],
-      ['hospital', '3. Епикризи (H001)'],
-      ['rxlabs', '4. Рецепти & Изсл. (P001)'],
-      ['integration', '5. НЗИС / RegiX (Sandbox)'],
+      ['audit', '1. Проверка на документа'],
+      ['exams', '2. Прегледи и направления'],
+      ['hospital', '3. Болничен престой'],
+      ['rxlabs', '4. Изследвания и рецепти'],
+      ['integration', '5. Свързване с НЗИС'],
     ];
 
     const inner =
@@ -712,21 +706,19 @@
       '<div><span class="ez-pill ' +
       (isAnomaly ? 'ez-pill--danger' : 'ez-pill--ok') +
       '">' +
-      (isAnomaly ? 'Триаж за НЕЛК (THIRD)' : 'Валидирано (FIRST)') +
+      (isAnomaly ? 'За контролен преглед в НЕЛК' : 'Валиден документ') +
       '</span></div></div>' +
       '<div class="ez-patient-card__grid">' +
       '<div class="ez-patient-card__item"><span>Водеща диагноза (МКБ-10)</span><strong>' +
       esc(c.icd10 + ' — ' + c.icd10LabelBg) +
       '</strong></div>' +
-      '<div class="ez-patient-card__item"><span>Отчетен ТНР % / Срок</span><strong>' +
+      '<div class="ez-patient-card__item"><span>Определен ТНР % / Срок</span><strong>' +
       c.tnrPct +
       '% · ' +
       esc(c.validityTermBg) +
       '</strong></div>' +
-      '<div class="ez-patient-card__item"><span>Обезличен идентификатор</span><strong>' +
-      esc(c.patientPseudonym) +
-      '</strong></div>' +
-      '<div class="ez-patient-card__item"><span>Клинична траектория</span><strong>' +
+      '<div class="ez-patient-card__item"><span>Защита на личните данни</span><strong>Защитена локална проверка (без ЕГН)</strong></div>' +
+      '<div class="ez-patient-card__item"><span>Клиничен профил</span><strong>' +
       esc(c.trajectoryLabelBg) +
       '</strong></div></div></article>' +
       '<div class="ez-tabs" role="tablist">' +
@@ -747,7 +739,7 @@
 
     if (state.view === 'mobile') {
       wrap.innerHTML =
-        '<div class="ez-phone-frame"><div class="ez-phone-frame__notch"><span>09:41</span><strong>еЗдраве · ТЕЛК</strong><span>5G · КЕП</span></div>' +
+        '<div class="ez-phone-frame"><div class="ez-phone-frame__notch"><span>09:41</span><strong>еЗдраве · ТЕЛК</strong><span>5G · еАвт</span></div>' +
         '<div class="ez-phone-frame__body">' +
         inner +
         '</div></div>';
@@ -863,13 +855,13 @@
     if (receiptEl) {
       receiptEl.hidden = false;
       receiptEl.innerHTML =
-        '<strong>Локален протокол за „Публичен контрол“ е генериран успешно!</strong>' +
+        '<strong>Сигналът по реда на „Публичен контрол“ е генериран успешно!</strong>' +
         '<div>Референтен №: <strong>' +
         esc(protocolId) +
         '</strong></div>' +
-        '<div>Времеви печат (UTC): ' +
+        '<div>Дата и час (UTC): ' +
         esc(timestampIso) +
-        '</div><code>SHA-256: ' +
+        '</div><code>Защитен код за проверка: ' +
         esc(hash) +
         '</code><div id="ezPkCopyMsg" style="margin-top:0.35rem;font-weight:600;"></div>';
     }
