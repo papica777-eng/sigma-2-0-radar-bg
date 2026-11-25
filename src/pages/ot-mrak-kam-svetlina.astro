@@ -12,40 +12,60 @@ const asOf = String(audit.generatedAtUtc || '2026-11-26').slice(0, 10);
 
 const fmtInt = (n: number) => Number(n || 0).toLocaleString('bg-BG');
 
+const topMultiplierBars = [
+  { label: 'Банка ДСК → СРС (М. Атанасова)', mult: 60.02, text: '×60,02 (6/308)', cls: '' },
+  { label: 'ПИБ АД → СРС (Цв. Данова)', mult: 35.41, text: '×35,41 (4/87)', cls: 'is-ochre' },
+  { label: 'ТД на НАП → АССГ (Вл. Николов)', mult: 34.06, text: '×34,06 (10/10)', cls: 'is-indigo' },
+  { label: 'ТД на НАП → АССГ (Г. Йончева)', mult: 27.4, text: '×27,40 (12/12)', cls: 'is-indigo' },
+  { label: 'Агенция по вписванията → СГС', mult: 26.25, text: '×26,25 (7/8)', cls: '' },
+  { label: 'ГД Гранична полиция → СГС', mult: 25.63, text: '×25,63 (7/8)', cls: 'is-indigo' },
+  { label: 'Софийска вода → РС Габрово', mult: 23.34, text: '×23,34 (5/42)', cls: '' },
+  { label: 'ДВС–МВР → СГС (Руси Алексиев)', mult: 18.41, text: '×18,41 (28/33)', cls: 'is-indigo' },
+  { label: 'А1 България → СРС (А. Георгиев)', mult: 16.33, text: '×16,33 (14/36)', cls: '' },
+  { label: 'Столична община → СГС (И. Вътев)', mult: 15.87, text: '×15,87 (4/22)', cls: 'is-ochre' },
+  { label: 'ЗАД Армеец → СРС (Ст. Попов)', mult: 13.68, text: '×13,68 (6/24)', cls: '' },
+  { label: 'ОДМВР Бургас → РС (Евг. Узунов)', mult: 10.99, text: '×10,99 (69/92)', cls: 'is-indigo' },
+];
+
 const politicians = [
   {
     name: 'Андрей Иванов Цеков',
     role: 'МРРБ (министър 2023–2024), Депутат (49–52 НС)',
     company: 'ГЛАВБОЛГАРСТРОЙ ИНТЕРНЕШЪНАЛ АД (175402074), ГЛАВБОЛГАРСТРОЙ АД (831652485)',
     eur: '€25,74 млн. + €912,62 млн. ДЗЗД',
+    risk: 96,
     signal: '21 скрити консорциума; АМ „Европа“ анексирана +50% (+€56,85 млн.); Булгартрансгаз +€22,29 млн.',
   },
   {
     name: 'Иван Величков Минев',
     role: 'Народен представител (НС)',
-    company: 'ТРЕЙС ГРУП ХОЛД АД (123682269), ТОПЛИВО АД, ХИМИМПОРТ АД',
+    company: 'ТРЕЙС ГРУП ХОЛД АД (123682269), ТОПЛИВО АД (831924394), ХИМИМПОРТ АД',
     eur: '€99,45 млн. + €230,79 млн. ДЗЗД',
+    risk: 92,
     signal: 'КЗК/732/2026 (отменена победа); +50% анекси в ОПУ Бургас (+€41,32 млн.) и Ст. Загора (+€35,61 млн.)',
   },
   {
     name: 'Димитър Иванов Кюмюрджиев',
     role: 'Зам.-председател на КЗК',
     company: 'ХИМИМПОРТ АД (000627519 — 5 774 акции в Табл. 9)',
-    eur: '€56 059 (група ТИМ)',
-    signal: 'Регулаторен конфликт в КЗК при обжалване на ЗОП; скрито от СИГМА 2.0 (Табл. 9)',
+    eur: 'Холдинг ТИМ / ЗАД Армеец',
+    risk: 98,
+    signal: 'Остър регулаторен конфликт в КЗК при обжалване на ЗОП; скрито от СИГМА 2.0 (Табл. 9)',
   },
   {
     name: 'Петър Георгиев Кънев',
     role: 'Народен представител (42–52 НС)',
     company: 'ДЕМАКС АД (831453003), ДЕМАКС ДИ ПИ АЙ АД (175206054)',
     eur: '€45,31 млн. (61 договора)',
-    signal: 'Модул J6 riskAdjustments; поръчки за изборни бюлетини и ценни книжа',
+    risk: 85,
+    signal: 'Модул J6 riskAdjustments; поръчки за изборни бюлетини, холограми и ценни книжа',
   },
   {
     name: 'Невена Димитрова Цанкова',
     role: 'Зам.-министър на здравеопазването (2022)',
     company: 'ФАРМИМПОРТ АД (131181471)',
     eur: '€40,64 млн.',
+    risk: 82,
     signal: 'Модул J4 КЗК/ВАС — отменена победа в търг (winsOverturned: 1)',
   },
   {
@@ -53,27 +73,31 @@ const politicians = [
     role: 'Народни представители (НС) и Евродепутат (ЕП)',
     company: 'СОФАРМА ТРЕЙДИНГ (103267194), АТОМЕНЕРГОРЕМОНТ (106530686), СОФАРМА АД',
     eur: '€1,64 млрд. общ ЗОП обем',
-    signal: 'Акции по Табл. 9, изцяло пропуснати от официалния алгоритъм СИГМА 2.0',
+    risk: 88,
+    signal: 'Акции по Табл. 9 в мега-изпълнители по ЗОП, пропуснати от официалния алгоритъм СИГМА 2.0',
   },
   {
     name: 'Кирил Иванов Бошов',
     role: 'Член на Надзорния съвет на НОИ',
     company: 'ЕТРОПАЛ АД (832082699) и група ЕВРОИНС / ЕВРОХОЛД (121265113)',
     eur: '€48,69 млн.',
-    signal: 'Пряк надзор над бюджета на НОИ (ТЕЛК); СРС концентрация за Евроинс (×4,90)',
+    risk: 91,
+    signal: 'Пряк надзор над бюджета на НОИ (ТЕЛК); СРС концентрация за ЗД Евроинс (7/169, ×4,90)',
   },
   {
     name: 'Людмил Въчков Лазаров',
     role: 'Член на СД на ДКК ЕАД (2025)',
     company: 'ЗК ЛЕВ ИНС АД (121130788)',
     eur: '€7,85 млн.',
-    signal: 'ЕИСС RED FLAG в СРС (10/42 дела, ×8,46) + СГС ТД № 89/2026 срещу СБАЛДБ',
+    risk: 90,
+    signal: 'ЕИСС RED FLAG в СРС (10/42 дела, ×8,46) + СГС ТД № 89/2026 срещу СБАЛДБ „проф. И. Митев“',
   },
   {
     name: 'Владимир Бойчов Владимиров',
     role: 'Ръководен орган на ПП „ЛИДЕР“',
     company: 'ТОПЛОФИКАЦИЯ РУСЕ АД (117005106), ГРАНД ЕНЕРДЖИ ДИСТРИБЮШЪН (201208860)',
     eur: '€39,19 млн.',
+    risk: 95,
     signal: 'Гранд Енерджи прибира €25,33 млн. от БДЖ и влиза в несъстоятелност без ЗМИП (Модул J5/J6)',
   },
   {
@@ -81,13 +105,23 @@ const politicians = [
     role: 'Изп. директор на НЕК ЕАД (2022–2025)',
     company: 'ЕЛЕКТРОХОЛД ТРЕЙД ЕАД (113570147)',
     eur: '€439,34 млн.',
+    risk: 86,
     signal: 'Енергийна верига с Електрохолд ИПС (€571,39 млн. общо) в Модул J5/J6',
+  },
+  {
+    name: 'Цветомир Ангелов Досков',
+    role: 'Член на СД на Български пощи ЕАД (2024–2025)',
+    company: 'СИРМА БИЗНЕС КОНСУЛТИНГ (175445129), СИРМА ГРУП ХОЛДИНГ (200101236)',
+    eur: '€25,20 млн. (64 договора)',
+    risk: 84,
+    signal: 'Недекларирано участие в борд в ТР; €6,19 млн. от Информационно обслужване, €6,11 млн. от БНБ, €4,91 млн. от МЕУ',
   },
   {
     name: 'Даниел Руменов Гаргов',
     role: 'Общински съветник – Хасково (2024–2025)',
     company: 'ЕКО ТРАДЕКС ГРУП АД (126729838) + 5 фирми',
     eur: '€87,58 млн. + €17,79 млн. ДЗЗД',
+    risk: 97,
     signal: '€26,41 млн. от собствената Община Хасково + EPPO договор 00211-2024-0068 (€5,79 млн., 1 оферта)',
   },
   {
@@ -95,183 +129,621 @@ const politicians = [
     role: 'Председател на ОбС – Варна (2023–2025)',
     company: 'ПЛАНЕКС ИНФРАСТРУКТУРА (202694924), ПЛАНЕКС ЕООД (813087785)',
     eur: '€12,72 млн. + €61,54 млн. ДЗЗД',
-    signal: 'EPPO договор 02023-2025-0013 с Напоителни системи (€3,86 млн., 1 оферта)',
+    risk: 91,
+    signal: 'EPPO договор 02023-2025-0013 с Напоителни системи ЕАД (€3,86 млн., 1 оферта) + Burnout радар',
+  },
+  {
+    name: 'Любомир Михайлов Минчев',
+    role: 'Столична община / СОС',
+    company: 'ТЕЛЕЛИНК БИЗНЕС СЪРВИСИС (130545438), ТЕЛЕЛИНК ИНФРА (204856684)',
+    eur: '€139,64 млн. + €213,59 млн. ДЗЗД',
+    risk: 87,
+    signal: '19 скрити консорциума ДЗЗД, вкл. критични комуникации (€55,43 млн.) и „Зелена граница 4“',
   },
   {
     name: 'Богдана Владимирова Панайотова',
     role: 'Главен архитект на Столична община (2024–2026)',
     company: 'ЕН АР КОНСУЛТ ЕООД (126720807)',
     eur: '€3,07 млн. + €14,29 млн. ДЗЗД',
-    signal: 'Модул J3 надзорен възел за Метрополитен ЕАД (СО), ВиК Бургас, Пловдив и Митници',
+    risk: 89,
+    signal: 'Модул J3 надзорен възел за Метрополитен ЕАД (СО), ВиК Бургас, Община Пловдив и Агенция „Митници“',
+  },
+  {
+    name: 'Калоян Иванов Къдрийски',
+    role: 'Зам.-кмет Плевен (2024) и Упр. ВиК Плевен (2025)',
+    company: 'СТРОЙНОРМ ЕООД (200285252)',
+    eur: '€12,75 млн. + €39,93 млн. ДЗЗД',
+    risk: 88,
+    signal: 'Модул J3: 47 договора за строителен надзор с 19 възложители + 20 скрити консорциума ДЗЗД',
+  },
+  {
+    name: 'Гергана Владимирова Муртова',
+    role: 'Общински съветник – Благоевград (2019–2025)',
+    company: 'РАСТЕР-ЮГ ООД (020767877 — Христо Муртов)',
+    eur: '€39,94 млн. + €26,06 млн. ДЗЗД',
+    risk: 90,
+    signal: 'Самовъзлагане в собствената община + 20 скрити ДЗЗД обединения',
+  },
+  {
+    name: 'Юсмен Шакир Юсмен / Виктор Недев Азманов',
+    role: 'Общински съветници (Варна и Горна Оряховица)',
+    company: 'ПЪТНО ПОДДЪРЖАНЕ НОВИ ПАЗАР (127519383) / СОФИЯ АСФАЛТ ООД (202739554)',
+    eur: '€38,04 млн. + €23,88 млн. ДЗЗД',
+    risk: 89,
+    signal: 'Недекларирани пред КПКОНПИ роли на управител и собственик в Търговския регистър',
   },
   {
     name: 'Виктор Алберт Бенбасат',
     role: 'Ликвидатор на 7 държавни мини към МИИ',
     company: 'ХИМРЕМОНТСТРОЙ АД (816089204)',
     eur: '€14,15 млн.',
-    signal: 'EPPO мега-проект 06594-2025-0002 Индустриален парк Видин-юг (€12,53 млн., 1 оферта)',
+    risk: 94,
+    signal: 'EPPO мега-проект 06594-2025-0002 Индустриален парк Видин-юг (€12,53 млн. ЕС средства с 1 оферта)',
+  },
+  {
+    name: 'Таня Тодорова Митева-Каракаш',
+    role: 'Директор на дирекция в ДАНС (2013–2025)',
+    company: 'ЕЛЛАБ БЪЛГАРИЯ ООД (202980772), ФРОДЕКСИМ ТРЕЙД ООД (202084198)',
+    eur: '€3,43 млн. (18 договора)',
+    risk: 83,
+    signal: 'Договори с ЕРП-та и ЕСО на фона на 20 флага за ЧНД на ДАНС в СРС и СГС',
   },
 ];
 
 const corpFlags = [
-  { court: 'СГС · Търговско (2025)', party: 'Агенция по вписванията (131282355)', judge: 'Петя Георгиева', kn: '7 / 8 (87,5%)', mult: '×26,25', level: 'RED' },
-  { court: 'СГС · Търговско (2025)', party: 'Столична община (000696327)', judge: 'Иво Вътев Вътев', kn: '4 / 22', mult: '×15,87', level: 'AMBER' },
-  { court: 'СГС · Търговско (2026)', party: 'ЗАД ОЗК – Застраховане АД (121265177)', judge: 'Весела Живкова-Офицерска', kn: '4 / 9 (44,4%)', mult: '×10,42', level: 'AMBER' },
-  { court: 'СРС · Гражданско (2025)', party: 'Топлофикация София ЕАД (831609046)', judge: 'Нора Владимирова Маринова', kn: '43 / 314', mult: '×4,87', level: 'RED' },
-  { court: 'СРС · Гражданско (2025)', party: 'ЗК Лев Инс АД (121130788)', judge: 'Нора Владимирова Маринова', kn: '10 / 42', mult: '×8,46', level: 'RED' },
-  { court: 'СРС · Гражданско (2025)', party: 'ДЗИ – Общо застраховане ЕАД (121718407)', judge: 'Нора Владимирова Маринова', kn: '8 / 29', mult: '×9,80', level: 'RED' },
-  { court: 'СРС · Гражданско (2025)', party: 'ЗАД Армеец АД (121076907)', judge: 'Стойчо Тодоров Попов', kn: '6 / 24', mult: '×13,68', level: 'RED' },
-  { court: 'СРС · Гражданско (2025)', party: 'ЗАД ДаллБогг: Живот и Здраве АД (200299615)', judge: 'Стойчо Тодоров Попов', kn: '7 / 40', mult: '×9,57', level: 'RED' },
-  { court: 'СРС · Частно гр. (2025)', party: 'А1 България ЕАД (131468980)', judge: 'Андрей Красимиров Георгиев', kn: '14 / 36', mult: '×16,33', level: 'RED' },
-  { court: 'СРС · Частно гр. (2025)', party: 'Банка ДСК АД (121830616)', judge: 'Мария Валентинова Атанасова', kn: '6 / 308', mult: '×60,02', level: 'RED' },
-  { court: 'СРС · Частно гр. (2025)', party: 'Първа инвестиционна банка АД (831094393)', judge: 'Цветомила Данова', kn: '4 / 87', mult: '×35,41', level: 'AMBER' },
-  { court: 'РС–Габрово · ЧГД (2025)', party: 'Софийска вода АД (130175000)', judge: 'Пламен Пантев Денев', kn: '5 / 42', mult: '×23,34', level: 'RED' },
+  { court: 'СГС · Търговско (2025)', party: 'Агенция по вписванията (131282355)', judge: 'Петя Георгиева', kn: '7 / 8 (87,5%)', exp: '0,27', mult: '×26,25', q: '7,57e-8', level: 'RED' },
+  { court: 'СГС · Търговско (2025)', party: 'Столична община (000696327, €1,21 млрд.)', judge: 'Иво Вътев Вътев', kn: '4 / 22', exp: '0,25', mult: '×15,87', q: '0,0069', level: 'AMBER' },
+  { court: 'СГС · Търговско (2026)', party: 'ЗАД ОЗК – Застраховане АД (121265177)', judge: 'Весела Живкова-Офицерска', kn: '4 / 9 (44,4%)', exp: '0,38', mult: '×10,42', q: '0,0179', level: 'AMBER' },
+  { court: 'СРС · Гражданско (2025)', party: 'Топлофикация София ЕАД (831609046)', judge: 'Нора Владимирова Маринова', kn: '43 / 314', exp: '8,84', mult: '×4,87', q: '9,16e-15', level: 'RED' },
+  { court: 'СРС · Гражданско (2025)', party: 'ЗК Лев Инс АД (121130788 — Л. Лазаров ДКК)', judge: 'Нора Владимирова Маринова', kn: '10 / 42', exp: '1,18', mult: '×8,46', q: '2,71e-5', level: 'RED' },
+  { court: 'СРС · Гражданско (2025)', party: 'ДЗИ – Общо застраховане ЕАД (121718407)', judge: 'Нора Владимирова Маринова', kn: '8 / 29', exp: '0,82', mult: '×9,80', q: '1,17e-4', level: 'RED' },
+  { court: 'СРС · Гражданско (2025)', party: 'ЗАД Армеец АД (121076907 — Химимпорт)', judge: 'Стойчо Тодоров Попов', kn: '6 / 24', exp: '0,44', mult: '×13,68', q: '3,87e-4', level: 'RED' },
+  { court: 'СРС · Гражданско (2025)', party: 'ЗАД Армеец АД (121076907)', judge: 'Неделина Симова-Митова', kn: '7 / 307', exp: '0,79', mult: '×8,88', q: '0,0015', level: 'RED' },
+  { court: 'СРС · Гражданско (2025)', party: 'ЗАД ДаллБогг АД (200299615 — квестори КФН)', judge: 'Стойчо Тодоров Попов', kn: '7 / 40', exp: '0,73', mult: '×9,57', q: '7,08e-4', level: 'RED' },
+  { court: 'СРС · Гражданско (2025)', party: 'ЗД Евроинс АД (121265113 — К. Бошов НС НОИ)', judge: 'Розалина Георгиева Ботева', kn: '7 / 169', exp: '1,43', mult: '×4,90', q: '0,0280', level: 'AMBER' },
+  { court: 'СРС · Частно гр. (2025)', party: 'А1 България ЕАД (131468980, €298 млн.)', judge: 'Андрей Красимиров Георгиев', kn: '14 / 36', exp: '0,86', mult: '×16,33', q: '1,51e-11', level: 'RED' },
+  { court: 'СРС · Гражданско (2025)', party: 'А1 България ЕАД (131468980)', judge: 'Ангелина Колева Боева', kn: '16 / 45', exp: '2,95', mult: '×5,42', q: '1,92e-6', level: 'RED' },
+  { court: 'СРС · Частно гр. (2025)', party: 'Банка ДСК АД (121830616 — 23 флага)', judge: 'Мария Атанасова / Бетина Бошнакова', kn: '6/308 · 25/308', exp: '0,10 / 3,37', mult: '×60,02 / ×7,41', q: '6,75e-12', level: 'RED' },
+  { court: 'СРС · Частно гр. (2025)', party: 'Първа инвестиционна банка АД (831094393)', judge: 'Цветомила Данова', kn: '4 / 87', exp: '0,11', mult: '×35,41', q: '5,69e-4', level: 'AMBER' },
+  { court: 'РС–Габрово · ЧГД (2025)', party: 'Софийска вода АД (130175000 — Г. Банков)', judge: 'Пламен Пантев Денев', kn: '5 / 42', exp: '0,21', mult: '×23,34', q: '2,72e-4', level: 'RED' },
+  { court: 'СРС · Гражданско (2025)', party: 'Агенция „Пътна инфраструктура“ (000695089)', judge: 'Гергана Великова Недева', kn: '7 / 188', exp: '0,86', mult: '×8,10', q: '0,0025', level: 'RED' },
 ];
 
 const securityFlags = [
-  { court: 'СРС · ЧНД (2025 / 2026)', party: 'ДАНС (129009710)', judge: 'Албена Такова Момчилова', kn: '345/789 · 317/779', mult: '×5,68 (q=1,1e-162)' },
-  { court: 'СГС · ЧНД (2025 / 2026)', party: 'ДАНС (129009710)', judge: 'Руси Алексиев (Предс. СГС)', kn: '166/245 · 103/194', mult: '×5,02 / ×11,52' },
-  { court: 'СГС · ЧНД (2026)', party: 'Дирекция „Вътрешна сигурност“ – МВР', judge: 'Руси Алексиев (Предс. СГС)', kn: '28 / 33 (84,8%)', mult: '×18,41' },
-  { court: 'РС–Бургас · ЧНД (2025 / 2026)', party: 'ОДМВР – Бургас', judge: 'Евгени Узунов (Предс. РС)', kn: '89/124 · 69/92', mult: '×10,86 / ×10,99' },
-  { court: 'ОС–Бургас · ЧНД (2025 / 2026)', party: 'ГДГП / ДВС–МВР / ОДМВР–Бургас', judge: 'Даниел Марков (Зам.-предс. ОС)', kn: '18/18 (100%) · 12/13 · 37/55', mult: '×7,37 / ×6,54' },
-  { court: 'ОС–Бургас · ЧНД (2026)', party: 'ОДМВР – Бургас', judge: 'Георги Димов Пепеляшев', kn: '23 / 73', mult: '×3,06' },
-  { court: 'РС–Пловдив · ЧНД (2025)', party: 'ОДМВР – Пловдив', judge: 'И. Бекяров + М. Георгиева', kn: '342/699 + 348/699', mult: '×4,88 / ×3,47' },
-  { court: 'АССГ · Адм. (2025 / 2026)', party: 'ТД на НАП – София (Публичен изп.)', judge: 'Геновева Йончева / Владимир Николов', kn: '12/12 + 10/10 · 11/12 + 10/10', mult: '×27,40 / ×34,06' },
-  { court: 'АССГ · Адм. (2026)', party: 'НЕЛК (121242837) / КЕВР (130098909)', judge: 'София Тодорова / Геновева Йончева', kn: '4/12 · 5/16', mult: '×9,53 / ×8,51' },
+  { court: 'СРС · ЧНД (2025 / 2026)', party: 'ДАНС (129009710)', judge: 'Албена Такова Момчилова', kn: '345/789 · 317/779', mult: '×5,68 / ×5,65', q: '1,10e-162' },
+  { court: 'СГС · ЧНД (2025 / 2026)', party: 'ДАНС (129009710)', judge: 'Руси Алексиев (Председател на СГС)', kn: '166/245 · 103/194', mult: '×5,02 / ×11,52', q: '8,58e-81' },
+  { court: 'СГС · ЧНД (2026)', party: 'Дирекция „Вътрешна сигурност“ – МВР', judge: 'Руси Алексиев (Председател на СГС)', kn: '28 / 33 (84,8%)', mult: '×18,41', q: '8,43e-30' },
+  { court: 'СГС · ЧНД (2025)', party: 'Комисия за противодействие на корупцията (КПК)', judge: 'Руси Алексиев (Председател на СГС)', kn: '9 / 20 (45,0%)', mult: '×3,33', q: '0,0269' },
+  { court: 'СГС · ЧНД (2025 / 2026)', party: 'ГД „Гранична полиция“ / СДВР', judge: 'Стефан Кюркчиев / Райна Стефанова', kn: '7/8 (ГДГП) · 55/209 (СДВР)', mult: '×25,63 / ×10,84', q: '8,88e-8' },
+  { court: 'РС–Бургас · ЧНД (2025 / 2026)', party: 'ОДМВР – Бургас', judge: 'Евгени Узунов (Председател на РС–Бургас)', kn: '89/124 · 69/92 · 23/26', mult: '×10,86 / ×10,99 / ×13,38', q: '2,57e-72' },
+  { court: 'ОС–Бургас · ЧНД (2025 / 2026)', party: 'ГД „Гранична полиция“ / ДВС–МВР / ОДМВР–Бургас', judge: 'Даниел Марков (Зам.-предс. на ОС–Бургас)', kn: '18/18 (100%) · 12/13 (92,3%) · 37/55', mult: '×7,37 / ×6,54 / ×4,76', q: '1,83e-16' },
+  { court: 'ОС–Бургас · ЧНД (2026)', party: 'ОДМВР – Бургас', judge: 'Георги Димов Пепеляшев', kn: '23 / 73', mult: '×3,06', q: '7,83e-5' },
+  { court: 'РС & ОС–Пловдив · ЧНД', party: 'ОДМВР – Пловдив / РП–Пловдив', judge: 'И. Бекяров, М. Георгиева, П. Велчев, Р. Шейтанова', kn: '342/699 + 348/699 · 123/153 + 142/186', mult: '×4,88 / ×4,34', q: '9,07e-146' },
+  { court: 'РС & ОС–Пазарджик · ЧНД', party: 'ОДМВР – Пазарджик & ТДНС – Пазарджик', judge: 'Христо Георгиев / Красимир Комсалов', kn: '90/116 · 15/15 (100% ТДНС) · 89/96 (92,7%)', mult: '×5,36 / ×7,88 / ×3,29', q: '5,69e-49' },
+  { court: 'АССГ · Адм. (2025 / 2026)', party: 'Публичен изпълнител при ТД на НАП – София', judge: 'Владимир Николов / Геновева Йончева', kn: '10/10 (100%) · 12/12 (100%)', mult: '×34,06 / ×27,40', q: '2,59e-15' },
+  { court: 'АдмС–Разград · Адм. (2026)', party: 'Дирекция СДО при ТД на НАП – София', judge: 'Ива Ковалакова-Стоева', kn: '52 / 61 (85,2%)', mult: '×3,30', q: '1,95e-19' },
+  { court: 'АССГ · Адм. (2026)', party: 'НЕЛК (121242837) / КЕВР (130098909)', judge: 'София Тодорова / Геновева Йончева', kn: '4/12 (НЕЛК) · 5/16 (КЕВР)', mult: '×9,53 / ×8,51', q: '0,0117' },
+];
+
+const cartelZmipRows = [
+  { firm: 'АВТОМАГИСТРАЛИ ЕАД (831646048)', owner: 'ЛИПСВА ВПИСАН ПО ЗМИП (hasZmipBo: false)', zop: '€1 017,97 млн.', annex: '+€119,44 млн. (+50% Тракия, +50% Хемус, +125% зимно)', court: 'Топ 1 ЗМИП липса в Модул J6' },
+  { firm: 'ИВКОНИ ЕКСПРЕС ЕАД (207875565)', owner: 'ЛИПСВА ВПИСАН ПО ЗМИП (hasZmipBo: false)', zop: '€415,77 млн.', annex: '2 мега-договора в транспорта', court: 'Топ 2 ЗМИП липса в Модул J6' },
+  { firm: 'НИВЕЛ СТРОЙ ЕООД (113580690)', owner: 'Велко Руйков / Й. Йорданов (hasZmipBo: false)', zop: '€266,39 млн. + €500М ДЗЗД', annex: '+€123,57 млн. (+50% София, Видин, Благоевград)', court: 'Топ 3 ЗМИП липса + Модул F7' },
+  { firm: 'ПЪТИНЖЕНЕРИНГСТРОЙ-Т ЕАД (835009611)', owner: 'Григор Цветков Иванов (ИГ Холдинг — €401,67 млн. верига)', zop: '€153,35 млн. + €552,49 млн. ДЗЗД', annex: '+€27,58 млн. (+50% ОПУ Търговище)', court: 'ОС–Търговище ТД 59/2026 (с/у АПИ) и ТД 46/2026 при един съдия (М. Стойчев)' },
+  { firm: 'ЕВРОПЕЙСКИ ПЪТИЩА АД (115004094)', owner: 'Анка Кирилова Савева (Концесионер МЕ)', zop: '€221,91 млн. + €509,78 млн. ДЗЗД', annex: '+€54,98 млн. (+50% Пловдив и Пазарджик)', court: 'Мега-ДЗЗД АМ Русе–Търново (€337,67 млн.)' },
+  { firm: 'ГРОМА ХОЛД ЕООД (101611650)', owner: 'Христо Савев / Виктор Велев (hasZmipBo: false)', zop: '€43,08 млн. + €632,30 млн. ДЗЗД', annex: '+€43,02 млн. (+50% Благоевград и Струма)', court: 'Феникс-верига с Етерна Кънстръкшън (Модул J5)' },
+  { firm: 'ЗАПРЯНОВИ - 03 ООД (115816551)', owner: 'Вакрил и Георги Запрянови (Концесионер МЕ)', zop: '€110,35 млн.', annex: 'Монополни общински СМР', court: 'ОС–Пловдив ТД № 65/2026 срещу Община Асеновград (съдия Г. Костадинова)' },
+  { firm: 'ЕКО-ХИДРО-90 ООД (112580619)', owner: 'Концесионер МЕ + ДЗЗД със София Асфалт', zop: '€45,43 млн.', annex: 'Регионален СМР концентратор', court: 'ОС–Пазарджик ТД № 65/2026 и ТД № 91/2026 срещу Община Белово' },
+  { firm: 'ИНФОРМАЦИОННО ОБСЛУЖВАНЕ АД (831641791)', owner: 'Системен интегратор по чл. 7с ЗЕУ', zop: '€42,39 млн. (договор T352918 с НАП)', annex: '+€31,83 млн. (+301,3% чрез 10 анекса!)', court: 'Рекордна процентна инфлация на договор в Модул F7' },
+];
+
+const eppoLawSecurityRows = [
+  { cat: 'EPPO Мега-проект', name: 'Метрополитен ЕАД → ДВУ21 (180846084)', val: '€115 796 039', details: 'УНП 00423-2021-0001 · 1 единствена оферта + 7 анекса (+€18,73 млн.) с ЕС средства' },
+  { cat: 'EPPO Мега-проект', name: 'МЗ → Leonardo S.p.A. (Медицински хеликоптери)', val: '€58 000 000', details: 'УНП 00080-2023-0001 · 1 оферта · Пряко договаряне · Флаг annex_total_suspect' },
+  { cat: 'EPPO Гранична сигурност', name: 'ГД „Гранична полиция“ → „Зелена граница 4“ (Телелинк Инфра)', val: '€39 490 780', details: '2 договора (T438636 за €24,16 млн. и T588580 за €15,33 млн.) · 1 единствена оферта' },
+  { cat: 'EPPO Финансови инстр.', name: 'МИР / МТСП / ФМФИБ → ФМФИБ / Фонд ФЛАГ / Банка ДСК', val: '€126 533 840', details: '4 договора с ЕС ресурс (T276602, T567412, T530126, 05297-2026-0002) — всички с 1 оферта' },
+  { cat: 'Адвокатски монопол (J3)', name: 'Министерски съвет → АД „Камбуров и съдружници“ (175253221)', val: '€1 563 689', details: 'УНП T390221 · 0 оферти (пряко възлагане за процесуално представителство)' },
+  { cat: 'Адвокатски монопол (J3)', name: 'МРРБ & МС → АД „Попов, Арнаудов и партньори“ (175382262)', val: '€1 394 548', details: '11 договора (€910,89 хил. от МРРБ + €245,42 хил. от МС)' },
+  { cat: 'Адвокатски монопол (J3)', name: 'АЕЦ „Козлодуй“ → АД „Шопов и Янков“ (175825028)', val: '€556 848', details: '5 договора с 1 оферта за делата срещу „ТЕЦ Марица 3“ АД и САС' },
+  { cat: 'МВР ЗЧОД (Отнет лиценз)', name: 'БАТ Секюрити ЕООД (130548570) & Селена 52 ЕООД (130997265)', val: '€98 045 (от €760,61 млн. без активен)', details: 'Изрично ОТНЕТ лиценз от МВР, но с активни договори за охрана на БНР/БНТ и Мин. на туризма' },
+  { cat: 'МВР ЗЧОД (Политически)', name: 'ВИП Секюрити ЕООД (121819662 — Васко Балабанов) & Секюрити Хасково СОТ', val: '€103 161 046', details: '32 политически свързани охранителни фирми (вкл. П. Иванов ПП АБВ, В. Лачовски 52 НС, Кр. Джиханов)' },
 ];
 ---
 
 <BaseLayout
-  title="NAsvetlo · От мрак към светлина — Национален крос-регистърен акт 2026"
-  description="Автоматично отключване на пълната крос-регистърна карта: 1 118 765 дела в ЕИСС, €53,22 млрд. ЗОП, скрити политически връзки, ЗМИП и EPPO."
+  title="NAsvetlo · От мрак към светлина — Национален крос-регистърен радар 2026"
+  description="Интерактивен крос-регистърен команден център на NAsvetlo: 1 118 765 дела в ЕИСС, €53,22 млрд. ЗОП, 6-осев криминалистичен радар, мрежов граф на властта, ЗМИП и EPPO."
   asOf={asOf}
   subpage={true}
   canonicalPath="/ot-mrak-kam-svetlina.html"
-  subpageScript="sigma3/ot_mrak_kam_svetlina.js?v=20261126a"
+  subpageScript="sigma3/ot_mrak_kam_svetlina.js?v=20261126b"
   subpageSyncHref="data/nasvetlo_eiss_audit.json"
 >
+  <!-- COUNTDOWN VAULT & HERO -->
   <section
     class="svetlina-vault"
     id="svetlinaVault"
     data-unlock-at="2026-11-26T12:00:00+02:00"
     data-start-at="2026-11-26T00:45:00+02:00"
   >
-    <div class="svetlina-kicker">
-      <span class="svetlina-pulse" aria-hidden="true"></span>
-      <span id="svetlinaVaultKicker">СИСТЕМА ЗА ГРАЖДАНСКА ПРОЗРАЧНОСТ NASVETLO · ДЕН НА ИСТИНАТА</span>
+    <div class="svetlina-vault-split">
+      <div>
+        <div class="svetlina-kicker">
+          <span class="svetlina-pulse" aria-hidden="true"></span>
+          <span id="svetlinaVaultKicker">СИСТЕМА ЗА ГРАЖДАНСКА ПРОЗРАЧНОСТ NASVETLO · ДЕН НА ИСТИНАТА</span>
+        </div>
+
+        <h1 class="svetlina-title" id="svetlinaVaultTitle">
+          От мрак към светлина — часът, в който регистрите проговарят
+        </h1>
+        <p class="svetlina-sub" id="svetlinaVaultSub">
+          Пълната поименна и графична матрица върху <strong>1 118 765 съдебни дела в ЕПЕП/ЕИСС</strong>,
+          <strong>&euro;53,22 млрд. обществени поръчки</strong>, скрити декларации в КПКОНПИ, липсващи собственици по ЗМИП
+          и европроекти под наблюдението на EPPO се отключва автоматично на <strong>26 ноември 2026 г. в 12:00 ч.</strong>
+        </p>
+
+        <div class="svetlina-timer-grid" id="svetlinaTimerGrid" aria-live="polite">
+          <div class="svetlina-unit">
+            <div class="svetlina-num" id="svetlinaDays">00</div>
+            <div class="svetlina-lbl">Дни</div>
+          </div>
+          <div class="svetlina-unit">
+            <div class="svetlina-num" id="svetlinaHours">00</div>
+            <div class="svetlina-lbl">Часа</div>
+          </div>
+          <div class="svetlina-unit">
+            <div class="svetlina-num" id="svetlinaMins">00</div>
+            <div class="svetlina-lbl">Минути</div>
+          </div>
+          <div class="svetlina-unit">
+            <div class="svetlina-num" id="svetlinaSecs">00</div>
+            <div class="svetlina-lbl">Секунди</div>
+          </div>
+        </div>
+
+        <div class="svetlina-progress-wrap" id="svetlinaProgressWrap">
+          <div class="svetlina-progress-bar">
+            <div class="svetlina-progress-fill" id="svetlinaProgressFill"></div>
+          </div>
+        </div>
+
+        <div class="svetlina-meta-pills">
+          <span>ССЕВ Преписка № 20.Д-72 (ГИ на МС)</span>
+          <span>Вх. № 94-00-322-11 (МИР)</span>
+          <span>SHA-256 Верифициран Архив</span>
+          <span>GDPR: 0 ЕГН · 0 лични данни</span>
+        </div>
+      </div>
+
+      <!-- LIVE SVG ROTATING RADAR SCOPE IN VAULT -->
+      <div class="svetlina-radar-box" aria-hidden="true">
+        <svg class="svetlina-radar-svg" viewBox="0 0 240 240" role="img" aria-label="Криминалистичен радар на ЕИСС и ЗОП">
+          <defs>
+            <radialGradient id="radarGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.22" />
+              <stop offset="70%" stop-color="#1e3a8a" stop-opacity="0.12" />
+              <stop offset="100%" stop-color="#030712" stop-opacity="0" />
+            </radialGradient>
+            <linearGradient id="sweepGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.55" />
+              <stop offset="100%" stop-color="#f59e0b" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+          <circle cx="120" cy="120" r="108" fill="url(#radarGlow)" stroke="rgba(245,158,11,0.35)" stroke-width="1.2" />
+          <circle cx="120" cy="120" r="81" fill="none" stroke="rgba(148,163,184,0.22)" stroke-dasharray="3 3" />
+          <circle cx="120" cy="120" r="54" fill="none" stroke="rgba(148,163,184,0.22)" stroke-dasharray="3 3" />
+          <circle cx="120" cy="120" r="27" fill="none" stroke="rgba(245,158,11,0.3)" />
+          <line x1="12" y1="120" x2="228" y2="120" stroke="rgba(148,163,184,0.2)" />
+          <line x1="120" y1="12" x2="120" y2="228" stroke="rgba(148,163,184,0.2)" />
+          <g class="svetlina-radar-sweep">
+            <path d="M120,120 L120,12 A108,108 0 0,1 214,66 Z" fill="url(#sweepGrad)" />
+            <line x1="120" y1="120" x2="120" y2="12" stroke="#fcd34d" stroke-width="1.8" />
+          </g>
+          <!-- Red & Amber Anomaly Blips -->
+          <circle cx="156" cy="68" r="4.5" fill="#ef4444" />
+          <circle cx="174" cy="144" r="4" fill="#ef4444" />
+          <circle cx="82" cy="76" r="4.5" fill="#ef4444" />
+          <circle cx="95" cy="162" r="3.8" fill="#f59e0b" />
+          <circle cx="138" cy="96" r="5" fill="#ef4444" />
+          <circle cx="64" cy="128" r="3.5" fill="#38bdf8" />
+          <circle cx="120" cy="120" r="3.5" fill="#fcd34d" />
+        </svg>
+        <div class="svetlina-radar-caption">
+          СКАНИРАНИ: 1 118 765 ДЕЛА · 364 RED ФЛАГА · 302 EPPO ДОГОВОРА
+        </div>
+      </div>
     </div>
 
-    <h1 class="svetlina-title" id="svetlinaVaultTitle">
-      От мрак към светлина — часът, в който регистрите проговарят
-    </h1>
-    <p class="svetlina-sub" id="svetlinaVaultSub">
-      Пълната поименна карта на <strong>1 118 765 съдебни дела в ЕИСС</strong>, <strong>&euro;53,22 млрд. обществени поръчки</strong>,
-      скрити декларации в КПКОНПИ, липсващи собственици по ЗМИП и европроекти под наблюдението на EPPO се отключва автоматично на
-      <strong>26 ноември 2026 г. в 12:00 ч.</strong>
-    </p>
-
-    <div class="svetlina-timer-grid" id="svetlinaTimerGrid" aria-live="polite">
-      <div class="svetlina-unit">
-        <div class="svetlina-num" id="svetlinaDays">00</div>
-        <div class="svetlina-lbl">Дни</div>
+    <div class="svetlina-seal-strip">
+      <div class="svetlina-seal-item">
+        <div class="seal-val">1 118 765 дела</div>
+        <div class="seal-lbl">ЕПЕП / ЕИСС (180 съдилища)</div>
       </div>
-      <div class="svetlina-unit">
-        <div class="svetlina-num" id="svetlinaHours">00</div>
-        <div class="svetlina-lbl">Часа</div>
+      <div class="svetlina-seal-item">
+        <div class="seal-val">&euro;53,22 млрд.</div>
+        <div class="seal-lbl">ЦАИС ЕОП (206 907 дог.)</div>
       </div>
-      <div class="svetlina-unit">
-        <div class="svetlina-num" id="svetlinaMins">00</div>
-        <div class="svetlina-lbl">Минути</div>
+      <div class="svetlina-seal-item">
+        <div class="seal-val">3 035 декл.</div>
+        <div class="seal-lbl">КПКОНПИ &times; ТРРЮЛНЦ</div>
       </div>
-      <div class="svetlina-unit">
-        <div class="svetlina-num" id="svetlinaSecs">00</div>
-        <div class="svetlina-lbl">Секунди</div>
+      <div class="svetlina-seal-item">
+        <div class="seal-val">&euro;2,99 млрд.</div>
+        <div class="seal-lbl">Без собственик по ЗМИП</div>
       </div>
-    </div>
-
-    <div class="svetlina-progress-wrap" id="svetlinaProgressWrap">
-      <div class="svetlina-progress-bar">
-        <div class="svetlina-progress-fill" id="svetlinaProgressFill"></div>
+      <div class="svetlina-seal-item">
+        <div class="seal-val">3 261 акта</div>
+        <div class="seal-lbl">АДФИ ревизии &amp; КЗК/ВАС</div>
       </div>
-    </div>
-
-    <div class="svetlina-meta-pills">
-      <span>ССЕВ Преписка № 20.Д-72 (ГИ на МС)</span>
-      <span>Вх. № 94-00-322-11 (МИР)</span>
-      <span>100% Отворени държавни регистри</span>
-      <span>GDPR: 0 ЕГН · 0 лични данни</span>
+      <div class="svetlina-seal-item">
+        <div class="seal-val">&euro;1,58 млрд.</div>
+        <div class="seal-lbl">Европроекти под EPPO праг</div>
+      </div>
     </div>
   </section>
 
+  <!-- UNLOCKED COMMAND CENTER (NASVETLO SWISS EDITORIAL & RADAR ARCHITECTURE) -->
   <div class="svetlina-content" id="svetlinaVaultContent" hidden>
-    <section class="telk-kpi-strip" aria-label="Обобщени показатели">
-      <div class="telk-kpi-card">
-        <div class="telk-kpi-val">{fmtInt(u.casesUnique || 1118765)}</div>
-        <div class="telk-kpi-lbl">Проверени дела в ЕИСС</div>
-        <div class="telk-kpi-sub">{fmtInt(u.redFlagsTotal || 364)} RED флага · {fmtInt(u.courts || 180)} съдилища</div>
+    <!-- 6-STAGE FORENSIC FUNNEL STRIP (HERO FUNNEL ARCHITECTURE) -->
+    <div class="funnel-box" style="margin-bottom:18px;">
+      <div class="funnel-head">
+        <h2 class="funnel-title">Национална крос-регистърна фуния на риска (клик върху стълб за филтриране)</h2>
+        <span class="meta-date">Криптографска синхронизация: {asOf}</span>
       </div>
-      <div class="telk-kpi-card is-teal">
-        <div class="telk-kpi-val">&euro;1,92 млрд.</div>
-        <div class="telk-kpi-lbl">Скрити връзки &amp; ДЗЗД (КПКОНПИ)</div>
-        <div class="telk-kpi-sub">76 политици в 338 консорциума</div>
+      <div class="funnel-strip-grid">
+        <div class="funnel-step" data-svet-jump="all" style="cursor:pointer;">
+          <div class="funnel-step-num">{fmtInt(u.casesUnique || 1118765)}</div>
+          <div>
+            <div class="funnel-step-lbl">1. Дела в ЕИСС (2025–2026)</div>
+            <div class="funnel-step-sub">180 съдилища · 2 714 съдии · 30 487 теста</div>
+          </div>
+        </div>
+        <div class="funnel-step danger" data-svet-jump="corp" style="cursor:pointer;">
+          <div class="funnel-step-num">{fmtInt(u.redFlagsTotal || 364)} RED</div>
+          <div>
+            <div class="funnel-step-lbl">2. Неслучайно струпване</div>
+            <div class="funnel-step-sub">FDR q &lt; 0,01 · до &times;60,02 над очакваното</div>
+          </div>
+        </div>
+        <div class="funnel-step plum" data-svet-jump="politicians" style="cursor:pointer;">
+          <div class="funnel-step-num">+&euro;1,92 млрд.</div>
+          <div>
+            <div class="funnel-step-lbl">3. Скрити ДЗЗД &amp; Табл. 9</div>
+            <div class="funnel-step-sub">76 политици в 338 ДЗЗД + КЗК конфликт</div>
+          </div>
+        </div>
+        <div class="funnel-step warn" data-svet-jump="cartel" style="cursor:pointer;">
+          <div class="funnel-step-num">&euro;2,99 млрд.</div>
+          <div>
+            <div class="funnel-step-lbl">4. Скрити собственици (ЗМИП)</div>
+            <div class="funnel-step-sub">30 мега-изпълнители с hasZmipBo: false</div>
+          </div>
+        </div>
+        <div class="funnel-step danger" data-svet-jump="cartel" style="cursor:pointer;">
+          <div class="funnel-step-num">+&euro;1,29 млрд.</div>
+          <div>
+            <div class="funnel-step-lbl">5. Анекс-инфлация (АПИ/НАП)</div>
+            <div class="funnel-step-sub">+50% до +301% оскъпяване след търга</div>
+          </div>
+        </div>
+        <div class="funnel-step navy" data-svet-jump="eppo" style="cursor:pointer;">
+          <div class="funnel-step-num">&euro;1,58 млрд.</div>
+          <div>
+            <div class="funnel-step-lbl">6. Европроекти (EPPO радар)</div>
+            <div class="funnel-step-sub">{fmtInt(j6.module6_criminalEppo?.eppoHighRiskCount || 302)} високорискови договора с 1 оферта</div>
+          </div>
+        </div>
       </div>
-      <div class="telk-kpi-card is-ochre">
-        <div class="telk-kpi-val">&euro;2,99 млрд.</div>
-        <div class="telk-kpi-lbl">Без действителен собственик (ЗМИП)</div>
-        <div class="telk-kpi-sub">30 мега-контрагента по ЗОП</div>
-      </div>
-      <div class="telk-kpi-card is-crimson">
-        <div class="telk-kpi-val">&euro;1,58 млрд.</div>
-        <div class="telk-kpi-lbl">Европроекти под риск (EPPO)</div>
-        <div class="telk-kpi-sub">{fmtInt(j6.module6_criminalEppo?.eppoHighRiskCount || 302)} високорискови договора</div>
-      </div>
-    </section>
-
-    <section class="telk-arch-grid" aria-label="Трите стълба на разкритието">
-      <article class="telk-stage-card">
-        <h3>1. Политически и декларационен слой</h3>
-        <p>Кръстосване на {fmtInt(deep.summary?.declarationsScanned || 3035)} XML декларации в КПКОНПИ с ТРРЮЛНЦ и ЦАИС ЕОП разкрива директни бордове, акции по Табл. 9 и скрити ДЗЗД.</p>
-      </article>
-      <article class="telk-stage-card">
-        <h3>2. Алгоритмичен контрол в ЕИСС</h3>
-        <p>Едностранен точен биномен тест (Benjamini–Hochberg FDR q &lt; 0,01) върху 30 487 двойки страна &rarr; съдия изолира концентрации до &times;60,02 над случайното.</p>
-      </article>
-      <article class="telk-stage-card">
-        <h3>3. ЗМИП, Анекс-инфлация и EPPO</h3>
-        <p>+&euro;1,29 млрд. оскъпяване чрез анекси, &euro;760,61 млн. за охрана без активен лиценз по ЗЧОД и 302 договора с европейски средства над прага на EPPO.</p>
-      </article>
-    </section>
-
-    <div class="eiss-filter-bar" role="search">
-      <input
-        type="search"
-        id="svetlinaSearchInput"
-        placeholder="Търси по политик, фирма, ЕИК, съдия, съд или преписка..."
-        aria-label="Търсене в таблиците"
-      />
-      <button type="button" class="btn topbar-btn" id="svetlinaResetBtn">Изчисти</button>
-      <span class="eiss-filter-count" id="svetlinaSearchStatus"></span>
     </div>
 
-    <section class="svetlina-section">
+    <!-- 2x2 INTERACTIVE SVG CHARTS, RADARS & KNOWLEDGE GRAPH -->
+    <section class="svetlina-viz-grid" aria-label="Графики, диаграми и радари">
+      <!-- CHART 1: 6-AXIS POLYGONAL FORENSIC SPIDER RADAR -->
+      <article class="svetlina-chart-card accent-crimson">
+        <div>
+          <div class="svetlina-chart-head">
+            <h3>1. Шестосев криминалистичен радар на системния риск</h3>
+            <span class="svetlina-chart-tag">6 РЕГИСТЪРА &times; FDR</span>
+          </div>
+          <p class="svetlina-chart-sub">
+            Сравнение между установения индекс на риск в България (червен полигон, 84–98/100) и европейския праг за нормално разпределение (зелен пунктир, 25/100).
+          </p>
+        </div>
+        <svg viewBox="0 0 420 270" style="width:100%;height:auto;" role="img" aria-label="6-осев радар на системния риск">
+          <!-- Hexagonal grid rings (center 210, 135, radius 95) -->
+          <polygon points="210,40 292,87 292,182 210,230 128,182 128,87" fill="none" stroke="#cbd5e1" stroke-width="1" />
+          <polygon points="210,64 272,100 272,170 210,206 148,170 148,100" fill="none" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3 3" />
+          <polygon points="210,88 251,112 251,158 210,182 169,158 169,112" fill="none" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3 3" />
+          <!-- EU Baseline (25%) -->
+          <polygon points="210,111 231,123 231,147 210,159 189,147 189,123" fill="rgba(13,122,95,0.12)" stroke="#0d7a5f" stroke-width="1.6" stroke-dasharray="4 2" />
+          <!-- Axes -->
+          <line x1="210" y1="135" x2="210" y2="40" stroke="#94a3b8" stroke-width="1" />
+          <line x1="210" y1="135" x2="292" y2="87" stroke="#94a3b8" stroke-width="1" />
+          <line x1="210" y1="135" x2="292" y2="182" stroke="#94a3b8" stroke-width="1" />
+          <line x1="210" y1="135" x2="210" y2="230" stroke="#94a3b8" stroke-width="1" />
+          <line x1="210" y1="135" x2="128" y2="182" stroke="#94a3b8" stroke-width="1" />
+          <line x1="210" y1="135" x2="128" y2="87" stroke="#94a3b8" stroke-width="1" />
+          <!-- Observed Risk Polygon (98, 94, 92, 89, 95, 84) -->
+          <polygon
+            points="210,42 287,90 285,179 210,220 132,180 141,95"
+            fill="rgba(185,28,28,0.22)"
+            stroke="#b91c1c"
+            stroke-width="2.5"
+          />
+          <circle cx="210" cy="42" r="4.5" fill="#b91c1c" />
+          <circle cx="287" cy="90" r="4.5" fill="#b91c1c" />
+          <circle cx="285" cy="179" r="4.5" fill="#b91c1c" />
+          <circle cx="210" cy="220" r="4.5" fill="#b91c1c" />
+          <circle cx="132" cy="180" r="4.5" fill="#b91c1c" />
+          <circle cx="141" cy="95" r="4.5" fill="#b91c1c" />
+          <!-- Labels -->
+          <text x="210" y="26" text-anchor="middle" font-size="10.5" font-weight="700" fill="#991b1b">ЕИСС Концентрация (98/100)</text>
+          <text x="300" y="84" text-anchor="start" font-size="10" font-weight="700" fill="#1e293b">Скрити ДЗЗД &amp; КЗК (94)</text>
+          <text x="300" y="190" text-anchor="start" font-size="10" font-weight="700" fill="#1e293b">Анекси +50% АПИ (92)</text>
+          <text x="210" y="248" text-anchor="middle" font-size="10.5" font-weight="700" fill="#92400e">Липса по ЗМИП €2,99B (89)</text>
+          <text x="120" y="190" text-anchor="end" font-size="10" font-weight="700" fill="#1e293b">EPPO 1 оферта (95)</text>
+          <text x="120" y="84" text-anchor="end" font-size="10" font-weight="700" fill="#1e293b">АДФИ Отмяна НП (84)</text>
+        </svg>
+      </article>
+
+      <!-- CHART 2: 9-NODE KNOWLEDGE GRAPH / SANKEY TRIANGLE OF IMPUNITY -->
+      <article class="svetlina-chart-card accent-indigo">
+        <div>
+          <div class="svetlina-chart-head">
+            <h3>2. Мрежов граф: Политик / Борд &rarr; Холдинг / ДЗЗД &rarr; Съдия в ЕИСС</h3>
+            <span class="svetlina-chart-tag">9-ВЪЗЛОВ ГРАФ</span>
+          </div>
+          <p class="svetlina-chart-sub">
+            Визуализация на установените в регистрите триъгълни връзки между публични длъжности, корпоративни изпълнители по ЗОП и съдебни концентрации.
+          </p>
+        </div>
+        <svg viewBox="0 0 460 270" style="width:100%;height:auto;" role="img" aria-label="Мрежов граф на връзките">
+          <!-- Column Headers -->
+          <text x="72" y="18" text-anchor="middle" font-size="9.5" font-weight="700" fill="#991b1b">ПОЛИТИК / БОРД / ОРГАН</text>
+          <text x="230" y="18" text-anchor="middle" font-size="9.5" font-weight="700" fill="#6b21a8">ХОЛДИНГ / ДЗЗД / ЗОП</text>
+          <text x="388" y="18" text-anchor="middle" font-size="9.5" font-weight="700" fill="#3730a3">ЕИСС СЪД / КЗК / EPPO</text>
+
+          <!-- Edges -->
+          <path d="M135,45 C165,45 165,45 175,45" stroke="#b91c1c" stroke-width="2.2" fill="none" />
+          <path d="M285,45 C315,45 315,45 325,45" stroke="#4f46e5" stroke-width="2.2" fill="none" />
+
+          <path d="M135,92 C165,92 165,92 175,92" stroke="#b91c1c" stroke-width="2.2" fill="none" />
+          <path d="M285,92 C315,92 315,92 325,92" stroke="#4f46e5" stroke-width="2.2" fill="none" />
+
+          <path d="M135,139 C165,139 165,139 175,139" stroke="#b91c1c" stroke-width="2.2" fill="none" />
+          <path d="M285,139 C315,139 315,139 325,139" stroke="#4f46e5" stroke-width="2.2" fill="none" />
+
+          <path d="M135,186 C165,186 165,186 175,186" stroke="#b45309" stroke-width="2.2" fill="none" />
+          <path d="M285,186 C315,186 315,186 325,186" stroke="#4f46e5" stroke-width="2.2" fill="none" />
+
+          <path d="M135,233 C165,233 165,233 175,233" stroke="#1e3a8a" stroke-width="2.2" fill="none" />
+          <path d="M285,233 C315,233 315,233 325,233" stroke="#b91c1c" stroke-width="2.2" fill="none" />
+
+          <!-- Row 1: Tsekv -> GBS -> API +50% -->
+          <rect x="8" y="30" width="127" height="30" rx="4" fill="#fef2f2" stroke="#f87171" />
+          <text x="71" y="43" text-anchor="middle" font-size="8.8" font-weight="700" fill="#991b1b">А. Цеков / Ив. Минев</text>
+          <text x="71" y="54" text-anchor="middle" font-size="7.8" fill="#7f1d1d">МРРБ / Народно събрание</text>
+
+          <rect x="175" y="30" width="110" height="30" rx="4" fill="#faf5ff" stroke="#c084fc" />
+          <text x="230" y="43" text-anchor="middle" font-size="8.6" font-weight="700" fill="#581c87">ГБС &amp; Трейс ДЗЗД</text>
+          <text x="230" y="54" text-anchor="middle" font-size="7.8" fill="#6b21a8">&euro;1,14 млрд. в консорциуми</text>
+
+          <rect x="325" y="30" width="127" height="30" rx="4" fill="#eef2ff" stroke="#818cf8" />
+          <text x="388" y="43" text-anchor="middle" font-size="8.6" font-weight="700" fill="#312e81">АПИ Анекси +50% / КЗК</text>
+          <text x="388" y="54" text-anchor="middle" font-size="7.8" fill="#3730a3">+&euro;133,8M · КЗК/732/2026</text>
+
+          <!-- Row 2: Kyumyurdzhiev -> Chimimport/Armeec -> SRS x13.68 -->
+          <rect x="8" y="77" width="127" height="30" rx="4" fill="#fef2f2" stroke="#f87171" />
+          <text x="71" y="90" text-anchor="middle" font-size="8.8" font-weight="700" fill="#991b1b">Д. Кюмюрджиев (КЗК)</text>
+          <text x="71" y="101" text-anchor="middle" font-size="7.8" fill="#7f1d1d">Зам.-председател на КЗК</text>
+
+          <rect x="175" y="77" width="110" height="30" rx="4" fill="#fff7ed" stroke="#fb923c" />
+          <text x="230" y="90" text-anchor="middle" font-size="8.6" font-weight="700" fill="#7c2d12">Химимпорт / Армеец</text>
+          <text x="230" y="101" text-anchor="middle" font-size="7.8" fill="#9a3412">5 774 акции (Табл. 9)</text>
+
+          <rect x="325" y="77" width="127" height="30" rx="4" fill="#eef2ff" stroke="#818cf8" />
+          <text x="388" y="90" text-anchor="middle" font-size="8.6" font-weight="700" fill="#312e81">СРС · Ст. Попов (RED)</text>
+          <text x="388" y="101" text-anchor="middle" font-size="7.8" fill="#b91c1c">6/24 дела (&times;13,68) + ДаллБогг</text>
+
+          <!-- Row 3: Lazarov / Boshov -> Lev Ins / Euroins -> SRS x8.46 -->
+          <rect x="8" y="124" width="127" height="30" rx="4" fill="#fef2f2" stroke="#f87171" />
+          <text x="71" y="137" text-anchor="middle" font-size="8.8" font-weight="700" fill="#991b1b">Л. Лазаров / К. Бошов</text>
+          <text x="71" y="148" text-anchor="middle" font-size="7.8" fill="#7f1d1d">СД на ДКК / НС на НОИ</text>
+
+          <rect x="175" y="124" width="110" height="30" rx="4" fill="#fff7ed" stroke="#fb923c" />
+          <text x="230" y="137" text-anchor="middle" font-size="8.6" font-weight="700" fill="#7c2d12">Лев Инс / Евроинс</text>
+          <text x="230" y="148" text-anchor="middle" font-size="7.8" fill="#9a3412">&euro;56,54 млн. с Етропал</text>
+
+          <rect x="325" y="124" width="127" height="30" rx="4" fill="#eef2ff" stroke="#818cf8" />
+          <text x="388" y="137" text-anchor="middle" font-size="8.6" font-weight="700" fill="#312e81">СРС · Н. Маринова (RED)</text>
+          <text x="388" y="148" text-anchor="middle" font-size="7.8" fill="#b91c1c">10/42 (&times;8,46) + СГС ТД 89/26</text>
+
+          <!-- Row 4: Vladimirov / Gargov -> Grand Energy / Eko Tradeks -> Insolvency / EPPO -->
+          <rect x="8" y="171" width="127" height="30" rx="4" fill="#fffbeb" stroke="#fbbf24" />
+          <text x="71" y="184" text-anchor="middle" font-size="8.8" font-weight="700" fill="#92400e">Вл. Владимиров / Гаргов</text>
+          <text x="71" y="195" text-anchor="middle" font-size="7.8" fill="#78350f">ПП ЛИДЕР / ОбС Хасково</text>
+
+          <rect x="175" y="171" width="110" height="30" rx="4" fill="#faf5ff" stroke="#c084fc" />
+          <text x="230" y="184" text-anchor="middle" font-size="8.6" font-weight="700" fill="#581c87">Гранд Енерджи / Еко Тр.</text>
+          <text x="230" y="195" text-anchor="middle" font-size="7.8" fill="#6b21a8">&euro;126,77 млн. ЗОП</text>
+
+          <rect x="325" y="171" width="127" height="30" rx="4" fill="#eef2ff" stroke="#818cf8" />
+          <text x="388" y="184" text-anchor="middle" font-size="8.6" font-weight="700" fill="#312e81">Фалит БДЖ / EPPO 1 оф.</text>
+          <text x="388" y="195" text-anchor="middle" font-size="7.8" fill="#b91c1c">ОЗК СГС &times;10,42 · ТД 122/26</text>
+
+          <!-- Row 5: DANS / DVS-MVR / ODMVR -> Court Chairs -->
+          <rect x="8" y="218" width="127" height="30" rx="4" fill="#eff6ff" stroke="#60a5fa" />
+          <text x="71" y="231" text-anchor="middle" font-size="8.8" font-weight="700" fill="#1e3a8a">ДАНС / ДВС-МВР / ГДГП</text>
+          <text x="71" y="242" text-anchor="middle" font-size="7.8" fill="#1e40af">ОДМВР Бургас &amp; Пловдив</text>
+
+          <rect x="175" y="218" width="110" height="30" rx="4" fill="#eff6ff" stroke="#60a5fa" />
+          <text x="230" y="231" text-anchor="middle" font-size="8.6" font-weight="700" fill="#1e3a8a">ЧНД (СРС &amp; Трафични)</text>
+          <text x="230" y="242" text-anchor="middle" font-size="7.8" fill="#1e40af">ЗСРС &amp; чл. 251г ЗЕС</text>
+
+          <rect x="325" y="218" width="127" height="30" rx="4" fill="#fef2f2" stroke="#f87171" />
+          <text x="388" y="231" text-anchor="middle" font-size="8.6" font-weight="700" fill="#991b1b">СРС / СГС / Бургас</text>
+          <text x="388" y="242" text-anchor="middle" font-size="7.8" fill="#b91c1c">84,8% до 100% (q=10⁻¹⁶²)</text>
+        </svg>
+      </article>
+
+      <!-- CHART 3: HORIZONTAL BAR CHART OF TOP 12 EISS CONCENTRATIONS -->
+      <article class="svetlina-chart-card accent-ochre">
+        <div>
+          <div class="svetlina-chart-head">
+            <h3>3. Топ 12 екстремни концентрации Страна &rarr; Съдия в ЕИСС</h3>
+            <span class="svetlina-chart-tag">КРАТНОСТ (&times; ОЧАКВАНОТО)</span>
+          </div>
+          <p class="svetlina-chart-sub">
+            Колко пъти по-често делата на конкретна институция или корпорация попадат при един и същ съдия спрямо реалния му дял в отделението.
+          </p>
+          <div class="svetlina-bars-list">
+            {topMultiplierBars.map((b) => {
+              const widthPct = Math.min(100, (b.mult / 60.02) * 100).toFixed(1);
+              return (
+                <div class="svetlina-bar-row">
+                  <div class="svetlina-bar-label" title={b.label}>{b.label}</div>
+                  <div class="svetlina-bar-track">
+                    <div class={`svetlina-bar-fill ${b.cls}`} style={`width:${widthPct}%;`}></div>
+                  </div>
+                  <div class="svetlina-bar-val">{b.text.split(' ')[0]}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </article>
+
+      <!-- CHART 4: DONUT CHART OF €8.54B HIGH-RISK RESOURCE + 3 IMPUNITY GAUGES -->
+      <article class="svetlina-chart-card accent-teal">
+        <div>
+          <div class="svetlina-chart-head">
+            <h3>4. Анатомия на високорисковия ресурс (&euro;8,54 млрд.) &amp; Индекс АДФИ</h3>
+            <span class="svetlina-chart-tag">ФИНАНСОВ РЕНТГЕН</span>
+          </div>
+          <p class="svetlina-chart-sub">
+            Структурно разпределение на засечения публичен ресурс в 5-те рискови категории и съдебна успеваемост на контролните органи.
+          </p>
+
+          <div class="svetlina-donut-split">
+            <svg viewBox="0 0 160 160" style="width:160px;height:160px;margin:0 auto;" role="img" aria-label="Донът диаграма на €8,54 млрд. рисков ресурс">
+              <!-- Circumference = 2 * pi * 54 = 339.29 -->
+              <circle cx="80" cy="80" r="54" fill="none" stroke="#e2e8f0" stroke-width="20" />
+              <!-- 35.0% ZMIP (€2.99B) -> 118.7 -->
+              <circle cx="80" cy="80" r="54" fill="none" stroke="#b91c1c" stroke-width="20" stroke-dasharray="118.7 220.6" stroke-dashoffset="0" transform="rotate(-90 80 80)" />
+              <!-- 22.5% Hidden DZZD (€1.92B) -> 76.3 -->
+              <circle cx="80" cy="80" r="54" fill="none" stroke="#6b21a8" stroke-width="20" stroke-dasharray="76.3 263.0" stroke-dashoffset="-118.7" transform="rotate(-90 80 80)" />
+              <!-- 18.5% EPPO (€1.58B) -> 62.8 -->
+              <circle cx="80" cy="80" r="54" fill="none" stroke="#1e3a8a" stroke-width="20" stroke-dasharray="62.8 276.5" stroke-dashoffset="-195.0" transform="rotate(-90 80 80)" />
+              <!-- 15.1% Annexes (€1.29B) -> 51.2 -->
+              <circle cx="80" cy="80" r="54" fill="none" stroke="#d97706" stroke-width="20" stroke-dasharray="51.2 288.1" stroke-dashoffset="-257.8" transform="rotate(-90 80 80)" />
+              <!-- 8.9% ZCHOD no license (€0.76B) -> 30.3 -->
+              <circle cx="80" cy="80" r="54" fill="none" stroke="#0d9488" stroke-width="20" stroke-dasharray="30.3 309.0" stroke-dashoffset="-309.0" transform="rotate(-90 80 80)" />
+              <text x="80" y="76" text-anchor="middle" font-size="14" font-weight="800" fill="#0f172a">&euro;8,54</text>
+              <text x="80" y="92" text-anchor="middle" font-size="9.5" font-weight="700" fill="#64748b">МЛРД. РИСК</text>
+            </svg>
+
+            <div class="svetlina-legend-list">
+              <div class="svetlina-legend-item">
+                <span class="leg-left"><span class="leg-dot" style="background:#b91c1c;"></span>Без собственик ЗМИП (30 фирми)</span>
+                <span class="leg-val">&euro;2,99 млрд.</span>
+              </div>
+              <div class="svetlina-legend-item">
+                <span class="leg-left"><span class="leg-dot" style="background:#6b21a8;"></span>Скрити ДЗЗД (76 политици)</span>
+                <span class="leg-val">&euro;1,92 млрд.</span>
+              </div>
+              <div class="svetlina-legend-item">
+                <span class="leg-left"><span class="leg-dot" style="background:#1e3a8a;"></span>EPPO Европроекти (302 дог.)</span>
+                <span class="leg-val">&euro;1,58 млрд.</span>
+              </div>
+              <div class="svetlina-legend-item">
+                <span class="leg-left"><span class="leg-dot" style="background:#d97706;"></span>Анекс-инфлация (+50% до +301%)</span>
+                <span class="leg-val">+&euro;1,29 млрд.</span>
+              </div>
+              <div class="svetlina-legend-item">
+                <span class="leg-left"><span class="leg-dot" style="background:#0d9488;"></span>ЗЧОД без активен лиценз (70 фирми)</span>
+                <span class="leg-val">&euro;0,76 млрд.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="svetlina-mini-gauges">
+          <div class="svetlina-gauge-box">
+            <div class="g-val">39,3%</div>
+            <div class="g-lbl">Отменени НП на АДФИ в съда (КАНД)</div>
+          </div>
+          <div class="svetlina-gauge-box">
+            <div class="g-val">83,4%</div>
+            <div class="g-lbl">Без отчет по чл. 17(7) ЗДФИ (1 859 от 2 229)</div>
+          </div>
+          <div class="svetlina-gauge-box">
+            <div class="g-val">100,0%</div>
+            <div class="g-lbl">ЧНД на ГДГП при 1 съдия в ОС–Бургас (18/18)</div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- FILTER BAR, QUICK CHIPS & 6 RADAR TABS -->
+    <div class="eiss-filter-bar" role="search" style="flex-direction:column;align-items:stretch;gap:10px;">
+      <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+        <input
+          type="search"
+          id="svetlinaSearchInput"
+          placeholder="Търси във всички 5 радара по политик, фирма, ЕИК, съдия, съд, ДЗЗД или УНП..."
+          aria-label="Търсене в таблиците"
+        />
+        <button type="button" class="btn topbar-btn" id="svetlinaResetBtn">Изчисти филтъра</button>
+        <span class="eiss-filter-count" id="svetlinaSearchStatus"></span>
+      </div>
+
+      <div class="quick-cities" style="margin:0;">
+        <span>Бърз срез:</span>
+        <button type="button" class="city-chip" data-svet-quick="Главболгарстрой">Главболгарстрой / Цеков</button>
+        <button type="button" class="city-chip" data-svet-quick="Кюмюрджиев">КЗК / Химимпорт</button>
+        <button type="button" class="city-chip" data-svet-quick="Лев Инс">Лев Инс / ДКК</button>
+        <button type="button" class="city-chip" data-svet-quick="ДаллБогг">ДаллБогг / Армеец</button>
+        <button type="button" class="city-chip" data-svet-quick="Руси Алексиев">СГС Руси Алексиев</button>
+        <button type="button" class="city-chip" data-svet-quick="Бургас">Бургас (ОДМВР / ГДГП)</button>
+        <button type="button" class="city-chip" data-svet-quick="Хасково">Хасково (Гаргов / EPPO)</button>
+        <button type="button" class="city-chip" data-svet-quick="hasZmipBo">ЗМИП Липси (€2,99 млрд.)</button>
+      </div>
+    </div>
+
+    <div class="inv-tabs" id="svetlinaTabBar" role="tablist" aria-label="Избор на крос-регистърен радар">
+      <button type="button" class="inv-tab-btn active" data-svet-tab="all">Всички 5 радара (Пълен изглед)</button>
+      <button type="button" class="inv-tab-btn" data-svet-tab="politicians">1. Политици, КЗК &amp; ДЗЗД <span class="inv-tab-count">{politicians.length}</span></button>
+      <button type="button" class="inv-tab-btn" data-svet-tab="corp">2. Холдинги, Застрахователи &amp; Банки <span class="inv-tab-count">{corpFlags.length}</span></button>
+      <button type="button" class="inv-tab-btn" data-svet-tab="security">3. Силови ЧНД, НАП, НЕЛК &amp; КЕВР <span class="inv-tab-count">{securityFlags.length}</span></button>
+      <button type="button" class="inv-tab-btn" data-svet-tab="cartel">4. Пътен картел, Анекси &amp; ЗМИП <span class="inv-tab-count">{cartelZmipRows.length}</span></button>
+      <button type="button" class="inv-tab-btn" data-svet-tab="eppo">5. EPPO Европроекти, Адвокати &amp; ЗЧОД <span class="inv-tab-count">{eppoLawSecurityRows.length}</span></button>
+    </div>
+
+    <!-- TABLE 1: POLITICIANS, REGULATORS & LOCAL FEUDALS -->
+    <section class="svetlina-section" data-svet-section="politicians">
       <div class="svetlina-section-head">
-        <h2>I. Политически лица, бивши министри, депутати и местна власт в съдебните модули</h2>
-        <span class="mono" style="font-size:0.78rem;color:var(--ink-muted);">КПКОНПИ &times; ТР &times; ЕИСС &times; EPPO</span>
+        <h2>I. Политически лица, бивши министри, депутати, регулатори и местна власт (КПКОНПИ &times; ТР &times; ЕИСС &times; EPPO)</h2>
+        <span class="mono" style="font-size:0.76rem;color:var(--ink-muted);">3 035 XML декларации · 338 скрити ДЗЗД</span>
       </div>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
+              <th>Риск</th>
               <th>Лице</th>
-              <th>Пост / Институция</th>
-              <th>Свързана фирма (ЕИК)</th>
-              <th>ЗОП обем</th>
-              <th>Установено засичане</th>
+              <th>Длъжност / Институция</th>
+              <th>Свързана компания (ЕИК)</th>
+              <th>ЗОП &amp; ДЗЗД обем</th>
+              <th>Крос-регистърно засичане (ЕИСС / КЗК / ЗМИП / EPPO)</th>
             </tr>
           </thead>
           <tbody>
             {politicians.map((p) => (
               <tr>
+                <td>
+                  <span class="svetlina-badge is-red">{p.risk}/100</span>
+                  <div class="svetlina-cell-bar"><span style={`width:${p.risk}%;`}></span></div>
+                </td>
                 <td><strong>{p.name}</strong></td>
                 <td>{p.role}</td>
                 <td>{p.company}</td>
@@ -284,21 +756,24 @@ const securityFlags = [
       </div>
     </section>
 
-    <section class="svetlina-section">
+    <!-- TABLE 2: CORPORATE, INSURANCE & BANKING MONOPOLIES IN EISS -->
+    <section class="svetlina-section" data-svet-section="corp">
       <div class="svetlina-section-head">
-        <h2>II. Корпоративни, застрахователни и банкови концентрации в ЕИСС</h2>
-        <span class="mono" style="font-size:0.78rem;color:var(--ink-muted);">Benjamini–Hochberg FDR</span>
+        <h2>II. Корпоративни, застрахователни, банкови и комунални концентрации в ЕИСС (&euro;3,40 млрд. ЗОП капитал)</h2>
+        <span class="mono" style="font-size:0.76rem;color:var(--ink-muted);">Едностранен биномен тест · Benjamini–Hochberg FDR</span>
       </div>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>Ниво</th>
-              <th>Съд и вид дело</th>
-              <th>Юридическо лице / Институция</th>
+              <th>Флаг</th>
+              <th>Съд и отделение</th>
+              <th>Юридическо лице / Институция (ЕИК)</th>
               <th>Съдия-докладчик</th>
-              <th>Дела (k / n)</th>
+              <th>Разпределени (k / n)</th>
+              <th>Очаквани</th>
               <th>Кратност</th>
+              <th>FDR q</th>
             </tr>
           </thead>
           <tbody>
@@ -307,9 +782,11 @@ const securityFlags = [
                 <td><span class={`svetlina-badge ${f.level === 'RED' ? 'is-red' : 'is-amber'}`}>{f.level}</span></td>
                 <td>{f.court}</td>
                 <td><strong>{f.party}</strong></td>
-                <td>{f.judge}</td>
+                <td><strong>{f.judge}</strong></td>
                 <td class="mono"><strong>{f.kn}</strong></td>
-                <td class="mono"><strong>{f.mult}</strong></td>
+                <td class="mono">{f.exp}</td>
+                <td class="mono" style="color:var(--crimson);font-weight:700;">{f.mult}</td>
+                <td class="mono">{f.q}</td>
               </tr>
             ))}
           </tbody>
@@ -317,20 +794,22 @@ const securityFlags = [
       </div>
     </section>
 
-    <section class="svetlina-section">
+    <!-- TABLE 3: SECURITY SERVICES (CHND), NAP, NELK & KEVR -->
+    <section class="svetlina-section" data-svet-section="security">
       <div class="svetlina-section-head">
-        <h2>III. Силови структури (ЧНД), НАП, НЕЛК и КЕВР в ЕИСС</h2>
-        <span class="mono" style="font-size:0.78rem;color:var(--ink-muted);">Екстремни статистически отклонения</span>
+        <h2>III. Силови структури (ЧНД по ЗСРС и чл. 251г ЗЕС), НАП, НЕЛК и КЕВР в ЕИСС</h2>
+        <span class="mono" style="font-size:0.76rem;color:var(--ink-muted);">Вероятност за случайност до 1,10 &times; 10⁻¹⁶²</span>
       </div>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>Съд (Година)</th>
-              <th>Заявител / Ответник</th>
-              <th>Съдия-докладчик / Ръководител</th>
-              <th>Дела (k / n)</th>
-              <th>Кратност / FDR</th>
+              <th>Съд и година</th>
+              <th>Заявител / Административен орган</th>
+              <th>Съдия-докладчик / Адм. ръководител</th>
+              <th>Дела при съдията (k / n)</th>
+              <th>Кратност</th>
+              <th>FDR q</th>
             </tr>
           </thead>
           <tbody>
@@ -338,9 +817,72 @@ const securityFlags = [
               <tr>
                 <td>{s.court}</td>
                 <td><strong>{s.party}</strong></td>
-                <td>{s.judge}</td>
+                <td><strong>{s.judge}</strong></td>
                 <td class="mono"><strong>{s.kn}</strong></td>
-                <td class="mono"><strong>{s.mult}</strong></td>
+                <td class="mono" style="color:var(--crimson);font-weight:700;">{s.mult}</td>
+                <td class="mono">{s.q}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TABLE 4: ROAD CONSTRUCTION CARTEL, ANNEX INFLATION & ZMIP BENEFICIAL OWNER GAPS -->
+    <section class="svetlina-section" data-svet-section="cartel">
+      <div class="svetlina-section-head">
+        <h2>IV. Пътно-строителен картел, Анекс-инфлация (+&euro;1,29 млрд.), Търговски дела (J1) и ЗМИП Липси (&euro;2,99 млрд.)</h2>
+        <span class="mono" style="font-size:0.76rem;color:var(--ink-muted);">ЦАИС ЕОП &times; ТРРЮЛНЦ &times; ЕИСС Търговски отделения</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Изпълнител (ЕИК)</th>
+              <th>Действителен собственик / Верига в ТР</th>
+              <th>Спечелен ЗОП ресурс</th>
+              <th>Анекс-инфлация (Модул F7)</th>
+              <th>Съдебен / ЗМИП статус (Модул J1 / J5 / J6)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cartelZmipRows.map((c) => (
+              <tr>
+                <td><strong>{c.firm}</strong></td>
+                <td>{c.owner}</td>
+                <td class="mono"><strong>{c.zop}</strong></td>
+                <td style="color:var(--crimson);font-weight:600;">{c.annex}</td>
+                <td>{c.court}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TABLE 5: EPPO HIGH-RISK EU CONTRACTS, GOVERNMENT LAW FIRMS & MVR SECURITY LICENSES -->
+    <section class="svetlina-section" data-svet-section="eppo">
+      <div class="svetlina-section-head">
+        <h2>V. Европроекти с 1 оферта под прага на EPPO (&euro;1,58 млрд.), Адвокатски монопол (J3) и ЗЧОД без лиценз</h2>
+        <span class="mono" style="font-size:0.76rem;color:var(--ink-muted);">Регламент (ЕС) 2017/1939 · МВР Регистър ЗЧОД</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Категория</th>
+              <th>Възложител &rarr; Изпълнител (ЕИК)</th>
+              <th>Стойност (€)</th>
+              <th>Констатирано отклонение и правно основание</th>
+            </tr>
+          </thead>
+          <tbody>
+            {eppoLawSecurityRows.map((e) => (
+              <tr>
+                <td><span class="svetlina-badge is-indigo">{e.cat}</span></td>
+                <td><strong>{e.name}</strong></td>
+                <td class="mono"><strong>{e.val}</strong></td>
+                <td>{e.details}</td>
               </tr>
             ))}
           </tbody>

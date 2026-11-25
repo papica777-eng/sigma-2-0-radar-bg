@@ -13,6 +13,11 @@ test('ot-mrak-kam-svetlina.html is built and contains countdown gate for 2026-11
   assert.match(html, /От мрак към светлина/);
   assert.match(html, /id="svetlinaVaultContent"\s+hidden/);
   assert.match(html, /ot_mrak_kam_svetlina\.js/);
+  assert.match(html, /svetlina-radar-svg/);
+  assert.match(html, /Шестосев криминалистичен радар/);
+  assert.match(html, /Мрежов граф/);
+  assert.match(html, /data-svet-tab="cartel"/);
+  assert.match(html, /data-svet-tab="eppo"/);
   assert.doesNotMatch(html, /Велкова/);
   assert.doesNotMatch(html, /Занева/);
 });
