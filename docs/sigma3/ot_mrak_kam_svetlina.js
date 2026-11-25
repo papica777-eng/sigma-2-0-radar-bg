@@ -1,6 +1,7 @@
 // =============================================================================
 // NAsvetlo · „От мрак към светлина“ — Автоматичен таймер, SHA-256 ключ,
-// таб-навигация по радари, бързи срезове и жива търсачка
+// Навигатор по 6 Министерства / Дейности, Компактен превключвател на графики
+// и жива търсачка без излишно скролване
 // =============================================================================
 (function () {
   'use strict';
@@ -45,11 +46,11 @@
         kickerEl.textContent = 'НАЦИОНАЛЕН КРОС-РЕГИСТЪРЕН ОДИТ · ПУБЛИКУВАНО НА СВЕТЛО · 26.11.2026 г.';
       }
       if (titleEl) {
-        titleEl.textContent = 'От мрак към светлина — пълният крос-регистърен радар е активен';
+        titleEl.textContent = 'От мрак към светлина — крос-регистърен радар по министерства и дейности';
       }
       if (subEl) {
         subEl.textContent =
-          'Интерактивна аналитична матрица върху 1 118 765 съдебни дела в ЕПЕП/ЕИСС, 206 907 договора по ЗОП (€53,22 млрд.), 3 035 декларации в КПКОНПИ, ТРРЮЛНЦ/ЗМИП, АДФИ, КЗК и европроектите под прага на EPPO.';
+          'Компактна аналитична матрица върху 1 118 765 дела в ЕПЕП/ЕИСС, 206 907 договора по ЗОП (€53,22 млрд.), 3 035 декларации в КПКОНПИ, ЗМИП, АДФИ, КЗК и EPPO, групирана в 6 ресора за преглед на един екран.';
       }
       content.hidden = false;
       content.removeAttribute('hidden');
@@ -109,13 +110,39 @@
     var input = document.getElementById('svetlinaSearchInput');
     var resetBtn = document.getElementById('svetlinaResetBtn');
     var statusEl = document.getElementById('svetlinaSearchStatus');
+    var activeSectorNameEl = document.getElementById('svetlinaActiveSectorName');
     var tabButtons = document.querySelectorAll('[data-svet-tab]');
     var sections = document.querySelectorAll('[data-svet-section]');
     var quickChips = document.querySelectorAll('[data-svet-quick]');
     var funnelSteps = document.querySelectorAll('[data-svet-jump]');
+    var sectorButtons = document.querySelectorAll('[data-svet-sector]');
+    var vizButtons = document.querySelectorAll('[data-svet-viz]');
+    var chartCards = document.querySelectorAll('[data-svet-chart]');
     if (!input) return;
 
+    // Default to Sector 1 (MRRB & API) so the page is ultra-compact with zero excessive scrolling
+    var activeSector = 'mrrb';
     var activeTab = 'all';
+
+    var sectorNames = {
+      all: 'Всички 6 ресора (Пълен национален регистър)',
+      mrrb: 'Ресор 01 · МРРБ, АПИ и Пътно-строителен картел (€3,84 млрд.)',
+      mvr: 'Ресор 02 · МВР, ДАНС, Гранична полиция и ЗЧОД охрана (917 ЧНД флага)',
+      mf: 'Ресор 03 · МФ, НАП, АДФИ, КЗК, Банки и Застрахователи (×60,02 ЕИСС)',
+      me: 'Ресор 04 · МЕ, МТС и МИИ — Енергетика, Транспорт (БДЖ) и ИТ (€1,49 млрд.)',
+      mz: 'Ресор 05 · МЗ, МТСП, НОИ, НЕЛК и Фармация (€1,79 млрд.)',
+      mun: 'Ресор 06 · Общини (София, Хасково, Варна, Плевен) и Министерски съвет (€1,85 млрд.)',
+    };
+
+    function syncSectorUI() {
+      sectorButtons.forEach(function (btn) {
+        var s = btn.getAttribute('data-svet-sector');
+        btn.classList.toggle('active', s === activeSector);
+      });
+      if (activeSectorNameEl) {
+        activeSectorNameEl.textContent = sectorNames[activeSector] || sectorNames.all;
+      }
+    }
 
     function applyFilter() {
       var q = norm(input.value);
@@ -133,22 +160,49 @@
         var secShown = 0;
         rows.forEach(function (tr) {
           totalRows += 1;
+          var rowSector = tr.getAttribute('data-sector') || '';
+          var sectorOk = activeSector === 'all' || rowSector === activeSector;
           var text = norm(tr.textContent);
-          var ok = !q || text.indexOf(q) !== -1;
+          var searchOk = !q || text.indexOf(q) !== -1;
+          var ok = sectorOk && searchOk;
           tr.hidden = !ok;
           if (ok) {
             secShown += 1;
             shownRows += 1;
           }
         });
-        sec.hidden = q ? secShown === 0 : false;
+        sec.hidden = secShown === 0;
       });
 
       if (statusEl) {
-        statusEl.textContent = 'Показани записи: ' + shownRows + ' от ' + totalRows;
+        statusEl.textContent = 'Показани записи на екрана: ' + shownRows + ' от ' + totalRows;
       }
     }
 
+    // Visual Charts Switcher (Pair 1 vs Pair 2 vs All 4)
+    vizButtons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var mode = btn.getAttribute('data-svet-viz') || 'pair1';
+        vizButtons.forEach(function (b) {
+          b.classList.toggle('active', b === btn);
+        });
+        chartCards.forEach(function (card) {
+          var pair = card.getAttribute('data-svet-chart');
+          card.hidden = !(mode === 'all' || mode === pair);
+        });
+      });
+    });
+
+    // Ministry / Sector Cards Switcher
+    sectorButtons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        activeSector = btn.getAttribute('data-svet-sector') || 'all';
+        syncSectorUI();
+        applyFilter();
+      });
+    });
+
+    // Register Tabs Switcher
     tabButtons.forEach(function (btn) {
       btn.addEventListener('click', function () {
         activeTab = btn.getAttribute('data-svet-tab') || 'all';
@@ -159,11 +213,14 @@
       });
     });
 
+    // Quick Slice Chips (search across all sectors so result is always visible)
     quickChips.forEach(function (chip) {
       chip.addEventListener('click', function () {
         var val = chip.getAttribute('data-svet-quick') || '';
         input.value = val;
+        activeSector = 'all';
         activeTab = 'all';
+        syncSectorUI();
         tabButtons.forEach(function (b) {
           b.classList.toggle('active', b.getAttribute('data-svet-tab') === 'all');
         });
@@ -171,10 +228,13 @@
       });
     });
 
+    // Top Funnel Jump
     funnelSteps.forEach(function (step) {
       step.addEventListener('click', function () {
         var targetTab = step.getAttribute('data-svet-jump') || 'all';
+        activeSector = 'all';
         activeTab = targetTab;
+        syncSectorUI();
         tabButtons.forEach(function (b) {
           b.classList.toggle('active', b.getAttribute('data-svet-tab') === targetTab);
         });
@@ -186,17 +246,29 @@
       });
     });
 
-    input.addEventListener('input', applyFilter);
+    input.addEventListener('input', function () {
+      // When typing in search, automatically broaden to all 6 sectors so the user doesn't miss matches
+      if (norm(input.value).length > 0 && activeSector !== 'all') {
+        activeSector = 'all';
+        syncSectorUI();
+      }
+      applyFilter();
+    });
+
     if (resetBtn) {
       resetBtn.addEventListener('click', function () {
         input.value = '';
+        activeSector = 'mrrb';
         activeTab = 'all';
+        syncSectorUI();
         tabButtons.forEach(function (b) {
           b.classList.toggle('active', b.getAttribute('data-svet-tab') === 'all');
         });
         applyFilter();
       });
     }
+
+    syncSectorUI();
     applyFilter();
   }
 

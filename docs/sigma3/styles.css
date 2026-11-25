@@ -5367,8 +5367,8 @@ body[data-density=compact] .panel-box {
 
 .svetlina-vault {
   position: relative;
-  margin: 16px 0 22px;
-  padding: 28px 26px 24px;
+  margin: 14px 0 18px;
+  padding: 24px 24px 20px;
   border-radius: 8px;
   background: radial-gradient(circle at 18% 20%, #1e293b 0%, #090d16 58%, #030712 100%);
   color: #f8fafc;
@@ -5383,13 +5383,13 @@ body[data-density=compact] .panel-box {
   border: 1px solid var(--border);
   border-top: 4px solid var(--crimson);
   box-shadow: none;
-  padding: 22px 24px 18px;
+  padding: 16px 20px 14px;
 }
 
 .svetlina-vault-split {
   display: grid;
   grid-template-columns: 1.55fr 1fr;
-  gap: 24px;
+  gap: 22px;
   align-items: center;
 }
 @media (max-width: 920px) {
@@ -5399,7 +5399,7 @@ body[data-density=compact] .panel-box {
 }
 .is-unlocked .svetlina-vault-split {
   grid-template-columns: 1fr;
-  gap: 10px;
+  gap: 8px;
 }
 
 .svetlina-kicker {
@@ -5416,12 +5416,13 @@ body[data-density=compact] .panel-box {
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 .is-unlocked .svetlina-kicker {
   background: rgba(185, 28, 28, 0.08);
   border-color: rgba(185, 28, 28, 0.35);
   color: var(--crimson);
+  margin-bottom: 6px;
 }
 
 .svetlina-pulse {
@@ -5449,30 +5450,30 @@ body[data-density=compact] .panel-box {
 }
 .svetlina-title {
   font-family: var(--font-serif, "Newsreader", Georgia, serif);
-  font-size: clamp(1.55rem, 2.8vw, 2.35rem);
+  font-size: clamp(1.45rem, 2.5vw, 2.15rem);
   font-weight: 700;
   line-height: 1.16;
-  margin: 0 0 10px;
+  margin: 0 0 8px;
   letter-spacing: -0.01em;
 }
 
 .svetlina-sub {
-  margin: 0 0 18px;
-  font-size: 0.93rem;
-  line-height: 1.55;
+  margin: 0 0 14px;
+  font-size: 0.9rem;
+  line-height: 1.5;
   color: #cbd5e1;
-  max-width: 78ch;
+  max-width: 82ch;
 }
 .is-unlocked .svetlina-sub {
   color: var(--ink-secondary);
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .svetlina-timer-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(68px, 118px));
   gap: 10px;
-  margin: 0 0 16px;
+  margin: 0 0 14px;
 }
 
 .svetlina-unit {
@@ -5504,7 +5505,7 @@ body[data-density=compact] .panel-box {
 
 .svetlina-progress-wrap {
   max-width: 510px;
-  margin: 0 0 14px;
+  margin: 0 0 12px;
 }
 
 .svetlina-progress-bar {
@@ -5526,11 +5527,11 @@ body[data-density=compact] .panel-box {
   flex-wrap: wrap;
   gap: 7px;
   font-family: var(--font-mono, "IBM Plex Mono", monospace);
-  font-size: 0.72rem;
+  font-size: 0.71rem;
   color: #cbd5e1;
 }
 .svetlina-meta-pills span {
-  padding: 4px 9px;
+  padding: 3px 8px;
   border-radius: 4px;
   background: rgba(30, 41, 59, 0.85);
   border: 1px solid rgba(148, 163, 184, 0.24);
@@ -5557,7 +5558,7 @@ body[data-density=compact] .panel-box {
 
 .svetlina-radar-svg {
   width: 100%;
-  max-width: 250px;
+  max-width: 240px;
   height: auto;
 }
 
@@ -5586,8 +5587,8 @@ body[data-density=compact] .panel-box {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
   gap: 8px;
-  margin-top: 18px;
-  padding-top: 14px;
+  margin-top: 16px;
+  padding-top: 12px;
   border-top: 1px solid rgba(148, 163, 184, 0.2);
 }
 .is-unlocked .svetlina-seal-strip {
@@ -5616,11 +5617,68 @@ body[data-density=compact] .panel-box {
   display: none !important;
 }
 
+.svetlina-viz-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.svetlina-viz-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+.svetlina-viz-title strong {
+  font-family: var(--font-serif, "Newsreader", serif);
+  font-size: 1rem;
+  color: var(--ink);
+}
+.svetlina-viz-title span {
+  color: var(--ink-secondary);
+  font-size: 0.78rem;
+}
+
+.svetlina-viz-switches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.svetlina-viz-btn {
+  padding: 5px 11px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--ink-secondary);
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.svetlina-viz-btn:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+.svetlina-viz-btn.active {
+  background: var(--ink);
+  color: #ffffff;
+  border-color: var(--ink);
+}
+
 .svetlina-viz-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-  margin: 18px 0 22px;
+  gap: 12px;
+  margin: 0 0 16px;
 }
 @media (max-width: 980px) {
   .svetlina-viz-grid {
@@ -5633,10 +5691,13 @@ body[data-density=compact] .panel-box {
   border: 1px solid var(--border);
   border-top: 3px solid var(--ink);
   border-radius: 4px;
-  padding: 16px 18px;
+  padding: 13px 15px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+.svetlina-chart-card[hidden] {
+  display: none !important;
 }
 .svetlina-chart-card.accent-crimson {
   border-top-color: var(--crimson);
@@ -5656,21 +5717,21 @@ body[data-density=compact] .panel-box {
   justify-content: space-between;
   align-items: flex-start;
   gap: 10px;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 .svetlina-chart-head h3 {
   margin: 0;
   font-family: var(--font-serif, "Newsreader", serif);
-  font-size: 1.12rem;
+  font-size: 1.04rem;
   font-weight: 700;
   color: var(--ink);
 }
 
 .svetlina-chart-tag {
   font-family: var(--font-mono, "IBM Plex Mono", monospace);
-  font-size: 0.68rem;
+  font-size: 0.66rem;
   font-weight: 700;
-  padding: 2px 7px;
+  padding: 2px 6px;
   border-radius: 3px;
   background: var(--surface-2);
   border: 1px solid var(--border);
@@ -5679,28 +5740,28 @@ body[data-density=compact] .panel-box {
 }
 
 .svetlina-chart-sub {
-  margin: 0 0 12px;
-  font-size: 0.82rem;
+  margin: 0 0 8px;
+  font-size: 0.78rem;
   color: var(--ink-secondary);
-  line-height: 1.45;
+  line-height: 1.4;
 }
 
 .svetlina-bars-list {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 5px;
 }
 
 .svetlina-bar-row {
   display: grid;
-  grid-template-columns: 195px 1fr 64px;
+  grid-template-columns: 190px 1fr 62px;
   align-items: center;
   gap: 8px;
-  font-size: 0.76rem;
+  font-size: 0.74rem;
 }
 @media (max-width: 560px) {
   .svetlina-bar-row {
-    grid-template-columns: 135px 1fr 56px;
+    grid-template-columns: 135px 1fr 54px;
   }
 }
 
@@ -5713,7 +5774,7 @@ body[data-density=compact] .panel-box {
 }
 
 .svetlina-bar-track {
-  height: 14px;
+  height: 12px;
   background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: 3px;
@@ -5736,15 +5797,15 @@ body[data-density=compact] .panel-box {
 .svetlina-bar-val {
   font-family: var(--font-mono, "IBM Plex Mono", monospace);
   font-weight: 700;
-  font-size: 0.75rem;
+  font-size: 0.73rem;
   text-align: right;
   color: var(--crimson);
 }
 
 .svetlina-donut-split {
   display: grid;
-  grid-template-columns: 175px 1fr;
-  gap: 14px;
+  grid-template-columns: 155px 1fr;
+  gap: 12px;
   align-items: center;
 }
 @media (max-width: 560px) {
@@ -5756,8 +5817,8 @@ body[data-density=compact] .panel-box {
 .svetlina-legend-list {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  font-size: 0.77rem;
+  gap: 5px;
+  font-size: 0.75rem;
 }
 
 .svetlina-legend-item {
@@ -5765,7 +5826,7 @@ body[data-density=compact] .panel-box {
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-  padding-bottom: 4px;
+  padding-bottom: 3px;
   border-bottom: 1px dashed var(--border);
 }
 .svetlina-legend-item .leg-left {
@@ -5792,8 +5853,8 @@ body[data-density=compact] .panel-box {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
-  margin-top: 12px;
-  padding-top: 10px;
+  margin-top: 10px;
+  padding-top: 8px;
   border-top: 1px solid var(--border);
 }
 
@@ -5801,28 +5862,192 @@ body[data-density=compact] .panel-box {
   background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: 4px;
-  padding: 7px 9px;
+  padding: 6px 8px;
   text-align: center;
 }
 .svetlina-gauge-box .g-val {
   font-family: var(--font-mono, "IBM Plex Mono", monospace);
-  font-size: 0.96rem;
+  font-size: 0.92rem;
   font-weight: 800;
   color: var(--crimson);
 }
 .svetlina-gauge-box .g-lbl {
-  font-size: 0.68rem;
+  font-size: 0.66rem;
   color: var(--ink-secondary);
-  line-height: 1.25;
+  line-height: 1.2;
   margin-top: 2px;
 }
 
+.svetlina-sector-deck {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--ink);
+  border-radius: 4px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.svetlina-sector-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.svetlina-sector-title {
+  margin: 0;
+  font-family: var(--font-serif, "Newsreader", serif);
+  font-size: 1.15rem;
+  color: var(--ink);
+}
+
+.svetlina-sector-sub {
+  margin: 2px 0 0;
+  font-size: 0.79rem;
+  color: var(--ink-secondary);
+}
+
+.svetlina-sector-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+@media (max-width: 980px) {
+  .svetlina-sector-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 620px) {
+  .svetlina-sector-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.svetlina-sector-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: left;
+  padding: 11px 13px;
+  border-radius: 4px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--ink);
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+.svetlina-sector-card.accent-crimson {
+  border-left-color: var(--crimson);
+}
+.svetlina-sector-card.accent-indigo {
+  border-left-color: #4f46e5;
+}
+.svetlina-sector-card.accent-ochre {
+  border-left-color: var(--ochre);
+}
+.svetlina-sector-card.accent-teal {
+  border-left-color: var(--teal);
+}
+.svetlina-sector-card.accent-plum {
+  border-left-color: #7e22ce;
+}
+.svetlina-sector-card.accent-navy {
+  border-left-color: #1e3a8a;
+}
+.svetlina-sector-card:hover {
+  background: var(--surface);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+.svetlina-sector-card.active {
+  background: #fffbeb;
+  border-color: #f59e0b;
+  border-left-width: 5px;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.16);
+}
+
+.sec-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.sec-card-code {
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 0.67rem;
+  font-weight: 700;
+  color: var(--ink-secondary);
+  text-transform: uppercase;
+}
+
+.sec-card-eur {
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: var(--crimson);
+  background: rgba(185, 28, 28, 0.08);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+.sec-card-title {
+  font-family: var(--font-serif, "Newsreader", serif);
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+
+.sec-card-badges {
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #92400e;
+  margin-bottom: 5px;
+}
+
+.sec-card-desc {
+  margin: 0;
+  font-size: 0.74rem;
+  line-height: 1.35;
+  color: var(--ink-secondary);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.svetlina-active-banner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.84rem;
+}
+.svetlina-active-banner .active-kicker {
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--crimson);
+  margin-right: 6px;
+}
+
 .svetlina-section {
-  margin: 18px 0;
+  margin: 12px 0;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 4px;
-  padding: 16px 18px;
+  padding: 13px 15px;
+}
+.svetlina-section[hidden] {
+  display: none !important;
 }
 
 .svetlina-section-head {
@@ -5830,16 +6055,30 @@ body[data-density=compact] .panel-box {
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: baseline;
-  gap: 10px;
-  margin-bottom: 10px;
-  padding-bottom: 7px;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
   border-bottom: 2px solid var(--ink);
 }
 .svetlina-section-head h2 {
   margin: 0;
   font-family: var(--font-serif, "Newsreader", serif);
-  font-size: 1.18rem;
+  font-size: 1.08rem;
   color: var(--ink);
+}
+
+.svetlina-compact-scroll {
+  max-height: 360px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+}
+.svetlina-compact-scroll thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--surface-2);
+  box-shadow: 0 1px 0 var(--border);
 }
 
 .svetlina-badge {
@@ -5847,8 +6086,9 @@ body[data-density=compact] .panel-box {
   padding: 2px 7px;
   border-radius: 3px;
   font-family: var(--font-mono, "IBM Plex Mono", monospace);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
+  white-space: nowrap;
 }
 .svetlina-badge.is-red {
   background: #fee2e2;
