@@ -15,7 +15,7 @@ const ministrySectors = [
   {
     id: 'mrrb',
     code: 'РЕСОР 01 · МРРБ & АПИ',
-    title: 'МРРБ, АПИ и Пътно-строителен картел',
+    title: 'МРРБ, АПИ и пътна инфраструктура',
     eur: '€3,84 млрд.',
     badges: 'Анекси +50% · ЗМИП липси · КЗК/732',
     summary: 'Главболгарстрой (А. Цеков), Трейс Груп (Ив. Минев), Автомагистрали ЕАД, Нивел Строй, Европейски пътища, Грома Холд, Пътинженерингстрой-Т и Софийска вода.',
@@ -63,7 +63,7 @@ const ministrySectors = [
     title: 'Общини (София, Хасково, Варна, Плевен) и МС',
     eur: '€1,85 млрд.',
     badges: 'Метрополитен EPPO · Адвокати на МС',
-    summary: 'Столична община в СГС (×15,87), Метрополитен → ДВУ21 (€115,80 млн. EPPO), Гл. арх. Б. Панайотова, Телелинк, Хасково (Д. Гаргов €105 млн.), Варна (Планекс), Плевен и адвокатски монопол в МС.',
+    summary: 'Столична община в СГС (×15,87), Метрополитен → ДВУ21 (€115,80 млн. EPPO), Гл. арх. Б. Панайотова, Телелинк, Хасково (Д. Гаргов €105 млн.), Варна (Планекс), Плевен и концентрация на правни услуги в МС.',
     accent: 'navy',
   },
 ];
@@ -328,7 +328,7 @@ const cartelZmipRows = [
   { sector: 'mrrb', sectorLabel: 'МРРБ & АПИ', firm: 'ПЪТИНЖЕНЕРИНГСТРОЙ-Т ЕАД (835009611)', owner: 'Григор Цветков Иванов (ИГ Холдинг — €401,67 млн. верига)', zop: '€153,35 млн. + €552,49 млн. ДЗЗД', annex: '+€27,58 млн. (+50% ОПУ Търговище)', court: 'ОС–Търговище ТД 59/2026 (с/у АПИ) и ТД 46/2026 при един съдия (М. Стойчев)' },
   { sector: 'mrrb', sectorLabel: 'МРРБ & АПИ', firm: 'ЕВРОПЕЙСКИ ПЪТИЩА АД (115004094)', owner: 'Анка Кирилова Савева (Концесионер МЕ)', zop: '€221,91 млн. + €509,78 млн. ДЗЗД', annex: '+€54,98 млн. (+50% Пловдив и Пазарджик)', court: 'Мега-ДЗЗД АМ Русе–Търново (€337,67 млн.)' },
   { sector: 'mrrb', sectorLabel: 'МРРБ & АПИ', firm: 'ГРОМА ХОЛД ЕООД (101611650)', owner: 'Христо Савев / Виктор Велев (hasZmipBo: false)', zop: '€43,08 млн. + €632,30 млн. ДЗЗД', annex: '+€43,02 млн. (+50% Благоевград и Струма)', court: 'Феникс-верига с Етерна Кънстръкшън (Модул J5)' },
-  { sector: 'mrrb', sectorLabel: 'МРРБ & АПИ', firm: 'ЗАПРЯНОВИ - 03 ООД (115816551)', owner: 'Вакрил и Георги Запрянови (Концесионер МЕ)', zop: '€110,35 млн.', annex: 'Монополни общински СМР', court: 'ОС–Пловдив ТД № 65/2026 срещу Община Асеновград (съдия Г. Костадинова)' },
+  { sector: 'mrrb', sectorLabel: 'МРРБ & АПИ', firm: 'ЗАПРЯНОВИ - 03 ООД (115816551)', owner: 'Вакрил и Георги Запрянови (Концесионер МЕ)', zop: '€110,35 млн.', annex: 'Висока концентрация на общински СМР', court: 'ОС–Пловдив ТД № 65/2026 срещу Община Асеновград (съдия Г. Костадинова)' },
   { sector: 'mrrb', sectorLabel: 'МРРБ & АПИ', firm: 'ЕКО-ХИДРО-90 ООД (112580619)', owner: 'Концесионер МЕ + ДЗЗД със София Асфалт', zop: '€45,43 млн.', annex: 'Регионален СМР концентратор', court: 'ОС–Пазарджик ТД № 65/2026 и ТД № 91/2026 срещу Община Белово' },
   { sector: 'mf', sectorLabel: 'МФ & НАП', firm: 'ИНФОРМАЦИОННО ОБСЛУЖВАНЕ АД (831641791)', owner: 'Системен интегратор по чл. 7с ЗЕУ', zop: '€42,39 млн. (договор T352918 с НАП)', annex: '+€31,83 млн. (+301,3% чрез 10 анекса!)', court: 'Рекордна процентна инфлация на договор в Модул F7' },
 ];
@@ -338,9 +338,9 @@ const eppoLawSecurityRows = [
   { sector: 'mz', sectorLabel: 'МЗ & Здраве', cat: 'EPPO Мега-проект', name: 'МЗ → Leonardo S.p.A. (Медицински хеликоптери)', val: '€58 000 000', details: 'УНП 00080-2023-0001 · 1 оферта · Пряко договаряне · Флаг annex_total_suspect' },
   { sector: 'mvr', sectorLabel: 'МВР & ГДГП', cat: 'EPPO Гранична сигурност', name: 'ГД „Гранична полиция“ → „Зелена граница 4“ (Телелинк Инфра)', val: '€39 490 780', details: '2 договора (T438636 за €24,16 млн. и T588580 за €15,33 млн.) · 1 единствена оферта' },
   { sector: 'mf', sectorLabel: 'МФ, МИР & МТСП', cat: 'EPPO Финансови инстр.', name: 'МИР / МТСП / ФМФИБ → ФМФИБ / Фонд ФЛАГ / Банка ДСК', val: '€126 533 840', details: '4 договора с ЕС ресурс (T276602, T567412, T530126, 05297-2026-0002) — всички с 1 оферта' },
-  { sector: 'mun', sectorLabel: 'МС & Право', cat: 'Адвокатски монопол (J3)', name: 'Министерски съвет → АД „Камбуров и съдружници“ (175253221)', val: '€1 563 689', details: 'УНП T390221 · 0 оферти (пряко възлагане за процесуално представителство)' },
-  { sector: 'mrrb', sectorLabel: 'МРРБ & МС', cat: 'Адвокатски монопол (J3)', name: 'МРРБ & МС → АД „Попов, Арнаудов и партньори“ (175382262)', val: '€1 394 548', details: '11 договора (€910,89 хил. от МРРБ + €245,42 хил. от МС)' },
-  { sector: 'me', sectorLabel: 'МЕ & Енергетика', cat: 'Адвокатски монопол (J3)', name: 'АЕЦ „Козлодуй“ → АД „Шопов и Янков“ (175825028)', val: '€556 848', details: '5 договора с 1 оферта за делата срещу „ТЕЦ Марица 3“ АД и САС' },
+  { sector: 'mun', sectorLabel: 'МС & Право', cat: 'Правни услуги (J3)', name: 'Министерски съвет → АД „Камбуров и съдружници“ (175253221)', val: '€1 563 689', details: 'УНП T390221 · 0 оферти (пряко възлагане за процесуално представителство)' },
+  { sector: 'mrrb', sectorLabel: 'МРРБ & МС', cat: 'Правни услуги (J3)', name: 'МРРБ & МС → АД „Попов, Арнаудов и партньори“ (175382262)', val: '€1 394 548', details: '11 договора (€910,89 хил. от МРРБ + €245,42 хил. от МС)' },
+  { sector: 'me', sectorLabel: 'МЕ & Енергетика', cat: 'Правни услуги (J3)', name: 'АЕЦ „Козлодуй“ → АД „Шопов и Янков“ (175825028)', val: '€556 848', details: '5 договора с 1 оферта за делата срещу „ТЕЦ Марица 3“ АД и САС' },
   { sector: 'mvr', sectorLabel: 'МВР ЗЧОД', cat: 'МВР ЗЧОД (Отнет лиценз)', name: 'БАТ Секюрити ЕООД (130548570) & Селена 52 ЕООД (130997265)', val: '€98 045 (от €760,61 млн. без активен)', details: 'Изрично ОТНЕТ лиценз от МВР, но с активни договори за охрана на БНР/БНТ и Мин. на туризма' },
   { sector: 'mvr', sectorLabel: 'МВР ЗЧОД', cat: 'МВР ЗЧОД (Политически)', name: 'ВИП Секюрити ЕООД (121819662 — Васко Балабанов) & Секюрити Хасково СОТ', val: '€103 161 046', details: '32 политически свързани охранителни фирми (вкл. П. Иванов ПП АБВ, В. Лачовски 52 НС, Кр. Джиханов)' },
 ];
@@ -366,11 +366,11 @@ const eppoLawSecurityRows = [
       <div>
         <div class="svetlina-kicker">
           <span class="svetlina-pulse" aria-hidden="true"></span>
-          <span id="svetlinaVaultKicker">СИСТЕМА ЗА ГРАЖДАНСКА ПРОЗРАЧНОСТ NASVETLO · ДЕН НА ИСТИНАТА</span>
+          <span id="svetlinaVaultKicker">NASVETLO · НАЦИОНАЛЕН КРОС-РЕГИСТЪРЕН АНАЛИЗ · ПУБЛИКАЦИЯ 26.11.2026</span>
         </div>
 
         <h1 class="svetlina-title" id="svetlinaVaultTitle">
-          От мрак към светлина — часът, в който регистрите проговарят
+          От мрак към светлина — национален анализ на риска в публичните регистри
         </h1>
         <p class="svetlina-sub" id="svetlinaVaultSub">
           Пълната поименна и графична матрица върху <strong>1 118 765 съдебни дела в ЕПЕП/ЕИСС</strong>,
@@ -404,10 +404,10 @@ const eppoLawSecurityRows = [
         </div>
 
         <div class="svetlina-meta-pills">
-          <span>ССЕВ Преписка № 20.Д-72 (ГИ на МС)</span>
-          <span>Вх. № 94-00-322-11 (МИР)</span>
-          <span>SHA-256 Верифициран Архив</span>
-          <span>GDPR: 0 ЕГН · 0 лични данни</span>
+          <span>Източници: ЕПЕП/ЕИСС · ЦАИС ЕОП · ТРРЮЛНЦ · КПКОНПИ</span>
+          <span>Метод: биномен тест · Benjamini–Hochberg FDR</span>
+          <span>Отворени данни CC-BY 4.0</span>
+          <span>GDPR: без ЕГН и лични данни на физически лица</span>
         </div>
       </div>
 
@@ -804,7 +804,7 @@ const eppoLawSecurityRows = [
       <div class="svetlina-active-banner">
         <div>
           <span class="active-kicker">АКТИВЕН РЕСОР:</span>
-          <strong id="svetlinaActiveSectorName">МРРБ, АПИ и Пътно-строителен картел</strong>
+          <strong id="svetlinaActiveSectorName">Ресор 01 · МРРБ, АПИ и пътна инфраструктура (€3,84 млрд.)</strong>
         </div>
         <span class="eiss-filter-count" id="svetlinaSearchStatus"></span>
       </div>
@@ -828,7 +828,7 @@ const eppoLawSecurityRows = [
         <button type="button" class="city-chip" data-svet-quick="Руси Алексиев">СГС Руси Алексиев</button>
         <button type="button" class="city-chip" data-svet-quick="Бургас">Бургас (100% ЧНД)</button>
         <button type="button" class="city-chip" data-svet-quick="Хасково">Хасково (Гаргов / EPPO)</button>
-        <button type="button" class="city-chip" data-svet-quick="hasZmipBo">ЗМИП Липси (€2,99 млрд.)</button>
+        <button type="button" class="city-chip" data-svet-quick="hasZmipBo">Без действителен собственик (ЗМИП)</button>
       </div>
     </div>
 
@@ -837,7 +837,7 @@ const eppoLawSecurityRows = [
       <button type="button" class="inv-tab-btn" data-svet-tab="politicians">1. Политици, Бордове &amp; ДЗЗД <span class="inv-tab-count">{politicians.length}</span></button>
       <button type="button" class="inv-tab-btn" data-svet-tab="corp">2. Корпоративни и Банкови дела <span class="inv-tab-count">{corpFlags.length}</span></button>
       <button type="button" class="inv-tab-btn" data-svet-tab="security">3. Силови ЧНД, НАП, НЕЛК &amp; КЕВР <span class="inv-tab-count">{securityFlags.length}</span></button>
-      <button type="button" class="inv-tab-btn" data-svet-tab="cartel">4. Пътен картел, Анекси &amp; ЗМИП <span class="inv-tab-count">{cartelZmipRows.length}</span></button>
+      <button type="button" class="inv-tab-btn" data-svet-tab="cartel">4. Строителство, анекси &amp; ЗМИП <span class="inv-tab-count">{cartelZmipRows.length}</span></button>
       <button type="button" class="inv-tab-btn" data-svet-tab="eppo">5. EPPO, Адвокати &amp; ЗЧОД <span class="inv-tab-count">{eppoLawSecurityRows.length}</span></button>
     </div>
 
@@ -959,7 +959,7 @@ const eppoLawSecurityRows = [
     <!-- TABLE 4: ROAD CONSTRUCTION CARTEL, ANNEX INFLATION & ZMIP BENEFICIAL OWNER GAPS -->
     <section class="svetlina-section" data-svet-section="cartel">
       <div class="svetlina-section-head">
-        <h2>IV. Пътно-строителен картел, Анекс-инфлация (+&euro;1,29 млрд.), Търговски дела (J1) и ЗМИП Липси (&euro;2,99 млрд.)</h2>
+        <h2>IV. Пътно строителство, увеличения чрез анекси (+&euro;1,29 млрд.), търговски дела (J1) и липсващ действителен собственик по ЗМИП (&euro;2,99 млрд.)</h2>
         <span class="mono" style="font-size:0.74rem;color:var(--ink-muted);">ЦАИС ЕОП &times; ТРРЮЛНЦ &times; ЕИСС Търговски отделения</span>
       </div>
       <div class="table-wrap svetlina-compact-scroll">
@@ -993,7 +993,7 @@ const eppoLawSecurityRows = [
     <!-- TABLE 5: EPPO HIGH-RISK EU CONTRACTS, GOVERNMENT LAW FIRMS & MVR SECURITY LICENSES -->
     <section class="svetlina-section" data-svet-section="eppo">
       <div class="svetlina-section-head">
-        <h2>V. Европроекти с 1 оферта под прага на EPPO (&euro;1,58 млрд.), Адвокатски монопол (J3) и ЗЧОД без лиценз</h2>
+        <h2>V. Европроекти с 1 оферта (&euro;1,58 млрд.), концентрация на правни услуги (J3) и ЗЧОД без активен лиценз</h2>
         <span class="mono" style="font-size:0.74rem;color:var(--ink-muted);">Регламент (ЕС) 2017/1939 · МВР Регистър ЗЧОД</span>
       </div>
       <div class="table-wrap svetlina-compact-scroll">
@@ -1019,6 +1019,27 @@ const eppoLawSecurityRows = [
             ))}
           </tbody>
         </table>
+      </div>
+    </section>
+
+    <!-- METHODOLOGY & LEGAL NOTE -->
+    <section class="svetlina-method" aria-label="Методология и правна бележка">
+      <div class="svetlina-method-col">
+        <h3>Методология</h3>
+        <ul>
+          <li><strong>Съдебно разпределение:</strong> едностранен биномен тест за всяка двойка „страна → съдия“ спрямо реалния дял на съдията в отделението; корекция за множествени сравнения по Benjamini–Hochberg (FDR). RED флаг: q &lt; 0,01, k ≥ 5, кратност ≥ 3.</li>
+          <li><strong>Обществени поръчки:</strong> 206 907 договора от ЦАИС ЕОП, кръстосани с ТРРЮЛНЦ, регистъра на действителните собственици (ЗМИП) и 3 035 декларации в КПКОНПИ.</li>
+          <li><strong>Контролни органи:</strong> публични актове на АДФИ, КЗК/ВАС и регистъра на ЗЧОД на МВР.</li>
+        </ul>
+      </div>
+      <div class="svetlina-method-col">
+        <h3>Правна бележка</h3>
+        <p>
+          Представените индикатори са статистически и регистърни сигнали за повишен риск, изведени изцяло от публично достъпни
+          официални източници. Те не представляват констатация за извършено нарушение или престъпление и не заместват
+          проверката на компетентните органи. За всички посочени лица важи презумпцията за невиновност.
+        </p>
+        <p class="svetlina-method-meta">Данни към {asOf} · Отворени данни CC-BY 4.0 · Без ЕГН и лични данни на физически лица</p>
       </div>
     </section>
   </div>

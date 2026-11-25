@@ -26,6 +26,10 @@ test('ot-mrak-kam-svetlina.html is built and contains countdown gate for 2026-11
   assert.match(html, /data-svet-tab="eppo"/);
   assert.doesNotMatch(html, /Велкова/);
   assert.doesNotMatch(html, /Занева/);
+  assert.doesNotMatch(html, /20\.Д-72/);
+  assert.doesNotMatch(html, /94-00-322/);
+  assert.doesNotMatch(html, /Вх\. №/);
+  assert.match(html, /презумпцията за невиновност/);
 });
 
 test('ot_mrak_kam_svetlina.js exists and handles unlock + ministry sector filtering', () => {

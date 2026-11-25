@@ -6118,3 +6118,48 @@ body[data-density=compact] .panel-box {
   height: 100%;
   background: var(--crimson);
 }
+
+.svetlina-method {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 18px;
+  margin: 16px 0 8px;
+  padding: 14px 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--ink);
+  border-radius: 4px;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--ink-secondary);
+}
+@media (max-width: 820px) {
+  .svetlina-method {
+    grid-template-columns: 1fr;
+  }
+}
+.svetlina-method h3 {
+  margin: 0 0 6px;
+  font-family: var(--font-serif, "Newsreader", serif);
+  font-size: 0.98rem;
+  color: var(--ink);
+}
+.svetlina-method ul {
+  margin: 0;
+  padding-left: 16px;
+}
+.svetlina-method li {
+  margin-bottom: 4px;
+}
+.svetlina-method p {
+  margin: 0 0 6px;
+}
+.svetlina-method strong {
+  color: var(--ink);
+}
+
+.svetlina-method-meta {
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 0.68rem;
+  color: var(--ink-muted);
+}
