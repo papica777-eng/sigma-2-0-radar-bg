@@ -1816,16 +1816,22 @@
         '</tbody></table></div></div>';
 
       var flagsHtml = ob.topFlags.length
-        ? '<div class="drawer-section"><h4>Статистически RED концентрации Страна &rarr; Съдия в областта (' +
+        ? '<div class="drawer-section"><h4>Всички статистически RED концентрации Страна &rarr; Съдия в областта (' +
           ob.topFlags.length +
           ' от ' +
           ob.redFlags +
           ')</h4>' +
+          (ob.topFlags.length > 8
+            ? '<input type="search" id="svetOblastFlagSearch" placeholder="Филтрирай по съд, съдия, страна или ЕИК в област ' +
+              esc(ob.name) +
+              '..." style="width:100%;padding:7px 10px;margin-bottom:10px;border:1px solid var(--border);border-radius:4px;background:var(--surface);color:var(--ink);font-size:12.5px;" />'
+            : '') +
+          '<div id="svetOblastFlagsWrap">' +
           ob.topFlags
             .map(function (tf) {
               var qStr = Number(tf.q) < 0.001 ? Number(tf.q).toExponential(2) : Number(tf.q).toFixed(4);
               return (
-                '<div class="contract-row" style="border-left:3px solid var(--crimson);">' +
+                '<div class="contract-row svet-ob-flag-row" style="border-left:3px solid var(--crimson);">' +
                 '<div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;">' +
                 '<strong>' +
                 esc(tf.party) +
@@ -1871,7 +1877,7 @@
               );
             })
             .join('') +
-          '</div>'
+          '</div></div>'
         : '<div class="drawer-section"><div class="contract-row" style="border-left:3px solid #0d7a5f;">В област ' +
           esc(ob.name) +
           ' няма засечени RED флагове при праг q &lt; 0,01, k ≥ 5 и кратност ≥ 3.</div></div>';
@@ -1902,6 +1908,17 @@
         courtsHtml +
         flagsHtml +
         buildLocalMatchesSection(localMatches);
+
+      var obSearch = document.getElementById('svetOblastFlagSearch');
+      if (obSearch) {
+        obSearch.addEventListener('input', function () {
+          var q = norm(obSearch.value);
+          var items = bodyEl.querySelectorAll('.svet-ob-flag-row');
+          items.forEach(function (it) {
+            it.hidden = Boolean(q) && norm(it.textContent).indexOf(q) === -1;
+          });
+        });
+      }
     }
 
     // Dispatcher with history stack + progressive live enrichment
@@ -2081,6 +2098,9 @@
     var sectorButtons = document.querySelectorAll('[data-svet-sector]');
     var vizButtons = document.querySelectorAll('[data-svet-viz]');
     var chartCards = document.querySelectorAll('[data-svet-chart]');
+    var allRedOblastSel = document.getElementById('svetAllRedOblastFilter');
+    var allRedKindSel = document.getElementById('svetAllRedKindFilter');
+    var allRedCountEl = document.getElementById('svetAllRedCount');
     if (!input) return null;
 
     var activeSector = 'jud';
@@ -2108,6 +2128,8 @@
 
     function applyFilter() {
       var q = norm(input.value);
+      var obFilter = allRedOblastSel ? allRedOblastSel.value : '';
+      var kindFilter = allRedKindSel ? allRedKindSel.value : '';
       var totalRows = 0;
       var shownRows = 0;
 
@@ -2120,10 +2142,15 @@
         }
         var rows = sec.querySelectorAll('tbody tr');
         var secShown = 0;
+        var secTotal = rows.length;
         rows.forEach(function (tr) {
           totalRows += 1;
           var rowSector = tr.getAttribute('data-sector') || '';
           var sectorOk = activeSector === 'all' || rowSector === activeSector;
+          if (secKey === 'allred') {
+            if (obFilter && tr.getAttribute('data-nuts3') !== obFilter) sectorOk = false;
+            if (kindFilter && tr.getAttribute('data-kind') !== kindFilter) sectorOk = false;
+          }
           var text = norm(tr.textContent);
           var searchOk = !q || text.indexOf(q) !== -1;
           var ok = sectorOk && searchOk;
@@ -2133,12 +2160,22 @@
             shownRows += 1;
           }
         });
-        sec.hidden = secShown === 0;
+        if (secKey === 'allred' && allRedCountEl) {
+          allRedCountEl.textContent = 'Показани: ' + secShown + ' от ' + secTotal + ' RED флага';
+        }
+        sec.hidden = secShown === 0 && !(secKey === 'allred' && activeTab === 'allred');
       });
 
       if (statusEl) {
         statusEl.textContent = 'Показани записи на екрана: ' + shownRows + ' от ' + totalRows;
       }
+    }
+
+    if (allRedOblastSel) {
+      allRedOblastSel.addEventListener('change', applyFilter);
+    }
+    if (allRedKindSel) {
+      allRedKindSel.addEventListener('change', applyFilter);
     }
 
     vizButtons.forEach(function (btn) {
@@ -2221,6 +2258,8 @@
     if (resetBtn) {
       resetBtn.addEventListener('click', function () {
         input.value = '';
+        if (allRedOblastSel) allRedOblastSel.value = '';
+        if (allRedKindSel) allRedKindSel.value = '';
         activeSector = 'jud';
         activeTab = 'all';
         syncSectorUI();
