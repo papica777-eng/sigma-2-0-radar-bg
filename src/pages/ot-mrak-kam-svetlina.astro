@@ -6,6 +6,19 @@ import macroRaw from '../../docs/data/sigma3_macro.json';
 
 const audit = eissAuditRaw as any;
 const u = audit.universe || {};
+const tierCounts = u.tierCounts || {};
+const unexplainedRedTotal = Number(u.unexplainedRedTotal || 0);
+const statutoryRedTotal = Number(u.statutoryRedTotal || 0);
+const batchArtifactRedTotal = Number(u.batchArtifactRedTotal || 0);
+const massCreditorRedTotal = Number(u.massCreditorRedTotal || 0);
+const datasetSha256 = String(u.datasetSha256 || '');
+const TIER_UI: Record<string, { short: string; cls: string; rank: number }> = {
+  UNEXPLAINED_PRIORITY: { short: 'Необяснено · ИВСС', cls: 'is-crimson', rank: 1 },
+  MASS_CREDITOR_SUMMARY: { short: 'Масов ищец (ГПК)', cls: 'is-ochre', rank: 2 },
+  BATCH_FILING_ARTIFACT: { short: 'Пакетно (1–2 д.)', cls: 'is-navy', rank: 3 },
+  STATUTORY_PUBLIC_SPECIALIZED: { short: 'Публ. специализация', cls: 'is-indigo', rank: 4 },
+  STATUTORY_ZSRS_DUTY: { short: 'ЗСРС / Дежурен', cls: 'is-teal', rank: 5 },
+};
 const j6 = j6Raw as any;
 const m3 = j6.module3_legalExpertGraph || {};
 const macro = macroRaw as any;
@@ -93,6 +106,7 @@ const oblastBuckets: Record<string, any> = {};
     cases: 0,
     judges: 0,
     redFlags: 0,
+    unexplainedRed: 0,
     amberFlags: 0,
     maxRatio: 0,
     ratePer10k: 0,
@@ -109,12 +123,14 @@ const oblastBuckets: Record<string, any> = {};
   b.cases += Number(c.cases || 0);
   b.judges += Number(c.judges || 0);
   b.redFlags += Number(c.redFlags || 0);
+  b.unexplainedRed += Number(c.unexplainedRedFlags || 0);
   b.amberFlags += Number(c.amberFlags || 0);
   b.courts.push({
     name: c.courtName,
     cases: Number(c.cases || 0),
     judges: Number(c.judges || 0),
     red: Number(c.redFlags || 0),
+    unexplainedRed: Number(c.unexplainedRedFlags || 0),
     amber: Number(c.amberFlags || 0),
     gini: Number(c.medianGini || 0),
   });
@@ -125,6 +141,8 @@ const allRedFlagsList: any[] = [];
   const n3 = mapCourtToNuts3(rf.courtName);
   const b = oblastBuckets[n3];
   const ratio = Number(rf.ratio || 0);
+  const tier = String(rf.explanationTier || 'UNEXPLAINED_PRIORITY');
+  const tierUi = TIER_UI[tier] || TIER_UI.UNEXPLAINED_PRIORITY;
   const flagObj = {
     idx: idx + 1,
     nuts3: n3,
@@ -140,6 +158,19 @@ const allRedFlagsList: any[] = [];
     exp: Number(rf.expected || 0),
     ratio,
     q: rf.q,
+    tier,
+    tierRank: tierUi.rank,
+    tierShort: tierUi.short,
+    tierCls: tierUi.cls,
+    tierLabel: rf.explanationLabel || tierUi.short,
+    basis: rf.explanationBasis || '',
+    distinctDays: Number(rf.distinctDays || 0),
+    distinctMonths: Number(rf.distinctMonths || 0),
+    maxDayShare: Number(rf.maxDayShare || 0),
+    dateSpan: rf.dateSpan || '',
+    restrictedShare: Number(rf.restrictedShare || 0),
+    procEur: Math.round(Number(rf.procurementEurM || 0) * 1e6),
+    procContracts: Number(rf.procurementContracts || 0),
     caseUrl: rf.sampleCases && rf.sampleCases[0] ? rf.sampleCases[0].caseUrl : '',
     caseRef: rf.sampleCases && rf.sampleCases[0] ? `${rf.sampleCases[0].regNumber}/${rf.sampleCases[0].regYear}` : '',
   };
@@ -147,6 +178,14 @@ const allRedFlagsList: any[] = [];
   if (!b) return;
   if (ratio > b.maxRatio) b.maxRatio = ratio;
   b.topFlags.push(flagObj);
+});
+
+allRedFlagsList.sort((a, b) => a.tierRank - b.tierRank || a.q - b.q || b.ratio - a.ratio);
+allRedFlagsList.forEach((item, i) => {
+  item.idx = i + 1;
+});
+Object.values(oblastBuckets).forEach((b: any) => {
+  b.topFlags.sort((a: any, c: any) => a.tierRank - c.tierRank || a.q - c.q || c.ratio - a.ratio);
 });
 
 const redKindsUnique = Array.from(new Set(allRedFlagsList.map((r) => r.kind))).sort();
@@ -577,7 +616,7 @@ const graphPayloadJson = JSON.stringify({
   asOf={asOf}
   subpage={true}
   canonicalPath="/ot-mrak-kam-svetlina.html"
-  subpageScript="sigma3/ot_mrak_kam_svetlina.js?v=20261126g"
+  subpageScript="sigma3/ot_mrak_kam_svetlina.js?v=20261126h"
   subpageSyncHref="data/sigma3_judicial_6.json"
 >
   <!-- COUNTDOWN VAULT & HERO (JUDICIAL-FIRST NARRATIVE) -->
@@ -719,10 +758,10 @@ const graphPayloadJson = JSON.stringify({
           </div>
         </div>
         <div class="funnel-step danger" data-svet-jump="allred" style="cursor:pointer;">
-          <div class="funnel-step-num">{fmtInt(allRedFlagsList.length)} RED</div>
+          <div class="funnel-step-num">{fmtInt(unexplainedRedTotal)} / {fmtInt(allRedFlagsList.length)}</div>
           <div>
-            <div class="funnel-step-lbl">2. Съдийски концентрации</div>
-            <div class="funnel-step-sub">FDR q &lt; 0,01 · клик за всички {allRedFlagsList.length} RED</div>
+            <div class="funnel-step-lbl">2. Необяснени / Общо RED</div>
+            <div class="funnel-step-sub">{unexplainedRedTotal} приоритет ИВСС · {statutoryRedTotal} ЗСРС/спец. · {massCreditorRedTotal} масови · {batchArtifactRedTotal} пакетни</div>
           </div>
         </div>
         <div class="funnel-step danger" data-svet-jump="security" style="cursor:pointer;">
@@ -788,7 +827,8 @@ const graphPayloadJson = JSON.stringify({
           </p>
         </div>
         <div class="svet-map-metrics" role="tablist" aria-label="Показател на картата">
-          <button type="button" class="svet-metric-pill active" data-svet-map-metric="redFlags">RED флагове (q &lt; 0,01)</button>
+          <button type="button" class="svet-metric-pill active" data-svet-map-metric="redFlags">Всички RED ({allRedFlagsList.length})</button>
+          <button type="button" class="svet-metric-pill" data-svet-map-metric="unexplainedRed">Необяснени RED ({unexplainedRedTotal})</button>
           <button type="button" class="svet-metric-pill" data-svet-map-metric="maxRatio">Макс. кратност (&times;)</button>
           <button type="button" class="svet-metric-pill" data-svet-map-metric="ratePer10k">RED на 10 000 дела</button>
           <button type="button" class="svet-metric-pill" data-svet-map-metric="cases">Общо дела (ЕИСС)</button>
@@ -1144,20 +1184,36 @@ const graphPayloadJson = JSON.stringify({
       <button type="button" class="inv-tab-btn" data-svet-tab="cartel">5. Пътища, Анекси &amp; ЗМИП <span class="inv-tab-count">{cartelZmipRows.length}</span></button>
     </div>
 
-    <!-- TABLE 0 (FULL UNIVERSE!): ALL 364 EISS RED FLAGS (ZERO TRUNCATION) -->
+    <!-- TABLE 0 (FULL UNIVERSE!): ALL 364 EISS RED FLAGS WITH LEVEL 1 CLASSIFIER + LEVEL 2 TEMPORAL DISPERSION -->
     <section class="svetlina-section" data-svet-section="allred">
       <div class="svetlina-section-head">
-        <h2>Пълен регистър на всички {allRedFlagsList.length} статистически RED флага в ЕПЕП / ЕИСС (1 118 765 дела · 180 съдилища)</h2>
+        <h2>Пълен регистър на всички {allRedFlagsList.length} RED флага в ЕПЕП / ЕИСС — Ниво 1 (Законни vs. Необяснени) &amp; Ниво 2 (Дни/Месеци &amp; ЗОП)</h2>
         <span class="mono" id="svetAllRedCount" style="font-size:0.74rem;color:var(--crimson);font-weight:700;">Показани: {allRedFlagsList.length} от {allRedFlagsList.length} RED флага</span>
       </div>
+      <div class="svet-tier-bar" role="group" aria-label="Бърз филтър по класификация Ниво 1">
+        <button type="button" class="svet-tier-pill active" data-svet-tier-pick="">Всички RED <strong>{allRedFlagsList.length}</strong></button>
+        <button type="button" class="svet-tier-pill is-crimson" data-svet-tier-pick="UNEXPLAINED_PRIORITY">Необяснени · Приоритет ИВСС <strong>{tierCounts.UNEXPLAINED_PRIORITY || 0}</strong></button>
+        <button type="button" class="svet-tier-pill is-ochre" data-svet-tier-pick="MASS_CREDITOR_SUMMARY">Масови ищци (ГПК) <strong>{tierCounts.MASS_CREDITOR_SUMMARY || 0}</strong></button>
+        <button type="button" class="svet-tier-pill is-navy" data-svet-tier-pick="BATCH_FILING_ARTIFACT">Пакетно (1–2 дни) <strong>{tierCounts.BATCH_FILING_ARTIFACT || 0}</strong></button>
+        <button type="button" class="svet-tier-pill is-indigo" data-svet-tier-pick="STATUTORY_PUBLIC_SPECIALIZED">Публ. специализация <strong>{tierCounts.STATUTORY_PUBLIC_SPECIALIZED || 0}</strong></button>
+        <button type="button" class="svet-tier-pill is-teal" data-svet-tier-pick="STATUTORY_ZSRS_DUTY">Законово · ЗСРС / Дежурен <strong>{tierCounts.STATUTORY_ZSRS_DUTY || 0}</strong></button>
+      </div>
       <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:9px;align-items:center;">
+        <select id="svetAllRedTierFilter" aria-label="Филтър по класификация Ниво 1" style="padding:5px 9px;border:1px solid var(--border);border-radius:4px;background:var(--surface);color:var(--ink);font-size:0.78rem;">
+          <option value="">Всички категории Ниво 1 ({allRedFlagsList.length})</option>
+          <option value="UNEXPLAINED_PRIORITY">Необяснени · Приоритет ИВСС ({tierCounts.UNEXPLAINED_PRIORITY || 0})</option>
+          <option value="MASS_CREDITOR_SUMMARY">Масов ищец · Заповедни/Комунални ({tierCounts.MASS_CREDITOR_SUMMARY || 0})</option>
+          <option value="BATCH_FILING_ARTIFACT">Пакетно завеждане в 1–2 дни ({tierCounts.BATCH_FILING_ARTIFACT || 0})</option>
+          <option value="STATUTORY_PUBLIC_SPECIALIZED">Публичен орган · Специализация ({tierCounts.STATUTORY_PUBLIC_SPECIALIZED || 0})</option>
+          <option value="STATUTORY_ZSRS_DUTY">Законово обяснимо · ЗСРС / чл. 159а НПК ({tierCounts.STATUTORY_ZSRS_DUTY || 0})</option>
+        </select>
         <select id="svetAllRedOblastFilter" aria-label="Филтър по област" style="padding:5px 9px;border:1px solid var(--border);border-radius:4px;background:var(--surface);color:var(--ink);font-size:0.78rem;">
           <option value="">Всички 28 области ({allRedFlagsList.length} RED)</option>
           {judicialOblasts
             .slice()
             .sort((a: any, b: any) => b.redFlags - a.redFlags || a.name.localeCompare(b.name, 'bg'))
             .map((ob: any) => (
-              <option value={ob.nuts3}>{ob.name} ({ob.redFlags} RED · {ob.courtsCount} съд.)</option>
+              <option value={ob.nuts3}>{ob.name} ({ob.redFlags} RED · {ob.unexplainedRed} необясн.)</option>
             ))}
         </select>
         <select id="svetAllRedKindFilter" aria-label="Филтър по вид дело" style="padding:5px 9px;border:1px solid var(--border);border-radius:4px;background:var(--surface);color:var(--ink);font-size:0.78rem;">
@@ -1166,20 +1222,21 @@ const graphPayloadJson = JSON.stringify({
             <option value={k}>{k}</option>
           ))}
         </select>
-        <span class="muted" style="font-size:0.74rem;">Клик върху който и да е ред отваря профила на съдията и веригата по ЕИК в дясното меню.</span>
+        <span class="muted" style="font-size:0.74rem;">Подредени с приоритет „Необяснени · ИВСС“ най-отгоре. Клик върху ред отваря веригата в дясното меню.</span>
       </div>
-      <div class="table-wrap svetlina-compact-scroll" style="max-height:430px;">
+      <div class="table-wrap svetlina-compact-scroll" style="max-height:460px;">
         <table>
           <thead>
             <tr>
               <th>№</th>
+              <th>Ниво 1 · Класификация</th>
               <th>Област</th>
               <th>Съд и вид дело</th>
               <th>Юридическо лице / Институция (ЕИК)</th>
               <th>Съдия-докладчик</th>
               <th class="num">k / n</th>
-              <th class="num">Очакв.</th>
               <th class="num">Кратност</th>
+              <th>Ниво 2 · Дни / Мес. &amp; ЗОП</th>
               <th class="num">FDR q</th>
               <th>ЕПЕП</th>
             </tr>
@@ -1187,16 +1244,22 @@ const graphPayloadJson = JSON.stringify({
           <tbody id="svetAllRedTbody">
             {allRedFlagsList.map((rf) => {
               const qStr = Number(rf.q) < 0.001 ? Number(rf.q).toExponential(2) : Number(rf.q).toFixed(4);
+              const maxDayPct = Math.round(Number(rf.maxDayShare || 0) * 100);
+              const restrPct = Math.round(Number(rf.restrictedShare || 0) * 100);
               return (
                 <tr
                   class="svet-row-clickable"
                   data-sector="jud"
                   data-nuts3={rf.nuts3}
                   data-kind={rf.kind}
+                  data-tier={rf.tier}
                   data-svet-open-judge={rf.judge}
                   tabindex="0"
                 >
                   <td class="mono muted">{rf.idx}</td>
+                  <td>
+                    <span class={`svetlina-badge ${rf.tierCls}`} title={rf.basis}>{rf.tierShort}</span>
+                  </td>
                   <td><span class="svetlina-badge is-indigo">{rf.oblastName.replace(' (столица)', ' (гр.)')}</span></td>
                   <td>
                     <strong>{rf.court}</strong>
@@ -1208,8 +1271,12 @@ const graphPayloadJson = JSON.stringify({
                   </td>
                   <td><strong>{rf.judge}</strong></td>
                   <td class="mono num"><strong>{rf.k} / {rf.n}</strong></td>
-                  <td class="mono num">{Number(rf.exp).toFixed(2).replace('.', ',')}</td>
                   <td class="mono num" style="color:var(--crimson);font-weight:700;">&times;{Number(rf.ratio).toFixed(2).replace('.', ',')}</td>
+                  <td class="mono" style="font-size:0.71rem;white-space:nowrap;">
+                    <div><strong>{rf.distinctDays} д. / {rf.distinctMonths} мес.</strong> <span class="muted">(макс. {maxDayPct}%/д)</span></div>
+                    {rf.procEur > 0 ? <div style="color:var(--ochre);font-weight:700;">ЗОП: {fmtEurShort(rf.procEur)}</div> : ''}
+                    {restrPct >= 50 ? <div class="muted">Огр. достъп: {restrPct}%</div> : ''}
+                  </td>
                   <td class="mono num">{qStr}</td>
                   <td>
                     {rf.caseUrl ? (
@@ -1431,18 +1498,21 @@ const graphPayloadJson = JSON.stringify({
         <h3>Методология</h3>
         <ul>
           <li><strong>Съдебно разпределение (основен анализ):</strong> 1 118 765 дела в 180 съдилища и 2 714 съдии (ЕПЕП/ЕИСС, 2025–2026). Едностранен биномен тест за всяка двойка „страна → съдия“ спрямо реалния дял на съдията в отделението; корекция по Benjamini–Hochberg (FDR). RED флаг: q &lt; 0,01, k ≥ 5, кратност ≥ 3.</li>
+          <li><strong>Ниво 1 · Филтър за законни и структурни обяснения:</strong> всички 364 RED флага са разделени в 5 категории — <strong>{unexplainedRedTotal} Необяснени (Приоритет ИВСС)</strong>, {massCreditorRedTotal} масови ищци (чл. 410/417 ГПК), {batchArtifactRedTotal} пакетно заведени в 1–2 дни (≥70% в един ден), {tierCounts.STATUTORY_PUBLIC_SPECIALIZED || 0} публични органи със специализация (НАП/ДАБ/НОИ/АСП) и {tierCounts.STATUTORY_ZSRS_DUTY || 0} законово обясними ЧНД по чл. 15 ЗСРС / чл. 159а НПК / дежурен съдия.</li>
+          <li><strong>Ниво 2 · Времева дисперсия и стойност по ЗОП:</strong> за всеки флаг се изчисляват точният брой различни календарни дни и месеци на образуване, максималният дял в един ден, делът на делата с ограничен достъп в ЕИСС и точният обем спечелени/възложени обществени поръчки (EUR).</li>
           <li><strong>Адвокатски дружества и експерти (Модул J3):</strong> анализ на правни услуги в ЦАИС ЕОП и извличане на процесуални представители от публични съдебни актове в ЕПЕП/ЕИСС.</li>
           <li><strong>Свързани политици и институции:</strong> кръстосване на 206 907 договора от ЦАИС ЕОП с ТРРЮЛНЦ, регистъра по ЗМИП, 3 035 декларации в КПКОНПИ, АДФИ и КЗК/ВАС.</li>
         </ul>
       </div>
       <div class="svetlina-method-col">
-        <h3>Правна бележка</h3>
+        <h3>Правна бележка &amp; Възпроизводимост (SHA-256)</h3>
         <p>
           Представените индикатори са статистически и регистърни сигнали за повишен риск, изведени изцяло от публично достъпни
           официални източници. Те не представляват констатация за извършено нарушение или престъпление и не заместват
           проверката на компетентните органи. За всички посочени лица важи презумпцията за невиновност.
         </p>
         <p class="svetlina-method-meta">Данни към {asOf} · Отворени данни CC-BY 4.0 · Без ЕГН и лични данни на физически лица</p>
+        {datasetSha256 ? <p class="svetlina-method-meta mono" style="word-break:break-all;margin-top:4px;">SHA-256 (364 RED snapshot): {datasetSha256}</p> : ''}
       </div>
     </section>
   </div>

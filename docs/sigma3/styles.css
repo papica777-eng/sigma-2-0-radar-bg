@@ -6767,3 +6767,88 @@ body[data-density=compact] .panel-box {
   font-size: 0.7rem;
   color: var(--ink-secondary);
 }
+
+.svet-tier-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.svet-tier-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.14s ease;
+}
+.svet-tier-pill strong {
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 0.74rem;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: var(--surface-alt);
+}
+.svet-tier-pill:hover {
+  border-color: var(--ink);
+}
+.svet-tier-pill.active {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.svet-tier-pill.active strong {
+  background: rgba(255, 255, 255, 0.18);
+  color: inherit;
+}
+.svet-tier-pill.is-crimson {
+  border-left: 3px solid var(--crimson);
+}
+.svet-tier-pill.is-crimson.active {
+  background: var(--crimson);
+  border-color: var(--crimson);
+  color: #ffffff;
+}
+.svet-tier-pill.is-ochre {
+  border-left: 3px solid var(--ochre);
+}
+.svet-tier-pill.is-navy {
+  border-left: 3px solid #334155;
+}
+.svet-tier-pill.is-indigo {
+  border-left: 3px solid #4338ca;
+}
+.svet-tier-pill.is-teal {
+  border-left: 3px solid var(--teal);
+}
+
+.svetlina-badge.is-crimson {
+  background: var(--crimson-bg);
+  color: var(--crimson);
+  border-color: var(--crimson-border);
+}
+
+.svetlina-badge.is-ochre {
+  background: var(--ochre-bg);
+  color: var(--ochre);
+  border-color: var(--ochre-border);
+}
+
+.svetlina-badge.is-teal {
+  background: var(--teal-bg);
+  color: var(--teal);
+  border-color: var(--teal-border);
+}
+
+.svetlina-badge.is-navy {
+  background: var(--slate-bg);
+  color: var(--ink-secondary);
+  border-color: var(--slate-border);
+}

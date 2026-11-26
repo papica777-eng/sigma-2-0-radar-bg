@@ -1778,9 +1778,11 @@
         '<div class="kpi-card"><div class="kpi-label">Дела (2025–2026)</div><div class="kpi-val" style="font-size:14px;">' +
         fmtInt(ob.cases) +
         '</div></div>' +
-        '<div class="kpi-card emphasis"><div class="kpi-label">RED флагове</div><div class="kpi-val" style="font-size:15px;color:var(--crimson);">' +
+        '<div class="kpi-card emphasis"><div class="kpi-label">RED (Необяснени)</div><div class="kpi-val" style="font-size:15px;color:var(--crimson);">' +
         fmtInt(ob.redFlags) +
-        '</div></div>' +
+        ' <span style="font-size:11px;color:var(--ink-secondary);">(' +
+        fmtInt(ob.unexplainedRed || 0) +
+        ')</span></div></div>' +
         '<div class="kpi-card"><div class="kpi-label">RED / 10 000 дела</div><div class="kpi-val" style="font-size:14px;">' +
         String(ob.ratePer10k).replace('.', ',') +
         '</div></div></div>';
@@ -1830,9 +1832,14 @@
           ob.topFlags
             .map(function (tf) {
               var qStr = Number(tf.q) < 0.001 ? Number(tf.q).toExponential(2) : Number(tf.q).toFixed(4);
+              var isUnexp = tf.tier === 'UNEXPLAINED_PRIORITY';
+              var borderCol = isUnexp ? 'var(--crimson)' : tf.tier === 'STATUTORY_ZSRS_DUTY' ? 'var(--teal)' : 'var(--ochre)';
+              var maxDayPct = Math.round(Number(tf.maxDayShare || 0) * 100);
               return (
-                '<div class="contract-row svet-ob-flag-row" style="border-left:3px solid var(--crimson);">' +
-                '<div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;">' +
+                '<div class="contract-row svet-ob-flag-row" style="border-left:3px solid ' +
+                borderCol +
+                ';">' +
+                '<div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center;">' +
                 '<strong>' +
                 esc(tf.party) +
                 (tf.eik ? ' (' + esc(tf.eik) + ')' : '') +
@@ -1844,7 +1851,28 @@
                 '/' +
                 tf.n +
                 ')</span></div>' +
-                '<div class="muted" style="font-size:12px;margin-top:2px;">' +
+                '<div style="margin-top:4px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;">' +
+                '<span class="svetlina-badge ' +
+                esc(tf.tierCls || 'is-indigo') +
+                '">' +
+                esc(tf.tierShort || tf.tierLabel || '') +
+                '</span>' +
+                (tf.distinctDays
+                  ? '<span class="mono muted" style="font-size:11px;">' +
+                    tf.distinctDays +
+                    ' д. / ' +
+                    tf.distinctMonths +
+                    ' мес. (макс. ' +
+                    maxDayPct +
+                    '%/ден)</span>'
+                  : '') +
+                (tf.procEur > 0
+                  ? '<span class="mono" style="font-size:11px;color:var(--ochre);font-weight:700;">ЗОП: ' +
+                    fmtEur(tf.procEur) +
+                    '</span>'
+                  : '') +
+                '</div>' +
+                '<div class="muted" style="font-size:12px;margin-top:3px;">' +
                 esc(tf.court) +
                 ' · ' +
                 esc(tf.kind) +
@@ -1855,6 +1883,11 @@
                 '</strong> · FDR q=' +
                 esc(qStr) +
                 '</div>' +
+                (tf.basis
+                  ? '<div class="muted" style="font-size:11px;margin-top:3px;font-style:italic;">' +
+                    esc(tf.basis) +
+                    '</div>'
+                  : '') +
                 '<div style="margin-top:5px;display:flex;gap:6px;flex-wrap:wrap;">' +
                 '<button type="button" class="svet-chain-pill is-indigo" data-svet-open-judge="' +
                 esc(tf.judge) +
@@ -2098,6 +2131,8 @@
     var sectorButtons = document.querySelectorAll('[data-svet-sector]');
     var vizButtons = document.querySelectorAll('[data-svet-viz]');
     var chartCards = document.querySelectorAll('[data-svet-chart]');
+    var allRedTierSel = document.getElementById('svetAllRedTierFilter');
+    var allRedTierPills = document.querySelectorAll('[data-svet-tier-pick]');
     var allRedOblastSel = document.getElementById('svetAllRedOblastFilter');
     var allRedKindSel = document.getElementById('svetAllRedKindFilter');
     var allRedCountEl = document.getElementById('svetAllRedCount');
@@ -2128,6 +2163,7 @@
 
     function applyFilter() {
       var q = norm(input.value);
+      var tierFilter = allRedTierSel ? allRedTierSel.value : '';
       var obFilter = allRedOblastSel ? allRedOblastSel.value : '';
       var kindFilter = allRedKindSel ? allRedKindSel.value : '';
       var totalRows = 0;
@@ -2148,6 +2184,7 @@
           var rowSector = tr.getAttribute('data-sector') || '';
           var sectorOk = activeSector === 'all' || rowSector === activeSector;
           if (secKey === 'allred') {
+            if (tierFilter && tr.getAttribute('data-tier') !== tierFilter) sectorOk = false;
             if (obFilter && tr.getAttribute('data-nuts3') !== obFilter) sectorOk = false;
             if (kindFilter && tr.getAttribute('data-kind') !== kindFilter) sectorOk = false;
           }
@@ -2171,6 +2208,26 @@
       }
     }
 
+    function syncTierPills(val) {
+      allRedTierPills.forEach(function (b) {
+        b.classList.toggle('active', (b.getAttribute('data-svet-tier-pick') || '') === val);
+      });
+    }
+
+    if (allRedTierSel) {
+      allRedTierSel.addEventListener('change', function () {
+        syncTierPills(allRedTierSel.value);
+        applyFilter();
+      });
+    }
+    allRedTierPills.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var val = btn.getAttribute('data-svet-tier-pick') || '';
+        if (allRedTierSel) allRedTierSel.value = val;
+        syncTierPills(val);
+        applyFilter();
+      });
+    });
     if (allRedOblastSel) {
       allRedOblastSel.addEventListener('change', applyFilter);
     }
@@ -2294,7 +2351,8 @@
     var selectedNuts3 = 'BG411'; // Sofia-grad by default
 
     var titles = {
-      redFlags: 'Радар карта на съдилищата в България — RED флагове по 28 области (180 съдилища)',
+      redFlags: 'Радар карта на съдилищата в България — Всички RED флагове по 28 области (180 съдилища)',
+      unexplainedRed: 'Радар карта — Необяснени RED флагове (Приоритет ИВСС след Ниво 1 филтър за ЗСРС и пакетно подаване)',
       maxRatio: 'Радар карта на съдилищата — Максимална кратност (× над очакваното при случайност)',
       ratePer10k: 'Радар карта на съдилищата — Нормализиран индекс (RED флагове на 10 000 дела)',
       cases: 'Радар карта на съдилищата — Общ брой разпределени дела в ЕИСС (2025–2026)',
@@ -2308,7 +2366,7 @@
       if (titleEl) titleEl.textContent = titles[activeMetric] || titles.redFlags;
       var vals = oblasts.map(getVal);
       var maxV = Math.max.apply(null, vals.concat([1]));
-      var useLog = activeMetric === 'redFlags' || activeMetric === 'cases';
+      var useLog = activeMetric === 'redFlags' || activeMetric === 'unexplainedRed' || activeMetric === 'cases';
 
       var palette =
         activeMetric === 'cases'
@@ -2333,6 +2391,10 @@
             activeMetric === 'redFlags'
               ? ob.redFlags > 0
                 ? ob.redFlags + ' RED'
+                : '0'
+              : activeMetric === 'unexplainedRed'
+              ? ob.unexplainedRed > 0
+                ? ob.unexplainedRed + ' необ.'
                 : '0'
               : activeMetric === 'maxRatio'
               ? ob.maxRatio > 0
@@ -2445,9 +2507,11 @@
         '<div><span>Дела (ЕИСС)</span><strong>' +
         fmtInt(ob.cases) +
         '</strong></div>' +
-        '<div><span>RED флагове</span><strong style="color:var(--crimson);">' +
+        '<div><span>RED (Необясн.)</span><strong style="color:var(--crimson);">' +
         fmtInt(ob.redFlags) +
-        '</strong></div>' +
+        ' (' +
+        fmtInt(ob.unexplainedRed || 0) +
+        ')</strong></div>' +
         '<div><span>Макс. кратност</span><strong style="color:var(--crimson);">' +
         (ob.maxRatio > 0 ? '×' + String(ob.maxRatio).replace('.', ',') : '—') +
         '</strong></div>' +
@@ -2493,9 +2557,12 @@
                   tf.n +
                   ')</span></div>' +
                   '<div class="f-meta">' +
+                  esc(tf.tierShort || '') +
+                  ' · ' +
                   esc(tf.court) +
                   ' · Съдия: ' +
                   esc(tf.judge) +
+                  (tf.distinctDays ? ' · ' + tf.distinctDays + ' д./' + tf.distinctMonths + ' м.' : '') +
                   '</div></button>'
                 );
               })
