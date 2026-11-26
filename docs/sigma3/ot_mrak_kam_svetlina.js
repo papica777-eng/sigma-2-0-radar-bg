@@ -96,38 +96,17 @@
   }
 
   // ===========================================================================
-  // COUNTDOWN GATE & SHA-256 ARCHITECT PREVIEW KEY
+  // PUBLISHED AUDIT GATE (INSTANT UNLOCK & SHA-256 PREVIEW KEY SUPPORT)
   // ===========================================================================
   function initGate() {
     var vault = document.getElementById('svetlinaVault');
     var content = document.getElementById('svetlinaVaultContent');
     if (!vault || !content) return;
 
-    var unlockStr = vault.getAttribute('data-unlock-at') || '2026-11-26T12:00:00+02:00';
-    var startStr = vault.getAttribute('data-start-at') || '2026-11-26T00:45:00+02:00';
-    var unlockMs = Date.parse(unlockStr);
-    var startMs = Date.parse(startStr);
-
-    var dEl = document.getElementById('svetlinaDays');
-    var hEl = document.getElementById('svetlinaHours');
-    var mEl = document.getElementById('svetlinaMins');
-    var sEl = document.getElementById('svetlinaSecs');
-    var fillEl = document.getElementById('svetlinaProgressFill');
     var timerGrid = document.getElementById('svetlinaTimerGrid');
     var progressWrap = document.getElementById('svetlinaProgressWrap');
-    var titleEl = document.getElementById('svetlinaVaultTitle');
-    var subEl = document.getElementById('svetlinaVaultSub');
-    var kickerEl = document.getElementById('svetlinaVaultKicker');
 
     function unlockNow() {
-      var p = parsePayload() || {};
-      var um = p.universeMeta || {};
-      var cFmt = um.casesFmt || '2 234 509';
-      var jFmt = um.judgesFmt || '3 244';
-      var ctFmt = um.courtsFmt || '180';
-      var yr = um.yearRange || '2023–2026';
-      var unexp = um.unexplainedTotal || 154;
-      var redTot = um.redTotal || 869;
       vault.classList.add('is-unlocked');
       if (timerGrid) {
         timerGrid.hidden = true;
@@ -137,20 +116,12 @@
         progressWrap.hidden = true;
         progressWrap.style.display = 'none';
       }
-      if (kickerEl) {
-        kickerEl.textContent = 'НАЦИОНАЛЕН КРОС-РЕГИСТЪРЕН ОДИТ · ПУБЛИКУВАНО НА СВЕТЛО · ' + yr + ' (' + cFmt + ' ДЕЛА)';
-      }
-      if (titleEl) {
-        titleEl.textContent = 'От мрак към светлина — анализ на ' + cFmt + ' съдебни дела (' + yr + '), адвокатите и свързаната власт';
-      }
-      if (subEl) {
-        subEl.textContent =
-          'Национална 28-областна радар карта на ' + ctFmt + ' съдилища и ' + jFmt + ' съдии в ЕПЕП/ЕИСС (' + yr + '), ' +
-          redTot + ' RED флага (' + unexp + ' необяснени · Приоритет ИВСС), адвокати → съдии и проследяване на свързаните политици и институции в дясното меню.';
-      }
       content.hidden = false;
       content.removeAttribute('hidden');
     }
+
+    // Always immediately unlock for published access
+    unlockNow();
 
     var params = new URLSearchParams(window.location.search || '');
     var rawKey = params.get('key');
@@ -166,39 +137,6 @@
           unlockNow();
         }
       });
-    }
-
-    function tick() {
-      var now = Date.now();
-      var diff = unlockMs - now;
-
-      if (diff <= 0) {
-        unlockNow();
-        return true;
-      }
-
-      var totalSecs = Math.floor(diff / 1000);
-      var days = Math.floor(totalSecs / 86400);
-      var hours = Math.floor((totalSecs % 86400) / 3600);
-      var mins = Math.floor((totalSecs % 3600) / 60);
-      var secs = totalSecs % 60;
-
-      if (dEl) dEl.textContent = pad(days);
-      if (hEl) hEl.textContent = pad(hours);
-      if (mEl) mEl.textContent = pad(mins);
-      if (sEl) sEl.textContent = pad(secs);
-
-      if (fillEl && unlockMs > startMs) {
-        var pct = Math.max(0, Math.min(100, ((now - startMs) / (unlockMs - startMs)) * 100));
-        fillEl.style.width = pct.toFixed(1) + '%';
-      }
-      return false;
-    }
-
-    if (!tick()) {
-      var iv = window.setInterval(function () {
-        if (tick()) window.clearInterval(iv);
-      }, 1000);
     }
   }
 
@@ -897,7 +835,7 @@
       var liveHtml = '';
       if (!live.loaded) {
         liveHtml =
-          '<div class="drawer-section"><div class="muted" style="font-size:12px;">Зареждане на пълните публични регистри на NAsvetlo (СИГМА 2.0, ДЗЗД партньори, договори и КПКОНПИ XML)...</div></div>';
+          '<div class="drawer-section"><div class="muted" style="font-size:12px;">Зареждане на пълните публични регистри на NAsvetlo (СИГМА 2.0, ДЗЗД партньори, договори и КПК XML)...</div></div>';
       } else {
         // Official details (if politician found in officials_all.json)
         if (off) {
@@ -915,7 +853,7 @@
           });
           liveHtml +=
             '<div class="drawer-section">' +
-            '<h4>Декларации в КПКОНПИ / Табл. 9 и Търговски регистър (' +
+            '<h4>Декларации в КПК / Табл. 9 и Търговски регистър (' +
             dedupDeep.length +
             ')</h4>' +
             dedupDeep
@@ -950,7 +888,7 @@
                   (d.declarationUrl
                     ? '<div style="margin-top:4px;"><a class="mono" style="font-size:11.5px;" href="' +
                       esc(d.declarationUrl) +
-                      '" target="_blank" rel="noopener">Оригинална XML декларация (КПКОНПИ / Сметна палата) ↗</a></div>'
+                      '" target="_blank" rel="noopener">Оригинална XML декларация (КПК / Сметна палата) ↗</a></div>'
                     : '') +
                   '</div>'
                 );
@@ -1004,7 +942,7 @@
       // Institutions
       if (o.institutions && o.institutions.length) {
         html +=
-          '<div class="drawer-section"><h4>Декларирани публични длъжности (СИГМА / КПКОНПИ)</h4>' +
+          '<div class="drawer-section"><h4>Декларирани публични длъжности (СИГМА / КПК)</h4>' +
           o.institutions
             .map(function (inst) {
               return (
@@ -1162,7 +1100,7 @@
       // Declarations
       if (o.declarations && o.declarations.length) {
         html +=
-          '<div class="drawer-section"><h4>Декларации в КПКОНПИ / Сметна палата (' +
+          '<div class="drawer-section"><h4>Декларации в КПК / Сметна палата (' +
           o.declarations.length +
           ')</h4>' +
           o.declarations
@@ -1296,7 +1234,7 @@
 
       kickerEl.textContent = o
         ? 'ДЛЪЖНОСТНО ЛИЦЕ · ' + String(o.circle || 'ПУБЛИЧЕН РЕГИСТЪР').toUpperCase()
-        : 'ДЛЪЖНОСТНО ЛИЦЕ · КПКОНПИ / ТАБЛ. 9';
+        : 'ДЛЪЖНОСТНО ЛИЦЕ · КПК / ТАБЛ. 9';
       titleEl.textContent = displayName;
 
       var badges = [];
@@ -1331,7 +1269,7 @@
         : '';
 
       var deepHtml = deepHits.length
-        ? '<div class="drawer-section"><h4>КПКОНПИ Табл. 9 / Търговски регистър (' +
+        ? '<div class="drawer-section"><h4>КПК Табл. 9 / Търговски регистър (' +
           deepHits.length +
           ')</h4>' +
           deepHits
@@ -1461,7 +1399,7 @@
       var offListHtml = '';
       if (linkedOffs.length || deepEik.length) {
         offListHtml =
-          '<div class="drawer-section"><h4>Свързани длъжностни лица и политици (СИГМА &times; КПКОНПИ Табл. 9)</h4><ul class="cluster-people">' +
+          '<div class="drawer-section"><h4>Свързани длъжностни лица и политици (СИГМА &times; КПК Табл. 9)</h4><ul class="cluster-people">' +
           linkedOffs
             .map(function (o) {
               return (

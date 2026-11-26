@@ -5569,11 +5569,38 @@ body[data-density=compact] .panel-box {
   margin-bottom: 8px;
 }
 
+.svetlina-published-banner {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 6px 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--crimson);
+  border-radius: 4px;
+  margin: 0 0 12px;
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 0.76rem;
+  color: var(--ink);
+}
+.svetlina-published-banner .published-badge {
+  font-weight: 700;
+  color: var(--crimson);
+  letter-spacing: 0.05em;
+}
+.svetlina-published-banner .published-desc {
+  color: var(--ink-secondary);
+}
+
 .svetlina-timer-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(68px, 118px));
   gap: 10px;
   margin: 0 0 14px;
+}
+.is-unlocked .svetlina-timer-grid {
+  display: none !important;
 }
 
 .svetlina-unit {
@@ -5606,6 +5633,9 @@ body[data-density=compact] .panel-box {
 .svetlina-progress-wrap {
   max-width: 510px;
   margin: 0 0 12px;
+}
+.is-unlocked .svetlina-progress-wrap {
+  display: none !important;
 }
 
 .svetlina-progress-bar {
@@ -6856,4 +6886,57 @@ body[data-density=compact] .panel-box {
   background: var(--slate-bg);
   color: var(--ink-secondary);
   border-color: var(--slate-border);
+}
+
+.svetlina-glossary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.glossary-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.glossary-term {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.glossary-badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: 3px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--ink-muted);
+}
+
+.glossary-desc {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--ink-secondary);
+}
+.glossary-desc strong {
+  color: var(--ink);
+}
+.glossary-desc em {
+  color: var(--crimson);
+  font-style: normal;
+  font-weight: 600;
 }

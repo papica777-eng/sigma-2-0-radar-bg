@@ -34,15 +34,16 @@ const dynamicAsOf = [
   String((invRaw as any).generatedAtUtc || '').slice(0, 10),
   String((telkRaw as any).generatedAtUtc || '').slice(0, 10),
   String((fiscalRaw as any).generatedAtUtc || '').slice(0, 10),
-  '2026-11-23',
-].filter(Boolean).sort().pop() || '2026-11-23';
+  String((eissAuditRaw as any).asOf || (eissAuditRaw as any).generatedAtUtc || '').slice(0, 10),
+  '2026-11-26',
+].filter(Boolean).sort().pop() || '2026-11-26';
 ---
 <BaseLayout asOf={dynamicAsOf}>
   <a class="svetlina-banner" href="ot-mrak-kam-svetlina.html" title="Отвори „От мрак към светлина“ — съдебен радар на 180 съдилища и Ниво 1–5 одит">
     <span class="svetlina-banner__tag">НОВО · НИВО 1–5 · {eissYearSpan}</span>
     <div class="svetlina-banner__body">
       <div class="svetlina-banner__title">От мрак към светлина — Национален съдебен и прокурорски радар ({eissCasesFmt} дела)</div>
-      <div class="svetlina-banner__sub">Пълен алгоритмичен одит на <strong>{eissCasesFmt} дела</strong> в <strong>180 съдилища</strong> (28 области · {eissJudgesFmt} съдии): <strong>{eissUnexpTotal} необяснени RED</strong> от {eissRedTotal} общо, адвокати &rarr; съдии, многогодишни повторения и мост към ЗОП/КПКОНПИ</div>
+      <div class="svetlina-banner__sub">Пълен алгоритмичен одит на <strong>{eissCasesFmt} дела</strong> в <strong>180 съдилища</strong> (28 области · {eissJudgesFmt} съдии): <strong>{eissUnexpTotal} необяснени RED</strong> от {eissRedTotal} общо, адвокати &rarr; съдии, многогодишни повторения и мост към ЗОП/КПК</div>
     </div>
     <span class="svetlina-banner__cta btn btn-dark">Отвори одита &rarr;</span>
   </a>

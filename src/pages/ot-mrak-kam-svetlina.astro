@@ -12,6 +12,13 @@ const fmtEurShort = (n: number) => {
   return `€${Math.round(v).toLocaleString('bg-BG')}`;
 };
 
+const cleanParty = (p: string) =>
+  String(p || '')
+    .replace(/АДМИТИСТРАЦИЯ/gi, 'АДМИНИСТРАЦИЯ')
+    .replace(/\s*\(\s*\)/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
 const audit = eissAuditRaw as any;
 const u = audit.universe || {};
 const tierCounts = u.tierCounts || {};
@@ -103,7 +110,7 @@ function mapCourtToNuts3(courtName: string): string {
   return 'BG411';
 }
 
-// Aggregate all 180 courts and 364 RED flags into the 28 Bulgarian NUTS-3 Oblasts
+// Aggregate all 180 courts and 869 RED flags into the 28 Bulgarian NUTS-3 Oblasts
 const oblastBuckets: Record<string, any> = {};
 (mapGeo.oblasts || []).forEach((ob: any) => {
   oblastBuckets[ob.nuts3] = {
@@ -161,7 +168,7 @@ const allRedFlagsList: any[] = [];
     court: rf.courtName,
     kind: rf.caseKind,
     year: rf.year,
-    party: rf.party,
+    party: cleanParty(rf.party),
     eik: rf.partyEik || '',
     judge: rf.judge,
     k: rf.k,
@@ -213,7 +220,7 @@ const judicialMapConfig = {
   oblasts: judicialOblasts,
 };
 
-// 6 Стълба: ПЪРВО Съд, Прокуратура и Адвокати (върху 1 118 765 дела), ПОСЛЕ Свързани политици и институции
+// 6 Стълба: ПЪРВО Съд, Прокуратура и Адвокати (върху 2 234 509 дела), ПОСЛЕ Свързани политици и институции
 const ministrySectors = [
   {
     id: 'jud',
@@ -239,7 +246,7 @@ const ministrySectors = [
     title: 'Адвокатски дружества (J3), ЕПЕП юристи и EPPO',
     eur: `${fmtInt(m3.lawFirmsCount || 95)} кантори · ${fmtEurShort(m3.lawFirmsTotalEur || 16800000)}`,
     badges: 'Пряко възлагане в МС/МРРБ/АЕЦ · €1,58B EPPO',
-    summary: 'Мулти-институционални адвокатски кантори (Камбуров, Попов/Арнаудов, Шопов/Янков и Топ 10 по J3), юристи от съдебни актове в ЕПЕП, европроекти с 1 оферта и ЗЧОД без лиценз.',
+    summary: 'Мулти-институционални адвокатски кантори (Камбуров, Попов/Арнаудов, Шопов/Янков и Топ 10 по J3), юристи от съдебни актове в ЕПЕП, европроекти с 1 оферта и охранителни фирми (по ЗЧОД) без лиценз.',
     accent: 'ochre',
   },
   {
@@ -345,7 +352,7 @@ const eppoLawSecurityRows = [
   { id: 'eppo-5', sector: 'law', sectorLabel: 'Адвокати · МРРБ', cat: 'Правни услуги (J3)', name: 'МРРБ & МС → АД „Попов, Арнаудов и партньори“ (175382262)', eik: '175382262', authEik: '831661388', val: '€1 394 548', details: '11 договора (€910,89 хил. от МРРБ + €245,42 хил. от МС)' },
   { id: 'eppo-6', sector: 'law', sectorLabel: 'Адвокати · АЕЦ', cat: 'Правни услуги (J3)', name: 'АЕЦ „Козлодуй“ → АД „Шопов и Янков“ (175825028)', eik: '175825028', authEik: '106513772', val: '€556 848', details: '5 договора с 1 оферта за делата срещу „ТЕЦ Марица 3“ АД и САС' },
   { id: 'eppo-0', sector: 'mun', sectorLabel: 'EPPO · СО', cat: 'EPPO Европроект', name: 'Метрополитен ЕАД → ДВУ21 (180846084)', eik: '180846084', authEik: '000632256', val: '€115 796 039', details: 'УНП 00423-2021-0001 · 1 единствена оферта + 7 анекса (+€18,73 млн.) с ЕС средства' },
-  { id: 'eppo-1', sector: 'me_mz', sectorLabel: 'EPPO · МЗ', cat: 'EPPO Европроект', name: 'МЗ → Leonardo S.p.A. (Медицински хеликоптери)', eik: '', authEik: '000695317', val: '€58 000 000', details: 'УНП 00080-2023-0001 · 1 оферта · Пряко договаряне · Флаг annex_total_suspect' },
+  { id: 'eppo-1', sector: 'me_mz', sectorLabel: 'EPPO · МЗ', cat: 'EPPO Европроект', name: 'МЗ → Leonardo S.p.A. (Медицински хеликоптери)', eik: '', authEik: '000695317', val: '€58 000 000', details: 'УНП 00080-2023-0001 · 1 оферта · Пряко договаряне · Индикация за общо оскъпяване чрез анекси' },
   { id: 'eppo-2', sector: 'law', sectorLabel: 'EPPO · ГДГП', cat: 'EPPO Гранична сигурност', name: 'ГД „Гранична полиция“ → „Зелена граница 4“ (Телелинк Инфра)', eik: '181234108', authEik: '129010125', val: '€39 490 780', details: '2 договора (T438636 за €24,16 млн. и T588580 за €15,33 млн.) · 1 единствена оферта' },
   { id: 'eppo-3', sector: 'law', sectorLabel: 'EPPO · Финанси', cat: 'EPPO Финансови инстр.', name: 'МИР / МТСП / ФМФИБ → ФМФИБ / Фонд ФЛАГ / Банка ДСК', eik: '203740812', authEik: '177549112', val: '€126 533 840', details: '4 договора с ЕС ресурс (T276602, T567412, T530126, 05297-2026-0002) — всички с 1 оферта' },
   { id: 'eppo-7', sector: 'law', sectorLabel: 'МВР ЗЧОД', cat: 'МВР ЗЧОД (Отнет лиценз)', name: 'БАТ Секюрити ЕООД (130548570) & Селена 52 ЕООД (130997265)', eik: '130548570', authEik: '000672343', val: '€98 045 (от €760,61 млн. без активен)', details: 'Изрично ОТНЕТ лиценз от МВР, но с активни договори за охрана на БНР/БНТ и Мин. на туризма' },
@@ -412,7 +419,7 @@ const politicians = [
     eiks: ['131181471'],
     eur: '€40,64 млн.',
     risk: 82,
-    signal: 'Модул J4 КЗК/ВАС — отменена победа в търг (winsOverturned: 1)',
+    signal: 'Модул J4 КЗК/ВАС — отменена победа в търг (1 отменена победа)',
   },
   {
     id: 'pol-5',
@@ -568,7 +575,7 @@ const politicians = [
     eiks: ['127519383', '202739554'],
     eur: '€38,04 млн. + €23,88 млн. ДЗЗД',
     risk: 89,
-    signal: 'Недекларирани пред КПКОНПИ роли на управител и собственик в Търговския регистър',
+    signal: 'Недекларирани пред КПК роли на управител и собственик в Търговския регистър',
   },
   {
     id: 'pol-18',
@@ -633,16 +640,16 @@ const graphPayloadJson = JSON.stringify({
 
 <BaseLayout
   title={`NAsvetlo · От мрак към светлина — Анализ на ${totalCasesFmt} съдебни дела (${yearRangeLabel}: Съдии, Прокуратура, Адвокати и Свързани политици)`}
-  description={`Статистически анализ на ${totalCasesFmt} дела в ЕПЕП/ЕИСС (${yearRangeLabel}) по 28 области, ${totalCourtsFmt} съдилища и ${totalJudgesFmt} съдии — ${allRedFlagsList.length} RED флага (${unexplainedRedTotal} необяснени), адвокати → съдии и мост към ЗОП и КПКОНПИ.`}
+  description={`Статистически анализ на ${totalCasesFmt} дела в ЕПЕП/ЕИСС (${yearRangeLabel}) по 28 области, ${totalCourtsFmt} съдилища и ${totalJudgesFmt} съдии — ${allRedFlagsList.length} RED флага (${unexplainedRedTotal} необяснени), адвокати → съдии и мост към ЗОП и КПК.`}
   asOf={asOf}
   subpage={true}
   canonicalPath="/ot-mrak-kam-svetlina.html"
-  subpageScript="sigma3/ot_mrak_kam_svetlina.js?v=20261126i"
+  subpageScript="sigma3/ot_mrak_kam_svetlina.js?v=20261126j"
   subpageSyncHref="data/nasvetlo_eiss_audit.json"
 >
   <!-- COUNTDOWN VAULT & HERO (JUDICIAL-FIRST NARRATIVE) -->
   <section
-    class="svetlina-vault"
+    class="svetlina-vault is-unlocked"
     id="svetlinaVault"
     data-unlock-at="2026-11-26T12:00:00+02:00"
     data-start-at="2026-11-26T00:45:00+02:00"
@@ -659,39 +666,22 @@ const graphPayloadJson = JSON.stringify({
         </h1>
         <p class="svetlina-sub" id="svetlinaVaultSub">
           Национално статистическо изследване на <strong>случайното разпределение в {totalCourtsFmt} съдилища и {totalJudgesFmt} съдии (ЕПЕП/ЕИСС, {yearRangeLabel})</strong>,
-          класификатор <strong>Ниво 1–5 ({unexplainedRedTotal} необяснени RED флага · {multiYearUnexplainedTotal} многогодишни повторения · {lawyerJudgeFlags.length} адвокат &rarr; съдия)</strong>
+          класификатор <strong>Ниво 1–5 ({unexplainedRedTotal} необяснени RED флага · {multiYearUnexplainedTotal} необяснени многогодишни повторения (от {multiYearPersistent.length} общо) · {lawyerJudgeFlags.length} адвокат &rarr; съдия)</strong>
           и проследяване по веригата към свързаните политици, институции и обществени поръчки.
         </p>
 
-        <div class="svetlina-timer-grid" id="svetlinaTimerGrid" aria-live="polite">
-          <div class="svetlina-unit">
-            <div class="svetlina-num" id="svetlinaDays">00</div>
-            <div class="svetlina-lbl">Дни</div>
-          </div>
-          <div class="svetlina-unit">
-            <div class="svetlina-num" id="svetlinaHours">00</div>
-            <div class="svetlina-lbl">Часа</div>
-          </div>
-          <div class="svetlina-unit">
-            <div class="svetlina-num" id="svetlinaMins">00</div>
-            <div class="svetlina-lbl">Минути</div>
-          </div>
-          <div class="svetlina-unit">
-            <div class="svetlina-num" id="svetlinaSecs">00</div>
-            <div class="svetlina-lbl">Секунди</div>
-          </div>
+        <div class="svetlina-published-banner">
+          <span class="published-badge">● ОФИЦИАЛНО ПУБЛИКУВАН ОДИТ</span>
+          <span class="published-desc">Пълен достъп до всички 28 области, {totalCourtsFmt} съдилища, {totalJudgesFmt} съдии и {allRedFlagsList.length} RED флага ({yearRangeLabel})</span>
         </div>
 
-        <div class="svetlina-progress-wrap" id="svetlinaProgressWrap">
-          <div class="svetlina-progress-bar">
-            <div class="svetlina-progress-fill" id="svetlinaProgressFill"></div>
-          </div>
-        </div>
+        <div class="svetlina-timer-grid" id="svetlinaTimerGrid" aria-live="polite" hidden style="display:none;"></div>
+        <div class="svetlina-progress-wrap" id="svetlinaProgressWrap" hidden style="display:none;"></div>
 
         <div class="svetlina-meta-pills">
           <span>ЕПЕП / ЕИСС: {totalCasesFmt} дела ({yearRangeLabel})</span>
           <span>Метод: биномен тест · Benjamini–Hochberg FDR</span>
-          <span>Ниво 1–5: {unexplainedRedTotal} необяснени · {multiYearPersistent.length} многогодишни</span>
+          <span>Ниво 1–5: {unexplainedRedTotal} необяснени · 9 необяснени многогодишни ({multiYearPersistent.length} общо)</span>
           <span>GDPR: без ЕГН и лични данни на физически лица</span>
         </div>
       </div>
@@ -763,7 +753,7 @@ const graphPayloadJson = JSON.stringify({
   </section>
 
   <!-- UNLOCKED COMMAND CENTER -->
-  <div class="svetlina-content" id="svetlinaVaultContent" hidden>
+  <div class="svetlina-content" id="svetlinaVaultContent">
     <!-- 6-STAGE FORENSIC FUNNEL (JUDICIAL -> PROSECUTORIAL -> LAWYERS -> LINKED POLITICIANS & INSTITUTIONS) -->
     <div class="funnel-box" style="margin-bottom:14px;">
       <div class="funnel-head">
@@ -1098,7 +1088,7 @@ const graphPayloadJson = JSON.stringify({
                 <span class="leg-val">+&euro;1,29 млрд.</span>
               </div>
               <div class="svetlina-legend-item">
-                <span class="leg-left"><span class="leg-dot" style="background:#0d9488;"></span>ЗЧОД без активен лиценз (70 фирми)</span>
+                <span class="leg-left"><span class="leg-dot" style="background:#0d9488;"></span>Охранителни фирми (по ЗЧОД) без активен лиценз (70 фирми)</span>
                 <span class="leg-val">&euro;0,76 млрд.</span>
               </div>
             </div>
@@ -1201,7 +1191,7 @@ const graphPayloadJson = JSON.stringify({
       <button type="button" class="inv-tab-btn" data-svet-tab="l3l4">Ниво 3–5: Хъбове, Адвокати, Конфликт &amp; Многогодишни <span class="inv-tab-count" style="background:var(--ochre);color:#fff;">{multiFlagJudgeHubs.length + lawyerJudgeFlags.length + conflictBridge.length + multiYearPersistent.length}</span></button>
       <button type="button" class="inv-tab-btn" data-svet-tab="security">1. Ключови ЧНД/СРС &amp; Прокуратура <span class="inv-tab-count">{securityFlags.length}</span></button>
       <button type="button" class="inv-tab-btn" data-svet-tab="corp">2. Банки, Застрахователи &amp; Фирми <span class="inv-tab-count">{corpFlags.length}</span></button>
-      <button type="button" class="inv-tab-btn" data-svet-tab="eppo">3. Адвокати (J3), EPPO &amp; ЗЧОД <span class="inv-tab-count">{eppoLawSecurityRows.length}</span></button>
+      <button type="button" class="inv-tab-btn" data-svet-tab="eppo">3. Адвокати (J3), EPPO &amp; Охранителни фирми (ЗЧОД) <span class="inv-tab-count">{eppoLawSecurityRows.length}</span></button>
       <button type="button" class="inv-tab-btn" data-svet-tab="politicians">4. Свързани политици &amp; Институции <span class="inv-tab-count">{politicians.length}</span></button>
       <button type="button" class="inv-tab-btn" data-svet-tab="cartel">5. Пътища, Анекси &amp; ЗМИП <span class="inv-tab-count">{cartelZmipRows.length}</span></button>
     </div>
@@ -1403,7 +1393,7 @@ const graphPayloadJson = JSON.stringify({
               <th class="num">Макс. кратност</th>
               <th class="num">Обем ЗОП (договори)</th>
               <th>Съдии-докладчици (ЕИСС)</th>
-              <th>Свързани публични лица (Сметна палата / КПКОНПИ)</th>
+              <th>Свързани публични лица (Сметна палата / КПК)</th>
               <th>Верига</th>
             </tr>
           </thead>
@@ -1577,7 +1567,7 @@ const graphPayloadJson = JSON.stringify({
     <!-- TABLE III: LAWYERS / LAW FIRMS (J3), EPPO & MVR SECURITY LICENSES -->
     <section class="svetlina-section" data-svet-section="eppo">
       <div class="svetlina-section-head">
-        <h2>III. Адвокатски дружества и правни услуги (Модул J3), Европроекти с 1 оферта (EPPO) и ЗЧОД без активен лиценз</h2>
+        <h2>III. Адвокатски дружества и правни услуги (Модул J3), Европроекти с 1 оферта (EPPO) и охранителни фирми (по ЗЧОД) без активен лиценз</h2>
         <span class="mono" style="font-size:0.74rem;color:var(--ink-muted);">{fmtInt(m3.lawFirmsCount || 95)} кантори · Регламент (ЕС) 2017/1939 · МВР ЗЧОД</span>
       </div>
       <div class="table-wrap svetlina-compact-scroll">
@@ -1611,7 +1601,7 @@ const graphPayloadJson = JSON.stringify({
     <!-- TABLE IV: LINKED POLITICIANS, REGULATORS & INSTITUTIONS -->
     <section class="svetlina-section" data-svet-section="politicians">
       <div class="svetlina-section-head">
-        <h2>IV. Свързани политически лица, бивши министри, депутати, регулатори и местна власт (КПКОНПИ &times; ТР &times; ЕИСС &times; EPPO)</h2>
+        <h2>IV. Свързани политически лица, бивши министри, депутати, регулатори и местна власт (КПК &times; ТР &times; ЕИСС &times; EPPO)</h2>
         <span class="mono" style="font-size:0.74rem;color:var(--ink-muted);">3 035 XML декларации · 338 скрити ДЗЗД</span>
       </div>
       <div class="table-wrap svetlina-compact-scroll">
@@ -1697,7 +1687,7 @@ const graphPayloadJson = JSON.stringify({
           <li><strong>Ниво 4 · Мост за конфликт на интереси:</strong> автоматично кръстосване по ЕИК на RED флаговете в ЕИСС с обема по ЗОП и 571 декларации пред Сметната палата / СИГМА 2.0 ({conflictBridge.length} субекта · {linkedOfficialsTotal} свързани публични лица).</li>
           <li><strong>Ниво 5 · Многогодишна устойчивост ({yearRangeLabel}):</strong> {multiYearPersistent.length} двойки страна &rarr; съдия повтарят RED прага в ≥2 години ({multiYearUnexplainedTotal} чисти необяснени — Топлофикация София, А1 България, Минолби ЕООД, Йеттел България).</li>
           <li><strong>Адвокатски дружества и експерти (Модул J3):</strong> анализ на правни услуги в ЦАИС ЕОП и извличане на процесуални представители от публични съдебни актове в ЕПЕП/ЕИСС.</li>
-          <li><strong>Свързани политици и институции:</strong> кръстосване на 206 907 договора от ЦАИС ЕОП с ТРРЮЛНЦ, регистъра по ЗМИП, 3 035 декларации в КПКОНПИ, АДФИ и КЗК/ВАС.</li>
+          <li><strong>Свързани политици и институции:</strong> кръстосване на 206 907 договора от ЦАИС ЕОП с ТРРЮЛНЦ, регистъра по ЗМИП, 3 035 декларации в КПК, АДФИ и КЗК/ВАС.</li>
         </ul>
       </div>
       <div class="svetlina-method-col">
@@ -1709,6 +1699,57 @@ const graphPayloadJson = JSON.stringify({
         </p>
         <p class="svetlina-method-meta">Данни към {asOf} · Отворени данни CC-BY 4.0 · Без ЕГН и лични данни на физически лица</p>
         {datasetSha256 ? <p class="svetlina-method-meta mono" style="word-break:break-all;margin-top:4px;">SHA-256 ({allRedFlagsList.length} RED snapshot): {datasetSha256}</p> : ''}
+      </div>
+    </section>
+
+    <!-- GLOSSARY FOR CITIZENS & JOURNALISTS -->
+    <section class="svetlina-section" style="margin-top:20px;">
+      <div class="svetlina-section-head">
+        <h2>Речник на ключовите термини и съкращения за журналисти и граждани</h2>
+        <span class="mono" style="font-size:0.74rem;color:var(--ink-muted);">Правно-статистически справочник по одитния стандарт на NAsvetlo</span>
+      </div>
+      <div class="svetlina-glossary-grid">
+        <div class="glossary-card">
+          <div class="glossary-term">FDR q &lt; 0,01 <span class="glossary-badge">Статистически праг</span></div>
+          <div class="glossary-desc">
+            <strong>False Discovery Rate (Benjamini–Hochberg q-стойност).</strong> При паралелното провеждане на 62 166 биномни теста в цялата страна, стандартният статистически праг p &lt; 0,05 би довел до хиляди фалшиви тревоги. Математическата корекция по Бенджамини–Хохберг контролира дела на фалшивите открития. Прагът q &lt; 0,01 гарантира, че вероятността аномалията да се дължи на чиста случайност е строго под 1%.
+          </div>
+        </div>
+
+        <div class="glossary-card">
+          <div class="glossary-term">чл. 15 ЗСРС <span class="glossary-badge">Законно обяснение</span></div>
+          <div class="glossary-desc">
+            <strong>Закон за специалните разузнавателни средства.</strong> Чл. 15 регламентира, че исканията за прилагане на СРС се разглеждат лично от административния ръководител (председателя) на съда или изрично упълномощен заместник. Затова 100% концентрация на такива ЧНД при един съдия е <em>законово изискване</em>, а не корупционна аномалия (категория Ниво 1 „Законово обясними по ЗСРС / Дежурен“).
+          </div>
+        </div>
+
+        <div class="glossary-card">
+          <div class="glossary-term">чл. 251г ЗЕС &amp; чл. 159а НПК <span class="glossary-badge">Процесуална норма</span></div>
+          <div class="glossary-desc">
+            <strong>Закон за електронните съобщения / Наказателно-процесуален кодекс.</strong> Регламентират незабавен достъп на правоохранителните органи до трафични данни и компютърни информационни системи за разкриване на тежки престъпления. Разглеждат се по неотложност в рамките на часове от дежурен съдия, поради което попадат в отделен защитен филтър в одита.
+          </div>
+        </div>
+
+        <div class="glossary-card">
+          <div class="glossary-term">ЗМИП &amp; PEP <span class="glossary-badge">Финансово разузнаване</span></div>
+          <div class="glossary-desc">
+            <strong>Закон за мерките срещу изпирането на пари.</strong> Задължава търговските дружества, адвокатите и кредитните институции да идентифицират действителните собственици и политически изложените лица (Politically Exposed Persons). NAsvetlo пресича тези фирми с декларациите по Таблица 9 пред КПК.
+          </div>
+        </div>
+
+        <div class="glossary-card">
+          <div class="glossary-term">Модул J3 <span class="glossary-badge">Адвокатски хъб</span></div>
+          <div class="glossary-desc">
+            <strong>Модул за адвокатски дружества и процесуално представителство.</strong> Аналитичен двигател, който проследява канторите, печелещи договори за правни услуги от министерства и държавни агенции, и явяването на техните съдружници и адвокати по дела в същите институционални съдебни възли.
+          </div>
+        </div>
+
+        <div class="glossary-card">
+          <div class="glossary-term">Ниво 1: 154 Необяснени <span class="glossary-badge">Приоритет ИВСС</span></div>
+          <div class="glossary-desc">
+            <strong>Ядрото на одитния сигнал.</strong> От общо 869 статистически RED флага, одитният алгоритъм отсява 715 със законни или структурни обяснения (СРС, дежурства, бързи заповеди по чл. 410 ГПК, пакетно подаване). Останалите <strong>154 флага</strong> са разпределени през множество месеци по търговски и граждански спорове, нямат процесуално обяснение и съставляват прекия фокус за институционална проверка от ИВСС.
+          </div>
+        </div>
       </div>
     </section>
   </div>

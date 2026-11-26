@@ -258,6 +258,7 @@ def normalize_party_display(raw: str) -> str:
     s = raw.strip()
     for ch in ("„", "“", '"', "«", "»", "'", "`"):
         s = s.replace(ch, "")
+    s = s.replace("АДМИТИСТРАЦИЯ", "АДМИНИСТРАЦИЯ")
     s = re.sub(r"\(\s*\)", " ", s)
     s = re.sub(r"\s+", " ", s).strip(" ,.;:-").upper()
     s = re.sub(
@@ -277,7 +278,9 @@ def normalize_party_display(raw: str) -> str:
         "",
         s,
     )
-    return re.sub(r"\s+", " ", s).strip(" ,.;:-")
+    s = re.sub(r"\s*\([^)]*$", "", s)
+    s = re.sub(r"\s*\(\s*\)", "", s)
+    return re.sub(r"\s+", " ", s).strip(" ,.;:-()")
 
 
 def extract_legal_parties(side_left: str, side_right: str) -> list[str]:
