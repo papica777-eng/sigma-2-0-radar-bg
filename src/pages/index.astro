@@ -29,6 +29,11 @@ const dynamicAsOf = [
 ].filter(Boolean).sort().pop() || '2026-11-23';
 ---
 <BaseLayout asOf={dynamicAsOf}>
+  <a class="svetlina-banner" href="ot-mrak-kam-svetlina.html" title="Отвори „От мрак към светлина“ — съдебен радар и 364 RED флага">
+    <span class="svetlina-banner__tag">НОВО</span>
+    <span class="svetlina-banner__text"><strong>От мрак към светлина</strong> — алгоритмичен одит на 1 118 765 дела в 180 съдилища, 28-областен съдебен радар и пълен регистър на 364 RED флага</span>
+    <span class="svetlina-banner__cta">Отвори одита →</span>
+  </a>
   <HeroFunnel asOf={dynamicAsOf} />
   <NavTabs />
   <Tab01Dashboard />
