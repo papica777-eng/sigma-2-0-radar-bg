@@ -19,6 +19,15 @@ import j6Raw from '../../docs/data/sigma3_judicial_6.json';
 import invRaw from '../../docs/data/nasvetlo_investigations.json';
 import telkRaw from '../../docs/data/nasvetlo_telk_radar.json';
 import fiscalRaw from '../../docs/data/nasvetlo_fiscal_edp.json';
+import eissAuditRaw from '../../docs/data/nasvetlo_eiss_audit.json';
+
+const eissU = (eissAuditRaw as any).universe || {};
+const eissCasesFmt = Number(eissU.casesUnique || 1695046).toLocaleString('bg-BG');
+const eissJudgesFmt = Number(eissU.judges || 2998).toLocaleString('bg-BG');
+const eissRedTotal = Number(eissU.redFlagsTotal || 610);
+const eissUnexpTotal = Number(eissU.unexplainedRedTotal || 91);
+const eissYears: number[] = Array.isArray(eissU.years) && eissU.years.length ? eissU.years : [2024, 2025, 2026];
+const eissYearSpan = eissYears.length >= 2 ? `${eissYears[0]}–${eissYears[eissYears.length - 1]}` : String(eissYears[0] || '2026');
 
 const dynamicAsOf = [
   String((j6Raw as any).generatedAtUtc || '').slice(0, 10),
@@ -29,11 +38,11 @@ const dynamicAsOf = [
 ].filter(Boolean).sort().pop() || '2026-11-23';
 ---
 <BaseLayout asOf={dynamicAsOf}>
-  <a class="svetlina-banner" href="ot-mrak-kam-svetlina.html" title="Отвори „От мрак към светлина“ — съдебен радар на 180 съдилища и 364 RED флага">
-    <span class="svetlina-banner__tag">НОВО · ЕИСС × ЗОП × ЕППО</span>
+  <a class="svetlina-banner" href="ot-mrak-kam-svetlina.html" title="Отвори „От мрак към светлина“ — съдебен радар на 180 съдилища и Ниво 1–5 одит">
+    <span class="svetlina-banner__tag">НОВО · НИВО 1–5 · {eissYearSpan}</span>
     <div class="svetlina-banner__body">
-      <div class="svetlina-banner__title">От мрак към светлина — Национален съдебен и прокурорски радар</div>
-      <div class="svetlina-banner__sub">Пълен алгоритмичен одит на <strong>1 118 765 дела</strong> в <strong>180 съдилища</strong> (28 области · 2 714 съдии), адвокатски кантори, свързани политици и регистър на всички <strong>364 RED флага</strong></div>
+      <div class="svetlina-banner__title">От мрак към светлина — Национален съдебен и прокурорски радар ({eissCasesFmt} дела)</div>
+      <div class="svetlina-banner__sub">Пълен алгоритмичен одит на <strong>{eissCasesFmt} дела</strong> в <strong>180 съдилища</strong> (28 области · {eissJudgesFmt} съдии): <strong>{eissUnexpTotal} необяснени RED</strong> от {eissRedTotal} общо, адвокати &rarr; съдии, многогодишни повторения и мост към ЗОП/КПКОНПИ</div>
     </div>
     <span class="svetlina-banner__cta btn btn-dark">Отвори одита &rarr;</span>
   </a>

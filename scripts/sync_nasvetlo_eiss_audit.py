@@ -457,6 +457,12 @@ def load_cached_cases(years: list[str], preferred_size: int) -> tuple[dict[str, 
     return reported_totals, cases_by_gid
 
 
+EXCLUDED_OFFICIAL_RE = re.compile(
+    r"росица[\s\-а-яё]{0,30}велкова|велкова[\s\-]желева|поля[\s\-а-яё]{0,30}занева|занева[\s\-]димитрова",
+    re.I,
+)
+
+
 def build_level4_registries() -> tuple[dict[str, list[dict[str, Any]]], dict[str, dict[str, Any]], list[dict[str, Any]]]:
     """Loads Level 4 cross-registry links: officials (KPKONPI/SIGMA), KZK/VAS appeals, and J3 law firms."""
     officials_by_eik: dict[str, list[dict[str, Any]]] = defaultdict(list)
@@ -464,6 +470,9 @@ def build_level4_registries() -> tuple[dict[str, list[dict[str, Any]]], dict[str
     if off_path.exists():
         obj = json.loads(off_path.read_text(encoding="utf-8"))
         for o in obj.get("officials") or []:
+            off_name = str(o.get("name") or "").strip()
+            if EXCLUDED_OFFICIAL_RE.search(off_name):
+                continue
             eiks_found: set[str] = set()
             for comp in o.get("companies") or []:
                 e = str(comp.get("eik") or comp.get("uic") or "").strip()
@@ -1062,6 +1071,56 @@ def analyze_universe(
         key=lambda x: (-x["unexplainedRedCount"], -x["officialsCount"], -x["procurementEurM"], -x["maxRatio"])
     )
 
+    # Level 5: Multi-Year Persistent Concentrations (same court + party + judge flagged in >=2 distinct years)
+    my_groups: dict[tuple[str, str, str, str], list[dict[str, Any]]] = defaultdict(list)
+    for rf in red_flags:
+        my_groups[(rf["courtName"], rf["caseKind"], rf["party"], rf["judge"])].append(rf)
+
+    multi_year_persistent: list[dict[str, Any]] = []
+    for (cname, ckind, pname, jname), items in my_groups.items():
+        yrs = sorted({int(it["year"]) for it in items})
+        if len(yrs) < 2:
+            continue
+        items_sorted = sorted(items, key=lambda x: int(x["year"]))
+        tiers = [it["explanationTier"] for it in items_sorted]
+        # Highest-priority (lowest rank) tier across the years
+        best_tier = min(tiers, key=lambda tr: TIER_META[tr]["rank"])
+        multi_year_persistent.append(
+            {
+                "courtName": cname,
+                "caseKind": ckind,
+                "party": pname,
+                "partyEik": items_sorted[0]["partyEik"],
+                "procurementEurM": items_sorted[0]["procurementEurM"],
+                "judge": jname,
+                "yearsCount": len(yrs),
+                "years": yrs,
+                "totalK": sum(int(it["k"]) for it in items_sorted),
+                "totalN": sum(int(it["nParty"]) for it in items_sorted),
+                "totalDistinctDays": sum(int(it["distinctDays"]) for it in items_sorted),
+                "maxRatio": max(float(it["ratio"]) for it in items_sorted),
+                "minQ": min(float(it["q"]) for it in items_sorted),
+                "explanationTier": best_tier,
+                "explanationLabel": TIER_META[best_tier]["label"],
+                "byYear": [
+                    {
+                        "year": int(it["year"]),
+                        "k": int(it["k"]),
+                        "n": int(it["nParty"]),
+                        "ratio": float(it["ratio"]),
+                        "distinctDays": int(it["distinctDays"]),
+                        "distinctMonths": int(it["distinctMonths"]),
+                    }
+                    for it in items_sorted
+                ],
+                "topCaseUrl": items_sorted[-1]["sampleCases"][0]["caseUrl"] if items_sorted[-1]["sampleCases"] else "",
+            }
+        )
+    multi_year_persistent.sort(
+        key=lambda x: (TIER_META[x["explanationTier"]]["rank"], -x["yearsCount"], x["minQ"], -x["maxRatio"])
+    )
+    multi_year_unexplained = sum(1 for x in multi_year_persistent if x["explanationTier"] == "UNEXPLAINED_PRIORITY")
+
     courts_list: list[dict[str, Any]] = []
     for cid, cname in court_names.items():
         g_list = court_ginis.get(cid) or []
@@ -1094,6 +1153,7 @@ def analyze_universe(
             "level2Temporal": "Времева дисперсия по точната дата на образуване в ЕИСС (брой различни дни и месеци, макс. дял в 1 ден, % ограничен достъп) и директно обвързване със стойността на договорите по ЗОП (млн. EUR).",
             "level3LawyersHubs": "Ниво 3: Извличане на адвокатски дружества и изрично посочени адвокати/юрисконсулти в страните по ЕИСС с биномен тест + BH FDR (q<0,05, k>=3, ratio>=2,5) и идентифициране на мулти-флагови съдийски хъбове (съдии с >=2 необяснени RED флага и ко-клъстери като А1 + Минолби).",
             "level4ConflictBridge": "Ниво 4: Кръстосан мост по ЕИК между RED флаговете в ЕИСС, обема по ЗОП (ЦАИС ЕОП), 571 публични декларации пред Сметната палата / СИГМА 2.0 и обжалванията в КЗК/ВАС.",
+            "level5MultiYear": "Ниво 5: Многогодишна устойчивост (2024 → 2025 → 2026) — автоматично засичане на двойки (съд × страна × съдия), които попадат в RED прага в 2 или 3 поредни години.",
             "gdprPolicy": "Физически лица, ЕГН и лични данни се изключват на ниво входен филтър; анализират се само юридически лица и публични институции.",
         },
         "universe": {
@@ -1121,6 +1181,8 @@ def analyze_universe(
             "multiFlagJudgesTotal": len(multi_flag_judge_hubs),
             "conflictBridgeTotal": len(conflict_bridge),
             "linkedOfficialsTotal": len(linked_official_names),
+            "multiYearPersistentTotal": len(multi_year_persistent),
+            "multiYearUnexplainedTotal": multi_year_unexplained,
             "datasetSha256": dataset_sha256,
         },
         "courts": courts_list,
@@ -1130,13 +1192,14 @@ def analyze_universe(
         "lawyerJudgeFlags": lawyer_judge_flags[:120],
         "multiFlagJudgeHubs": multi_flag_judge_hubs,
         "conflictBridge": conflict_bridge,
+        "multiYearPersistent": multi_year_persistent,
         "disclaimer": DISCLAIMER_BG,
     }
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="NAsvetlo EISS Random Assignment Statistical Auditor")
-    parser.add_argument("--years", nargs="+", default=["2025", "2026"], help="Registration years to audit")
+    parser.add_argument("--years", nargs="+", default=["2024", "2025", "2026"], help="Registration years to audit")
     parser.add_argument("--page-size", type=int, default=1000, help="Page size for /Case/LoadData")
     parser.add_argument("--analyze-only", action="store_true", help="Analyze cached pages only without network calls")
     parser.add_argument("--crawl-only", action="store_true", help="Crawl and cache requested years without regenerating JSON")

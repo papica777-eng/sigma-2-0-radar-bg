@@ -4,6 +4,14 @@ import eissAuditRaw from '../../docs/data/nasvetlo_eiss_audit.json';
 import j6Raw from '../../docs/data/sigma3_judicial_6.json';
 import macroRaw from '../../docs/data/sigma3_macro.json';
 
+const fmtInt = (n: number) => Number(n || 0).toLocaleString('bg-BG');
+const fmtEurShort = (n: number) => {
+  const v = Number(n || 0);
+  if (v >= 1e9) return `€${(v / 1e9).toFixed(2).replace('.', ',')} млрд.`;
+  if (v >= 1e6) return `€${(v / 1e6).toFixed(2).replace('.', ',')} млн.`;
+  return `€${Math.round(v).toLocaleString('bg-BG')}`;
+};
+
 const audit = eissAuditRaw as any;
 const u = audit.universe || {};
 const tierCounts = u.tierCounts || {};
@@ -15,7 +23,14 @@ const datasetSha256 = String(u.datasetSha256 || '');
 const lawyerJudgeFlags: any[] = audit.lawyerJudgeFlags || [];
 const multiFlagJudgeHubs: any[] = audit.multiFlagJudgeHubs || [];
 const conflictBridge: any[] = audit.conflictBridge || [];
+const multiYearPersistent: any[] = audit.multiYearPersistent || [];
+const multiYearUnexplainedTotal = Number(u.multiYearUnexplainedTotal || 0);
 const linkedOfficialsTotal = Number(u.linkedOfficialsTotal || 0);
+const yearsList: number[] = Array.isArray(u.years) && u.years.length ? u.years : [2024, 2025, 2026];
+const yearRangeLabel = yearsList.length >= 2 ? `${yearsList[0]}–${yearsList[yearsList.length - 1]}` : String(yearsList[0] || '2026');
+const totalCasesFmt = fmtInt(u.casesUnique || 1695046);
+const totalJudgesFmt = fmtInt(u.judges || 2998);
+const totalCourtsFmt = fmtInt(u.courts || 180);
 const TIER_UI: Record<string, { short: string; cls: string; rank: number }> = {
   UNEXPLAINED_PRIORITY: { short: 'Необяснено · ИВСС', cls: 'is-crimson', rank: 1 },
   MASS_CREDITOR_SUMMARY: { short: 'Масов ищец (ГПК)', cls: 'is-ochre', rank: 2 },
@@ -28,14 +43,6 @@ const m3 = j6.module3_legalExpertGraph || {};
 const macro = macroRaw as any;
 const mapGeo = macro.mapGeo || { viewBox: '0 0 1000 660', oblasts: [] };
 const asOf = String(audit.generatedAtUtc || '2026-11-26').slice(0, 10);
-
-const fmtInt = (n: number) => Number(n || 0).toLocaleString('bg-BG');
-const fmtEurShort = (n: number) => {
-  const v = Number(n || 0);
-  if (v >= 1e9) return `€${(v / 1e9).toFixed(2).replace('.', ',')} млрд.`;
-  if (v >= 1e6) return `€${(v / 1e6).toFixed(2).replace('.', ',')} млн.`;
-  return `€${Math.round(v).toLocaleString('bg-BG')}`;
-};
 
 // Map every Bulgarian court (180 courts in EISS) to its exact NUTS-3 oblast
 function mapCourtToNuts3(courtName: string): string {
@@ -615,13 +622,13 @@ const graphPayloadJson = JSON.stringify({
 ---
 
 <BaseLayout
-  title="NAsvetlo · От мрак към светлина — Анализ на 1 118 765 съдебни дела (Съдии, Прокуратура, Адвокати и Свързани политици)"
-  description="Статистически анализ на 1 118 765 дела в ЕПЕП/ЕИСС по 28 области и 180 съдилища — съдийски и прокурорски концентрации, адвокатски дружества (J3) и проследяване на свързаните политици и институции."
+  title={`NAsvetlo · От мрак към светлина — Анализ на ${totalCasesFmt} съдебни дела (${yearRangeLabel}: Съдии, Прокуратура, Адвокати и Свързани политици)`}
+  description={`Статистически анализ на ${totalCasesFmt} дела в ЕПЕП/ЕИСС (${yearRangeLabel}) по 28 области, ${totalCourtsFmt} съдилища и ${totalJudgesFmt} съдии — ${allRedFlagsList.length} RED флага (${unexplainedRedTotal} необяснени), адвокати → съдии и мост към ЗОП и КПКОНПИ.`}
   asOf={asOf}
   subpage={true}
   canonicalPath="/ot-mrak-kam-svetlina.html"
   subpageScript="sigma3/ot_mrak_kam_svetlina.js?v=20261126h"
-  subpageSyncHref="data/sigma3_judicial_6.json"
+  subpageSyncHref="data/nasvetlo_eiss_audit.json"
 >
   <!-- COUNTDOWN VAULT & HERO (JUDICIAL-FIRST NARRATIVE) -->
   <section
@@ -634,16 +641,16 @@ const graphPayloadJson = JSON.stringify({
       <div>
         <div class="svetlina-kicker">
           <span class="svetlina-pulse" aria-hidden="true"></span>
-          <span id="svetlinaVaultKicker">NASVETLO · НАЦИОНАЛЕН СЪДЕБЕН ОДИТ · 1 118 765 ДЕЛА В ЕИСС</span>
+          <span id="svetlinaVaultKicker">NASVETLO · НАЦИОНАЛЕН СЪДЕБЕН ОДИТ · {totalCasesFmt} ДЕЛА В ЕИСС ({yearRangeLabel})</span>
         </div>
 
         <h1 class="svetlina-title" id="svetlinaVaultTitle">
-          От мрак към светлина — анализ на 1 118 765 съдебни дела, прокуратурата, адвокатите и свързаната власт
+          От мрак към светлина — анализ на {totalCasesFmt} съдебни дела ({yearRangeLabel}), адвокатите и свързаната власт
         </h1>
         <p class="svetlina-sub" id="svetlinaVaultSub">
-          Национално статистическо изследване на <strong>случайното разпределение в 180 съдилища и 2 714 съдии (ЕПЕП/ЕИСС)</strong>,
-          концентрациите по <strong>ЧНД за СРС и прокурорски искания</strong>, мулти-институционалните <strong>адвокатски кантори (J3)</strong>
-          и проследяване по веригата към свързаните политици, институции и обществени поръчки. Отключва се автоматично на <strong>26 ноември 2026 г. в 12:00 ч.</strong>
+          Национално статистическо изследване на <strong>случайното разпределение в {totalCourtsFmt} съдилища и {totalJudgesFmt} съдии (ЕПЕП/ЕИСС, {yearRangeLabel})</strong>,
+          класификатор <strong>Ниво 1–5 ({unexplainedRedTotal} необяснени RED флага · {multiYearUnexplainedTotal} многогодишни повторения · {lawyerJudgeFlags.length} адвокат &rarr; съдия)</strong>
+          и проследяване по веригата към свързаните политици, институции и обществени поръчки.
         </p>
 
         <div class="svetlina-timer-grid" id="svetlinaTimerGrid" aria-live="polite">
@@ -672,9 +679,9 @@ const graphPayloadJson = JSON.stringify({
         </div>
 
         <div class="svetlina-meta-pills">
-          <span>ЕПЕП / ЕИСС: 1 118 765 дела (2025–2026)</span>
+          <span>ЕПЕП / ЕИСС: {totalCasesFmt} дела ({yearRangeLabel})</span>
           <span>Метод: биномен тест · Benjamini–Hochberg FDR</span>
-          <span>28-областна радар карта на съдилищата</span>
+          <span>Ниво 1–5: {unexplainedRedTotal} необяснени · {multiYearPersistent.length} многогодишни</span>
           <span>GDPR: без ЕГН и лични данни на физически лица</span>
         </div>
       </div>
@@ -750,15 +757,15 @@ const graphPayloadJson = JSON.stringify({
     <!-- 6-STAGE FORENSIC FUNNEL (JUDICIAL -> PROSECUTORIAL -> LAWYERS -> LINKED POLITICIANS & INSTITUTIONS) -->
     <div class="funnel-box" style="margin-bottom:14px;">
       <div class="funnel-head">
-        <h2 class="funnel-title">Архитектура на разследването: 1 118 765 съдебни дела &rarr; Прокуратура &amp; Адвокати &rarr; Свързани политици</h2>
+        <h2 class="funnel-title">Архитектура на разследването: {totalCasesFmt} съдебни дела ({yearRangeLabel}) &rarr; Хъбове &amp; Адвокати &rarr; Свързани политици</h2>
         <span class="meta-date">Криптографска синхронизация: {asOf}</span>
       </div>
       <div class="funnel-strip-grid">
         <div class="funnel-step" data-svet-jump="allred" style="cursor:pointer;">
-          <div class="funnel-step-num">{fmtInt(u.casesUnique || 1118765)}</div>
+          <div class="funnel-step-num">{totalCasesFmt}</div>
           <div>
             <div class="funnel-step-lbl">1. Анализ на делата в ЕИСС</div>
-            <div class="funnel-step-sub">180 съдилища · 2 714 съдии · 28 области</div>
+            <div class="funnel-step-sub">{totalCourtsFmt} съдилища · {totalJudgesFmt} съдии · {yearRangeLabel}</div>
           </div>
         </div>
         <div class="funnel-step danger" data-svet-jump="allred" style="cursor:pointer;">
@@ -1181,7 +1188,7 @@ const graphPayloadJson = JSON.stringify({
     <div class="inv-tabs" id="svetlinaTabBar" role="tablist" aria-label="Филтър по тип регистър">
       <button type="button" class="inv-tab-btn active" data-svet-tab="all">Всички таблици за избрания стълб</button>
       <button type="button" class="inv-tab-btn" data-svet-tab="allred">Пълен регистър RED флагове <span class="inv-tab-count" style="background:var(--crimson);color:#fff;">{allRedFlagsList.length}</span></button>
-      <button type="button" class="inv-tab-btn" data-svet-tab="l3l4">Ниво 3 &amp; 4: Хъбове, Адвокати &amp; Конфликт на интереси <span class="inv-tab-count" style="background:var(--ochre);color:#fff;">{multiFlagJudgeHubs.length + lawyerJudgeFlags.length + conflictBridge.length}</span></button>
+      <button type="button" class="inv-tab-btn" data-svet-tab="l3l4">Ниво 3–5: Хъбове, Адвокати, Конфликт &amp; Многогодишни <span class="inv-tab-count" style="background:var(--ochre);color:#fff;">{multiFlagJudgeHubs.length + lawyerJudgeFlags.length + conflictBridge.length + multiYearPersistent.length}</span></button>
       <button type="button" class="inv-tab-btn" data-svet-tab="security">1. Ключови ЧНД/СРС &amp; Прокуратура <span class="inv-tab-count">{securityFlags.length}</span></button>
       <button type="button" class="inv-tab-btn" data-svet-tab="corp">2. Банки, Застрахователи &amp; Фирми <span class="inv-tab-count">{corpFlags.length}</span></button>
       <button type="button" class="inv-tab-btn" data-svet-tab="eppo">3. Адвокати (J3), EPPO &amp; ЗЧОД <span class="inv-tab-count">{eppoLawSecurityRows.length}</span></button>
@@ -1418,6 +1425,63 @@ const graphPayloadJson = JSON.stringify({
           </tbody>
         </table>
       </div>
+
+      <div class="svetlina-section-head" style="margin-top:12px;">
+        <h2>Ниво 5 · Многогодишна устойчивост ({yearRangeLabel}): Двойки Страна &rarr; Съдия с RED флаг в ≥2 поредни години ({multiYearPersistent.length} общо · {multiYearUnexplainedTotal} необяснени)</h2>
+        <span class="mono" style="font-size:0.74rem;color:var(--crimson);font-weight:700;">Повторяемост година след година изключва случайни временни пикове и отпуски</span>
+      </div>
+      <div class="table-wrap svetlina-compact-scroll" style="max-height:360px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Класификация</th>
+              <th>Години (RED)</th>
+              <th>Съд и вид дело</th>
+              <th>Юридическо лице / Институция</th>
+              <th>Съдия-докладчик</th>
+              <th class="num">Общо k / n (дни)</th>
+              <th class="num">Макс. кратност</th>
+              <th class="num">ЗОП обем</th>
+              <th>ЕПЕП</th>
+            </tr>
+          </thead>
+          <tbody>
+            {multiYearPersistent.slice(0, 60).map((my: any) => {
+              const tUi = TIER_UI[my.explanationTier] || TIER_UI.UNEXPLAINED_PRIORITY;
+              return (
+                <tr class="svet-row-clickable" data-sector="jud" data-svet-open-judge={my.judge} tabindex="0">
+                  <td><span class={`svetlina-badge ${tUi.cls}`}>{tUi.short}</span></td>
+                  <td class="mono"><strong>{(my.years || []).join(' + ')}</strong></td>
+                  <td>
+                    <strong>{my.courtName}</strong>
+                    <div class="muted" style="font-size:0.7rem;">{my.caseKind}</div>
+                  </td>
+                  <td>
+                    <strong>{my.party}</strong>
+                    {my.partyEik ? <div class="mono muted" style="font-size:0.69rem;">ЕИК {my.partyEik}</div> : ''}
+                  </td>
+                  <td><strong>{my.judge}</strong></td>
+                  <td class="mono num">
+                    <strong>{my.totalK} / {my.totalN}</strong>
+                    <div class="muted" style="font-size:0.69rem;">{my.totalDistinctDays} разл. дни</div>
+                  </td>
+                  <td class="mono num" style="color:var(--crimson);font-weight:700;">&times;{Number(my.maxRatio).toFixed(2).replace('.', ',')}</td>
+                  <td class="mono num" style="color:var(--ochre);font-weight:700;">
+                    {my.procurementEurM > 0 ? fmtEurShort(my.procurementEurM * 1e6) : '—'}
+                  </td>
+                  <td>
+                    {my.topCaseUrl ? (
+                      <a class="svet-inspect-pill" href={my.topCaseUrl} target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();">ЕПЕП ↗</a>
+                    ) : (
+                      <span class="svet-inspect-pill">Досие &rarr;</span>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <!-- TABLE I (FIRST!): JUDICIAL & PROSECUTORIAL CONCENTRATIONS (CHND, SRS, NAP, NELK) -->
@@ -1616,11 +1680,12 @@ const graphPayloadJson = JSON.stringify({
       <div class="svetlina-method-col">
         <h3>Методология</h3>
         <ul>
-          <li><strong>Съдебно разпределение (основен анализ):</strong> 1 118 765 дела в 180 съдилища и 2 714 съдии (ЕПЕП/ЕИСС, 2025–2026). Едностранен биномен тест за всяка двойка „страна → съдия“ спрямо реалния дял на съдията в отделението; корекция по Benjamini–Hochberg (FDR). RED флаг: q &lt; 0,01, k ≥ 5, кратност ≥ 3.</li>
-          <li><strong>Ниво 1 · Филтър за законни и структурни обяснения:</strong> всички 364 RED флага са разделени в 5 категории — <strong>{unexplainedRedTotal} Необяснени (Приоритет ИВСС)</strong>, {massCreditorRedTotal} масови ищци (чл. 410/417 ГПК), {batchArtifactRedTotal} пакетно заведени в 1–2 дни (≥70% в един ден), {tierCounts.STATUTORY_PUBLIC_SPECIALIZED || 0} публични органи със специализация (НАП/ДАБ/НОИ/АСП) и {tierCounts.STATUTORY_ZSRS_DUTY || 0} законово обясними ЧНД по чл. 15 ЗСРС / чл. 159а НПК / дежурен съдия.</li>
+          <li><strong>Съдебно разпределение (основен анализ):</strong> {totalCasesFmt} дела в {totalCourtsFmt} съдилища и {totalJudgesFmt} съдии (ЕПЕП/ЕИСС, {yearRangeLabel}). Едностранен биномен тест за всяка двойка „страна → съдия“ спрямо реалния дял на съдията в отделението; корекция по Benjamini–Hochberg (FDR). RED флаг: q &lt; 0,01, k ≥ 5, кратност ≥ 3.</li>
+          <li><strong>Ниво 1 · Филтър за законни и структурни обяснения:</strong> всички {allRedFlagsList.length} RED флага са разделени в 5 категории — <strong>{unexplainedRedTotal} Необяснени (Приоритет ИВСС)</strong>, {massCreditorRedTotal} масови ищци (чл. 410/417 ГПК), {batchArtifactRedTotal} пакетно заведени в 1–2 дни (≥70% в един ден), {tierCounts.STATUTORY_PUBLIC_SPECIALIZED || 0} публични органи със специализация (НАП/ДАБ/НОИ/АСП) и {tierCounts.STATUTORY_ZSRS_DUTY || 0} законово обясними ЧНД по чл. 15 ЗСРС / чл. 159а НПК / дежурен съдия.</li>
           <li><strong>Ниво 2 · Времева дисперсия и стойност по ЗОП:</strong> за всеки флаг се изчисляват точният брой различни календарни дни и месеци на образуване, максималният дял в един ден, делът на делата с ограничен достъп в ЕИСС и точният обем спечелени/възложени обществени поръчки (EUR).</li>
-          <li><strong>Ниво 3 · Адвокати &rarr; Съдии &amp; Мулти-флагови хъбове:</strong> извличане на адвокатски дружества и пълномощници от страните в ЕИСС (биномен тест + BH FDR) и автоматично групиране на съдии с ≥2 необяснени RED флага ({multiFlagJudgeHubs.length} хъба, вкл. 5-съдийския ко-клъстер А1 България + Минолби ЕООД).</li>
+          <li><strong>Ниво 3 · Адвокати &rarr; Съдии &amp; Мулти-флагови хъбове:</strong> извличане на адвокатски дружества и пълномощници от страните в ЕИСС ({lawyerJudgeFlags.length} RED концентрации, вкл. РС – Разлог и СРС) и автоматично групиране на съдии с ≥2 необяснени RED флага ({multiFlagJudgeHubs.length} хъба).</li>
           <li><strong>Ниво 4 · Мост за конфликт на интереси:</strong> автоматично кръстосване по ЕИК на RED флаговете в ЕИСС с обема по ЗОП и 571 декларации пред Сметната палата / СИГМА 2.0 ({conflictBridge.length} субекта · {linkedOfficialsTotal} свързани публични лица).</li>
+          <li><strong>Ниво 5 · Многогодишна устойчивост ({yearRangeLabel}):</strong> {multiYearPersistent.length} двойки страна &rarr; съдия повтарят RED прага в ≥2 години ({multiYearUnexplainedTotal} чисти необяснени — Топлофикация София, А1 България, Минолби ЕООД, Йеттел България).</li>
           <li><strong>Адвокатски дружества и експерти (Модул J3):</strong> анализ на правни услуги в ЦАИС ЕОП и извличане на процесуални представители от публични съдебни актове в ЕПЕП/ЕИСС.</li>
           <li><strong>Свързани политици и институции:</strong> кръстосване на 206 907 договора от ЦАИС ЕОП с ТРРЮЛНЦ, регистъра по ЗМИП, 3 035 декларации в КПКОНПИ, АДФИ и КЗК/ВАС.</li>
         </ul>
@@ -1633,7 +1698,7 @@ const graphPayloadJson = JSON.stringify({
           проверката на компетентните органи. За всички посочени лица важи презумпцията за невиновност.
         </p>
         <p class="svetlina-method-meta">Данни към {asOf} · Отворени данни CC-BY 4.0 · Без ЕГН и лични данни на физически лица</p>
-        {datasetSha256 ? <p class="svetlina-method-meta mono" style="word-break:break-all;margin-top:4px;">SHA-256 (364 RED snapshot): {datasetSha256}</p> : ''}
+        {datasetSha256 ? <p class="svetlina-method-meta mono" style="word-break:break-all;margin-top:4px;">SHA-256 ({allRedFlagsList.length} RED snapshot): {datasetSha256}</p> : ''}
       </div>
     </section>
   </div>
