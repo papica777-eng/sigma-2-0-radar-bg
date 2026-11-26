@@ -5,7 +5,7 @@ import path from 'node:path';
 
 const root = path.resolve(import.meta.dirname, '..');
 
-test('ot-mrak-kam-svetlina.html is built and contains countdown gate for 2026-11-26T12:00:00+02:00 + 6 ministry sectors', () => {
+test('ot-mrak-kam-svetlina.html has countdown gate, 6 ministry sectors, right drawer & zero incoming numbers', () => {
   const htmlPath = path.join(root, 'docs', 'ot-mrak-kam-svetlina.html');
   assert.ok(fs.existsSync(htmlPath), 'docs/ot-mrak-kam-svetlina.html must exist');
   const html = fs.readFileSync(htmlPath, 'utf8');
@@ -24,21 +24,29 @@ test('ot-mrak-kam-svetlina.html is built and contains countdown gate for 2026-11
   assert.match(html, /data-svet-sector="mun"/);
   assert.match(html, /data-svet-tab="cartel"/);
   assert.match(html, /data-svet-tab="eppo"/);
+  assert.match(html, /id="svetDrawer"/);
+  assert.match(html, /id="svetlinaGraphPayload"/);
+  assert.match(html, /data-svet-open-record="pol-0"/);
+  assert.match(html, /презумпцията за невиновност/);
   assert.doesNotMatch(html, /Велкова/);
   assert.doesNotMatch(html, /Занева/);
   assert.doesNotMatch(html, /20\.Д-72/);
   assert.doesNotMatch(html, /94-00-322/);
   assert.doesNotMatch(html, /Вх\. №/);
-  assert.match(html, /презумпцията за невиновност/);
 });
 
-test('ot_mrak_kam_svetlina.js exists and handles unlock + ministry sector filtering', () => {
+test('ot_mrak_kam_svetlina.js handles unlock, ministry sectors & slide-over dependency chain drawer', () => {
   const jsPath = path.join(root, 'docs', 'sigma3', 'ot_mrak_kam_svetlina.js');
   assert.ok(fs.existsSync(jsPath), 'docs/sigma3/ot_mrak_kam_svetlina.js must exist');
   const js = fs.readFileSync(jsPath, 'utf8');
   assert.match(js, /unlockNow/);
   assert.match(js, /svetlinaSearchInput/);
   assert.match(js, /data-svet-sector/);
+  assert.match(js, /initDependencyDrawer/);
+  assert.match(js, /ensureLiveDatasets/);
+  assert.match(js, /officials_all\.json/);
+  assert.match(js, /companies_index\.json/);
+  assert.match(js, /deep_links\.json/);
   assert.match(js, /subtle\.digest/);
   assert.doesNotMatch(js, /aeterna1200/);
 });
