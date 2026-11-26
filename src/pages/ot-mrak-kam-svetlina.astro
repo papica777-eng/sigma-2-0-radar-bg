@@ -12,6 +12,10 @@ const statutoryRedTotal = Number(u.statutoryRedTotal || 0);
 const batchArtifactRedTotal = Number(u.batchArtifactRedTotal || 0);
 const massCreditorRedTotal = Number(u.massCreditorRedTotal || 0);
 const datasetSha256 = String(u.datasetSha256 || '');
+const lawyerJudgeFlags: any[] = audit.lawyerJudgeFlags || [];
+const multiFlagJudgeHubs: any[] = audit.multiFlagJudgeHubs || [];
+const conflictBridge: any[] = audit.conflictBridge || [];
+const linkedOfficialsTotal = Number(u.linkedOfficialsTotal || 0);
 const TIER_UI: Record<string, { short: string; cls: string; rank: number }> = {
   UNEXPLAINED_PRIORITY: { short: 'Необяснено · ИВСС', cls: 'is-crimson', rank: 1 },
   MASS_CREDITOR_SUMMARY: { short: 'Масов ищец (ГПК)', cls: 'is-ochre', rank: 2 },
@@ -1177,6 +1181,7 @@ const graphPayloadJson = JSON.stringify({
     <div class="inv-tabs" id="svetlinaTabBar" role="tablist" aria-label="Филтър по тип регистър">
       <button type="button" class="inv-tab-btn active" data-svet-tab="all">Всички таблици за избрания стълб</button>
       <button type="button" class="inv-tab-btn" data-svet-tab="allred">Пълен регистър RED флагове <span class="inv-tab-count" style="background:var(--crimson);color:#fff;">{allRedFlagsList.length}</span></button>
+      <button type="button" class="inv-tab-btn" data-svet-tab="l3l4">Ниво 3 &amp; 4: Хъбове, Адвокати &amp; Конфликт на интереси <span class="inv-tab-count" style="background:var(--ochre);color:#fff;">{multiFlagJudgeHubs.length + lawyerJudgeFlags.length + conflictBridge.length}</span></button>
       <button type="button" class="inv-tab-btn" data-svet-tab="security">1. Ключови ЧНД/СРС &amp; Прокуратура <span class="inv-tab-count">{securityFlags.length}</span></button>
       <button type="button" class="inv-tab-btn" data-svet-tab="corp">2. Банки, Застрахователи &amp; Фирми <span class="inv-tab-count">{corpFlags.length}</span></button>
       <button type="button" class="inv-tab-btn" data-svet-tab="eppo">3. Адвокати (J3), EPPO &amp; ЗЧОД <span class="inv-tab-count">{eppoLawSecurityRows.length}</span></button>
@@ -1296,6 +1301,120 @@ const graphPayloadJson = JSON.stringify({
                 </tr>
               );
             })}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TABLE 0B (LEVEL 3 & LEVEL 4): MULTI-FLAG JUDGE HUBS, LAWYER->JUDGE & CONFLICT-OF-INTEREST BRIDGE -->
+    <section class="svetlina-section" data-svet-section="l3l4">
+      <div class="svetlina-section-head">
+        <h2>Ниво 3 · Мулти-флагови съдийски хъбове ({multiFlagJudgeHubs.length}) &amp; Концентрация Адвокат &rarr; Съдия ({lawyerJudgeFlags.length})</h2>
+        <span class="mono" style="font-size:0.74rem;color:var(--ochre);font-weight:700;">Съдии с ≥2 необяснени RED флага + ко-клъстери (А1 × Минолби, застрахователи) + ЕИСС пълномощници</span>
+      </div>
+      <div class="table-wrap svetlina-compact-scroll" style="max-height:360px;margin-bottom:14px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Тип</th>
+              <th>Съдия-докладчик / Съд</th>
+              <th>Открит клъстер / Адвокат</th>
+              <th>Засегнати компании (k / n · дни/мес.)</th>
+              <th class="num">Макс. кратност</th>
+              <th class="num">Комбин. ЗОП</th>
+              <th>Верига</th>
+            </tr>
+          </thead>
+          <tbody>
+            {lawyerJudgeFlags.map((lf: any) => (
+              <tr class="svet-row-clickable" data-sector="jud" data-svet-open-judge={lf.judge} tabindex="0">
+                <td><span class="svetlina-badge is-crimson">АДВОКАТ &rarr; СЪДИЯ ({lf.severity})</span></td>
+                <td>
+                  <strong>{lf.judge}</strong>
+                  <div class="muted" style="font-size:0.71rem;">{lf.courtName} · {lf.caseKind} ({lf.year})</div>
+                </td>
+                <td>
+                  <strong>{lf.representative}</strong>
+                  <div class="mono muted" style="font-size:0.7rem;">{lf.k} / {lf.nRep} дела · {lf.distinctDays} д. / {lf.distinctMonths} мес. · FDR q={Number(lf.q).toExponential(2)}</div>
+                </td>
+                <td style="font-size:0.74rem;">{(lf.topClients || []).slice(0, 2).join(' · ')}</td>
+                <td class="mono num" style="color:var(--crimson);font-weight:700;">&times;{Number(lf.ratio).toFixed(2).replace('.', ',')}</td>
+                <td class="mono num muted">—</td>
+                <td>
+                  {lf.sampleCases && lf.sampleCases[0] ? (
+                    <a class="svet-inspect-pill" href={lf.sampleCases[0].caseUrl} target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();">
+                      {lf.sampleCases[0].regNumber}/{lf.sampleCases[0].regYear} ↗
+                    </a>
+                  ) : (
+                    <span class="svet-inspect-pill">Досие &rarr;</span>
+                  )}
+                </td>
+              </tr>
+            ))}
+            {multiFlagJudgeHubs.map((hub: any) => (
+              <tr class="svet-row-clickable" data-sector="jud" data-svet-open-judge={hub.judge} tabindex="0">
+                <td><span class="svetlina-badge is-ochre">СЪДИЙСКИ ХЪБ ({hub.unexplainedCount} RED)</span></td>
+                <td>
+                  <strong>{hub.judge}</strong>
+                  <div class="muted" style="font-size:0.71rem;">{hub.courtName} · {hub.totalFlaggedCases} дела · до {hub.maxDistinctMonths} мес.</div>
+                </td>
+                <td style="font-size:0.75rem;"><strong>{hub.clusterPattern}</strong></td>
+                <td style="font-size:0.73rem;">
+                  {(hub.parties || []).map((p: any) => `${p.party} (${p.k}/${p.n}, ×${Number(p.ratio).toFixed(1)}, ${p.distinctDays}д/${p.distinctMonths}м)`).join(' · ')}
+                </td>
+                <td class="mono num" style="color:var(--crimson);font-weight:700;">&times;{Number(hub.maxRatio).toFixed(2).replace('.', ',')}</td>
+                <td class="mono num" style="color:var(--ochre);font-weight:700;">
+                  {hub.combinedProcurementEurM > 0 ? fmtEurShort(hub.combinedProcurementEurM * 1e6) : '—'}
+                </td>
+                <td><span class="svet-inspect-pill">Профил &rarr;</span></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="svetlina-section-head" style="margin-top:8px;">
+        <h2>Ниво 4 · Мост за конфликт на интереси: ЕИСС RED &times; ЗОП &times; Публични декларации ({conflictBridge.length} субекта · {linkedOfficialsTotal} публични лица)</h2>
+        <span class="mono" style="font-size:0.74rem;color:var(--ink-muted);">Кръстосване по ЕИК с 571 декларации (Сметна палата / СИГМА 2.0) и КЗК/ВАС</span>
+      </div>
+      <div class="table-wrap svetlina-compact-scroll" style="max-height:380px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Юридическо лице / Институция (ЕИК)</th>
+              <th class="num">Необясн. / Общо RED</th>
+              <th class="num">Макс. кратност</th>
+              <th class="num">Обем ЗОП (договори)</th>
+              <th>Съдии-докладчици (ЕИСС)</th>
+              <th>Свързани публични лица (Сметна палата / КПКОНПИ)</th>
+              <th>Верига</th>
+            </tr>
+          </thead>
+          <tbody>
+            {conflictBridge.map((cb: any) => (
+              <tr class="svet-row-clickable" data-sector="jud" data-svet-open-company={cb.eik} tabindex="0">
+                <td>
+                  <strong>{cb.party}</strong>
+                  <div class="mono muted" style="font-size:0.7rem;">ЕИК {cb.eik} · {(cb.courts || []).slice(0, 2).join(', ')}</div>
+                </td>
+                <td class="mono num">
+                  <strong style={cb.unexplainedRedCount > 0 ? 'color:var(--crimson);' : ''}>{cb.unexplainedRedCount}</strong> / {cb.redFlagsCount}
+                </td>
+                <td class="mono num" style="color:var(--crimson);font-weight:700;">&times;{Number(cb.maxRatio).toFixed(2).replace('.', ',')}</td>
+                <td class="mono num" style="color:var(--ochre);font-weight:700;">
+                  {cb.procurementEurM > 0 ? `${fmtEurShort(cb.procurementEurM * 1e6)} (${fmtInt(cb.procurementContracts)})` : '—'}
+                </td>
+                <td style="font-size:0.73rem;">{(cb.judges || []).slice(0, 3).join(', ')}{cb.judges && cb.judges.length > 3 ? ` (+${cb.judges.length - 3})` : ''}</td>
+                <td style="font-size:0.73rem;">
+                  {cb.officials && cb.officials.length > 0 ? (
+                    cb.officials.slice(0, 3).map((o: any) => `${o.name}${o.institution ? ' (' + o.institution + ')' : ''}`).join(' · ')
+                  ) : (
+                    <span class="muted">Само ЗОП × ЕИСС (без пряк политик в Сметна палата)</span>
+                  )}
+                </td>
+                <td><span class="svet-inspect-pill">Верига ЕИК &rarr;</span></td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
@@ -1500,6 +1619,8 @@ const graphPayloadJson = JSON.stringify({
           <li><strong>Съдебно разпределение (основен анализ):</strong> 1 118 765 дела в 180 съдилища и 2 714 съдии (ЕПЕП/ЕИСС, 2025–2026). Едностранен биномен тест за всяка двойка „страна → съдия“ спрямо реалния дял на съдията в отделението; корекция по Benjamini–Hochberg (FDR). RED флаг: q &lt; 0,01, k ≥ 5, кратност ≥ 3.</li>
           <li><strong>Ниво 1 · Филтър за законни и структурни обяснения:</strong> всички 364 RED флага са разделени в 5 категории — <strong>{unexplainedRedTotal} Необяснени (Приоритет ИВСС)</strong>, {massCreditorRedTotal} масови ищци (чл. 410/417 ГПК), {batchArtifactRedTotal} пакетно заведени в 1–2 дни (≥70% в един ден), {tierCounts.STATUTORY_PUBLIC_SPECIALIZED || 0} публични органи със специализация (НАП/ДАБ/НОИ/АСП) и {tierCounts.STATUTORY_ZSRS_DUTY || 0} законово обясними ЧНД по чл. 15 ЗСРС / чл. 159а НПК / дежурен съдия.</li>
           <li><strong>Ниво 2 · Времева дисперсия и стойност по ЗОП:</strong> за всеки флаг се изчисляват точният брой различни календарни дни и месеци на образуване, максималният дял в един ден, делът на делата с ограничен достъп в ЕИСС и точният обем спечелени/възложени обществени поръчки (EUR).</li>
+          <li><strong>Ниво 3 · Адвокати &rarr; Съдии &amp; Мулти-флагови хъбове:</strong> извличане на адвокатски дружества и пълномощници от страните в ЕИСС (биномен тест + BH FDR) и автоматично групиране на съдии с ≥2 необяснени RED флага ({multiFlagJudgeHubs.length} хъба, вкл. 5-съдийския ко-клъстер А1 България + Минолби ЕООД).</li>
+          <li><strong>Ниво 4 · Мост за конфликт на интереси:</strong> автоматично кръстосване по ЕИК на RED флаговете в ЕИСС с обема по ЗОП и 571 декларации пред Сметната палата / СИГМА 2.0 ({conflictBridge.length} субекта · {linkedOfficialsTotal} свързани публични лица).</li>
           <li><strong>Адвокатски дружества и експерти (Модул J3):</strong> анализ на правни услуги в ЦАИС ЕОП и извличане на процесуални представители от публични съдебни актове в ЕПЕП/ЕИСС.</li>
           <li><strong>Свързани политици и институции:</strong> кръстосване на 206 907 договора от ЦАИС ЕОП с ТРРЮЛНЦ, регистъра по ЗМИП, 3 035 декларации в КПКОНПИ, АДФИ и КЗК/ВАС.</li>
         </ul>

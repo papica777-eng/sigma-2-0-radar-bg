@@ -63,6 +63,52 @@ LEGAL_ENTITY_RE = re.compile(
 
 EGN_RE = re.compile(r"\b\d{10}\b")
 
+# Level 3: Law firms & explicitly named bar attorneys / legal counsels in EISS case sides
+LAW_FIRM_SIDE_RE = re.compile(
+    r"(?:АДВОКАТСКО\s+ДРУЖЕСТВО|АДВ\.\s*Д-ВО)\s*[„\"«']?([А-ЯЁA-Z0-9][А-ЯЁA-Z0-9\s,\.\-&]{2,60})",
+    re.I,
+)
+NAMED_ATTORNEY_RE = re.compile(
+    r"(?:ЧРЕЗ\s+(?:ПЪЛН(?:ОМОЩНИК)?\.?\s*)?)?(АДВ\.|АДВОКАТ|ЮРК\.|ЮРИСКОНСУЛТ)\s+"
+    r"([А-ЯЁ][а-яёА-ЯЁ\-]{2,24}(?:\s+[А-ЯЁ][а-яёА-ЯЁ\-]{2,24}){1,2})",
+    re.I,
+)
+ATTORNEY_STOP_RE = re.compile(
+    r"\b(?:ДРУЖЕСТВО|КОЛЕГИЯ|СЪВЕТ|КАНТОРА|СОФИЯ|БУРГАС|ВАРНА|ПЛОВДИВ|ЧРЕЗ|ОТ|ПО|ЗА|СЪС|ПРИ|ВЪВ|НА|ИЛИ|ГР)\b",
+    re.I,
+)
+
+
+def extract_legal_representatives(side_left: str, side_right: str) -> list[tuple[str, str]]:
+    """Extracts deduplicated (rep_display, rep_type) pairs for law firms and bar attorneys in EISS sides."""
+    seen: set[str] = set()
+    out: list[tuple[str, str]] = []
+    for raw_side in (side_left or "", side_right or ""):
+        if not raw_side or ("адв" not in raw_side.lower() and "юрк" not in raw_side.lower() and "юрисконсулт" not in raw_side.lower()):
+            continue
+        cleaned_side = EGN_RE.sub("", raw_side)
+        for m in LAW_FIRM_SIDE_RE.finditer(cleaned_side):
+            fname = re.sub(r"[\"'„“«»()\[\];]+", " ", m.group(1)).strip(" ,.-")
+            fname = re.sub(r"\s+", " ", fname).upper()
+            if len(fname) >= 4:
+                key = f"АДВОКАТСКО ДРУЖЕСТВО {fname}"
+                if key not in seen:
+                    seen.add(key)
+                    out.append((key, "law_firm"))
+        for m in NAMED_ATTORNEY_RE.finditer(cleaned_side):
+            role_raw = m.group(1).upper()
+            name_raw = re.sub(r"\s+", " ", m.group(2)).strip(" ,.-").upper()
+            tokens = [t for t in name_raw.split(" ") if len(t) >= 2 and not ATTORNEY_STOP_RE.fullmatch(t)]
+            if len(tokens) < 2:
+                continue
+            prefix = "АДВ." if role_raw.startswith("АДВ") else "ЮРК."
+            rep_type = "attorney" if prefix == "АДВ." else "in_house_counsel"
+            key = f"{prefix} {' '.join(tokens[:3])}"
+            if key not in seen:
+                seen.add(key)
+                out.append((key, rep_type))
+    return out
+
 LEGAL_FORM_RE = re.compile(
     r"\b(еоод|оод|еад|ад|сд|кд|кда|ет|дззд|консорциум|обединение|сдружение|фондация|кооперация|дп|оп|гп)\b",
     re.I,
@@ -411,6 +457,72 @@ def load_cached_cases(years: list[str], preferred_size: int) -> tuple[dict[str, 
     return reported_totals, cases_by_gid
 
 
+def build_level4_registries() -> tuple[dict[str, list[dict[str, Any]]], dict[str, dict[str, Any]], list[dict[str, Any]]]:
+    """Loads Level 4 cross-registry links: officials (KPKONPI/SIGMA), KZK/VAS appeals, and J3 law firms."""
+    officials_by_eik: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    off_path = DATA_DIR / "officials_all.json"
+    if off_path.exists():
+        obj = json.loads(off_path.read_text(encoding="utf-8"))
+        for o in obj.get("officials") or []:
+            eiks_found: set[str] = set()
+            for comp in o.get("companies") or []:
+                e = str(comp.get("eik") or comp.get("uic") or "").strip()
+                if len(e) == 9 and e.isdigit():
+                    eiks_found.add(e)
+            for auth in o.get("byAuthority") or []:
+                e = str(auth.get("eik") or auth.get("uic") or "").strip()
+                if len(e) == 9 and e.isdigit():
+                    eiks_found.add(e)
+            # Also scan serialized companies/topContracts for 9-digit EIKs
+            for m in re.findall(r"\b\d{9}\b", json.dumps(o.get("companies") or [], ensure_ascii=False)):
+                eiks_found.add(m)
+            for m in re.findall(r"\b\d{9}\b", json.dumps(o.get("topContracts") or [], ensure_ascii=False)):
+                eiks_found.add(m)
+            if not eiks_found:
+                continue
+            summary = {
+                "name": str(o.get("name") or "").strip(),
+                "institution": str(o.get("primaryInstitution") or "").strip(),
+                "totalEurM": round(float(o.get("totalEur") or 0.0) / 1e6, 3),
+                "periodEurM": round(float(o.get("periodEur") or 0.0) / 1e6, 3),
+                "ownInstitution": bool(o.get("ownInstitution")),
+                "riskScore": int(o.get("riskScore") or 0),
+                "sigmaUrl": str(o.get("sigmaUrl") or ""),
+            }
+            for e in eiks_found:
+                officials_by_eik[e].append(summary)
+
+    kzk_by_norm: dict[str, dict[str, Any]] = {}
+    j3_law_firms: list[dict[str, Any]] = []
+    j6_path = DATA_DIR / "sigma3_judicial_6.json"
+    if j6_path.exists():
+        j6 = json.loads(j6_path.read_text(encoding="utf-8"))
+        m4 = j6.get("module4_kzkVas") or {}
+        for row in (m4.get("topAppellants") or []) + (m4.get("topAuthorities") or []):
+            nm = str(row.get("name") or row.get("appellant") or row.get("authority") or "").strip()
+            if not nm:
+                continue
+            key = norm_entity(nm, drop_legal=True)
+            if len(key) >= 4:
+                kzk_by_norm[key] = {
+                    "count": int(row.get("count") or row.get("cases") or row.get("complaints") or 0),
+                    "role": "appellant" if "appellant" in row else "authority",
+                }
+        m3 = j6.get("module3_legalExpertGraph") or {}
+        for lf in m3.get("topLawFirmHubs") or []:
+            j3_law_firms.append(
+                {
+                    "eik": str(lf.get("eik") or ""),
+                    "name": str(lf.get("name") or ""),
+                    "normKey": norm_entity(str(lf.get("name") or ""), drop_legal=True),
+                    "totalEurM": round(float(lf.get("totalEur") or 0.0) / 1e6, 3),
+                    "contracts": int(lf.get("contracts") or 0),
+                    "authorityCount": int(lf.get("authorityCount") or 0),
+                }
+            )
+    return officials_by_eik, kzk_by_norm, j3_law_firms
+
+
 def build_procurement_lookup() -> dict[str, dict[str, Any]]:
     """Maps normalized company and authority names to EIK, EUR total and contract count from NAsvetlo indexes."""
     lookup: dict[str, dict[str, Any]] = {}
@@ -510,6 +622,20 @@ def analyze_universe(
     )
     cell_party_judge_restricted: dict[tuple[int, str, str, int], Counter[tuple[str, str]]] = defaultdict(Counter)
 
+    # Level 3 telemetry: (cell) -> representative (lawyer/law_firm) -> judge counts, days, types, samples
+    cell_rep_total: dict[tuple[int, str, str, int], Counter[str]] = defaultdict(Counter)
+    cell_rep_judge_counts: dict[tuple[int, str, str, int], dict[str, Counter[str]]] = defaultdict(
+        lambda: defaultdict(Counter)
+    )
+    cell_rep_judge_days: dict[tuple[int, str, str, int], dict[tuple[str, str], Counter[str]]] = defaultdict(
+        lambda: defaultdict(Counter)
+    )
+    cell_rep_judge_samples: dict[tuple[int, str, str, int], dict[tuple[str, str], list[dict[str, Any]]]] = defaultdict(
+        lambda: defaultdict(list)
+    )
+    rep_types: dict[str, str] = {}
+    rep_parties_seen: dict[str, Counter[str]] = defaultdict(Counter)
+
     # Specialization table: (courtId, dept, regYear) -> Counter[(judge, caseKind)]
     spec_counts: dict[tuple[int, str, int], Counter[tuple[str, str]]] = defaultdict(Counter)
 
@@ -562,6 +688,25 @@ def analyze_universe(
             smp = pj_smp[(p_name, judge)]
             if len(smp) < 5:
                 smp.append(sample_entry)
+
+        # Level 3: Extract law firms & named attorneys representing legal entities
+        reps = extract_legal_representatives(str(row.get("sideLeft") or ""), str(row.get("sideRight") or ""))
+        if reps:
+            r_tot = cell_rep_total[cell]
+            rj_cnt = cell_rep_judge_counts[cell]
+            rj_days = cell_rep_judge_days[cell]
+            rj_smp = cell_rep_judge_samples[cell]
+            for rep_name, rtype in reps:
+                rep_types[rep_name] = rtype
+                r_tot[rep_name] += 1
+                rj_cnt[rep_name][judge] += 1
+                if fdate_day and len(fdate_day) == 10:
+                    rj_days[(rep_name, judge)][fdate_day] += 1
+                for p_name in parties[:2]:
+                    rep_parties_seen[rep_name][p_name] += 1
+                rsmp = rj_smp[(rep_name, judge)]
+                if len(rsmp) < 4:
+                    rsmp.append(sample_entry)
 
     # A. Descriptive uniformity per cell -> median Gini per court
     court_ginis: dict[int, list[float]] = defaultdict(list)
@@ -749,6 +894,174 @@ def analyze_universe(
                 )
     spec_flags.sort(key=lambda x: (-x["zResidual"], -x["count"]))
 
+    # Level 3A: Lawyer / Law Firm -> Judge Concentration (exact binomial + BH FDR)
+    raw_rep_tests: list[dict[str, Any]] = []
+    for cell, r_totals in cell_rep_total.items():
+        cid, dept, kind, ryear = cell
+        jcounts = cell_judge_counts[cell]
+        cases_cell = sum(jcounts.values())
+        if cases_cell <= 0:
+            continue
+        cname = court_names[cid]
+        rj_cnt = cell_rep_judge_counts[cell]
+        rj_days = cell_rep_judge_days[cell]
+        rj_smp = cell_rep_judge_samples[cell]
+        for rep_name, n_r in r_totals.items():
+            if n_r < 5:
+                continue
+            for judge, k in rj_cnt[rep_name].items():
+                if k < 3:
+                    continue
+                s_j = jcounts[judge] / cases_cell
+                if s_j <= 0.0 or s_j >= 1.0:
+                    continue
+                expected = n_r * s_j
+                ratio = k / expected
+                p_val = binomial_upper_tail(k, n_r, s_j)
+                dc = rj_days[(rep_name, judge)]
+                dd = len(dc)
+                dm = len({d[:7] for d in dc.keys()})
+                mds = round(max(dc.values()) / k, 3) if dc and k > 0 else 0.0
+                top_clients = [p for p, _ in rep_parties_seen[rep_name].most_common(3)]
+                raw_rep_tests.append(
+                    {
+                        "courtName": cname,
+                        "department": dept,
+                        "caseKind": kind,
+                        "year": ryear,
+                        "representative": rep_name,
+                        "repType": rep_types.get(rep_name, "attorney"),
+                        "judge": judge,
+                        "k": k,
+                        "nRep": n_r,
+                        "expected": round(expected, 2),
+                        "ratio": round(ratio, 2),
+                        "p": p_val,
+                        "distinctDays": dd,
+                        "distinctMonths": dm,
+                        "maxDayShare": mds,
+                        "topClients": top_clients,
+                        "sampleCases": rj_smp[(rep_name, judge)][:4],
+                    }
+                )
+    m_rep = len(raw_rep_tests)
+    raw_rep_tests.sort(key=lambda x: x["p"])
+    if m_rep > 0:
+        rq_vals = [min(1.0, raw_rep_tests[i]["p"] * m_rep / (i + 1)) for i in range(m_rep)]
+        for i in range(m_rep - 2, -1, -1):
+            if rq_vals[i] > rq_vals[i + 1]:
+                rq_vals[i] = rq_vals[i + 1]
+        for i, item in enumerate(raw_rep_tests):
+            item["q"] = rq_vals[i]
+
+    lawyer_judge_flags: list[dict[str, Any]] = []
+    for item in raw_rep_tests:
+        if item["q"] < 0.05 and item["k"] >= 3 and item["ratio"] >= 2.5:
+            lawyer_judge_flags.append(
+                {
+                    **item,
+                    "p": float(f"{item['p']:.3e}"),
+                    "q": float(f"{item['q']:.3e}"),
+                    "severity": "RED" if (item["q"] < 0.01 and item["k"] >= 4 and item["ratio"] >= 3.0) else "AMBER",
+                }
+            )
+    lawyer_judge_flags.sort(key=lambda x: (x["q"], -x["ratio"], -x["k"]))
+
+    # Level 3B: Multi-Flag Unexplained Judge Hubs (judges with >=2 UNEXPLAINED_PRIORITY RED flags)
+    unexp_by_judge: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
+    for rf in red_flags:
+        if rf["explanationTier"] == "UNEXPLAINED_PRIORITY":
+            unexp_by_judge[(rf["judge"], rf["courtName"])].append(rf)
+
+    multi_flag_judge_hubs: list[dict[str, Any]] = []
+    for (jname, cname), items in unexp_by_judge.items():
+        if len(items) < 2:
+            continue
+        party_names = [it["party"] for it in items]
+        joined = " ".join(party_names)
+        if "А1 БЪЛГАРИЯ" in joined and "МИНОЛБИ" in joined:
+            pattern = "Ко-клъстер: А1 България ЕАД + Минолби ЕООД (вероятна цесия/общ процесуален поток)"
+        elif sum(1 for p in party_names if "ЗАСТРАХОВА" in p or "БУЛ ИНС" in p or "ДЗИ" in p or "АРМЕЕЦ" in p or "ДАЛЛБОГГ" in p or "ЛЕВ ИНС" in p) >= 2:
+            pattern = "Мулти-застрахователен / комунален хъб (множество застрахователи при 1 съдия)"
+        else:
+            pattern = "Мулти-корпоративен хъб (≥2 необяснени RED флага при 1 съдия)"
+        seen_eiks: set[str] = set()
+        comb_eur_m = 0.0
+        for it in items:
+            if it["partyEik"] and it["partyEik"] not in seen_eiks:
+                seen_eiks.add(it["partyEik"])
+                comb_eur_m += float(it["procurementEurM"] or 0.0)
+        multi_flag_judge_hubs.append(
+            {
+                "judge": jname,
+                "courtName": cname,
+                "unexplainedCount": len(items),
+                "totalFlaggedCases": sum(int(it["k"]) for it in items),
+                "maxRatio": max(float(it["ratio"]) for it in items),
+                "maxDistinctMonths": max(int(it["distinctMonths"]) for it in items),
+                "combinedProcurementEurM": round(comb_eur_m, 3),
+                "clusterPattern": pattern,
+                "parties": [
+                    {
+                        "party": it["party"],
+                        "eik": it["partyEik"],
+                        "caseKind": it["caseKind"],
+                        "year": it["year"],
+                        "k": it["k"],
+                        "n": it["nParty"],
+                        "ratio": it["ratio"],
+                        "distinctDays": it["distinctDays"],
+                        "distinctMonths": it["distinctMonths"],
+                        "procurementEurM": it["procurementEurM"],
+                    }
+                    for it in items
+                ],
+            }
+        )
+    multi_flag_judge_hubs.sort(key=lambda x: (-x["unexplainedCount"], -x["totalFlaggedCases"], -x["maxRatio"]))
+
+    # Level 4: Conflict-of-Interest Cross-Registry Bridge (RED EIKs x ZOP x KPKONPI Officials x KZK/VAS)
+    officials_by_eik, kzk_by_norm, j3_law_firms = build_level4_registries()
+    red_by_eik: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for rf in red_flags:
+        if rf["partyEik"]:
+            red_by_eik[rf["partyEik"]].append(rf)
+
+    conflict_bridge: list[dict[str, Any]] = []
+    linked_official_names: set[str] = set()
+    for eik, flags in red_by_eik.items():
+        linked_offs = officials_by_eik.get(eik) or []
+        norm_p = norm_entity(flags[0]["party"], drop_legal=True)
+        kzk_info = kzk_by_norm.get(norm_p)
+        unexp_cnt = sum(1 for f in flags if f["explanationTier"] == "UNEXPLAINED_PRIORITY")
+        if not linked_offs and not kzk_info and unexp_cnt == 0:
+            continue
+        for o in linked_offs:
+            linked_official_names.add(o["name"])
+        judges_uniq = list(dict.fromkeys(f["judge"] for f in flags))
+        courts_uniq = list(dict.fromkeys(f["courtName"] for f in flags))
+        conflict_bridge.append(
+            {
+                "eik": eik,
+                "party": flags[0]["party"],
+                "procurementEurM": float(flags[0]["procurementEurM"] or 0.0),
+                "procurementContracts": int(flags[0]["procurementContracts"] or 0),
+                "redFlagsCount": len(flags),
+                "unexplainedRedCount": unexp_cnt,
+                "maxRatio": max(float(f["ratio"]) for f in flags),
+                "maxDistinctMonths": max(int(f["distinctMonths"]) for f in flags),
+                "courts": courts_uniq[:4],
+                "judges": judges_uniq[:6],
+                "officialsCount": len(linked_offs),
+                "officials": sorted(linked_offs, key=lambda o: (-o["riskScore"], -o["totalEurM"]))[:6],
+                "kzkAppealsCount": int(kzk_info["count"]) if kzk_info else 0,
+                "topCaseUrl": flags[0]["sampleCases"][0]["caseUrl"] if flags[0]["sampleCases"] else "",
+            }
+        )
+    conflict_bridge.sort(
+        key=lambda x: (-x["unexplainedRedCount"], -x["officialsCount"], -x["procurementEurM"], -x["maxRatio"])
+    )
+
     courts_list: list[dict[str, Any]] = []
     for cid, cname in court_names.items():
         g_list = court_ginis.get(cid) or []
@@ -778,7 +1091,9 @@ def analyze_universe(
             "partB": "Концентрация страна → съдия чрез едностранен точен биномен тест P(X >= k | n_P, s_j), където s_j е реалният дял на съдията в същата клетка. Структурни страни (>40% от делата в клетката) се изключват. Корекция за множествени тестове по Benjamini–Hochberg FDR. RED: q<0,01, k>=5 и ratio>=3; AMBER: q<0,05, k>=4 и ratio>=2.",
             "partC": "Вътрешноотделна специализация по вид дело (коригирани стандартизирани остатъци на Хаберман z >= 5,0 и брой >= 10) — маркира се само като AMBER („възможна вътрешна специализация“).",
             "level1Filter": "Класификатор за законни и структурни обяснения в 5 категории: (1) Необяснено · Приоритет ИВСС; (2) Масов ищец по чл. 410/417 ГПК; (3) Пакетно завеждане в 1–2 дни (>=70% в един ден); (4) Публичен орган със специализация (НАП/ДАБ/НОИ/АСП); (5) Законово обяснимо по ЗСРС (чл. 15), чл. 159а НПК / чл. 251г ЗЕС или дежурен съдия по ЧНД.",
-            "level2Temporal": "Времева дисперсия по точната дата на образуване в ЕИСС (брой различни дни и месеци, макс. дял в 1 ден, % ограничен достъп) и директно обвързване със стойността на договорите по ЗОП (EUR).",
+            "level2Temporal": "Времева дисперсия по точната дата на образуване в ЕИСС (брой различни дни и месеци, макс. дял в 1 ден, % ограничен достъп) и директно обвързване със стойността на договорите по ЗОП (млн. EUR).",
+            "level3LawyersHubs": "Ниво 3: Извличане на адвокатски дружества и изрично посочени адвокати/юрисконсулти в страните по ЕИСС с биномен тест + BH FDR (q<0,05, k>=3, ratio>=2,5) и идентифициране на мулти-флагови съдийски хъбове (съдии с >=2 необяснени RED флага и ко-клъстери като А1 + Минолби).",
+            "level4ConflictBridge": "Ниво 4: Кръстосан мост по ЕИК между RED флаговете в ЕИСС, обема по ЗОП (ЦАИС ЕОП), 571 публични декларации пред Сметната палата / СИГМА 2.0 и обжалванията в КЗК/ВАС.",
             "gdprPolicy": "Физически лица, ЕГН и лични данни се изключват на ниво входен филтър; анализират се само юридически лица и публични институции.",
         },
         "universe": {
@@ -801,12 +1116,20 @@ def analyze_universe(
             ),
             "batchArtifactRedTotal": int(red_tier_counts.get("BATCH_FILING_ARTIFACT", 0)),
             "massCreditorRedTotal": int(red_tier_counts.get("MASS_CREDITOR_SUMMARY", 0)),
+            "lawyerTestsRun": m_rep,
+            "lawyerFlagsTotal": len(lawyer_judge_flags),
+            "multiFlagJudgesTotal": len(multi_flag_judge_hubs),
+            "conflictBridgeTotal": len(conflict_bridge),
+            "linkedOfficialsTotal": len(linked_official_names),
             "datasetSha256": dataset_sha256,
         },
         "courts": courts_list,
         "redFlags": red_flags,
         "amberFlags": amber_flags,
         "specialization": spec_flags[:200],
+        "lawyerJudgeFlags": lawyer_judge_flags[:120],
+        "multiFlagJudgeHubs": multi_flag_judge_hubs,
+        "conflictBridge": conflict_bridge,
         "disclaimer": DISCLAIMER_BG,
     }
 
@@ -816,12 +1139,16 @@ def main() -> int:
     parser.add_argument("--years", nargs="+", default=["2025", "2026"], help="Registration years to audit")
     parser.add_argument("--page-size", type=int, default=1000, help="Page size for /Case/LoadData")
     parser.add_argument("--analyze-only", action="store_true", help="Analyze cached pages only without network calls")
+    parser.add_argument("--crawl-only", action="store_true", help="Crawl and cache requested years without regenerating JSON")
     args = parser.parse_args()
 
     years = [str(y) for y in args.years]
     if not args.analyze_only:
         for yr in years:
             crawl_year(yr, args.page_size)
+    if args.crawl_only:
+        print(f"[CRAWL-ONLY DONE] Cached years: {', '.join(years)}", flush=True)
+        return 0
 
     reported_totals, cases_by_gid = load_cached_cases(years, args.page_size)
     missing_judge = sum(1 for r in cases_by_gid.values() if not str(r.get("judgeReporter") or "").strip())

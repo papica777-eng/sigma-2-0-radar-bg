@@ -36,6 +36,9 @@ test('ot-mrak-kam-svetlina.html has countdown gate, 28-oblast judicial map, 6 ju
   assert.match(html, /id="svetAllRedTierFilter"/);
   assert.match(html, /data-tier="UNEXPLAINED_PRIORITY"/);
   assert.match(html, /data-tier="STATUTORY_ZSRS_DUTY"/);
+  assert.match(html, /data-svet-section="l3l4"/);
+  assert.match(html, /СЪДИЙСКИ ХЪБ/);
+  assert.match(html, /Мост за конфликт на интереси/);
   assert.match(html, /SHA-256 \(364 RED snapshot\): [a-f0-9]{64}/);
   const redRowCount = (html.match(/data-nuts3="BG\d{3}"/g) || []).length;
   assert.ok(redRowCount >= 360, `Expected >= 360 RED flag rows in full register, got ${redRowCount}`);
