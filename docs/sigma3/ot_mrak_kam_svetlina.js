@@ -6,7 +6,7 @@
 (function () {
   'use strict';
 
-  var EXCLUDED_RE = /велкова|занева/i;
+  var EXCLUDED_RE = /росица.*велкова|велкова-желева|поля.*занева|занева-димитрова/i;
 
   function pad(n) {
     return n < 10 ? '0' + n : String(n);
@@ -127,11 +127,11 @@
         kickerEl.textContent = 'НАЦИОНАЛЕН КРОС-РЕГИСТЪРЕН ОДИТ · ПУБЛИКУВАНО НА СВЕТЛО · 26.11.2026 г.';
       }
       if (titleEl) {
-        titleEl.textContent = 'От мрак към светлина — крос-регистърен радар по министерства и дейности';
+        titleEl.textContent = 'От мрак към светлина — анализ на 1 118 765 съдебни дела, прокуратурата, адвокатите и свързаната власт';
       }
       if (subEl) {
         subEl.textContent =
-          'Компактна аналитична матрица върху 1 118 765 дела в ЕПЕП/ЕИСС, 206 907 договора по ЗОП (€53,22 млрд.), 3 035 декларации в КПКОНПИ, ЗМИП, АДФИ, КЗК и EPPO, с десен панел за проследяване на зависимостите по веригата.';
+          'Национална 28-областна радар карта на 180 съдилища и 2 714 съдии в ЕПЕП/ЕИСС, прокурорски/силови ЧНД концентрации, адвокатски кантори (J3) и проследяване на свързаните политици и институции в дясното меню.';
       }
       content.hidden = false;
       content.removeAttribute('hidden');
@@ -208,6 +208,16 @@
     // Index all local curated records across the 5 tables
     var localById = {};
     var allLocal = [];
+    var oblastByNuts3 = {};
+    var allJudicialFlags = [];
+    if (payload.judicialMap && Array.isArray(payload.judicialMap.oblasts)) {
+      payload.judicialMap.oblasts.forEach(function (ob) {
+        oblastByNuts3[ob.nuts3] = ob;
+        (ob.topFlags || []).forEach(function (tf) {
+          allJudicialFlags.push(Object.assign({ nuts3: ob.nuts3, oblastName: ob.name }, tf));
+        });
+      });
+    }
     function registerList(list, kind) {
       (list || []).forEach(function (item) {
         var rec = Object.assign({ _kind: kind }, item);
@@ -1582,12 +1592,16 @@
       var judgeCases = allLocal.filter(function (rec) {
         return rec.judge && norm(rec.judge).indexOf(jNorm) !== -1;
       });
+      var mapFlagsForJudge = allJudicialFlags.filter(function (tf) {
+        return tf.judge && norm(tf.judge).indexOf(jNorm) !== -1;
+      });
 
+      var totalCount = Math.max(judgeCases.length, mapFlagsForJudge.length);
       kickerEl.textContent = 'СЪДЕБЕН ВЪЗЕЛ В ЕПЕП / ЕИСС · СТАТИСТИЧЕСКИ ОДИТ';
       titleEl.textContent = cleanJ;
       badgesEl.innerHTML =
         '<span class="tag tag-crimson">' +
-        judgeCases.length +
+        totalCount +
         ' статистически флага в радара</span>' +
         '<a class="tag tag-navy" href="https://ecase.justice.bg/" target="_blank" rel="noopener noreferrer">ЕПЕП / ЕИСС ↗</a>';
 
@@ -1595,13 +1609,48 @@
       judgeCases.forEach(function (jc) {
         if (jc.eik && partyEiks.indexOf(jc.eik) === -1) partyEiks.push(jc.eik);
       });
+      mapFlagsForJudge.forEach(function (mf) {
+        if (mf.eik && partyEiks.indexOf(mf.eik) === -1) partyEiks.push(mf.eik);
+      });
       var linkedRecs = findLocalRelated(partyEiks, '');
 
-      var stageParties = judgeCases.map(function (jc) {
+      var unifiedCases = mapFlagsForJudge.length
+        ? mapFlagsForJudge.map(function (mf) {
+            return {
+              court: mf.court + ' · ' + mf.kind + ' (' + mf.year + ')',
+              party: mf.party + (mf.eik ? ' (' + mf.eik + ')' : ''),
+              eik: mf.eik,
+              kn: mf.k + ' / ' + mf.n,
+              exp: String(mf.exp),
+              mult: '×' + Number(mf.ratio).toFixed(2).replace('.', ','),
+              q: Number(mf.q) < 0.001 ? Number(mf.q).toExponential(2) : Number(mf.q).toFixed(4),
+              caseUrl: mf.caseUrl,
+              caseRef: mf.caseRef,
+              nuts3: mf.nuts3,
+              oblastName: mf.oblastName,
+            };
+          })
+        : judgeCases.map(function (jc) {
+            return {
+              court: jc.court,
+              party: jc.party,
+              eik: jc.eik,
+              kn: jc.kn,
+              exp: jc.exp,
+              mult: jc.mult,
+              q: jc.q,
+              caseUrl: '',
+              caseRef: '',
+              nuts3: '',
+              oblastName: '',
+            };
+          });
+
+      var stageParties = unifiedCases.slice(0, 5).map(function (jc) {
         return {
           label: jc.party + ' (' + jc.mult + ')',
           cls: 'is-plum',
-          action: jc.eik ? 'data-svet-open-company="' + esc(jc.eik) + '"' : 'data-svet-open-record="' + esc(jc.id) + '"',
+          action: jc.eik ? 'data-svet-open-company="' + esc(jc.eik) + '"' : '',
         };
       });
 
@@ -1609,9 +1658,9 @@
         '<div class="drawer-section"><h4>Засечени концентрации при съдия ' +
         esc(cleanJ) +
         ' (' +
-        judgeCases.length +
+        unifiedCases.length +
         ')</h4>' +
-        judgeCases
+        unifiedCases
           .map(function (jc) {
             return (
               '<div class="contract-row" style="border-left:3px solid var(--crimson);">' +
@@ -1631,14 +1680,29 @@
               '</strong>' +
               (jc.exp ? ' (очаквани при случайност: ' + esc(jc.exp) + ')' : '') +
               '</div>' +
+              '<div style="margin-top:5px;display:flex;gap:6px;flex-wrap:wrap;">' +
               (jc.eik
-                ? '<div style="margin-top:5px;"><button type="button" class="svet-chain-pill is-plum" data-svet-open-company="' +
+                ? '<button type="button" class="svet-chain-pill is-plum" data-svet-open-company="' +
                   esc(jc.eik) +
-                  '">Отвори корпоративната верига (ЕИК ' +
+                  '">Корпоративна верига (ЕИК ' +
                   esc(jc.eik) +
-                  ') &rarr;</button></div>'
+                  ') &rarr;</button>'
                 : '') +
-              '</div>'
+              (jc.nuts3
+                ? '<button type="button" class="svet-chain-pill is-navy" data-svet-open-oblast="' +
+                  esc(jc.nuts3) +
+                  '">Област ' +
+                  esc(jc.oblastName) +
+                  ' &rarr;</button>'
+                : '') +
+              (jc.caseUrl
+                ? '<a class="svet-chain-pill is-indigo" href="' +
+                  esc(jc.caseUrl) +
+                  '" target="_blank" rel="noopener noreferrer">Примерно дело ' +
+                  esc(jc.caseRef) +
+                  ' в ЕПЕП ↗</a>'
+                : '') +
+              '</div></div>'
             );
           })
           .join('') +
@@ -1649,9 +1713,9 @@
         'Съдия-докладчик: ' +
         cleanJ +
         '\nБрой флагове в радара: ' +
-        judgeCases.length +
+        unifiedCases.length +
         '\n' +
-        judgeCases
+        unifiedCases
           .map(function (jc) {
             return '- ' + jc.court + ' | ' + jc.party + ' | ' + jc.kn + ' | ' + jc.mult + ' | FDR q=' + jc.q;
           })
@@ -1681,6 +1745,165 @@
         buildLocalMatchesSection(linkedRecs.filter(function (m) { return m._kind !== 'corp' && m._kind !== 'security'; }));
     }
 
+    // -------------------------------------------------------------------------
+    // RENDERER 6: 28-OBLAST JUDICIAL RADAR DOSSIER (ALL COURTS & RED FLAGS)
+    // -------------------------------------------------------------------------
+    function renderOblast(nuts3) {
+      var ob = oblastByNuts3[nuts3];
+      if (!ob) return;
+
+      kickerEl.textContent = 'СЪДЕБЕН ПРОФИЛ НА ОБЛАСТ · ' + ob.nuts3 + ' · ' + String(ob.nuts2Name || '').toUpperCase();
+      titleEl.textContent = 'Област ' + ob.name + ' — ' + ob.courtsCount + ' съдилища в ЕИСС';
+      badgesEl.innerHTML =
+        '<span class="tag ' +
+        (ob.redFlags >= 10 ? 'tag-crimson' : ob.redFlags > 0 ? 'tag-ochre' : 'tag-teal') +
+        '">' +
+        ob.redFlags +
+        ' RED флага (q &lt; 0,01)</span>' +
+        '<span class="tag tag-navy">' +
+        ob.amberFlags +
+        ' AMBER флага</span>' +
+        '<span class="tag">Макс. кратност: ×' +
+        Number(ob.maxRatio || 0).toFixed(2).replace('.', ',') +
+        '</span>';
+
+      var oblastNameShort = ob.name.replace(/\s*\(столица\)/i, '').trim();
+      var localMatches = findLocalRelated([oblastNameShort], '');
+
+      var kpiHtml =
+        '<div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:14px;">' +
+        '<div class="kpi-card"><div class="kpi-label">Съдилища</div><div class="kpi-val" style="font-size:15px;">' +
+        fmtInt(ob.courtsCount) +
+        '</div></div>' +
+        '<div class="kpi-card"><div class="kpi-label">Дела (2025–2026)</div><div class="kpi-val" style="font-size:14px;">' +
+        fmtInt(ob.cases) +
+        '</div></div>' +
+        '<div class="kpi-card emphasis"><div class="kpi-label">RED флагове</div><div class="kpi-val" style="font-size:15px;color:var(--crimson);">' +
+        fmtInt(ob.redFlags) +
+        '</div></div>' +
+        '<div class="kpi-card"><div class="kpi-label">RED / 10 000 дела</div><div class="kpi-val" style="font-size:14px;">' +
+        String(ob.ratePer10k).replace('.', ',') +
+        '</div></div></div>';
+
+      var courtsHtml =
+        '<div class="drawer-section"><h4>Всички съдилища в област ' +
+        esc(ob.name) +
+        ' (' +
+        ob.courts.length +
+        ')</h4>' +
+        '<div class="table-wrap" style="max-height:240px;overflow-y:auto;"><table><thead><tr>' +
+        '<th>Съд</th><th class="num">Дела</th><th class="num">Съдии</th><th class="num">RED</th><th class="num">AMBER</th>' +
+        '</tr></thead><tbody>' +
+        ob.courts
+          .map(function (c) {
+            return (
+              '<tr><td><strong>' +
+              esc(c.name) +
+              '</strong></td><td class="mono num">' +
+              fmtInt(c.cases) +
+              '</td><td class="mono num">' +
+              fmtInt(c.judges) +
+              '</td><td class="mono num" style="color:' +
+              (c.red > 0 ? 'var(--crimson);font-weight:700;' : 'var(--ink-muted);') +
+              '">' +
+              fmtInt(c.red) +
+              '</td><td class="mono num">' +
+              fmtInt(c.amber) +
+              '</td></tr>'
+            );
+          })
+          .join('') +
+        '</tbody></table></div></div>';
+
+      var flagsHtml = ob.topFlags.length
+        ? '<div class="drawer-section"><h4>Статистически RED концентрации Страна &rarr; Съдия в областта (' +
+          ob.topFlags.length +
+          ' от ' +
+          ob.redFlags +
+          ')</h4>' +
+          ob.topFlags
+            .map(function (tf) {
+              var qStr = Number(tf.q) < 0.001 ? Number(tf.q).toExponential(2) : Number(tf.q).toFixed(4);
+              return (
+                '<div class="contract-row" style="border-left:3px solid var(--crimson);">' +
+                '<div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;">' +
+                '<strong>' +
+                esc(tf.party) +
+                (tf.eik ? ' (' + esc(tf.eik) + ')' : '') +
+                '</strong>' +
+                '<span class="mono" style="color:var(--crimson);font-weight:700;">×' +
+                Number(tf.ratio).toFixed(2).replace('.', ',') +
+                ' (' +
+                tf.k +
+                '/' +
+                tf.n +
+                ')</span></div>' +
+                '<div class="muted" style="font-size:12px;margin-top:2px;">' +
+                esc(tf.court) +
+                ' · ' +
+                esc(tf.kind) +
+                ' (' +
+                esc(tf.year) +
+                ') · Съдия: <strong>' +
+                esc(tf.judge) +
+                '</strong> · FDR q=' +
+                esc(qStr) +
+                '</div>' +
+                '<div style="margin-top:5px;display:flex;gap:6px;flex-wrap:wrap;">' +
+                '<button type="button" class="svet-chain-pill is-indigo" data-svet-open-judge="' +
+                esc(tf.judge) +
+                '">Профил на съдията &rarr;</button>' +
+                (tf.eik
+                  ? '<button type="button" class="svet-chain-pill is-plum" data-svet-open-company="' +
+                    esc(tf.eik) +
+                    '">Верига ЕИК ' +
+                    esc(tf.eik) +
+                    ' &rarr;</button>'
+                  : '') +
+                (tf.caseUrl
+                  ? '<a class="svet-chain-pill is-navy" href="' +
+                    esc(tf.caseUrl) +
+                    '" target="_blank" rel="noopener noreferrer">Дело ' +
+                    esc(tf.caseRef) +
+                    ' в ЕПЕП ↗</a>'
+                  : '') +
+                '</div></div>'
+              );
+            })
+            .join('') +
+          '</div>'
+        : '<div class="drawer-section"><div class="contract-row" style="border-left:3px solid #0d7a5f;">В област ' +
+          esc(ob.name) +
+          ' няма засечени RED флагове при праг q &lt; 0,01, k ≥ 5 и кратност ≥ 3.</div></div>';
+
+      lastCopyText =
+        'NASVETLO · ОБЛАСТНА СЪДЕБНА СПРАВКА (ЕИСС)\n' +
+        'Област: ' +
+        ob.name +
+        ' (' +
+        ob.nuts3 +
+        ')\nСъдилища: ' +
+        ob.courtsCount +
+        ' | Дела: ' +
+        ob.cases +
+        ' | Съдии: ' +
+        ob.judges +
+        '\nRED флагове: ' +
+        ob.redFlags +
+        ' | AMBER флагове: ' +
+        ob.amberFlags +
+        ' | Макс. кратност: ×' +
+        ob.maxRatio +
+        '\nИзточник: ЕПЕП / ЕИСС (2025–2026) · Статистически сигнали при презумпция за невиновност.';
+
+      bodyEl.innerHTML =
+        buildActionToolbar(oblastNameShort) +
+        kpiHtml +
+        courtsHtml +
+        flagsHtml +
+        buildLocalMatchesSection(localMatches);
+    }
+
     // Dispatcher with history stack + progressive live enrichment
     function navigateTo(view, pushHistory) {
       currentView = view;
@@ -1698,6 +1921,7 @@
         else if (view.type === 'company') renderCompany(view.key);
         else if (view.type === 'authority') renderAuthority(view.key);
         else if (view.type === 'judge') renderJudge(view.key);
+        else if (view.type === 'oblast') renderOblast(view.key);
       }
 
       runRender();
@@ -1712,6 +1936,15 @@
     document.addEventListener('click', function (ev) {
       var target = ev.target;
       if (!target || !target.closest) return;
+
+      var obDrawerEl = target.closest('[data-svet-open-oblast]');
+      if (obDrawerEl) {
+        ev.preventDefault();
+        var n3 = obDrawerEl.getAttribute('data-svet-open-oblast');
+        var obObj = oblastByNuts3[n3];
+        navigateTo({ type: 'oblast', key: n3, label: obObj ? 'Обл. ' + obObj.name : n3 }, true);
+        return;
+      }
 
       var recEl = target.closest('[data-svet-open-record]');
       if (recEl) {
@@ -1850,17 +2083,17 @@
     var chartCards = document.querySelectorAll('[data-svet-chart]');
     if (!input) return null;
 
-    var activeSector = 'mrrb';
+    var activeSector = 'jud';
     var activeTab = 'all';
 
     var sectorNames = {
-      all: 'Всички 6 ресора (Пълен национален регистър)',
-      mrrb: 'Ресор 01 · МРРБ, АПИ и пътна инфраструктура (€3,84 млрд.)',
-      mvr: 'Ресор 02 · МВР, ДАНС, Гранична полиция и ЗЧОД охрана (917 ЧНД флага)',
-      mf: 'Ресор 03 · МФ, НАП, АДФИ, КЗК, Банки и Застрахователи (×60,02 ЕИСС)',
-      me: 'Ресор 04 · МЕ, МТС и МИИ — Енергетика, Транспорт (БДЖ) и ИТ (€1,49 млрд.)',
-      mz: 'Ресор 05 · МЗ, МТСП, НОИ, НЕЛК и Фармация (€1,79 млрд.)',
-      mun: 'Ресор 06 · Общини (София, Хасково, Варна, Плевен) и Министерски съвет (€1,85 млрд.)',
+      all: 'Всички 6 стълба (Пълен национален регистър)',
+      jud: 'Стълб 01 · Съдийски и прокурорски концентрации в ЕИСС (1 118 765 дела · 364 RED)',
+      corp_fin: 'Стълб 02 · Съдебни дела на банки, застрахователи, телекоми и КЗК (×60,02 ЕИСС)',
+      law: 'Стълб 03 · Адвокатски кантори (J3), ЕПЕП юристи, EPPO и ЗЧОД',
+      mrrb: 'Стълб 04 · Свързани политици и институции — МРРБ, АПИ и пътно строителство (€3,84 млрд.)',
+      me_mz: 'Стълб 05 · Свързани политици — Енергетика (МЕ), БДЖ, Здравеопазване (МЗ) и НОИ (€3,28 млрд.)',
+      mun: 'Стълб 06 · Местна власт, Общини (София, Хасково, Варна, Плевен) и МС (€1,85 млрд.)',
     };
 
     function syncSectorUI() {
@@ -1910,7 +2143,7 @@
 
     vizButtons.forEach(function (btn) {
       btn.addEventListener('click', function () {
-        var mode = btn.getAttribute('data-svet-viz') || 'pair1';
+        var mode = btn.getAttribute('data-svet-viz') || 'map';
         vizButtons.forEach(function (b) {
           b.classList.toggle('active', b === btn);
         });
@@ -1988,7 +2221,7 @@
     if (resetBtn) {
       resetBtn.addEventListener('click', function () {
         input.value = '';
-        activeSector = 'mrrb';
+        activeSector = 'jud';
         activeTab = 'all';
         syncSectorUI();
         tabButtons.forEach(function (b) {
@@ -2004,9 +2237,258 @@
     return { searchAll: searchAll };
   }
 
+  // ===========================================================================
+  // 28-OBLAST JUDICIAL RADAR MAP OF BULGARIA (GISCO NUTS 2021 x 180 COURTS)
+  // ===========================================================================
+  function initJudicialMap() {
+    var payload = parsePayload();
+    var host = document.getElementById('svetJudicialMapHost');
+    var legendEl = document.getElementById('svetJudicialMapLegend');
+    var detailEl = document.getElementById('svetOblastPanel');
+    var titleEl = document.getElementById('svetJudMapTitle');
+    var metricBtns = document.querySelectorAll('[data-svet-map-metric]');
+    if (!payload || !payload.judicialMap || !host || !detailEl) return;
+
+    var jm = payload.judicialMap;
+    var oblasts = jm.oblasts || [];
+    var activeMetric = 'redFlags';
+    var selectedNuts3 = 'BG411'; // Sofia-grad by default
+
+    var titles = {
+      redFlags: 'Радар карта на съдилищата в България — RED флагове по 28 области (180 съдилища)',
+      maxRatio: 'Радар карта на съдилищата — Максимална кратност (× над очакваното при случайност)',
+      ratePer10k: 'Радар карта на съдилищата — Нормализиран индекс (RED флагове на 10 000 дела)',
+      cases: 'Радар карта на съдилищата — Общ брой разпределени дела в ЕИСС (2025–2026)',
+    };
+
+    function getVal(ob) {
+      return Number(ob[activeMetric] || 0);
+    }
+
+    function renderMap() {
+      if (titleEl) titleEl.textContent = titles[activeMetric] || titles.redFlags;
+      var vals = oblasts.map(getVal);
+      var maxV = Math.max.apply(null, vals.concat([1]));
+      var useLog = activeMetric === 'redFlags' || activeMetric === 'cases';
+
+      var palette =
+        activeMetric === 'cases'
+          ? ['#eff6ff', '#bfdbfe', '#60a5fa', '#2563eb', '#1e3a8a']
+          : activeMetric === 'maxRatio'
+          ? ['#fffbeb', '#fde68a', '#f59e0b', '#dc2626', '#991b1b']
+          : ['#fef2f2', '#fecaca', '#f87171', '#dc2626', '#991b1b'];
+
+      function colorFor(v) {
+        if (v <= 0) return palette[0];
+        var n = useLog ? Math.log1p(v) / Math.log1p(maxV) : v / maxV;
+        var idx = Math.min(palette.length - 1, Math.max(1, Math.ceil(n * (palette.length - 1))));
+        return palette[idx];
+      }
+
+      var polys = oblasts
+        .map(function (ob) {
+          var v = getVal(ob);
+          var sel = ob.nuts3 === selectedNuts3 ? 'selected' : '';
+          var shortN = String(ob.name || '').replace(' (столица)', ' (гр.)');
+          var badgeNum =
+            activeMetric === 'redFlags'
+              ? ob.redFlags > 0
+                ? ob.redFlags + ' RED'
+                : '0'
+              : activeMetric === 'maxRatio'
+              ? ob.maxRatio > 0
+                ? '×' + ob.maxRatio
+                : '—'
+              : activeMetric === 'ratePer10k'
+              ? String(ob.ratePer10k).replace('.', ',')
+              : fmtInt(ob.cases);
+          return (
+            '<g data-svet-select-oblast="' +
+            esc(ob.nuts3) +
+            '">' +
+            '<path class="oblast-poly ' +
+            sel +
+            '" d="' +
+            esc(ob.d) +
+            '" fill="' +
+            colorFor(v) +
+            '">' +
+            '<title>' +
+            esc(ob.name) +
+            ' (' +
+            esc(ob.nuts3) +
+            '): ' +
+            ob.courtsCount +
+            ' съдилища · ' +
+            fmtInt(ob.cases) +
+            ' дела · ' +
+            ob.redFlags +
+            ' RED флага · Макс. ×' +
+            ob.maxRatio +
+            '</title></path>' +
+            '<text class="oblast-lbl" x="' +
+            ob.cx +
+            '" y="' +
+            (Number(ob.cy) - 2) +
+            '">' +
+            esc(shortN) +
+            '</text>' +
+            '<text class="oblast-sub-lbl" x="' +
+            ob.cx +
+            '" y="' +
+            (Number(ob.cy) + 11) +
+            '">' +
+            esc(badgeNum) +
+            '</text>' +
+            '</g>'
+          );
+        })
+        .join('');
+
+      host.innerHTML =
+        '<svg class="bg-map-svg" viewBox="' +
+        esc(jm.viewBox) +
+        '" role="img" aria-label="Интерактивна радар карта на съдилищата по 28 области в България">' +
+        polys +
+        '</svg>';
+
+      if (legendEl) {
+        var maxStr =
+          activeMetric === 'maxRatio'
+            ? '×' + maxV
+            : activeMetric === 'cases'
+            ? fmtInt(maxV) + ' дела'
+            : activeMetric === 'ratePer10k'
+            ? String(maxV).replace('.', ',') + ' / 10к'
+            : maxV + ' RED';
+        legendEl.innerHTML =
+          '<span>0</span>' +
+          palette
+            .map(function (c) {
+              return '<i class="atlas-swatch" style="background:' + c + ';"></i>';
+            })
+            .join('') +
+          '<span>Макс: ' +
+          esc(maxStr) +
+          '</span>';
+      }
+
+      renderSelectedOblastCard();
+    }
+
+    function renderSelectedOblastCard() {
+      var ob =
+        oblasts.find(function (x) {
+          return x.nuts3 === selectedNuts3;
+        }) || oblasts[0];
+      if (!ob) return;
+
+      var topCourts = (ob.courts || []).slice(0, 6);
+      var topFlags = (ob.topFlags || []).slice(0, 4);
+
+      detailEl.innerHTML =
+        '<div class="svet-ob-head">' +
+        '<div><div class="kpi-label">' +
+        esc(ob.nuts3) +
+        ' · ' +
+        esc(ob.nuts2Name) +
+        '</div><h3>Област ' +
+        esc(ob.name) +
+        '</h3></div>' +
+        '<button type="button" class="btn btn-dark" style="padding:5px 10px;font-size:11.5px;" data-svet-open-oblast="' +
+        esc(ob.nuts3) +
+        '">Пълно досие &rarr;</button>' +
+        '</div>' +
+        '<div class="svet-ob-kpis">' +
+        '<div><span>Съдилища</span><strong>' +
+        fmtInt(ob.courtsCount) +
+        '</strong></div>' +
+        '<div><span>Дела (ЕИСС)</span><strong>' +
+        fmtInt(ob.cases) +
+        '</strong></div>' +
+        '<div><span>RED флагове</span><strong style="color:var(--crimson);">' +
+        fmtInt(ob.redFlags) +
+        '</strong></div>' +
+        '<div><span>Макс. кратност</span><strong style="color:var(--crimson);">' +
+        (ob.maxRatio > 0 ? '×' + String(ob.maxRatio).replace('.', ',') : '—') +
+        '</strong></div>' +
+        '</div>' +
+        '<div class="svet-ob-subhead">Водещи съдилища в областта (' +
+        ob.courts.length +
+        ' общо):</div>' +
+        '<div class="svet-ob-courts">' +
+        topCourts
+          .map(function (c) {
+            return (
+              '<div class="svet-ob-court-row">' +
+              '<span class="c-name">' +
+              esc(c.name) +
+              '</span>' +
+              '<span class="mono c-stat">' +
+              fmtInt(c.cases) +
+              ' дела · <b style="color:' +
+              (c.red > 0 ? 'var(--crimson)' : 'var(--ink-muted)') +
+              ';">' +
+              c.red +
+              ' RED</b></span></div>'
+            );
+          })
+          .join('') +
+        '</div>' +
+        '<div class="svet-ob-subhead">Топ концентрации Страна &rarr; Съдия (клик за верига):</div>' +
+        (topFlags.length
+          ? '<div class="svet-ob-flags">' +
+            topFlags
+              .map(function (tf) {
+                return (
+                  '<button type="button" class="svet-ob-flag-btn" data-svet-open-judge="' +
+                  esc(tf.judge) +
+                  '">' +
+                  '<div class="f-top"><strong>' +
+                  esc(tf.party) +
+                  '</strong><span class="mono f-mult">×' +
+                  Number(tf.ratio).toFixed(2).replace('.', ',') +
+                  ' (' +
+                  tf.k +
+                  '/' +
+                  tf.n +
+                  ')</span></div>' +
+                  '<div class="f-meta">' +
+                  esc(tf.court) +
+                  ' · Съдия: ' +
+                  esc(tf.judge) +
+                  '</div></button>'
+                );
+              })
+              .join('') +
+            '</div>'
+          : '<div class="muted" style="font-size:12px;padding:6px 0;">Няма RED флагове при праг q &lt; 0,01 в тази област.</div>');
+    }
+
+    host.addEventListener('click', function (ev) {
+      var g = ev.target && ev.target.closest ? ev.target.closest('[data-svet-select-oblast]') : null;
+      if (!g) return;
+      selectedNuts3 = g.getAttribute('data-svet-select-oblast') || selectedNuts3;
+      renderMap();
+    });
+
+    metricBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        activeMetric = btn.getAttribute('data-svet-map-metric') || 'redFlags';
+        metricBtns.forEach(function (b) {
+          b.classList.toggle('active', b === btn);
+        });
+        renderMap();
+      });
+    });
+
+    renderMap();
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initTheme();
     initGate();
+    initJudicialMap();
     var filterApi = initControls();
     initDependencyDrawer(filterApi);
   });

@@ -1079,4 +1079,256 @@
     &.is-indigo { background: rgba(67, 56, 202, 0.25); color: #c7d2fe; border-color: rgba(129, 140, 248, 0.4); }
     &.is-ochre { background: rgba(180, 83, 9, 0.22); color: #fde68a; border-color: rgba(251, 191, 36, 0.4); }
   }
+  .oblast-sub-lbl {
+    fill: #fef3c7;
+    stroke: rgba(15, 23, 42, 0.92);
+  }
+}
+
+// =============================================================================
+// 28-OBLAST JUDICIAL RADAR MAP OF BULGARIA (GISCO NUTS 2021 x 180 COURTS)
+// =============================================================================
+.svetlina-map-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--crimson);
+  border-radius: 4px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+
+  &[hidden] {
+    display: none !important;
+  }
+}
+
+.svet-map-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.svet-map-title {
+  margin: 0 0 3px;
+  font-family: var(--font-serif, "Newsreader", serif);
+  font-size: 1.12rem;
+  color: var(--ink);
+}
+
+.svet-map-sub {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--ink-secondary);
+}
+
+.svet-map-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.svet-metric-pill {
+  padding: 4px 10px;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--ink-secondary);
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 0.71rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.14s ease;
+
+  &:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  &.active {
+    background: var(--crimson);
+    color: #ffffff;
+    border-color: var(--crimson);
+  }
+}
+
+.svet-map-shell {
+  display: grid;
+  grid-template-columns: 1.32fr 1fr;
+  gap: 14px;
+  align-items: start;
+
+  @media (max-width: 980px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.svet-map-canvas {
+  min-width: 0;
+
+  .bulgaria-svg-host {
+    padding: 8px;
+  }
+
+  .bg-map-svg {
+    max-height: 410px;
+  }
+}
+
+.oblast-sub-lbl {
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 10px;
+  font-weight: 700;
+  pointer-events: none;
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: rgba(255, 255, 255, 0.9);
+  stroke-width: 2.5px;
+  fill: #991b1b;
+}
+
+.svet-oblast-panel {
+  background: var(--surface-alt, var(--surface-2));
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--ink);
+  border-radius: 4px;
+  padding: 12px 14px;
+}
+
+.svet-ob-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+
+  h3 {
+    margin: 2px 0 0;
+    font-family: var(--font-serif, "Newsreader", serif);
+    font-size: 1.14rem;
+    color: var(--ink);
+  }
+}
+
+.svet-ob-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  margin-bottom: 10px;
+
+  @media (max-width: 560px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  > div {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 6px 8px;
+
+    span {
+      display: block;
+      font-family: var(--font-mono, "IBM Plex Mono", monospace);
+      font-size: 0.64rem;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+    }
+
+    strong {
+      font-family: var(--font-mono, "IBM Plex Mono", monospace);
+      font-size: 0.88rem;
+      color: var(--ink);
+    }
+  }
+}
+
+.svet-ob-subhead {
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-muted);
+  margin: 8px 0 5px;
+}
+
+.svet-ob-courts {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.svet-ob-court-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.74rem;
+  padding: 4px 7px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+
+  .c-name {
+    font-weight: 600;
+    color: var(--ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .c-stat {
+    font-size: 0.7rem;
+    white-space: nowrap;
+    color: var(--ink-secondary);
+  }
+}
+
+.svet-ob-flags {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.svet-ob-flag-btn {
+  width: 100%;
+  text-align: left;
+  padding: 7px 9px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--crimson);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.14s ease;
+
+  &:hover {
+    background: rgba(185, 28, 28, 0.05);
+    border-color: var(--crimson);
+  }
+
+  .f-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.76rem;
+    color: var(--ink);
+  }
+
+  .f-mult {
+    color: var(--crimson);
+    font-weight: 700;
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+
+  .f-meta {
+    margin-top: 2px;
+    font-size: 0.7rem;
+    color: var(--ink-secondary);
+  }
 }

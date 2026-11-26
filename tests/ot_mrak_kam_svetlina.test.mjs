@@ -5,7 +5,7 @@ import path from 'node:path';
 
 const root = path.resolve(import.meta.dirname, '..');
 
-test('ot-mrak-kam-svetlina.html has countdown gate, 6 ministry sectors, right drawer & zero incoming numbers', () => {
+test('ot-mrak-kam-svetlina.html has countdown gate, 28-oblast judicial map, 6 judicial-first pillars, right drawer & zero incoming numbers', () => {
   const htmlPath = path.join(root, 'docs', 'ot-mrak-kam-svetlina.html');
   assert.ok(fs.existsSync(htmlPath), 'docs/ot-mrak-kam-svetlina.html must exist');
   const html = fs.readFileSync(htmlPath, 'utf8');
@@ -16,26 +16,32 @@ test('ot-mrak-kam-svetlina.html has countdown gate, 6 ministry sectors, right dr
   assert.match(html, /svetlina-radar-svg/);
   assert.match(html, /Шестосев криминалистичен радар/);
   assert.match(html, /Мрежов граф/);
+  assert.match(html, /data-svet-sector="jud"/);
+  assert.match(html, /data-svet-sector="corp_fin"/);
+  assert.match(html, /data-svet-sector="law"/);
   assert.match(html, /data-svet-sector="mrrb"/);
-  assert.match(html, /data-svet-sector="mvr"/);
-  assert.match(html, /data-svet-sector="mf"/);
-  assert.match(html, /data-svet-sector="me"/);
-  assert.match(html, /data-svet-sector="mz"/);
+  assert.match(html, /data-svet-sector="me_mz"/);
   assert.match(html, /data-svet-sector="mun"/);
-  assert.match(html, /data-svet-tab="cartel"/);
+  assert.match(html, /data-svet-tab="security"/);
   assert.match(html, /data-svet-tab="eppo"/);
   assert.match(html, /id="svetDrawer"/);
   assert.match(html, /id="svetlinaGraphPayload"/);
-  assert.match(html, /data-svet-open-record="pol-0"/);
+  assert.match(html, /id="svetJudicialMapHost"/);
+  assert.match(html, /BG411/);
+  assert.match(html, /BG341/);
+  assert.match(html, /BG421/);
+  assert.match(html, /data-svet-open-record="sec-0"/);
   assert.match(html, /презумпцията за невиновност/);
-  assert.doesNotMatch(html, /Велкова/);
-  assert.doesNotMatch(html, /Занева/);
+  assert.doesNotMatch(html, /Велкова-Желева/);
+  assert.doesNotMatch(html, /Росица.*Велкова/);
+  assert.doesNotMatch(html, /Занева-Димитрова/);
+  assert.doesNotMatch(html, /Поля.*Занева/);
   assert.doesNotMatch(html, /20\.Д-72/);
   assert.doesNotMatch(html, /94-00-322/);
   assert.doesNotMatch(html, /Вх\. №/);
 });
 
-test('ot_mrak_kam_svetlina.js handles unlock, ministry sectors & slide-over dependency chain drawer', () => {
+test('ot_mrak_kam_svetlina.js handles unlock, 28-oblast judicial map & slide-over dependency chain drawer', () => {
   const jsPath = path.join(root, 'docs', 'sigma3', 'ot_mrak_kam_svetlina.js');
   assert.ok(fs.existsSync(jsPath), 'docs/sigma3/ot_mrak_kam_svetlina.js must exist');
   const js = fs.readFileSync(jsPath, 'utf8');
@@ -43,6 +49,8 @@ test('ot_mrak_kam_svetlina.js handles unlock, ministry sectors & slide-over depe
   assert.match(js, /svetlinaSearchInput/);
   assert.match(js, /data-svet-sector/);
   assert.match(js, /initDependencyDrawer/);
+  assert.match(js, /initJudicialMap/);
+  assert.match(js, /renderOblast/);
   assert.match(js, /ensureLiveDatasets/);
   assert.match(js, /officials_all\.json/);
   assert.match(js, /companies_index\.json/);
