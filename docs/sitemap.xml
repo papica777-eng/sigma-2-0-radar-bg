@@ -24,4 +24,10 @@
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
+  <url>
+    <loc>https://nasvetlo.website/ot-mrak-kam-svetlina.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+  </url>
 </urlset>
