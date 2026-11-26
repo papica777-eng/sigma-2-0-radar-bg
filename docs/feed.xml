@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>NAsvetlo · От мрак към светлина — Граждански съдебен и финансов одит</title>
+    <link>https://nasvetlo.website/</link>
+    <description>Независима гражданска платформа върху отворените данни (CC-BY 4.0) на МИДТ / СИГМА 2.0, ЕПЕП/ЕИСС (2 234 509 дела), ЦАИС ЕОП (€53,22 млрд.), КПК, АДФИ, КЗК, НОИ и EPPO.</description>
+    <language>bg-BG</language>
+    <lastBuildDate>Thu, 26 Nov 2026 20:15:00 +0200</lastBuildDate>
+    <atom:link href="https://nasvetlo.website/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>От мрак към светлина — Одит на 2 234 509 дела в ЕИСС (869 RED / 154 необяснени) + Интерактивен мрежов граф</title>
+      <link>https://nasvetlo.website/ot-mrak-kam-svetlina.html</link>
+      <guid isPermaLink="true">https://nasvetlo.website/ot-mrak-kam-svetlina.html</guid>
+      <pubDate>Thu, 26 Nov 2026 20:00:00 +0200</pubDate>
+      <description>Статистически одит по Benjamini–Hochberg FDR (q &lt; 0,01) върху 2 234 509 дела в 180 съдилища и 3 244 съдии (2023–2026): 869 RED флага (154 необяснени приоритетни за ИВСС), 31 съдийски хъба, 7 адвокатски концентрации, 121 многогодишни повторения (9 необяснени), 28-областен радар и интерактивен мрежов граф с търсене на най-кратък път (BFS).</description>
+    </item>
+    <item>
+      <title>NAsvetlo — Национален одит на €53,22 млрд. обществени поръчки в България (206 907 договора)</title>
+      <link>https://nasvetlo.website/</link>
+      <guid isPermaLink="true">https://nasvetlo.website/</guid>
+      <pubDate>Thu, 26 Nov 2026 16:55:00 +0200</pubDate>
+      <description>Кръстосан граждански радар на 206 907 договора в ЦАИС ЕОП, 4 344 възложители, 17 428 фирми, 571 свързани длъжностни лица, +€1,92 млрд. скрити ДЗЗД, 9-възлов мрежов граф, Фискален рентген (Евростат EDP) и Закон на Бенфорд.</description>
+    </item>
+    <item>
+      <title>Кръстосани разследвания по държавни регистри &amp; Индекс на институционалната прозрачност</title>
+      <link>https://nasvetlo.website/razsledvaniya.html</link>
+      <guid isPermaLink="true">https://nasvetlo.website/razsledvaniya.html</guid>
+      <pubDate>Wed, 25 Nov 2026 12:00:00 +0200</pubDate>
+      <description>Пресичане на 11 български държавни регистъра с обществените поръчки и Индекс на прозрачността на 50 ключови администрации.</description>
+    </item>
+    <item>
+      <title>ТЕЛК Скенер (Демо) &amp; 28-областен форензик радар върху данните на НОИ и НСИ</title>
+      <link>https://nasvetlo.website/telk-skener.html</link>
+      <guid isPermaLink="true">https://nasvetlo.website/telk-skener.html</guid>
+      <pubDate>Wed, 25 Nov 2026 12:00:00 +0200</pubDate>
+      <description>28-областен анализ на инвалидните пенсии (НОИ 2023–2025 × НСИ) и архитектура на софтуерния модул за автоматизиран одит по ССЕВ (CC-BY 4.0 / EUPL-1.2).</description>
+    </item>
+  </channel>
+</rss>

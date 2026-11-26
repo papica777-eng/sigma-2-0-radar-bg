@@ -746,6 +746,96 @@ const graphPayloadJson = JSON.stringify({
   eppoLawSecurityRows,
   networkData,
 });
+
+const extraJsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'NAsvetlo',
+          item: 'https://nasvetlo.website/',
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'От мрак към светлина — Съдебен одит (2023–2026)',
+          item: 'https://nasvetlo.website/ot-mrak-kam-svetlina.html',
+        },
+      ],
+    },
+    {
+      '@type': 'Report',
+      '@id': 'https://nasvetlo.website/ot-mrak-kam-svetlina.html#report',
+      name: `NAsvetlo · От мрак към светлина — Анализ на ${totalCasesFmt} съдебни дела (${yearRangeLabel})`,
+      headline: `От мрак към светлина: статистически одит на ${totalCasesFmt} дела в ЕПЕП/ЕИСС (${totalCourtsFmt} съдилища, ${totalJudgesFmt} съдии)`,
+      description: `Алгоритмичен одит по Benjamini–Hochberg FDR върху ${totalCasesFmt} дела в ЕПЕП/ЕИСС (${yearRangeLabel}): ${allRedFlagsList.length} RED флага (${unexplainedRedTotal} необяснени приоритетни за ИВСС), ${multiFlagJudgeHubs.length} съдийски хъба, ${lawyerJudgeFlags.length} концентрации адвокат → съдия, ${multiYearPersistent.length} многогодишни повторения (${multiYearUnexplainedTotal} необяснени) и крос-регистърен мост към ЗОП, КПК и EPPO.`,
+      datePublished: '2026-11-26',
+      dateModified: asOf,
+      inLanguage: 'bg-BG',
+      url: 'https://nasvetlo.website/ot-mrak-kam-svetlina.html',
+      author: {
+        '@type': 'Person',
+        name: 'Димитър Ставрев Продромов',
+        alternateName: 'Dimitar Stavrev Prodromov',
+        sameAs: ['https://orcid.org/0009-0004-8070-1348'],
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'NAsvetlo — Независима гражданска платформа',
+        url: 'https://nasvetlo.website/',
+      },
+      about: [
+        'ЕПЕП / ЕИСС (ecase.justice.bg)',
+        'Случайно разпределение на съдебни дела',
+        'Инспекторат към ВСС (ИВСС)',
+        'Обществени поръчки (ЦАИС ЕОП)',
+        'Комисия за противодействие на корупцията (КПК)',
+        'Европейска прокуратура (EPPO)',
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'Какво представлява одитът „От мрак към светлина“ на NAsvetlo?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: `Това е независим статистически и крос-регистърен одит върху ${totalCasesFmt} уникални съдебни дела в ЕПЕП/ЕИСС (${yearRangeLabel}) в ${totalCourtsFmt} съдилища и ${totalJudgesFmt} съдии, комбиниран с 206 907 договора по ЗОП (€53,22 млрд.), декларации пред КПК и Сметната палата, КЗК, АДФИ и европроекти под надзора на EPPO.`,
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Защо от 869 червени флага (RED) точно 154 са необяснени (Приоритет ИВСС)?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: `Алгоритъмът Ниво 1 отсява 715 от общо ${allRedFlagsList.length} статистически аномалии (FDR q < 0,01), които имат законни или структурни обяснения: дежурен съдия и чл. 15 ЗСРС (301 флага), специализация по НАП/ДАБ/НОИ (220), заповедни производства по чл. 410/417 ГПК (132) и пакетно завеждане в 1–2 дни (62). Останалите ${unexplainedRedTotal} флага са разпределени през множество месеци по търговски и граждански спорове без процесуално обяснение.`,
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Какво показва интерактивният мрежов граф на „От мрак към светлина“?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Интерактивният force-directed мрежов граф свързва 7 типа възли (съдилища, съдии и съдийски хъбове, корпорации/ЕИК, адвокати/кантори, политици от КПК, прокуратура/силови органи и многогодишни рецидиви/EPPO) и позволява намиране на най-кратката връзка (BFS) до 6 стъпки и преглед на пълното досие.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Как са защитени личните данни (GDPR) и презумпцията за невиновност?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Входящият филтър изключва физически лица, ЕГН и лични данни; анализират се единствено юридически лица, публични институции и официални магистрати в публичния регистър. Всички RED/AMBER индикатори са статистически сигнали за проверка, а не доказателство за нарушение, при спазване на презумпцията за невиновност.',
+          },
+        },
+      ],
+    },
+  ],
+});
 ---
 
 <BaseLayout
@@ -756,6 +846,7 @@ const graphPayloadJson = JSON.stringify({
   canonicalPath="/ot-mrak-kam-svetlina.html"
   subpageScript="sigma3/ot_mrak_kam_svetlina.js?v=20261126k"
   subpageSyncHref="data/nasvetlo_eiss_audit.json"
+  extraJsonLd={extraJsonLd}
 >
   <!-- COUNTDOWN VAULT & HERO (JUDICIAL-FIRST NARRATIVE) -->
   <section
