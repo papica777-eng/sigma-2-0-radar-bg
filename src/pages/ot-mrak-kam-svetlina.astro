@@ -219,7 +219,7 @@ const ministrySectors = [
     id: 'jud',
     code: 'СТЪЛБ 01 · СЪДИЛИЩА & ПРОКУРАТУРА',
     title: 'Съдийски и прокурорски концентрации в ЕИСС (ЧНД / СРС)',
-    eur: '1 118 765 дела · 364 RED',
+    eur: `${totalCasesFmt} дела · ${allRedFlagsList.length} RED`,
     badges: '84,8%–100% при 1 съдия · q до 10⁻¹⁶²',
     summary: 'Статистически отклонения при разпределението на ЧНД за СРС/трафични данни: СРС, СГС (Р. Алексиев), Бургас (100% ГДГП), Пловдив (РП/ОДМВР), Пазарджик (100% ТДНС), АССГ (100% НАП) и Разград.',
     accent: 'crimson',
@@ -611,6 +611,16 @@ const cartelZmipRows = [
 
 const graphPayloadJson = JSON.stringify({
   asOf,
+  universeMeta: {
+    casesFmt: totalCasesFmt,
+    judgesFmt: totalJudgesFmt,
+    courtsFmt: totalCourtsFmt,
+    redTotal: allRedFlagsList.length,
+    unexplainedTotal: unexplainedRedTotal,
+    multiYearTotal: multiYearPersistent.length,
+    lawyerFlagsTotal: lawyerJudgeFlags.length,
+    yearRange: yearRangeLabel,
+  },
   sectors: ministrySectors,
   judicialMap: judicialMapConfig,
   politicians,
@@ -627,7 +637,7 @@ const graphPayloadJson = JSON.stringify({
   asOf={asOf}
   subpage={true}
   canonicalPath="/ot-mrak-kam-svetlina.html"
-  subpageScript="sigma3/ot_mrak_kam_svetlina.js?v=20261126h"
+  subpageScript="sigma3/ot_mrak_kam_svetlina.js?v=20261126i"
   subpageSyncHref="data/nasvetlo_eiss_audit.json"
 >
   <!-- COUNTDOWN VAULT & HERO (JUDICIAL-FIRST NARRATIVE) -->
@@ -719,18 +729,18 @@ const graphPayloadJson = JSON.stringify({
           <circle cx="120" cy="120" r="3.5" fill="#fcd34d" />
         </svg>
         <div class="svetlina-radar-caption">
-          СКАНИРАНИ: 1 118 765 ДЕЛА · 180 СЪДИЛИЩА · 2 714 СЪДИИ
+          СКАНИРАНИ: {totalCasesFmt} ДЕЛА · {totalCourtsFmt} СЪДИЛИЩА · {totalJudgesFmt} СЪДИИ
         </div>
       </div>
     </div>
 
     <div class="svetlina-seal-strip">
       <div class="svetlina-seal-item">
-        <div class="seal-val">1 118 765 дела</div>
-        <div class="seal-lbl">ЕПЕП / ЕИСС (180 съдилища)</div>
+        <div class="seal-val">{totalCasesFmt} дела</div>
+        <div class="seal-lbl">ЕПЕП / ЕИСС ({yearRangeLabel})</div>
       </div>
       <div class="svetlina-seal-item">
-        <div class="seal-val">364 RED флага</div>
+        <div class="seal-val">{allRedFlagsList.length} RED ({unexplainedRedTotal} необ.)</div>
         <div class="seal-lbl">Съдийски концентрации (q &lt; 0,01)</div>
       </div>
       <div class="svetlina-seal-item">
@@ -810,7 +820,7 @@ const graphPayloadJson = JSON.stringify({
     <div class="svetlina-viz-toolbar">
       <div class="svetlina-viz-title">
         <strong>Визуален съдебен команден модул:</strong>
-        <span>28-областна карта на съдилищата в България (1 118 765 дела) + интерактивни радари</span>
+        <span>28-областна карта на съдилищата в България ({totalCasesFmt} дела · {yearRangeLabel}) + интерактивни радари</span>
       </div>
       <div class="svetlina-viz-switches" role="tablist" aria-label="Превключване на карта и графики">
         <button type="button" class="svetlina-viz-btn active" data-svet-viz="map">
@@ -851,7 +861,7 @@ const graphPayloadJson = JSON.stringify({
           <div id="svetJudicialMapHost" class="bulgaria-svg-host"></div>
           <div class="atlas-legend" id="svetJudicialMapLegend"></div>
           <div class="muted" style="font-size:11px;margin-top:6px;">
-            Геометрия: GISCO NUTS 2021 © EuroGeographics · Съдебни данни: ЕПЕП / ЕИСС (2025–2026, 180 съдилища, 1 118 765 дела)
+            Геометрия: GISCO NUTS 2021 © EuroGeographics · Съдебни данни: ЕПЕП / ЕИСС ({yearRangeLabel}, {totalCourtsFmt} съдилища, {totalCasesFmt} дела)
           </div>
         </div>
 
@@ -1118,7 +1128,7 @@ const graphPayloadJson = JSON.stringify({
         <div>
           <h2 class="svetlina-sector-title">Навигатор по Стълбове: Съд, Прокуратура и Адвокати (01–03) &rarr; Свързани политици и ресори (04–06)</h2>
           <p class="svetlina-sector-sub">
-            По подразбиране е отворен Стълб 01 (Съдилища и Прокуратура върху 1 118 765 дела). Кликнете върху карта за смяна на фокуса или върху ред за дясно досие.
+            По подразбиране е отворен Стълб 01 (Съдилища и Прокуратура върху {totalCasesFmt} дела · {yearRangeLabel}). Кликнете върху карта за смяна на фокуса или върху ред за дясно досие.
           </p>
         </div>
         <button type="button" class="btn topbar-btn" data-svet-sector="all" id="svetlinaAllSectorsBtn">
@@ -1151,7 +1161,7 @@ const graphPayloadJson = JSON.stringify({
       <div class="svetlina-active-banner">
         <div>
           <span class="active-kicker">АКТИВЕН СТЪЛБ:</span>
-          <strong id="svetlinaActiveSectorName">Стълб 01 · Съдийски и прокурорски концентрации в ЕИСС (1 118 765 дела)</strong>
+          <strong id="svetlinaActiveSectorName">Стълб 01 · Съдийски и прокурорски концентрации в ЕИСС ({totalCasesFmt} дела · {allRedFlagsList.length} RED)</strong>
         </div>
         <span class="eiss-filter-count" id="svetlinaSearchStatus"></span>
       </div>
@@ -1488,7 +1498,7 @@ const graphPayloadJson = JSON.stringify({
     <section class="svetlina-section" data-svet-section="security">
       <div class="svetlina-section-head">
         <h2>I. Съдебни и прокурорски концентрации в ЕИСС — ЧНД (ЗСРС и чл. 251г ЗЕС), Прокуратура, МВР, ДАНС, НАП и НЕЛК</h2>
-        <span class="mono" style="font-size:0.74rem;color:var(--ink-muted);">1 118 765 дела · вероятност за случайност до 1,10 &times; 10⁻¹⁶²</span>
+        <span class="mono" style="font-size:0.74rem;color:var(--ink-muted);">{totalCasesFmt} дела ({yearRangeLabel}) · вероятност за случайност до 1,10 &times; 10⁻¹⁶²</span>
       </div>
       <div class="table-wrap svetlina-compact-scroll">
         <table>

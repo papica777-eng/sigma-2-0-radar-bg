@@ -252,6 +252,11 @@
   }
 }
 
+.svetlina-timer-grid[hidden],
+.svetlina-progress-wrap[hidden] {
+  display: none !important;
+}
+
 .svetlina-content[hidden] {
   display: none !important;
 }

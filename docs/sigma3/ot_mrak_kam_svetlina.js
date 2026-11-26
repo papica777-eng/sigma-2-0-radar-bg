@@ -120,18 +120,33 @@
     var kickerEl = document.getElementById('svetlinaVaultKicker');
 
     function unlockNow() {
+      var p = parsePayload() || {};
+      var um = p.universeMeta || {};
+      var cFmt = um.casesFmt || '2 234 509';
+      var jFmt = um.judgesFmt || '3 244';
+      var ctFmt = um.courtsFmt || '180';
+      var yr = um.yearRange || '2023–2026';
+      var unexp = um.unexplainedTotal || 154;
+      var redTot = um.redTotal || 869;
       vault.classList.add('is-unlocked');
-      if (timerGrid) timerGrid.hidden = true;
-      if (progressWrap) progressWrap.hidden = true;
+      if (timerGrid) {
+        timerGrid.hidden = true;
+        timerGrid.style.display = 'none';
+      }
+      if (progressWrap) {
+        progressWrap.hidden = true;
+        progressWrap.style.display = 'none';
+      }
       if (kickerEl) {
-        kickerEl.textContent = 'НАЦИОНАЛЕН КРОС-РЕГИСТЪРЕН ОДИТ · ПУБЛИКУВАНО НА СВЕТЛО · 26.11.2026 г.';
+        kickerEl.textContent = 'НАЦИОНАЛЕН КРОС-РЕГИСТЪРЕН ОДИТ · ПУБЛИКУВАНО НА СВЕТЛО · ' + yr + ' (' + cFmt + ' ДЕЛА)';
       }
       if (titleEl) {
-        titleEl.textContent = 'От мрак към светлина — анализ на 1 118 765 съдебни дела, прокуратурата, адвокатите и свързаната власт';
+        titleEl.textContent = 'От мрак към светлина — анализ на ' + cFmt + ' съдебни дела (' + yr + '), адвокатите и свързаната власт';
       }
       if (subEl) {
         subEl.textContent =
-          'Национална 28-областна радар карта на 180 съдилища и 2 714 съдии в ЕПЕП/ЕИСС, прокурорски/силови ЧНД концентрации, адвокатски кантори (J3) и проследяване на свързаните политици и институции в дясното меню.';
+          'Национална 28-областна радар карта на ' + ctFmt + ' съдилища и ' + jFmt + ' съдии в ЕПЕП/ЕИСС (' + yr + '), ' +
+          redTot + ' RED флага (' + unexp + ' необяснени · Приоритет ИВСС), адвокати → съдии и проследяване на свързаните политици и институции в дясното меню.';
       }
       content.hidden = false;
       content.removeAttribute('hidden');
@@ -1775,7 +1790,9 @@
         '<div class="kpi-card"><div class="kpi-label">Съдилища</div><div class="kpi-val" style="font-size:15px;">' +
         fmtInt(ob.courtsCount) +
         '</div></div>' +
-        '<div class="kpi-card"><div class="kpi-label">Дела (2025–2026)</div><div class="kpi-val" style="font-size:14px;">' +
+        '<div class="kpi-card"><div class="kpi-label">Дела (' +
+        esc((payload.universeMeta && payload.universeMeta.yearRange) || '2023–2026') +
+        ')</div><div class="kpi-val" style="font-size:14px;">' +
         fmtInt(ob.cases) +
         '</div></div>' +
         '<div class="kpi-card emphasis"><div class="kpi-label">RED (Необяснени)</div><div class="kpi-val" style="font-size:15px;color:var(--crimson);">' +
@@ -1933,7 +1950,9 @@
         ob.amberFlags +
         ' | Макс. кратност: ×' +
         ob.maxRatio +
-        '\nИзточник: ЕПЕП / ЕИСС (2025–2026) · Статистически сигнали при презумпция за невиновност.';
+        '\nИзточник: ЕПЕП / ЕИСС (' +
+        ((payload.universeMeta && payload.universeMeta.yearRange) || '2023–2026') +
+        ') · Статистически сигнали при презумпция за невиновност.';
 
       bodyEl.innerHTML =
         buildActionToolbar(oblastNameShort) +
@@ -2141,9 +2160,10 @@
     var activeSector = 'jud';
     var activeTab = 'all';
 
+    var um = (parsePayload() || {}).universeMeta || {};
     var sectorNames = {
       all: 'Всички 6 стълба (Пълен национален регистър)',
-      jud: 'Стълб 01 · Съдийски и прокурорски концентрации в ЕИСС (1 118 765 дела · 364 RED)',
+      jud: 'Стълб 01 · Съдийски и прокурорски концентрации в ЕИСС (' + (um.casesFmt || '2 234 509') + ' дела · ' + (um.redTotal || 869) + ' RED)',
       corp_fin: 'Стълб 02 · Съдебни дела на банки, застрахователи, телекоми и КЗК (×60,02 ЕИСС)',
       law: 'Стълб 03 · Адвокатски кантори (J3), ЕПЕП юристи, EPPO и ЗЧОД',
       mrrb: 'Стълб 04 · Свързани политици и институции — МРРБ, АПИ и пътно строителство (€3,84 млрд.)',
@@ -2355,7 +2375,7 @@
       unexplainedRed: 'Радар карта — Необяснени RED флагове (Приоритет ИВСС след Ниво 1 филтър за ЗСРС и пакетно подаване)',
       maxRatio: 'Радар карта на съдилищата — Максимална кратност (× над очакваното при случайност)',
       ratePer10k: 'Радар карта на съдилищата — Нормализиран индекс (RED флагове на 10 000 дела)',
-      cases: 'Радар карта на съдилищата — Общ брой разпределени дела в ЕИСС (2025–2026)',
+      cases: 'Радар карта на съдилищата — Общ брой разпределени дела в ЕИСС (' + ((payload.universeMeta && payload.universeMeta.yearRange) || '2023–2026') + ')',
     };
 
     function getVal(ob) {
