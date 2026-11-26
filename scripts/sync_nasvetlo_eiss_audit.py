@@ -1153,7 +1153,7 @@ def analyze_universe(
             "level2Temporal": "Времева дисперсия по точната дата на образуване в ЕИСС (брой различни дни и месеци, макс. дял в 1 ден, % ограничен достъп) и директно обвързване със стойността на договорите по ЗОП (млн. EUR).",
             "level3LawyersHubs": "Ниво 3: Извличане на адвокатски дружества и изрично посочени адвокати/юрисконсулти в страните по ЕИСС с биномен тест + BH FDR (q<0,05, k>=3, ratio>=2,5) и идентифициране на мулти-флагови съдийски хъбове (съдии с >=2 необяснени RED флага и ко-клъстери като А1 + Минолби).",
             "level4ConflictBridge": "Ниво 4: Кръстосан мост по ЕИК между RED флаговете в ЕИСС, обема по ЗОП (ЦАИС ЕОП), 571 публични декларации пред Сметната палата / СИГМА 2.0 и обжалванията в КЗК/ВАС.",
-            "level5MultiYear": "Ниво 5: Многогодишна устойчивост (2024 → 2025 → 2026) — автоматично засичане на двойки (съд × страна × съдия), които попадат в RED прага в 2 или 3 поредни години.",
+            "level5MultiYear": "Ниво 5: Многогодишна устойчивост (2023 → 2024 → 2025 → 2026) — автоматично засичане на двойки (съд × страна × съдия), които попадат в RED прага в 2, 3 или 4 поредни години.",
             "gdprPolicy": "Физически лица, ЕГН и лични данни се изключват на ниво входен филтър; анализират се само юридически лица и публични институции.",
         },
         "universe": {
@@ -1199,7 +1199,7 @@ def analyze_universe(
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="NAsvetlo EISS Random Assignment Statistical Auditor")
-    parser.add_argument("--years", nargs="+", default=["2024", "2025", "2026"], help="Registration years to audit")
+    parser.add_argument("--years", nargs="+", default=["2023", "2024", "2025", "2026"], help="Registration years to audit")
     parser.add_argument("--page-size", type=int, default=1000, help="Page size for /Case/LoadData")
     parser.add_argument("--analyze-only", action="store_true", help="Analyze cached pages only without network calls")
     parser.add_argument("--crawl-only", action="store_true", help="Crawl and cache requested years without regenerating JSON")
