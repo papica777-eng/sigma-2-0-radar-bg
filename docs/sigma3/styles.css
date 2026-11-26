@@ -6940,3 +6940,39 @@ body[data-density=compact] .panel-box {
   font-style: normal;
   font-weight: 600;
 }
+
+.svetlina-viz-btn--graph {
+  border-color: rgba(79, 70, 229, 0.45);
+  color: #3730a3;
+}
+[data-theme=dark] .svetlina-viz-btn--graph {
+  color: #a5b4fc;
+  border-color: rgba(129, 140, 248, 0.45);
+}
+.svetlina-viz-btn--graph.active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+.svetlina-graph-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid #4f46e5;
+  border-radius: 6px;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+}
+.svetlina-graph-panel[hidden] {
+  display: none !important;
+}
+
+#svetNetworkCanvas {
+  width: 100%;
+  height: 660px;
+  display: block;
+  cursor: grab;
+}
+#svetNetworkCanvas:active {
+  cursor: grabbing;
+}

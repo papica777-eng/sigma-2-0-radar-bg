@@ -11,8 +11,13 @@ test('ot-mrak-kam-svetlina.html has countdown gate, 28-oblast judicial map, 6 ju
   const html = fs.readFileSync(htmlPath, 'utf8');
   assert.match(html, /data-unlock-at="2026-11-26T12:00:00\+02:00"/);
   assert.match(html, /От мрак към светлина/);
-  assert.match(html, /id="svetlinaVaultContent"\s+hidden/);
+  assert.match(html, /id="svetlinaVaultContent"/);
   assert.match(html, /ot_mrak_kam_svetlina\.js/);
+  assert.match(html, /id="svetNetworkCanvas"/);
+  assert.match(html, /id="svetGraphPresetSelect"/);
+  assert.match(html, /id="svetGraphOblastSelect"/);
+  assert.match(html, /id="svetBtnFindPath"/);
+  assert.match(html, /data-svet-viz="graph"/);
   assert.match(html, /svetlina-radar-svg/);
   assert.match(html, /Шестосев криминалистичен радар/);
   assert.match(html, /Мрежов граф/);
@@ -63,6 +68,9 @@ test('ot_mrak_kam_svetlina.js handles unlock, 28-oblast judicial map & slide-ove
   assert.match(js, /data-svet-sector/);
   assert.match(js, /initDependencyDrawer/);
   assert.match(js, /initJudicialMap/);
+  assert.match(js, /initJudicialNetworkGraph/);
+  assert.match(js, /svetNetworkCanvas/);
+  assert.match(js, /runShortestPath/);
   assert.match(js, /renderOblast/);
   assert.match(js, /ensureLiveDatasets/);
   assert.match(js, /officials_all\.json/);

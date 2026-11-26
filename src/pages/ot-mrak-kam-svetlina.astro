@@ -616,6 +616,115 @@ const cartelZmipRows = [
   { id: 'cart-8', sector: 'corp_fin', sectorLabel: 'МФ & НАП', firm: 'ИНФОРМАЦИОННО ОБСЛУЖВАНЕ АД (831641791)', eik: '831641791', owner: 'Системен интегратор по чл. 7с ЗЕУ', zop: '€42,39 млн. (договор T352918 с НАП)', annex: '+€31,83 млн. (+301,3% чрез 10 анекса!)', court: 'Рекордна процентна инфлация на договор в Модул F7' },
 ];
 
+const networkData = {
+  unexplainedFlags: allRedFlagsList
+    .filter((r) => r.tier === 'UNEXPLAINED_PRIORITY')
+    .map((r) => ({
+      court: r.court,
+      nuts3: r.nuts3,
+      oblastName: r.oblastName,
+      party: r.party,
+      eik: r.eik,
+      judge: r.judge,
+      k: r.k,
+      n: r.n,
+      ratio: Number(Number(r.ratio || 0).toFixed(2)),
+      q: r.q,
+      distinctDays: r.distinctDays,
+      distinctMonths: r.distinctMonths,
+      procEurM: Number((Number(r.procEur || 0) / 1e6).toFixed(3)),
+      caseUrl: r.caseUrl,
+      caseRef: r.caseRef,
+      kind: r.kind,
+      year: r.year,
+    })),
+  multiFlagHubs: (multiFlagJudgeHubs || []).map((h: any) => ({
+    judge: h.judge,
+    courtName: h.courtName,
+    unexplainedCount: Number(h.unexplainedCount || 0),
+    totalFlaggedCases: Number(h.totalFlaggedCases || 0),
+    maxRatio: Number(h.maxRatio || 0),
+    combinedProcurementEurM: Number(h.combinedProcurementEurM || 0),
+    clusterPattern: h.clusterPattern || '',
+    parties: (h.parties || []).map((p: any) => ({
+      party: cleanParty(p.party),
+      eik: p.eik || '',
+      k: Number(p.k || 0),
+      n: Number(p.n || 0),
+      ratio: Number(p.ratio || 0),
+      year: p.year,
+      procEurM: Number(p.procurementEurM || 0),
+    })),
+  })),
+  lawyerFlags: (lawyerJudgeFlags || []).map((lf: any) => ({
+    representative: cleanParty(lf.representative),
+    judge: lf.judge,
+    courtName: lf.courtName,
+    caseKind: lf.caseKind,
+    year: lf.year,
+    k: Number(lf.k || 0),
+    nRep: Number(lf.nRep || 0),
+    ratio: Number(lf.ratio || 0),
+    q: lf.q,
+    topClients: (lf.topClients || []).slice(0, 3).map(cleanParty),
+    caseUrl: lf.sampleCases && lf.sampleCases[0] ? lf.sampleCases[0].caseUrl : '',
+  })),
+  conflictBridge: (conflictBridge || []).map((cb: any) => ({
+    party: cleanParty(cb.party),
+    eik: cb.eik || '',
+    unexplainedRedCount: Number(cb.unexplainedRedCount || 0),
+    redFlagsCount: Number(cb.redFlagsCount || 0),
+    maxRatio: Number(cb.maxRatio || 0),
+    procurementEurM: Number(cb.procurementEurM || 0),
+    procurementContracts: Number(cb.procurementContracts || 0),
+    courts: (cb.courts || []).slice(0, 4),
+    judges: (cb.judges || []).slice(0, 8),
+    officials: (cb.officials || []).slice(0, 8).map((o: any) => ({
+      name: o.name,
+      institution: o.institution || '',
+      totalEurM: Number(o.totalEurM || 0),
+      ownInstitution: Boolean(o.ownInstitution),
+      riskScore: Number(o.riskScore || 0),
+      sigmaUrl: o.sigmaUrl || '',
+    })),
+  })),
+  multiYear: (multiYearPersistent || []).slice(0, 60).map((my: any) => ({
+    party: cleanParty(my.party),
+    eik: my.partyEik || '',
+    judge: my.judge,
+    courtName: my.courtName,
+    years: my.years || [],
+    totalK: Number(my.totalK || 0),
+    totalN: Number(my.totalN || 0),
+    maxRatio: Number(my.maxRatio || 0),
+    tier: my.explanationTier || 'UNEXPLAINED_PRIORITY',
+    procEurM: Number(my.procurementEurM || 0),
+    topCaseUrl: my.topCaseUrl || '',
+  })),
+  zsrsTop: allRedFlagsList
+    .filter((r) => r.tier === 'STATUTORY_ZSRS_DUTY')
+    .slice(0, 35)
+    .map((r) => ({
+      court: r.court,
+      nuts3: r.nuts3,
+      party: r.party,
+      eik: r.eik,
+      judge: r.judge,
+      k: r.k,
+      n: r.n,
+      ratio: Number(Number(r.ratio || 0).toFixed(2)),
+      distinctDays: r.distinctDays,
+      caseUrl: r.caseUrl,
+      caseRef: r.caseRef,
+    })),
+  oblastList: (judicialMapConfig.oblasts || []).map((o: any) => ({
+    nuts3: o.nuts3,
+    name: o.name,
+    redFlags: Number(o.redFlags || 0),
+    unexplainedRed: Number(o.unexplainedRed || 0),
+  })),
+};
+
 const graphPayloadJson = JSON.stringify({
   asOf,
   universeMeta: {
@@ -635,6 +744,7 @@ const graphPayloadJson = JSON.stringify({
   securityFlags,
   cartelZmipRows,
   eppoLawSecurityRows,
+  networkData,
 });
 ---
 
@@ -644,7 +754,7 @@ const graphPayloadJson = JSON.stringify({
   asOf={asOf}
   subpage={true}
   canonicalPath="/ot-mrak-kam-svetlina.html"
-  subpageScript="sigma3/ot_mrak_kam_svetlina.js?v=20261126j"
+  subpageScript="sigma3/ot_mrak_kam_svetlina.js?v=20261126k"
   subpageSyncHref="data/nasvetlo_eiss_audit.json"
 >
   <!-- COUNTDOWN VAULT & HERO (JUDICIAL-FIRST NARRATIVE) -->
@@ -816,11 +926,14 @@ const graphPayloadJson = JSON.stringify({
         <button type="button" class="svetlina-viz-btn active" data-svet-viz="map">
           1. Радар карта на съдилищата (28 области)
         </button>
+        <button type="button" class="svetlina-viz-btn svetlina-viz-btn--graph" data-svet-viz="graph">
+          2. Интерактивен мрежов граф (ЕИСС &times; Адвокати &times; Власт)
+        </button>
         <button type="button" class="svetlina-viz-btn" data-svet-viz="pair1">
-          2. 6-осев Съдебен радар &amp; Мрежов граф
+          3. 6-осев Съдебен радар &amp; Схема
         </button>
         <button type="button" class="svetlina-viz-btn" data-svet-viz="pair2">
-          3. Топ 12 ЕИСС (&times;60,02) &amp; Рентген (&euro;8,54 млрд.)
+          4. Топ 12 ЕИСС (&times;60,02) &amp; Рентген (&euro;8,54 млрд.)
         </button>
         <button type="button" class="svetlina-viz-btn" data-svet-viz="all">
           Всички визуализации
@@ -858,6 +971,98 @@ const graphPayloadJson = JSON.stringify({
         <aside class="svet-oblast-panel" id="svetOblastPanel">
           <div class="muted" style="padding:14px;">Зареждане на съдебния профил за областта...</div>
         </aside>
+      </div>
+    </section>
+
+    <!-- PANEL 1 (TAB 2): INTERACTIVE FORCE-DIRECTED NETWORK GRAPH + SHORTEST-PATH BFS -->
+    <section
+      class="svetlina-graph-panel"
+      id="svetGraphPanel"
+      data-svet-chart="graph"
+      hidden
+      aria-label="Интерактивен мрежов граф на съдебните концентрации и свързаната власт"
+    >
+      <div class="svet-map-header" style="margin-bottom:10px;">
+        <div>
+          <h2 class="svet-map-title">Интерактивен мрежов граф — Съдилища &times; Съдии &times; Корпорации &times; Адвокати &times; Политика</h2>
+          <p class="svet-map-sub">
+            Влачете възли, мащабирайте със скрол, намерете най-краткия път (BFS) между съдия, фирма, адвокат или политик и кликнете върху възел, за да отворите пълното досие в дясното меню.
+          </p>
+        </div>
+      </div>
+
+      <div class="controls-card" style="margin-bottom:14px;">
+        <div class="search-row" style="margin-bottom:6px;">
+          <strong style="font-size:12.5px;white-space:nowrap;">Търсачка на скрити връзки (най-кратка връзка):</strong>
+          <input id="svetPathFromInput" class="search-input" style="flex:1 1 200px;" placeholder="Начало: съдия, съд, фирма, адвокат или политик…" />
+          <span class="muted">&harr;</span>
+          <input id="svetPathToInput" class="search-input" style="flex:1 1 200px;" placeholder="Цел: съдия, съд, фирма, ЕИК или политик…" />
+          <button class="btn btn-dark" id="svetBtnFindPath" type="button">Намери път</button>
+          <button class="btn" id="svetBtnPathDemo" type="button" title="Примерна верига">Демо верига</button>
+        </div>
+        <div id="svetPathResultBox" class="path-result-box" style="display:none;"></div>
+      </div>
+
+      <div class="graph-shell" id="svetGraphShell">
+        <aside class="graph-sidebar">
+          <div>
+            <label class="kpi-label" for="svetGraphPresetSelect" style="display:block;margin-bottom:6px;">Одитен срез на графа</label>
+            <select id="svetGraphPresetSelect" class="select-ctrl" style="width:100%;">
+              <option value="conflict_full">Пълен крос-регистърен граф (ЕИСС × ЗОП × Политици · Ниво 4)</option>
+              <option value="judge_hubs">31 Мулти-флагови съдийски хъба (Ниво 3 · &ge;2 необяснени RED)</option>
+              <option value="multi_year">Многогодишни повторения 2023–2026 (Ниво 5 · 9 необяснени + Топ)</option>
+              <option value="lawyers_j3">Адвокати &rarr; Съдии (Ниво 3) &amp; Кантори (Модул J3)</option>
+              <option value="unexplained_top">Топ 50 Необяснени RED флагове (Приоритет ИВСС)</option>
+              <option value="zsrs_security">Прокуратура, ДАНС &amp; МВР &rarr; Съдилища (ЗСРС / чл. 251г ЗЕС)</option>
+              <option value="politicians_eppo">Свързани политици, ДЗЗД картели &amp; EPPO вериги</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="kpi-label" for="svetGraphOblastSelect" style="display:block;margin-bottom:6px;">Филтър по област (28 области)</label>
+            <select id="svetGraphOblastSelect" class="select-ctrl" style="width:100%;">
+              <option value="">Всички 28 области</option>
+              {judicialOblasts
+                .slice()
+                .sort((a: any, b: any) => b.redFlags - a.redFlags)
+                .map((ob: any) => (
+                  <option value={ob.nuts3}>
+                    {ob.name} ({ob.redFlags} RED · {ob.unexplainedRed} необ.)
+                  </option>
+                ))}
+            </select>
+          </div>
+
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="btn" id="svetBtnRelayout" type="button" style="flex:1;justify-content:center;">Преподреди</button>
+            <button class="btn" id="svetBtnResetZoom" type="button" style="flex:1;justify-content:center;">Центрирай</button>
+            <button class="btn" id="svetBtnExportPng" type="button" style="flex:1;justify-content:center;">PNG</button>
+          </div>
+
+          <div id="svetGraphStatsBox" class="contract-row" style="margin:0;">Интерактивен мрежов граф (отваря се при избор на таб 2)</div>
+
+          <div>
+            <div class="kpi-label" style="margin-bottom:6px;">Възли в текущия срез (клик за досие)</div>
+            <ul class="cluster-people" id="svetGraphNodeList"></ul>
+          </div>
+        </aside>
+
+        <div class="graph-canvas-wrap">
+          <canvas id="svetNetworkCanvas"></canvas>
+          <div class="graph-tooltip" id="svetGraphTooltip">
+            <strong>Съдебно-институционален граф (7 типа възли)</strong><br/>
+            <span class="muted">Посочете възел за осветяване. Влачете възли, скрол за мащаб. Кликнете върху съд, съдия, фирма, адвокат или политик за досие.</span>
+          </div>
+          <div class="graph-legend">
+            <span><i class="legend-dot" style="background:#1e3a8a;"></i>Съд</span>
+            <span><i class="legend-diamond" style="background:#4f46e5;"></i>Съдия / Хъб</span>
+            <span><i class="legend-dot" style="background:#b45309;"></i>Корпорация / ЕИК</span>
+            <span><i class="legend-square" style="background:#0284c7;"></i>Адвокат / Кантора</span>
+            <span><i class="legend-dot" style="background:#b91c1c;"></i>Политик / КПК</span>
+            <span><i class="legend-dot" style="background:#6b21a8;"></i>Прокуратура / Силов</span>
+            <span><i class="legend-tri"></i>Рецидив / EPPO / ДЗЗД</span>
+          </div>
+        </div>
       </div>
     </section>
 

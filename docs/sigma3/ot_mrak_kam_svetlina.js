@@ -2071,12 +2071,40 @@
         }
       });
     }
+
+    return {
+      openJudge: function (name) {
+        if (name && !isExcludedName(name)) {
+          navigateTo({ type: 'judge', key: name, label: 'Съдия ' + name }, true);
+        }
+      },
+      openCompany: function (eikOrName) {
+        if (!eikOrName) return;
+        var cObj = live.companiesByEik[eikOrName];
+        navigateTo({ type: 'company', key: eikOrName, label: cObj ? cObj.name : 'ЕИК ' + eikOrName }, true);
+      },
+      openOfficial: function (nameOrSlug) {
+        if (!nameOrSlug || isExcludedName(nameOrSlug)) return;
+        var oObj = live.officialsBySlug[nameOrSlug] || live.officialsByNormName[norm(nameOrSlug)];
+        navigateTo({ type: 'official', key: oObj ? oObj.slug : nameOrSlug, label: oObj ? oObj.name : nameOrSlug }, true);
+      },
+      openRecord: function (rid) {
+        if (!rid) return;
+        var rec = localById[rid];
+        navigateTo({ type: 'record', key: rid, label: rec ? recordDisplayTitle(rec) : rid }, true);
+      },
+      openOblast: function (n3) {
+        if (!n3) return;
+        var obObj = oblastByNuts3[n3];
+        navigateTo({ type: 'oblast', key: n3, label: obObj ? 'Обл. ' + obObj.name : n3 }, true);
+      },
+    };
   }
 
   // ===========================================================================
   // MINISTRY SECTORS, VISUAL CHART DECK, REGISTER TABS & SEARCH CONTROLS
   // ===========================================================================
-  function initControls() {
+  function initControls(networkGraphApi) {
     var input = document.getElementById('svetlinaSearchInput');
     var resetBtn = document.getElementById('svetlinaResetBtn');
     var statusEl = document.getElementById('svetlinaSearchStatus');
@@ -2203,6 +2231,13 @@
           var pair = card.getAttribute('data-svet-chart');
           card.hidden = !(mode === 'all' || mode === pair);
         });
+        if (networkGraphApi) {
+          if (mode === 'graph' || mode === 'all') {
+            networkGraphApi.activate();
+          } else {
+            networkGraphApi.pause();
+          }
+        }
       });
     });
 
@@ -2549,11 +2584,1137 @@
     renderMap();
   }
 
+  // ===========================================================================
+  // INTERACTIVE FORCE-DIRECTED JUDICIAL NETWORK GRAPH & SHORTEST-PATH BFS
+  // ===========================================================================
+  function initJudicialNetworkGraph(drawerApi) {
+    var payload = parsePayload() || {};
+    var nd = payload.networkData || {};
+    var panel = document.getElementById('svetGraphPanel');
+    var canvas = document.getElementById('svetNetworkCanvas');
+    var tip = document.getElementById('svetGraphTooltip');
+    var statsBox = document.getElementById('svetGraphStatsBox');
+    var nodeListEl = document.getElementById('svetGraphNodeList');
+    var presetSel = document.getElementById('svetGraphPresetSelect');
+    var oblastSel = document.getElementById('svetGraphOblastSelect');
+    var btnRelayout = document.getElementById('svetBtnRelayout');
+    var btnResetZoom = document.getElementById('svetBtnResetZoom');
+    var btnExportPng = document.getElementById('svetBtnExportPng');
+    var pathFromInp = document.getElementById('svetPathFromInput');
+    var pathToInp = document.getElementById('svetPathToInput');
+    var btnFindPath = document.getElementById('svetBtnFindPath');
+    var btnPathDemo = document.getElementById('svetBtnPathDemo');
+    var pathBox = document.getElementById('svetPathResultBox');
+
+    if (!panel || !canvas || !presetSel || !canvas.getContext) return null;
+
+    var ctx = canvas.getContext('2d');
+    var PROSECUTOR_RE = /ДАНС|МВР|ПРОКУРАТУРА|СДВР|ГДГП|ГРАНИЧНА ПОЛИЦИЯ|ОДМВР|ТДНС|НАП\b|КПК\b|КПКОНПИ/i;
+
+    var courtToNuts3 = {};
+    var oblastByNuts3 = {};
+    ((payload.judicialMap && payload.judicialMap.oblasts) || []).forEach(function (ob) {
+      oblastByNuts3[ob.nuts3] = ob;
+      (ob.courts || []).forEach(function (c) {
+        if (c && c.name) courtToNuts3[norm(c.name)] = ob.nuts3;
+      });
+    });
+
+    var hubJudgesSet = {};
+    (nd.multiFlagHubs || []).forEach(function (h) {
+      if (h && h.judge && !isExcludedName(h.judge)) hubJudgesSet[norm(h.judge)] = h;
+    });
+
+    var state = {
+      active: false,
+      initialized: false,
+      nodes: [],
+      edges: [],
+      nodeById: {},
+      panX: 0,
+      panY: 0,
+      scale: 0.92,
+      simSteps: 0,
+      hovered: null,
+      dragging: null,
+      panning: false,
+      dragMoved: false,
+      downX: 0,
+      downY: 0,
+      lastX: 0,
+      lastY: 0,
+      raf: 0,
+    };
+
+    var TYPE_META = {
+      court: { col: '#1e3a8a', label: 'Съд', radius: 13 },
+      judge: { col: '#4f46e5', label: 'Съдия', radius: 10.5 },
+      party: { col: '#b45309', label: 'Корпорация', radius: 9 },
+      lawyer: { col: '#0284c7', label: 'Адвокат / Кантора', radius: 9.5 },
+      official: { col: '#b91c1c', label: 'Политик / КПК', radius: 10 },
+      prosecutor: { col: '#6b21a8', label: 'Прокуратура / Силов', radius: 9.5 },
+      case_cluster: { col: '#0d9488', label: 'Рецидив / EPPO / ДЗЗД', radius: 9.5 },
+    };
+
+    function classifyPartyType(name) {
+      return PROSECUTOR_RE.test(String(name || '')) ? 'prosecutor' : 'party';
+    }
+
+    function openNodeDossier(n) {
+      if (!n || !drawerApi) return;
+      var m = n.meta || {};
+      if (n.type === 'judge' && m.judge && !isExcludedName(m.judge)) {
+        drawerApi.openJudge(m.judge);
+      } else if (n.type === 'official' && (m.slug || m.name) && !isExcludedName(m.name || '')) {
+        drawerApi.openOfficial(m.slug || m.name);
+      } else if (m.recordId) {
+        drawerApi.openRecord(m.recordId);
+      } else if (m.eik) {
+        drawerApi.openCompany(m.eik);
+      } else if (n.type === 'court' && m.nuts3) {
+        drawerApi.openOblast(m.nuts3);
+      } else if (m.party) {
+        drawerApi.openCompany(m.party);
+      }
+    }
+
+    function nodeOpenAttrs(n) {
+      var m = n.meta || {};
+      if (n.type === 'judge' && m.judge && !isExcludedName(m.judge)) {
+        return 'data-svet-open-judge="' + esc(m.judge) + '"';
+      }
+      if (n.type === 'official' && (m.slug || m.name) && !isExcludedName(m.name || '')) {
+        return 'data-svet-open-official="' + esc(m.slug || m.name) + '"';
+      }
+      if (m.recordId) {
+        return 'data-svet-open-record="' + esc(m.recordId) + '"';
+      }
+      if (m.eik) {
+        return 'data-svet-open-company="' + esc(m.eik) + '"';
+      }
+      if (n.type === 'court' && m.nuts3) {
+        return 'data-svet-open-oblast="' + esc(m.nuts3) + '"';
+      }
+      return '';
+    }
+
+    function updateTooltip(n) {
+      if (!tip) return;
+      if (!n) {
+        tip.innerHTML =
+          '<strong>Съдебно-институционален граф (7 типа възли)</strong><br/>' +
+          '<span class="muted">Посочете възел за осветяване. Влачете възли, скрол за мащаб. Кликнете върху съд, съдия, фирма, адвокат или политик за досие.</span>';
+        return;
+      }
+      var m = n.meta || {};
+      var cfg = TYPE_META[n.type] || TYPE_META.party;
+      var attrs = nodeOpenAttrs(n);
+      var btnHtml = attrs
+        ? '<br/><button type="button" class="btn" style="margin-top:6px;padding:3px 9px;font-size:11px;" ' + attrs + '>Досие &rarr;</button>'
+        : '';
+
+      if (n.type === 'judge') {
+        tip.innerHTML =
+          '<strong style="color:' + (n.isHub ? '#b91c1c' : '#4f46e5') + ';">' +
+          (n.isHub ? '★ Съдийски хъб: ' : 'Съдия: ') +
+          esc(n.label) +
+          '</strong><br/><span class="muted">' +
+          esc(m.courtName || 'Съд в ЕИСС') +
+          ' · ' +
+          n.degree +
+          ' връзки</span>' +
+          (m.ratio ? '<br/><span class="mono">Макс. кратност: <strong>×' + Number(m.ratio).toFixed(2).replace('.', ',') + '</strong></span>' : '') +
+          btnHtml;
+      } else if (n.type === 'official') {
+        tip.innerHTML =
+          '<strong style="color:#b91c1c;">' +
+          esc(n.label) +
+          '</strong><br/><span class="muted">' +
+          esc(m.institution || 'Публична длъжност · КПК / СИГМА') +
+          '</span>' +
+          (m.totalEurM ? '<br/><span class="mono">ЗОП обем: <strong>' + fmtEur(m.totalEurM * 1e6) + '</strong></span>' : '') +
+          btnHtml;
+      } else if (n.type === 'court') {
+        tip.innerHTML =
+          '<strong style="color:#1e3a8a;">' +
+          esc(n.label) +
+          '</strong><br/><span class="muted">' +
+          n.degree +
+          ' връзки в текущия срез</span>' +
+          btnHtml;
+      } else if (n.type === 'lawyer') {
+        tip.innerHTML =
+          '<strong style="color:#0284c7;">Адвокат / Кантора: ' +
+          esc(n.label) +
+          '</strong><br/><span class="muted">' +
+          (m.eik ? 'ЕИК ' + esc(m.eik) + ' · ' : '') +
+          n.degree +
+          ' връзки</span>' +
+          (m.k ? '<br/><span class="mono">' + m.k + '/' + m.nRep + ' дела (×' + Number(m.ratio || 0).toFixed(2).replace('.', ',') + ')</span>' : '') +
+          btnHtml;
+      } else if (n.type === 'case_cluster') {
+        tip.innerHTML =
+          '<strong style="color:#0d9488;">' +
+          esc(n.label) +
+          '</strong><br/><span class="muted">' +
+          esc(m.detail || (cfg.label + ' · ' + n.degree + ' връзки')) +
+          '</span>' +
+          btnHtml;
+      } else {
+        tip.innerHTML =
+          '<strong style="color:' + cfg.col + ';">' +
+          esc(n.label) +
+          '</strong><br/><span class="mono muted">' +
+          (m.eik ? 'ЕИК ' + esc(m.eik) + ' · ' : '') +
+          n.degree +
+          ' връзки</span>' +
+          (m.procEurM ? '<br/><span class="mono">ЗОП: <strong>' + fmtEur(m.procEurM * 1e6) + '</strong></span>' : '') +
+          btnHtml;
+      }
+    }
+
+    function buildGraph(preset, oblastNuts3, customNodes, customEdges) {
+      var nodesMap = {};
+      var nodes = [];
+      var edges = [];
+      var edgeSeen = {};
+
+      function addNode(id, label, type, meta) {
+        if (!id || !label) return null;
+        if (isExcludedName(label)) return null;
+        if (!nodesMap[id]) {
+          var cfg = TYPE_META[type] || TYPE_META.party;
+          var isHub = type === 'judge' && Boolean(hubJudgesSet[norm(label)] || (meta && meta.isHub));
+          var n = {
+            id: id,
+            label: label,
+            type: type,
+            meta: meta || {},
+            isHub: isHub,
+            x: 0,
+            y: 0,
+            vx: 0,
+            vy: 0,
+            degree: 0,
+            radius: isHub ? 12.5 : cfg.radius,
+          };
+          nodesMap[id] = n;
+          nodes.push(n);
+        } else if (meta) {
+          var ex = nodesMap[id];
+          if (!ex.meta.eik && meta.eik) ex.meta.eik = meta.eik;
+          if (!ex.meta.nuts3 && meta.nuts3) ex.meta.nuts3 = meta.nuts3;
+          if (!ex.meta.courtName && meta.courtName) ex.meta.courtName = meta.courtName;
+          if (!ex.meta.recordId && meta.recordId) ex.meta.recordId = meta.recordId;
+          if (!ex.meta.ratio && meta.ratio) ex.meta.ratio = meta.ratio;
+          if (!ex.meta.procEurM && meta.procEurM) ex.meta.procEurM = meta.procEurM;
+        }
+        return nodesMap[id];
+      }
+
+      function addEdge(a, b, kind, label) {
+        if (!a || !b || a === b || !nodesMap[a] || !nodesMap[b]) return;
+        var key = (a < b ? a + '|' + b : b + '|' + a) + '|' + kind;
+        if (edgeSeen[key]) return;
+        edgeSeen[key] = true;
+        edges.push({ source: a, target: b, kind: kind || 'court_judge', label: label || '' });
+        nodesMap[a].degree++;
+        nodesMap[b].degree++;
+      }
+
+      if (customNodes && customEdges) {
+        customNodes.forEach(function (cn) {
+          addNode(cn.id, cn.label, cn.type, cn.meta);
+        });
+        customEdges.forEach(function (ce) {
+          addEdge(ce.source, ce.target, ce.kind || 'path_highlight', ce.label || '');
+        });
+      } else if (oblastNuts3) {
+        var ob = oblastByNuts3[oblastNuts3];
+        var obCourtSet = {};
+        if (ob) {
+          (ob.courts || []).forEach(function (c) {
+            if (c && c.name) obCourtSet[norm(c.name)] = true;
+          });
+        }
+        var unexpOb = (nd.unexplainedFlags || []).filter(function (f) {
+          return f.nuts3 === oblastNuts3 || obCourtSet[norm(f.court)];
+        });
+        var zsrsOb = (nd.zsrsTop || []).filter(function (f) {
+          return f.nuts3 === oblastNuts3 || obCourtSet[norm(f.court)];
+        });
+        var flagsOb = unexpOb.slice(0, 28).concat(zsrsOb.slice(0, 12));
+        if (!flagsOb.length && ob && ob.topFlags) {
+          flagsOb = ob.topFlags.slice(0, 24);
+        }
+
+        var partyEiksInOb = {};
+        var partyNamesInOb = {};
+        flagsOb.forEach(function (f) {
+          if (isExcludedName(f.judge) || isExcludedName(f.party)) return;
+          var cId = 'court:' + norm(f.court);
+          var jId = 'judge:' + norm(f.judge);
+          var pType = classifyPartyType(f.party);
+          var pId = (f.eik ? 'party:' + f.eik : pType + ':' + norm(f.party));
+          addNode(cId, f.court, 'court', { nuts3: oblastNuts3 });
+          addNode(jId, f.judge, 'judge', { judge: f.judge, courtName: f.court, ratio: f.ratio });
+          addNode(pId, f.party, pType, { eik: f.eik || '', party: f.party, procEurM: f.procEurM || 0 });
+          if (f.eik) partyEiksInOb[f.eik] = pId;
+          partyNamesInOb[norm(f.party)] = pId;
+          addEdge(cId, jId, 'court_judge', '');
+          addEdge(
+            jId,
+            pId,
+            pType === 'prosecutor' ? 'zsrs_duty' : 'unexplained_red',
+            '×' + Number(f.ratio || 0).toFixed(1).replace('.', ',') + ' (' + f.k + '/' + f.n + ')'
+          );
+        });
+
+        // Overlay matching lawyers & conflictBridge officials in this oblast
+        (nd.lawyerFlags || []).forEach(function (lf) {
+          if (!obCourtSet[norm(lf.courtName)] && courtToNuts3[norm(lf.courtName)] !== oblastNuts3) return;
+          if (isExcludedName(lf.judge) || isExcludedName(lf.representative)) return;
+          var cId = 'court:' + norm(lf.courtName);
+          var jId = 'judge:' + norm(lf.judge);
+          var lId = 'lawyer:' + norm(lf.representative);
+          addNode(cId, lf.courtName, 'court', { nuts3: oblastNuts3 });
+          addNode(jId, lf.judge, 'judge', { judge: lf.judge, courtName: lf.courtName });
+          addNode(lId, lf.representative, 'lawyer', { k: lf.k, nRep: lf.nRep, ratio: lf.ratio });
+          addEdge(cId, jId, 'court_judge', '');
+          addEdge(lId, jId, 'lawyer_judge', '×' + Number(lf.ratio || 0).toFixed(1).replace('.', ',') + ' (' + lf.k + '/' + lf.nRep + ')');
+        });
+
+        (nd.conflictBridge || []).forEach(function (cb) {
+          var matchCourt = (cb.courts || []).some(function (cn) {
+            return obCourtSet[norm(cn)] || courtToNuts3[norm(cn)] === oblastNuts3;
+          });
+          var pId = (cb.eik && partyEiksInOb[cb.eik]) || partyNamesInOb[norm(cb.party)];
+          if (!matchCourt && !pId) return;
+          if (!pId) {
+            pId = cb.eik ? 'party:' + cb.eik : 'party:' + norm(cb.party);
+            addNode(pId, cb.party, classifyPartyType(cb.party), { eik: cb.eik, party: cb.party, procEurM: cb.procurementEurM });
+          }
+          (cb.officials || []).slice(0, 4).forEach(function (o) {
+            if (isExcludedName(o.name)) return;
+            var oId = 'official:' + norm(o.name);
+            addNode(oId, o.name, 'official', { name: o.name, institution: o.institution, totalEurM: o.totalEurM });
+            addEdge(pId, oId, 'conflict_official', 'КПК Табл. 9');
+          });
+        });
+      } else if (preset === 'judge_hubs') {
+        (nd.multiFlagHubs || []).slice(0, 18).forEach(function (hub) {
+          if (isExcludedName(hub.judge)) return;
+          var n3 = courtToNuts3[norm(hub.courtName)] || '';
+          var cId = 'court:' + norm(hub.courtName);
+          var jId = 'judge:' + norm(hub.judge);
+          addNode(cId, hub.courtName, 'court', { nuts3: n3 });
+          addNode(jId, hub.judge, 'judge', { judge: hub.judge, courtName: hub.courtName, ratio: hub.maxRatio, isHub: true });
+          addEdge(cId, jId, 'court_judge', hub.unexplainedCount + ' RED');
+          (hub.parties || []).slice(0, 5).forEach(function (p) {
+            if (isExcludedName(p.party)) return;
+            var pType = classifyPartyType(p.party);
+            var pId = p.eik ? 'party:' + p.eik : pType + ':' + norm(p.party);
+            addNode(pId, p.party, pType, { eik: p.eik || '', party: p.party, procEurM: p.procEurM || 0 });
+            addEdge(jId, pId, 'unexplained_red', '×' + Number(p.ratio || 0).toFixed(1).replace('.', ',') + ' (' + p.k + '/' + p.n + ')');
+          });
+        });
+      } else if (preset === 'multi_year') {
+        var mySorted = (nd.multiYear || []).slice().sort(function (a, b) {
+          var aU = a.tier === 'UNEXPLAINED_PRIORITY' ? 0 : 1;
+          var bU = b.tier === 'UNEXPLAINED_PRIORITY' ? 0 : 1;
+          return aU - bU || b.maxRatio - a.maxRatio;
+        });
+        mySorted.slice(0, 32).forEach(function (my) {
+          if (isExcludedName(my.judge) || isExcludedName(my.party)) return;
+          var n3 = courtToNuts3[norm(my.courtName)] || '';
+          var cId = 'court:' + norm(my.courtName);
+          var jId = 'judge:' + norm(my.judge);
+          var pType = classifyPartyType(my.party);
+          var pId = my.eik ? 'party:' + my.eik : pType + ':' + norm(my.party);
+          var clId = 'cluster:my:' + norm(my.party) + ':' + norm(my.judge);
+          var yrLbl = (my.years || []).join('+');
+          addNode(cId, my.courtName, 'court', { nuts3: n3 });
+          addNode(jId, my.judge, 'judge', { judge: my.judge, courtName: my.courtName, ratio: my.maxRatio });
+          addNode(pId, my.party, pType, { eik: my.eik || '', party: my.party, procEurM: my.procEurM || 0 });
+          addNode(clId, 'Рецидив ' + yrLbl, 'case_cluster', {
+            judge: my.judge,
+            eik: my.eik || '',
+            detail: my.party + ' → ' + my.judge + ' (' + my.totalK + '/' + my.totalN + ' дела)',
+          });
+          addEdge(cId, jId, 'court_judge', '');
+          addEdge(jId, clId, 'multi_year', '×' + Number(my.maxRatio || 0).toFixed(1).replace('.', ','));
+          addEdge(clId, pId, 'multi_year', yrLbl);
+        });
+      } else if (preset === 'lawyers_j3') {
+        (nd.lawyerFlags || []).forEach(function (lf) {
+          if (isExcludedName(lf.judge) || isExcludedName(lf.representative)) return;
+          var n3 = courtToNuts3[norm(lf.courtName)] || '';
+          var cId = 'court:' + norm(lf.courtName);
+          var jId = 'judge:' + norm(lf.judge);
+          var lId = 'lawyer:' + norm(lf.representative);
+          addNode(cId, lf.courtName, 'court', { nuts3: n3 });
+          addNode(jId, lf.judge, 'judge', { judge: lf.judge, courtName: lf.courtName, ratio: lf.ratio });
+          addNode(lId, lf.representative, 'lawyer', { k: lf.k, nRep: lf.nRep, ratio: lf.ratio });
+          addEdge(cId, jId, 'court_judge', '');
+          addEdge(lId, jId, 'lawyer_judge', '×' + Number(lf.ratio || 0).toFixed(1).replace('.', ',') + ' (' + lf.k + '/' + lf.nRep + ')');
+          (lf.topClients || []).slice(0, 2).forEach(function (cl) {
+            if (isExcludedName(cl)) return;
+            var clType = classifyPartyType(cl);
+            var pId = clType + ':' + norm(cl);
+            addNode(pId, cl, clType, { party: cl });
+            addEdge(pId, lId, 'lawyer_judge', 'клиент');
+          });
+        });
+        (payload.eppoLawSecurityRows || []).forEach(function (row) {
+          if (row.sector !== 'law' || String(row.cat || '').indexOf('ЗЧОД') !== -1) return;
+          var lId = row.eik ? 'lawyer:eik:' + row.eik : 'lawyer:' + norm(row.name);
+          addNode(lId, row.name, 'lawyer', { eik: row.eik || '', recordId: row.id });
+          if (row.authEik) {
+            var aId = 'party:' + row.authEik;
+            addNode(aId, 'Възложител ЕИК ' + row.authEik, 'prosecutor', { eik: row.authEik, recordId: row.id });
+            addEdge(aId, lId, 'lawyer_judge', row.val || 'J3');
+          }
+        });
+      } else if (preset === 'unexplained_top') {
+        (nd.unexplainedFlags || []).slice(0, 46).forEach(function (f) {
+          if (isExcludedName(f.judge) || isExcludedName(f.party)) return;
+          var cId = 'court:' + norm(f.court);
+          var jId = 'judge:' + norm(f.judge);
+          var pType = classifyPartyType(f.party);
+          var pId = f.eik ? 'party:' + f.eik : pType + ':' + norm(f.party);
+          addNode(cId, f.court, 'court', { nuts3: f.nuts3 });
+          addNode(jId, f.judge, 'judge', { judge: f.judge, courtName: f.court, ratio: f.ratio });
+          addNode(pId, f.party, pType, { eik: f.eik || '', party: f.party, procEurM: f.procEurM || 0 });
+          addEdge(cId, jId, 'court_judge', '');
+          addEdge(jId, pId, 'unexplained_red', '×' + Number(f.ratio || 0).toFixed(1).replace('.', ',') + ' (' + f.k + '/' + f.n + ')');
+        });
+      } else if (preset === 'zsrs_security') {
+        (nd.zsrsTop || []).slice(0, 32).forEach(function (f) {
+          if (isExcludedName(f.judge) || isExcludedName(f.party)) return;
+          var cId = 'court:' + norm(f.court);
+          var jId = 'judge:' + norm(f.judge);
+          var pId = f.eik ? 'prosecutor:' + f.eik : 'prosecutor:' + norm(f.party);
+          addNode(cId, f.court, 'court', { nuts3: f.nuts3 });
+          addNode(jId, f.judge, 'judge', { judge: f.judge, courtName: f.court, ratio: f.ratio });
+          addNode(pId, f.party, 'prosecutor', { eik: f.eik || '', party: f.party });
+          addEdge(cId, jId, 'court_judge', '');
+          addEdge(jId, pId, 'zsrs_duty', '×' + Number(f.ratio || 0).toFixed(1).replace('.', ',') + ' (' + f.k + '/' + f.n + ')');
+        });
+        (payload.securityFlags || []).slice(0, 10).forEach(function (sf) {
+          if (isExcludedName(sf.judge) || isExcludedName(sf.party)) return;
+          var jId = 'judge:' + norm(sf.judge.split('(')[0]);
+          var pId = sf.eik ? 'prosecutor:' + sf.eik : 'prosecutor:' + norm(sf.party);
+          addNode(jId, sf.judge, 'judge', { judge: sf.judge.split('(')[0].trim(), recordId: sf.id });
+          addNode(pId, sf.party, 'prosecutor', { eik: sf.eik || '', recordId: sf.id });
+          addEdge(jId, pId, 'zsrs_duty', sf.mult || 'ЗСРС');
+        });
+      } else if (preset === 'politicians_eppo') {
+        (payload.politicians || []).forEach(function (pol) {
+          if (isExcludedName(pol.name)) return;
+          var oId = 'official:' + norm(pol.name);
+          addNode(oId, pol.name, 'official', { name: pol.name, institution: pol.role, recordId: pol.id });
+          var eiks = (pol.eiks || []).filter(Boolean);
+          if (eiks.length) {
+            eiks.slice(0, 3).forEach(function (eik, i) {
+              var pId = 'party:' + eik;
+              var lbl = i === 0 ? (pol.company || 'ЕИК ' + eik) : 'ЕИК ' + eik;
+              addNode(pId, lbl.slice(0, 44), 'party', { eik: eik, recordId: pol.id });
+              addEdge(oId, pId, 'conflict_official', pol.eur || 'КПК');
+            });
+          } else {
+            var pId = 'party:pol:' + pol.id;
+            addNode(pId, (pol.company || pol.sectorLabel || 'Свързано дружество').slice(0, 44), 'party', { recordId: pol.id });
+            addEdge(oId, pId, 'conflict_official', pol.eur || '');
+          }
+        });
+        (payload.eppoLawSecurityRows || []).forEach(function (ep) {
+          var clId = 'cluster:' + ep.id;
+          addNode(clId, ep.name.slice(0, 44), 'case_cluster', { eik: ep.eik || '', recordId: ep.id, detail: ep.details });
+          if (ep.eik) {
+            var pId = 'party:' + ep.eik;
+            addNode(pId, ep.name.split('→').pop().trim().slice(0, 40), ep.sector === 'law' ? 'lawyer' : 'party', { eik: ep.eik, recordId: ep.id });
+            addEdge(pId, clId, 'multi_year', ep.val || 'EPPO');
+          }
+          if (ep.authEik) {
+            var aId = 'party:' + ep.authEik;
+            addNode(aId, 'Орган ЕИК ' + ep.authEik, 'prosecutor', { eik: ep.authEik, recordId: ep.id });
+            addEdge(aId, clId, 'zsrs_duty', ep.cat || '');
+          }
+        });
+        (payload.cartelZmipRows || []).forEach(function (cz) {
+          var pId = cz.eik ? 'party:' + cz.eik : 'party:' + cz.id;
+          var clId = 'cluster:' + cz.id;
+          addNode(pId, cz.firm.slice(0, 44), 'party', { eik: cz.eik || '', recordId: cz.id });
+          addNode(clId, cz.sectorLabel + ' · Анекси/ЗМИП', 'case_cluster', { eik: cz.eik || '', recordId: cz.id, detail: cz.annex });
+          addEdge(pId, clId, 'unexplained_red', cz.zop || '');
+        });
+      } else {
+        // Default: conflict_full (Level 4 Cross-Registry Bridge: Courts <-> Judges <-> Parties <-> Officials)
+        (nd.conflictBridge || []).forEach(function (cb) {
+          if (isExcludedName(cb.party)) return;
+          var pType = classifyPartyType(cb.party);
+          var pId = cb.eik ? 'party:' + cb.eik : pType + ':' + norm(cb.party);
+          addNode(pId, cb.party, pType, { eik: cb.eik || '', party: cb.party, procEurM: cb.procurementEurM || 0 });
+          (cb.courts || []).slice(0, 2).forEach(function (cn) {
+            var cId = 'court:' + norm(cn);
+            addNode(cId, cn, 'court', { nuts3: courtToNuts3[norm(cn)] || '' });
+            addEdge(pId, cId, cb.unexplainedRedCount > 0 ? 'unexplained_red' : 'court_judge', cb.redFlagsCount + ' RED');
+          });
+          (cb.judges || []).slice(0, 4).forEach(function (jn) {
+            if (isExcludedName(jn)) return;
+            var jId = 'judge:' + norm(jn);
+            addNode(jId, jn, 'judge', { judge: jn, courtName: (cb.courts && cb.courts[0]) || '' });
+            addEdge(pId, jId, cb.unexplainedRedCount > 0 ? 'unexplained_red' : 'court_judge', '×' + Number(cb.maxRatio || 0).toFixed(1).replace('.', ','));
+            if (cb.courts && cb.courts[0]) {
+              addEdge('court:' + norm(cb.courts[0]), jId, 'court_judge', '');
+            }
+          });
+          (cb.officials || []).slice(0, 4).forEach(function (o) {
+            if (isExcludedName(o.name)) return;
+            var oId = 'official:' + norm(o.name);
+            addNode(oId, o.name, 'official', { name: o.name, institution: o.institution || '', totalEurM: o.totalEurM || 0 });
+            addEdge(pId, oId, 'conflict_official', 'КПК Табл. 9');
+          });
+        });
+      }
+
+      var rect = canvas.getBoundingClientRect();
+      var w = rect.width || 900;
+      var h = rect.height || 660;
+      nodes.forEach(function (n, idx) {
+        var ang = (idx / Math.max(1, nodes.length)) * Math.PI * 2;
+        var ring =
+          n.type === 'court'
+            ? 105
+            : n.type === 'judge'
+            ? 185
+            : n.type === 'official'
+            ? 295
+            : n.type === 'lawyer'
+            ? 245
+            : 235;
+        var jitterX = ((idx * 37) % 29) - 14;
+        var jitterY = ((idx * 53) % 29) - 14;
+        n.x = w / 2 + Math.cos(ang) * ring + jitterX;
+        n.y = h / 2 + Math.sin(ang) * ring + jitterY;
+      });
+
+      state.nodes = nodes;
+      state.edges = edges;
+      state.nodeById = nodesMap;
+      state.panX = 0;
+      state.panY = 0;
+      state.scale = nodes.length > 90 ? 0.78 : 0.92;
+      state.simSteps = 220;
+      state.hovered = null;
+
+      if (statsBox) {
+        statsBox.innerHTML = '<strong>' + nodes.length + ' възли</strong> · <strong>' + edges.length + ' връзки</strong>';
+      }
+      if (nodeListEl) {
+        var sortedList = nodes
+          .slice()
+          .sort(function (a, b) {
+            return b.degree - a.degree || (b.isHub ? 1 : 0) - (a.isHub ? 1 : 0);
+          })
+          .slice(0, 60);
+        nodeListEl.innerHTML = sortedList
+          .map(function (n) {
+            var cfg = TYPE_META[n.type] || TYPE_META.party;
+            var attrs = nodeOpenAttrs(n);
+            return (
+              '<li ' +
+              attrs +
+              ' data-svet-graph-node="' +
+              esc(n.id) +
+              '"><span><i class="dot" style="background:' +
+              (n.isHub ? '#b91c1c' : cfg.col) +
+              ';margin-right:6px;"></i>' +
+              esc(n.label.length > 32 ? n.label.slice(0, 31) + '…' : n.label) +
+              '</span><span class="mono muted" style="font-size:11px;">' +
+              n.degree +
+              '</span></li>'
+            );
+          })
+          .join('');
+      }
+
+      updateTooltip(null);
+      state.initialized = true;
+      if (state.active) startLoop();
+    }
+
+    function renderFrame(targetCtx, w, h, dpr, isDark, solidBg) {
+      targetCtx.save();
+      targetCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if (solidBg) {
+        targetCtx.fillStyle = isDark ? '#0b1120' : '#fcfbf8';
+        targetCtx.fillRect(0, 0, w, h);
+      } else {
+        targetCtx.clearRect(0, 0, w, h);
+      }
+      targetCtx.translate(w / 2 + state.panX, h / 2 + state.panY);
+      targetCtx.scale(state.scale, state.scale);
+      targetCtx.translate(-w / 2, -h / 2);
+
+      var hov = state.hovered;
+      var activeSet = {};
+      if (hov) {
+        activeSet[hov.id] = true;
+        state.edges.forEach(function (e) {
+          if (e.source === hov.id) activeSet[e.target] = true;
+          if (e.target === hov.id) activeSet[e.source] = true;
+        });
+      }
+
+      for (var ei = 0; ei < state.edges.length; ei++) {
+        var e = state.edges[ei];
+        var a = state.nodeById[e.source];
+        var b = state.nodeById[e.target];
+        if (!a || !b) continue;
+        var lit = !hov || (activeSet[a.id] && activeSet[b.id]);
+        targetCtx.beginPath();
+        targetCtx.moveTo(a.x, a.y);
+        targetCtx.lineTo(b.x, b.y);
+        if (e.kind === 'path_highlight') {
+          targetCtx.strokeStyle = lit ? 'rgba(220,38,38,0.85)' : 'rgba(220,38,38,0.12)';
+          targetCtx.lineWidth = 2.6;
+        } else if (e.kind === 'unexplained_red') {
+          targetCtx.strokeStyle = lit ? 'rgba(185,28,28,0.62)' : 'rgba(185,28,28,0.08)';
+          targetCtx.lineWidth = 1.6;
+        } else if (e.kind === 'conflict_official') {
+          targetCtx.strokeStyle = lit ? 'rgba(225,29,72,0.62)' : 'rgba(225,29,72,0.08)';
+          targetCtx.lineWidth = 1.5;
+        } else if (e.kind === 'lawyer_judge') {
+          targetCtx.strokeStyle = lit ? 'rgba(2,132,199,0.65)' : 'rgba(2,132,199,0.08)';
+          targetCtx.lineWidth = 1.6;
+        } else if (e.kind === 'multi_year') {
+          targetCtx.strokeStyle = lit ? 'rgba(13,148,136,0.68)' : 'rgba(13,148,136,0.08)';
+          targetCtx.lineWidth = 1.6;
+        } else if (e.kind === 'zsrs_duty') {
+          targetCtx.strokeStyle = lit ? 'rgba(107,33,168,0.58)' : 'rgba(107,33,168,0.08)';
+          targetCtx.lineWidth = 1.3;
+        } else {
+          targetCtx.strokeStyle = lit ? 'rgba(100,116,139,0.38)' : 'rgba(100,116,139,0.06)';
+          targetCtx.lineWidth = 1;
+        }
+        targetCtx.stroke();
+
+        if (e.label && ((hov && lit) || e.kind === 'path_highlight')) {
+          var mx = (a.x + b.x) / 2;
+          var my = (a.y + b.y) / 2;
+          targetCtx.font = '600 9.5px "IBM Plex Mono", monospace';
+          targetCtx.lineWidth = 3;
+          targetCtx.strokeStyle = isDark ? 'rgba(9,13,22,0.92)' : 'rgba(252,251,248,0.94)';
+          targetCtx.strokeText(e.label, mx + 3, my - 3);
+          targetCtx.fillStyle = isDark ? '#e2e8f0' : '#334155';
+          targetCtx.fillText(e.label, mx + 3, my - 3);
+        }
+      }
+
+      for (var ni = 0; ni < state.nodes.length; ni++) {
+        var n = state.nodes[ni];
+        var nLit = !hov || activeSet[n.id];
+        var cfg = TYPE_META[n.type] || TYPE_META.party;
+        targetCtx.globalAlpha = nLit ? 1 : 0.14;
+
+        if (n.isHub) {
+          targetCtx.beginPath();
+          targetCtx.arc(n.x, n.y, n.radius + 5.5, 0, Math.PI * 2);
+          targetCtx.fillStyle = 'rgba(220,38,38,0.22)';
+          targetCtx.fill();
+        }
+
+        targetCtx.beginPath();
+        if (n.type === 'judge') {
+          var rD = n.radius + 1.5;
+          targetCtx.moveTo(n.x, n.y - rD);
+          targetCtx.lineTo(n.x + rD, n.y);
+          targetCtx.lineTo(n.x, n.y + rD);
+          targetCtx.lineTo(n.x - rD, n.y);
+          targetCtx.closePath();
+        } else if (n.type === 'lawyer') {
+          var rS = n.radius;
+          targetCtx.rect(n.x - rS, n.y - rS, rS * 2, rS * 2);
+        } else if (n.type === 'case_cluster') {
+          var rT = n.radius + 1.5;
+          targetCtx.moveTo(n.x, n.y - rT);
+          targetCtx.lineTo(n.x + rT, n.y + rT * 0.85);
+          targetCtx.lineTo(n.x - rT, n.y + rT * 0.85);
+          targetCtx.closePath();
+        } else {
+          targetCtx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+        }
+
+        targetCtx.fillStyle = n.isHub && n.type === 'judge' ? '#dc2626' : cfg.col;
+        targetCtx.fill();
+        targetCtx.lineWidth = hov === n ? 2.5 : 1.4;
+        targetCtx.strokeStyle = hov === n ? '#f59e0b' : '#ffffff';
+        targetCtx.stroke();
+
+        if (hov === n || (hov && nLit) || n.type === 'court' || n.type === 'official' || n.isHub || n.degree >= 3 || state.nodes.length <= 42) {
+          targetCtx.font = (n.type === 'court' || hov === n || n.isHub ? '600' : '400') + ' 10.5px "IBM Plex Sans", sans-serif';
+          var lbl = n.label.length > 28 ? n.label.slice(0, 27) + '…' : n.label;
+          targetCtx.lineWidth = 3;
+          targetCtx.strokeStyle = isDark ? 'rgba(9,13,22,0.92)' : 'rgba(252,251,248,0.94)';
+          targetCtx.strokeText(lbl, n.x + n.radius + 4, n.y + 3.5);
+          targetCtx.fillStyle = isDark ? '#f1f5f9' : '#131720';
+          targetCtx.fillText(lbl, n.x + n.radius + 4, n.y + 3.5);
+        }
+      }
+      targetCtx.globalAlpha = 1;
+      targetCtx.restore();
+    }
+
+    function stepSimulation() {
+      var rect = canvas.getBoundingClientRect();
+      var w = rect.width || 900;
+      var h = rect.height || 660;
+      var nodes = state.nodes;
+      var edges = state.edges;
+      if (rect.width > 0) {
+        var dpr = window.devicePixelRatio || 1;
+        var targetW = Math.round(w * dpr);
+        var targetH = Math.round(h * dpr);
+        if (canvas.width !== targetW || canvas.height !== targetH) {
+          canvas.width = targetW;
+          canvas.height = targetH;
+        }
+      }
+
+      if (state.simSteps > 0 || state.dragging) {
+        if (state.simSteps > 0) state.simSteps--;
+        for (var i = 0; i < nodes.length; i++) {
+          var a = nodes[i];
+          for (var j = i + 1; j < nodes.length; j++) {
+            var b = nodes[j];
+            var dx = a.x - b.x;
+            var dy = a.y - b.y;
+            var d2 = dx * dx + dy * dy + 1;
+            var f = 2500 / d2;
+            var d = Math.sqrt(d2);
+            a.vx += (dx / d) * f;
+            a.vy += (dy / d) * f;
+            b.vx -= (dx / d) * f;
+            b.vy -= (dy / d) * f;
+          }
+          a.vx += (w / 2 - a.x) * 0.008;
+          a.vy += (h / 2 - a.y) * 0.008;
+        }
+        for (var ei = 0; ei < edges.length; ei++) {
+          var e = edges[ei];
+          var sa = state.nodeById[e.source];
+          var sb = state.nodeById[e.target];
+          if (!sa || !sb) continue;
+          var edx = sb.x - sa.x;
+          var edy = sb.y - sa.y;
+          var ed = Math.sqrt(edx * edx + edy * edy) || 1;
+          var ef = (ed - (e.kind === 'conflict_official' ? 96 : 80)) * 0.045;
+          sa.vx += (edx / ed) * ef;
+          sa.vy += (edy / ed) * ef;
+          sb.vx -= (edx / ed) * ef;
+          sb.vy -= (edy / ed) * ef;
+        }
+        for (var ni = 0; ni < nodes.length; ni++) {
+          var n = nodes[ni];
+          if (state.dragging === n) {
+            n.vx = 0;
+            n.vy = 0;
+            continue;
+          }
+          n.vx *= 0.82;
+          n.vy *= 0.82;
+          n.x += n.vx;
+          n.y += n.vy;
+        }
+      }
+
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      renderFrame(ctx, w, h, window.devicePixelRatio || 1, isDark, false);
+
+      if (state.active && (state.simSteps > 0 || state.dragging || state.panning)) {
+        state.raf = window.requestAnimationFrame(stepSimulation);
+      } else {
+        state.raf = 0;
+      }
+    }
+
+    function requestRedraw() {
+      if (!state.active || !state.initialized) return;
+      if (!state.raf) {
+        state.raf = window.requestAnimationFrame(stepSimulation);
+      }
+    }
+
+    function startLoop() {
+      if (state.raf) window.cancelAnimationFrame(state.raf);
+      state.raf = 0;
+      if (state.active) {
+        state.raf = window.requestAnimationFrame(stepSimulation);
+      }
+    }
+
+    function pauseLoop() {
+      state.active = false;
+      if (state.raf) {
+        window.cancelAnimationFrame(state.raf);
+        state.raf = 0;
+      }
+    }
+
+    function activateLoop() {
+      state.active = true;
+      if (!state.initialized) {
+        buildGraph(presetSel.value || 'conflict_full', oblastSel ? oblastSel.value : '');
+      } else {
+        state.simSteps = Math.max(state.simSteps, 45);
+        startLoop();
+      }
+    }
+
+    function runShortestPath(fromQ, toQ) {
+      var fq = norm(fromQ);
+      var tq = norm(toQ);
+      if (!fq || !tq) return;
+
+      var adj = {};
+      var meta = {};
+      var seenEdge = {};
+
+      function link(a, aLbl, aType, aMeta, b, bLbl, bType, bMeta, rel) {
+        if (!a || !b || a === b) return;
+        if (isExcludedName(aLbl) || isExcludedName(bLbl)) return;
+        if (!meta[a]) meta[a] = { id: a, label: aLbl, type: aType, meta: aMeta || {} };
+        if (!meta[b]) meta[b] = { id: b, label: bLbl, type: bType, meta: bMeta || {} };
+        var ek = a < b ? a + '|' + b : b + '|' + a;
+        if (seenEdge[ek]) return;
+        seenEdge[ek] = true;
+        if (!adj[a]) adj[a] = [];
+        if (!adj[b]) adj[b] = [];
+        adj[a].push({ to: b, rel: rel || '' });
+        adj[b].push({ to: a, rel: rel || '' });
+      }
+
+      (nd.unexplainedFlags || []).concat(nd.zsrsTop || []).forEach(function (f) {
+        var cId = 'court:' + norm(f.court);
+        var jId = 'judge:' + norm(f.judge);
+        var pType = classifyPartyType(f.party);
+        var pId = f.eik ? 'party:' + f.eik : pType + ':' + norm(f.party);
+        link(cId, f.court, 'court', { nuts3: f.nuts3 }, jId, f.judge, 'judge', { judge: f.judge, courtName: f.court }, 'докладчик');
+        link(jId, f.judge, 'judge', { judge: f.judge, courtName: f.court }, pId, f.party, pType, { eik: f.eik || '', party: f.party, procEurM: f.procEurM || 0 }, '×' + Number(f.ratio || 0).toFixed(1).replace('.', ','));
+      });
+
+      (nd.multiFlagHubs || []).forEach(function (hub) {
+        var cId = 'court:' + norm(hub.courtName);
+        var jId = 'judge:' + norm(hub.judge);
+        link(cId, hub.courtName, 'court', { nuts3: courtToNuts3[norm(hub.courtName)] || '' }, jId, hub.judge, 'judge', { judge: hub.judge, courtName: hub.courtName, isHub: true }, 'хъб');
+        (hub.parties || []).forEach(function (p) {
+          var pType = classifyPartyType(p.party);
+          var pId = p.eik ? 'party:' + p.eik : pType + ':' + norm(p.party);
+          link(jId, hub.judge, 'judge', { judge: hub.judge, isHub: true }, pId, p.party, pType, { eik: p.eik || '', party: p.party, procEurM: p.procEurM || 0 }, '×' + Number(p.ratio || 0).toFixed(1).replace('.', ','));
+        });
+      });
+
+      (nd.lawyerFlags || []).forEach(function (lf) {
+        var cId = 'court:' + norm(lf.courtName);
+        var jId = 'judge:' + norm(lf.judge);
+        var lId = 'lawyer:' + norm(lf.representative);
+        link(cId, lf.courtName, 'court', { nuts3: courtToNuts3[norm(lf.courtName)] || '' }, jId, lf.judge, 'judge', { judge: lf.judge, courtName: lf.courtName }, 'съд');
+        link(lId, lf.representative, 'lawyer', { k: lf.k, nRep: lf.nRep, ratio: lf.ratio }, jId, lf.judge, 'judge', { judge: lf.judge }, 'адвокат');
+        (lf.topClients || []).forEach(function (cl) {
+          var clType = classifyPartyType(cl);
+          link('party:' + norm(cl), cl, clType, { party: cl }, lId, lf.representative, 'lawyer', {}, 'клиент');
+        });
+      });
+
+      (nd.conflictBridge || []).forEach(function (cb) {
+        var pType = classifyPartyType(cb.party);
+        var pId = cb.eik ? 'party:' + cb.eik : pType + ':' + norm(cb.party);
+        (cb.courts || []).forEach(function (cn) {
+          link(pId, cb.party, pType, { eik: cb.eik || '', procEurM: cb.procurementEurM || 0 }, 'court:' + norm(cn), cn, 'court', { nuts3: courtToNuts3[norm(cn)] || '' }, 'дела');
+        });
+        (cb.judges || []).forEach(function (jn) {
+          link(pId, cb.party, pType, { eik: cb.eik || '', procEurM: cb.procurementEurM || 0 }, 'judge:' + norm(jn), jn, 'judge', { judge: jn, courtName: (cb.courts && cb.courts[0]) || '' }, 'RED');
+        });
+        (cb.officials || []).forEach(function (o) {
+          link(pId, cb.party, pType, { eik: cb.eik || '', procEurM: cb.procurementEurM || 0 }, 'official:' + norm(o.name), o.name, 'official', { name: o.name, institution: o.institution || '', totalEurM: o.totalEurM || 0 }, 'КПК');
+        });
+      });
+
+      (nd.multiYear || []).forEach(function (my) {
+        var pType = classifyPartyType(my.party);
+        var pId = my.eik ? 'party:' + my.eik : pType + ':' + norm(my.party);
+        var jId = 'judge:' + norm(my.judge);
+        link(pId, my.party, pType, { eik: my.eik || '' }, jId, my.judge, 'judge', { judge: my.judge, courtName: my.courtName }, (my.years || []).join('+'));
+      });
+
+      (payload.politicians || []).forEach(function (pol) {
+        var oId = 'official:' + norm(pol.name);
+        (pol.eiks || []).forEach(function (eik) {
+          if (!eik) return;
+          link(oId, pol.name, 'official', { name: pol.name, institution: pol.role, recordId: pol.id }, 'party:' + eik, pol.company || 'ЕИК ' + eik, 'party', { eik: eik, recordId: pol.id }, 'КПК');
+        });
+      });
+
+      (payload.eppoLawSecurityRows || []).concat(payload.cartelZmipRows || []).forEach(function (r) {
+        if (r.eik && r.authEik) {
+          link('party:' + r.eik, r.name || r.firm || r.eik, r.sector === 'law' ? 'lawyer' : 'party', { eik: r.eik, recordId: r.id }, 'party:' + r.authEik, 'Възложител ' + r.authEik, 'prosecutor', { eik: r.authEik, recordId: r.id }, r.val || r.zop || 'ЗОП');
+        }
+      });
+
+      var starts = [];
+      var targets = {};
+      Object.keys(meta).forEach(function (id) {
+        var m = meta[id];
+        var nLbl = norm(m.label);
+        var nId = norm(m.id);
+        if (nLbl.indexOf(fq) !== -1 || nId.indexOf(fq) !== -1) starts.push(id);
+        if (nLbl.indexOf(tq) !== -1 || nId.indexOf(tq) !== -1) targets[id] = true;
+      });
+
+      if (pathBox) pathBox.style.display = 'block';
+      if (!starts.length || !Object.keys(targets).length) {
+        if (pathBox) {
+          pathBox.innerHTML = 'Не е намерен възел за <strong>' + esc(!starts.length ? fromQ : toQ) + '</strong> в съдебно-институционалния граф.';
+        }
+        return;
+      }
+
+      var queue = starts.map(function (s) { return { nodes: [s], rels: [] }; });
+      var visited = {};
+      starts.forEach(function (s) { visited[s] = true; });
+      var found = null;
+
+      while (queue.length && !found) {
+        var curPath = queue.shift();
+        var cur = curPath.nodes[curPath.nodes.length - 1];
+        if (targets[cur] && curPath.nodes.length > 1) {
+          found = curPath;
+          break;
+        }
+        if (curPath.nodes.length >= 7) continue;
+        var neighbors = adj[cur] || [];
+        for (var i = 0; i < neighbors.length; i++) {
+          var nb = neighbors[i];
+          if (!visited[nb.to]) {
+            visited[nb.to] = true;
+            queue.push({ nodes: curPath.nodes.concat([nb.to]), rels: curPath.rels.concat([nb.rel]) });
+          }
+        }
+      }
+
+      if (!found) {
+        if (pathBox) {
+          pathBox.innerHTML = 'Няма открита верига до 6 стъпки между <strong>' + esc(fromQ) + '</strong> и <strong>' + esc(toQ) + '</strong>.';
+        }
+        return;
+      }
+
+      var cNodes = found.nodes.map(function (id) { return meta[id]; });
+      var cEdges = [];
+      for (var k = 0; k < found.nodes.length - 1; k++) {
+        cEdges.push({ source: found.nodes[k], target: found.nodes[k + 1], kind: 'path_highlight', label: found.rels[k] || '' });
+      }
+      if (pathBox) {
+        pathBox.innerHTML =
+          '<strong>Открита верига (' +
+          (found.nodes.length - 1) +
+          ' стъпки):</strong> ' +
+          cNodes
+            .map(function (cn) {
+              return '<span class="tag tag-plum">' + esc(cn.label) + '</span>';
+            })
+            .join(' &rarr; ');
+      }
+      buildGraph('', '', cNodes, cEdges);
+    }
+
+    function toWorld(cx, cy) {
+      var rect = canvas.getBoundingClientRect();
+      return {
+        x: (cx - rect.left - rect.width / 2 - state.panX) / state.scale + rect.width / 2,
+        y: (cy - rect.top - rect.height / 2 - state.panY) / state.scale + rect.height / 2,
+      };
+    }
+
+    function hitAt(x, y) {
+      for (var i = state.nodes.length - 1; i >= 0; i--) {
+        var n = state.nodes[i];
+        var dx = n.x - x;
+        var dy = n.y - y;
+        if (dx * dx + dy * dy <= (n.radius + 6) * (n.radius + 6)) return n;
+      }
+      return null;
+    }
+
+    presetSel.addEventListener('change', function () {
+      if (oblastSel) oblastSel.value = '';
+      if (pathBox) pathBox.style.display = 'none';
+      buildGraph(presetSel.value, '');
+    });
+
+    if (oblastSel) {
+      oblastSel.addEventListener('change', function () {
+        if (pathBox) pathBox.style.display = 'none';
+        if (oblastSel.value) buildGraph('', oblastSel.value);
+        else buildGraph(presetSel.value, '');
+      });
+    }
+
+    if (btnRelayout) {
+      btnRelayout.addEventListener('click', function () {
+        state.simSteps = 220;
+        startLoop();
+      });
+    }
+
+    if (btnResetZoom) {
+      btnResetZoom.addEventListener('click', function () {
+        state.panX = 0;
+        state.panY = 0;
+        state.scale = state.nodes.length > 90 ? 0.78 : 0.92;
+        requestRedraw();
+      });
+    }
+
+    if (btnExportPng) {
+      btnExportPng.addEventListener('click', function () {
+        var rect = canvas.getBoundingClientRect();
+        var w = rect.width || 900;
+        var h = rect.height || 660;
+        var dpr = window.devicePixelRatio || 1;
+        var off = document.createElement('canvas');
+        off.width = Math.round(w * dpr);
+        off.height = Math.round(h * dpr);
+        var oCtx = off.getContext('2d');
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        renderFrame(oCtx, w, h, dpr, isDark, true);
+        var a = document.createElement('a');
+        a.href = off.toDataURL('image/png');
+        a.download = 'NASVETLO_OT_MRAK_KAM_SVETLINA_GRAPH.png';
+        a.click();
+      });
+    }
+
+    if (btnFindPath) {
+      btnFindPath.addEventListener('click', function () {
+        if (pathFromInp && pathToInp) runShortestPath(pathFromInp.value, pathToInp.value);
+      });
+    }
+
+    if (btnPathDemo) {
+      btnPathDemo.addEventListener('click', function () {
+        var dFrom = 'Нора Владимирова Маринова';
+        var dTo = 'Стефан Иванов Цанков';
+        if (pathFromInp) pathFromInp.value = dFrom;
+        if (pathToInp) pathToInp.value = dTo;
+        runShortestPath(dFrom, dTo);
+      });
+    }
+
+    canvas.addEventListener('mousedown', function (ev) {
+      var p = toWorld(ev.clientX, ev.clientY);
+      var hit = hitAt(p.x, p.y);
+      state.downX = ev.clientX;
+      state.downY = ev.clientY;
+      state.dragMoved = false;
+      if (hit) {
+        state.dragging = hit;
+        state.simSteps = Math.max(state.simSteps, 60);
+      } else {
+        state.panning = true;
+        state.lastX = ev.clientX;
+        state.lastY = ev.clientY;
+      }
+      startLoop();
+    });
+
+    window.addEventListener('mousemove', function (ev) {
+      if (state.dragging) {
+        if (Math.hypot(ev.clientX - state.downX, ev.clientY - state.downY) >= 5) {
+          state.dragMoved = true;
+        }
+        var p = toWorld(ev.clientX, ev.clientY);
+        state.dragging.x = p.x;
+        state.dragging.y = p.y;
+        requestRedraw();
+      } else if (state.panning) {
+        if (Math.hypot(ev.clientX - state.downX, ev.clientY - state.downY) >= 5) {
+          state.dragMoved = true;
+        }
+        state.panX += ev.clientX - state.lastX;
+        state.panY += ev.clientY - state.lastY;
+        state.lastX = ev.clientX;
+        state.lastY = ev.clientY;
+        requestRedraw();
+      } else if (ev.target === canvas && state.active) {
+        var hp = toWorld(ev.clientX, ev.clientY);
+        var hit = hitAt(hp.x, hp.y);
+        if (state.hovered !== hit) {
+          state.hovered = hit;
+          canvas.style.cursor = hit ? 'pointer' : 'grab';
+          updateTooltip(hit);
+          requestRedraw();
+        }
+      }
+    });
+
+    window.addEventListener('mouseup', function () {
+      state.dragging = null;
+      state.panning = false;
+    });
+
+    canvas.addEventListener('click', function (ev) {
+      if (state.dragMoved) return;
+      var p = toWorld(ev.clientX, ev.clientY);
+      var hit = hitAt(p.x, p.y);
+      if (hit) {
+        state.hovered = hit;
+        updateTooltip(hit);
+        requestRedraw();
+        openNodeDossier(hit);
+      }
+    });
+
+    canvas.addEventListener(
+      'wheel',
+      function (ev) {
+        ev.preventDefault();
+        state.scale = Math.max(0.25, Math.min(3.5, state.scale * (ev.deltaY < 0 ? 1.12 : 0.89)));
+        requestRedraw();
+      },
+      { passive: false }
+    );
+
+    window.addEventListener('resize', function () {
+      if (state.active) requestRedraw();
+    });
+
+    var themeBtn = document.getElementById('themeToggleBtn');
+    if (themeBtn) {
+      themeBtn.addEventListener('click', function () {
+        window.setTimeout(requestRedraw, 20);
+      });
+    }
+
+    return {
+      activate: activateLoop,
+      pause: pauseLoop,
+      buildGraph: buildGraph,
+      runShortestPath: runShortestPath,
+    };
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initTheme();
     initGate();
     initJudicialMap();
-    var filterApi = initControls();
-    initDependencyDrawer(filterApi);
+    var filterProxy = { searchAll: null };
+    var drawerApi = initDependencyDrawer(filterProxy);
+    var networkGraphApi = initJudicialNetworkGraph(drawerApi);
+    var filterApi = initControls(networkGraphApi);
+    if (filterApi && filterApi.searchAll) {
+      filterProxy.searchAll = filterApi.searchAll;
+    }
   });
 })();
