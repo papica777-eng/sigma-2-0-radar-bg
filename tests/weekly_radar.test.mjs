@@ -82,7 +82,8 @@ test('computeWeeklyDiff detects added, escalated, resolved RED flags and KPI del
   assert.ok(flagKey(diff.addedRedFlags[0]).includes('НОВА КОМПАНИЯ ЕООД'));
 });
 
-test('Weekly baseline & bulletin files exist, cite Zenodo DOI & raw SHA-256, and contain 0 EGNs', () => {
+test('Weekly baseline & bulletin files exist, cite Zenodo DOI & raw SHA-256, are idempotent, and contain 0 EGNs', () => {
+  const auditPath = path.join(root, 'docs', 'data', 'nasvetlo_eiss_audit.json');
   const baselinePath = path.join(root, 'docs', 'data', 'eiss_weekly_baseline.json');
   const bulletinPath = path.join(root, 'docs', 'data', 'nasvetlo_weekly_bulletin.json');
   assert.ok(fs.existsSync(baselinePath), 'docs/data/eiss_weekly_baseline.json must exist');
@@ -92,8 +93,13 @@ test('Weekly baseline & bulletin files exist, cite Zenodo DOI & raw SHA-256, and
   const rawBull = fs.readFileSync(bulletinPath, 'utf8');
   const base = JSON.parse(rawBase);
   const bull = JSON.parse(rawBull);
+  const audit = JSON.parse(fs.readFileSync(auditPath, 'utf8'));
 
   assert.equal(base.flags.length, 869);
+  const selfDiff = computeWeeklyDiff(base, audit);
+  assert.equal(selfDiff.addedRedFlags.length, 0, 'Self-diff must produce 0 added flags');
+  assert.equal(selfDiff.escalatedRedFlags.length, 0, 'Self-diff must produce 0 escalated flags');
+  assert.equal(selfDiff.resolvedRedFlags.length, 0, 'Self-diff must produce 0 resolved flags');
   assert.equal(bull.rawFileSha256, EXPECTED_RAW_SHA256);
   assert.equal(bull.zenodoDoi, '10.5281/zenodo.24580253');
   assert.equal(bull.totals.casesUnique, 2234509);

@@ -29,6 +29,7 @@ function sanitizeText(s) {
 export function flagKey(rf) {
   return [
     String(rf.courtName || '').trim(),
+    String(rf.department || '').trim(),
     String(rf.caseKind || '').trim(),
     String(rf.year || ''),
     String(rf.party || '').trim(),
@@ -36,10 +37,12 @@ export function flagKey(rf) {
   ].join('|');
 }
 
-function compactFlag(rf) {
+function compactFlag(rf, occIdx = 0) {
+  const baseKey = flagKey(rf);
   return {
-    key: flagKey(rf),
+    key: occIdx > 0 ? `${baseKey}#${occIdx}` : baseKey,
     courtName: sanitizeText(rf.courtName),
+    department: sanitizeText(rf.department),
     caseKind: sanitizeText(rf.caseKind),
     year: Number(rf.year || 0),
     party: sanitizeText(rf.party),
@@ -56,9 +59,15 @@ function compactFlag(rf) {
 }
 
 export function computeWeeklyDiff(prevBaseline, currentAudit) {
+  const seenCounts = new Map();
   const currentFlags = (currentAudit?.redFlags || [])
     .filter((r) => !EXCLUDED_RE.test(String(r.judge || '')) && !EXCLUDED_RE.test(String(r.party || '')))
-    .map(compactFlag);
+    .map((r) => {
+      const bk = flagKey(r);
+      const occ = seenCounts.get(bk) || 0;
+      seenCounts.set(bk, occ + 1);
+      return compactFlag(r, occ);
+    });
 
   const u = currentAudit?.universe || {};
   const hasPrev = Boolean(prevBaseline && Array.isArray(prevBaseline.flags) && prevBaseline.flags.length > 0);
@@ -77,9 +86,17 @@ export function computeWeeklyDiff(prevBaseline, currentAudit) {
     };
   }
 
+  const prevSeenCounts = new Map();
   const prevMap = new Map();
   for (const pf of prevBaseline.flags) {
-    prevMap.set(pf.key || flagKey(pf), pf);
+    let k = pf.key;
+    if (!k) {
+      const bk = flagKey(pf);
+      const occ = prevSeenCounts.get(bk) || 0;
+      prevSeenCounts.set(bk, occ + 1);
+      k = occ > 0 ? `${bk}#${occ}` : bk;
+    }
+    prevMap.set(k, pf);
   }
 
   const currMap = new Map();
@@ -193,6 +210,10 @@ export async function pingIndexNow() {
 
 async function runCli() {
   const args = new Set(process.argv.slice(2));
+  if (args.has('--ping-indexnow') && !args.has('--update-baseline') && !args.has('--diff')) {
+    await pingIndexNow();
+    return;
+  }
   const auditPath = path.join(root, 'docs', 'data', 'nasvetlo_eiss_audit.json');
   const baselinePath = path.join(root, 'docs', 'data', 'eiss_weekly_baseline.json');
   const bulletinPath = path.join(root, 'docs', 'data', 'nasvetlo_weekly_bulletin.json');
