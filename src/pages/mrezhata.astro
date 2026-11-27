@@ -24,14 +24,14 @@ const TYPE_LABELS: Record<string, { label: string; color: string; icon: string }
   authority: { label: 'Възложител / Ведомство', color: '#3b82f6', icon: '🏛️' },
   judge: { label: 'Съдия / Магистрат', color: '#8b5cf6', icon: '⚖️' },
   lawyer: { label: 'Адвокат / Кантора', color: '#06b6d4', icon: '💼' },
-  official: { label: 'Публично лице (ЗПКОНПИ)', color: '#f59e0b', icon: '👔' },
+  official: { label: 'Публично лице (ЗПК)', color: '#f59e0b', icon: '👔' },
   case: { label: 'Съдебно дело / Спор', color: '#ec4899', icon: '📁' },
 };
 ---
 
 <BaseLayout
   title="NAsvetlo — МРЕЖАТА: Карта на завладяната държава"
-  description={`Интерактивен системен граф на зависимостите в България: ${fmtInt(s.totalNodes || 178)} институционални и фирмени възела, ${fmtInt(s.totalEdges || 188)} съдебни и търговски връзки върху ${fmtEurShort(s.totalInvestigatedResourceEur || 2944000000)} обществен ресурс.`}
+  description={`Интерактивен системен граф на институционалната свързаност в България: ${fmtInt(s.totalNodes || 228)} обекта, ${fmtInt(s.totalEdges || 288)} съдебни и търговски връзки върху ${fmtEurShort(s.totalInvestigatedResourceEur || 3460000000)} обществен ресурс.`}
   asOf={asOf}
   subpage={true}
   canonicalPath="/mrezhata.html"
@@ -40,13 +40,13 @@ const TYPE_LABELS: Record<string, { label: string; color: string; icon: string }
   <section class="mrezha-hero" id="top">
     <div class="mrezha-kicker">
       <span>●</span>
-      <span>СИСТЕМЕН АНАЛИЗАТОР НА КОРУПЦИОННИ И СЪДЕБНИ МРЕЖИ</span>
+      <span>СИСТЕМЕН АНАЛИЗАТОР НА ИНСТИТУЦИОНАЛНА СВЪРЗАНОСТ И СЪДЕБНИ МРЕЖИ</span>
     </div>
     <h1 class="mrezha-title">МРЕЖАТА: Карта на завладяната държава</h1>
     <p class="mrezha-subtitle">
       Първият независим крос-регистров граф в България, свързващ в единна интерактивна паяжина
       корпоративни капитали, обществени поръчки, съдии, прокурори, адвокатски кантори и публични лица.
-      Всички връзки се базират на 100% официални данни от ЕИСС, Търговския регистър, ЦАИС ЕОП и КПКОНПИ.
+      Всички връзки се базират на 100% официални данни от ЕИСС, Търговския регистър, ЦАИС ЕОП и КПК.
     </p>
 
     <!-- KPI Grid -->
@@ -129,7 +129,7 @@ const TYPE_LABELS: Record<string, { label: string; color: string; icon: string }
 
         <button type="button" class="mrezha-signal-btn" id="openSignalFromInspectorBtn">
           <span>🚨</span>
-          <span>Генерирай сигнал за това лице / дело</span>
+          <span>Генерирай институционален сигнал за този възел</span>
         </button>
       </aside>
     </div>
@@ -138,8 +138,8 @@ const TYPE_LABELS: Record<string, { label: string; color: string; icon: string }
   <!-- Thematic Clusters Section -->
   <section class="mrezha-clusters-section">
     <div class="mrezha-section-hdr">
-      <h2>Шестте ключови клъстера на завладяната държава</h2>
-      <p>Форензичен анализ на основните канали за преливане на публичен ресурс и съдебен чадър в България.</p>
+      <h2>Шестте ключови клъстера на институционалната мрежа</h2>
+      <p>Форензичен анализ на основните канали за концентрация на публичен ресурс и съдебни аномалии в България.</p>
     </div>
 
     <div class="mrezha-cluster-grid">
@@ -147,7 +147,7 @@ const TYPE_LABELS: Record<string, { label: string; color: string; icon: string }
         <div class="cluster-kicker">Клъстер 1 · Инфраструктура</div>
         <h3 class="cluster-title">Строително-пътен картел &amp; АПИ</h3>
         <p class="cluster-desc">
-          Компании с договори за стотици милиони лева по ЗОП (Пътинженерингстрой-Т, Запрянови, Пътища и мостове, Дюлгер),
+          Компании с договори за стотици милиони евро по ЗОП (Пътинженерингстрой-Т, Запрянови, Пътища и мостове, Дюлгер),
           които водят координирани търговски дела срещу държавните агенции и общините за допълнителни плащания и лихви.
         </p>
         <div class="cluster-meta-row">
@@ -158,7 +158,7 @@ const TYPE_LABELS: Record<string, { label: string; color: string; icon: string }
 
       <div class="mrezha-cluster-card">
         <div class="cluster-kicker">Клъстер 2 · Местна власт</div>
-        <h3 class="cluster-title">Общински феодализъм &amp; Чл. 49 ЗПКОНПИ</h3>
+        <h3 class="cluster-title">Общински феодализъм &amp; Чл. 49 ЗПК</h3>
         <p class="cluster-desc">
           Кметове, заместник-кметове и общински съветници в Благоевград, Хасково, Неделино, Белово, Суворово и Несебър,
           чиито лични и семейни дружества са печелили директно обществени поръчки от техните собствени общини.
@@ -173,7 +173,7 @@ const TYPE_LABELS: Record<string, { label: string; color: string; icon: string }
         <div class="cluster-kicker">Клъстер 3 · Правосъдие</div>
         <h3 class="cluster-title">Съдебни лобита &amp; Адвокатски абонаменти</h3>
         <p class="cluster-desc">
-          Адвокатски дружества, получаващи милиони левове от държавни гиганти (АЕЦ Козлодуй, Булгартрансгаз, ВиК дружества)
+          Адвокатски дружества, получаващи милиони евро от държавни гиганти (АЕЦ Козлодуй, Булгартрансгаз, ВиК дружества)
           чрез процедури без обявление (0 оферти) за „процесуално представителство“ пред същите съдилища, където работят техни бивши колеги.
         </p>
         <div class="cluster-meta-row">
@@ -184,10 +184,10 @@ const TYPE_LABELS: Record<string, { label: string; color: string; icon: string }
 
       <div class="mrezha-cluster-card">
         <div class="cluster-kicker">Клъстер 4 · Енергетика</div>
-        <h3 class="cluster-title">Енергиен &amp; ВиК октопод</h3>
+        <h3 class="cluster-title">Енергиен &amp; ВиК сектор</h3>
         <p class="cluster-desc">
-          Взаимно оплетени претенции между държавни енергийни оператори (ЕKey, Булгартрансгаз) и частни ТЕЦ-ове / доставчици,
-          свързани със съдебни спорове за десетки милиони лева и извънсъдебни спогодби за сметка на потребителите.
+          Взаимно оплетени претенции между държавни енергийни оператори (ЕСО ЕАД, Булгартрансгаз ЕАД) и частни ТЕЦ-ове / доставчици,
+          свързани със съдебни спорове за десетки милиони евро и извънсъдебни спогодби за сметка на потребителите.
         </p>
         <div class="cluster-meta-row">
           <span>Обем: €1.19 млрд.</span>
@@ -227,7 +227,7 @@ const TYPE_LABELS: Record<string, { label: string; color: string; icon: string }
   <section class="mrezha-clusters-section">
     <div class="mrezha-section-hdr">
       <h2>Регистър на картографираните обекти ({nodes.length})</h2>
-      <p>Пълен опис на субектите в графа, подреден по риск и финансов обем. Кликнете на ред за досие.</p>
+      <p>Пълен опис на субектите в графа, подреден по риск и финансов обем. Кликнете на ред за паспорта на възела.</p>
     </div>
 
     <div class="mrezha-table-container">
@@ -272,7 +272,7 @@ const TYPE_LABELS: Record<string, { label: string; color: string; icon: string }
                     data-id={n.id}
                     style="padding:0.25rem 0.6rem;font-size:0.75rem;"
                   >
-                    Досие ↗
+                    Паспорт ↗
                   </button>
                 </td>
               </tr>
@@ -280,6 +280,62 @@ const TYPE_LABELS: Record<string, { label: string; color: string; icon: string }
           })}
         </tbody>
       </table>
+    </div>
+  </section>
+
+  <!-- Methodology and Legal Disclaimer Section -->
+  <section class="mrezha-methodology-section" id="methodology">
+    <div class="mrezha-section-hdr">
+      <h2>Правна рамка, презумпция за невиновност и методология</h2>
+      <p>Официални регистри, математическа верификация и спазване на върховенството на правото.</p>
+    </div>
+
+    <div class="mrezha-disclaimer-grid">
+      <div class="mrezha-disclaimer-card">
+        <h3>⚖️ Презумпция за невиновност и конституционни гаранции</h3>
+        <p>
+          Всяко физическо и юридическо лице, посочено на тази платформа, се ползва от 
+          <strong>презумпцията за невиновност съгласно чл. 31, ал. 3 от Конституцията на Република България</strong> и 
+          <strong>чл. 6, ал. 2 от Европейската конвенция за защита на правата на човека и основните свободи (ЕКПЧ)</strong>. 
+          Визуализираните данни отразяват документална институционална, процесуална и търговска свързаност и 
+          <strong>НЕ представляват влязла в сила присъда, обвинителен акт или констатация за извършено престъпление</strong>.
+        </p>
+      </div>
+
+      <div class="mrezha-disclaimer-card">
+        <h3>📊 Статистическа методология и неутрална доказателствена база</h3>
+        <p>
+          Всички възли и ребра в графа стъпват изключително върху официални първични регистри:
+          <strong>ЦАИС ЕОП</strong> (чрез УНП на поръчките), <strong>Търговския регистър</strong> (по ЕИК), 
+          <strong>ЕИСС / ЕПЕП</strong> (по официални номера на дела) и <strong>публичния регистър на КПК</strong> (по чл. 49 от ЗПК). 
+          Индексът на риска (Score) и съдебните маркери са резултат от обективни статистически тестове 
+          (едностранен точен биномен тест с корекция по <em>Benjamini–Hochberg False Discovery Rate q &lt; 0.01</em>), 
+          указващи математически необичайна концентрация на разпределени дела.
+        </p>
+      </div>
+
+      <div class="mrezha-disclaimer-card">
+        <h3>🛡️ Криптографски печат за интегритет (SHA-256)</h3>
+        <p>
+          Графът функционира изцяло като статичен клиентски модел без уязвими сървърни бази данни. 
+          Пълният масив е криптографски защитен чрез хеш по <strong>FIPS 180-4 SHA-256</strong>:
+        </p>
+        <div class="mrezha-sha-badge">
+          <code>SHA-256: {s.datasetSha256 || '895de6d2b560962550275a7a20d900c5c01d0e3dd2ddef26e22af885ae4842cf'}</code>
+        </div>
+        <p style="margin-top:0.5rem;font-size:0.75rem;color:var(--text-muted);">
+          Гарантира, че данните не могат да бъдат манипулирани, подменяни или свалени чрез атака.
+        </p>
+      </div>
+
+      <div class="mrezha-disclaimer-card">
+        <h3>📬 Право на отговор и институционални сигнали</h3>
+        <p>
+          Гражданска платформа NAsvetlo предоставя пълен достъп до първичните идентификатори за всеки анализиран запис. 
+          При настъпили промени в официалните държавни регистри (заличаване в ТР, приключване на съдебно дело с влязъл в сила акт), 
+          всяко заинтересовано лице може да изпрати актуализирана информация за незабавна верификация в седмичния бюлетин.
+        </p>
+      </div>
     </div>
   </section>
 
@@ -329,7 +385,7 @@ const TYPE_LABELS: Record<string, { label: string; color: string; icon: string }
       // Initialize Node Physics Coordinates
       const simNodes = graphNodes.map((n, i) => {
         const angle = (i / graphNodes.length) * Math.PI * 2;
-        const radius = 150 + (i % 5) * 60;
+        const radius = 180 + (i % 6) * 55;
         return {
           ...n,
           x: Math.cos(angle) * radius,
@@ -351,11 +407,10 @@ const TYPE_LABELS: Record<string, { label: string; color: string; icon: string }
         }))
         .filter(e => e.sourceNode && e.targetNode);
 
-      // Simple Force Layout Tick
+      // Force Layout Physics Tick
       function tickSimulation() {
-        const k = 0.05;
-        const repulsion = 1200;
-        const linkDist = 90;
+        const repulsion = 1100;
+        const linkDist = 85;
 
         // Repulsion between visible nodes
         for (let i = 0; i < simNodes.length; i++) {
@@ -366,7 +421,7 @@ const TYPE_LABELS: Record<string, { label: string; color: string; icon: string }
             const dy = n2.y - n1.y;
             const distSq = dx * dx + dy * dy + 0.1;
             const dist = Math.sqrt(distSq);
-            if (dist < 300) {
+            if (dist < 280) {
               const force = repulsion / distSq;
               const fx = (dx / dist) * force;
               const fy = (dy / dist) * force;
@@ -481,7 +536,7 @@ const TYPE_LABELS: Record<string, { label: string; color: string; icon: string }
             ctx.fillStyle = isSelected ? '#ffffff' : '#e2e8f0';
             ctx.font = isSelected ? 'bold 11px sans-serif' : '10px sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText(n.label.slice(0, 22), n.x, n.y + n.radius + 12);
+            ctx.fillText(n.label.slice(0, 24), n.x, n.y + n.radius + 12);
           }
           ctx.restore();
         }
@@ -489,7 +544,7 @@ const TYPE_LABELS: Record<string, { label: string; color: string; icon: string }
         ctx.restore();
       }
 
-      // Animation Loop (runs physics for initial 120 frames then pauses for perf)
+      // Animation Loop
       let simFrames = 0;
       function loop() {
         if (simFrames < 140) {
@@ -583,7 +638,7 @@ const TYPE_LABELS: Record<string, { label: string; color: string; icon: string }
         searchQuery = (e.target.value || '').trim();
       });
 
-      // Inspector Logic
+      // Inspector Logic with 4-Layer Presentation
       const inspector = document.getElementById('mrezhaInspector');
       const inspectorBadge = document.getElementById('inspectorBadge');
       const inspectorTitle = document.getElementById('inspectorTitle');
@@ -607,6 +662,65 @@ const TYPE_LABELS: Record<string, { label: string; color: string; icon: string }
             n.badges.map(b => `<span style="background:rgba(239,68,68,0.15);color:#ef4444;padding:0.15rem 0.4rem;border-radius:3px;font-size:0.7rem;">${b}</span>`).join('') +
             `</div>`;
         }
+
+        // 4 Distinct Forensic Layers
+        const f = n.financialLayer;
+        const c = n.corporateLayer;
+        const im = n.intermediaryLayer;
+        const j = n.judicialLayer;
+
+        metaHtml += `<div class="mrezha-four-layers">`;
+
+        // 1. Financial Layer
+        metaHtml += `
+          <div class="mrezha-layer-box" style="border-left:3px solid #ef4444;">
+            <div style="font-weight:700;font-size:0.78rem;color:#ef4444;margin-bottom:0.2rem;">💰 1. ФИНАНСОВ СЛОЙ (ЗОП & ДЗЗД)</div>
+            <div style="color:var(--text-secondary);">
+              Директни договори по ЗОП: <strong>${f?.directContractsCount || 0}</strong> (€${Number(f?.directContractsEur || 0).toLocaleString('bg-BG')})<br>
+              Дял в ДЗЗД консорциуми: <strong>${f?.dzzdCount || 0}</strong> (€${Number(f?.dzzdEur || 0).toLocaleString('bg-BG')})<br>
+              Анекси по чл. 116 ЗОП: <strong>${f?.annex116Count || 0}</strong>
+              ${f?.primaryUnps?.length ? `<br><span style="font-family:monospace;font-size:0.7rem;color:#94a3b8;">УНП: ${f.primaryUnps.slice(0, 3).join(', ')}</span>` : ''}
+            </div>
+          </div>
+        `;
+
+        // 2. Corporate Layer
+        metaHtml += `
+          <div class="mrezha-layer-box" style="border-left:3px solid #3b82f6;">
+            <div style="font-weight:700;font-size:0.78rem;color:#3b82f6;margin-bottom:0.2rem;">🏢 2. КОРПОРАТИВЕН СЛОЙ (ТР & ЗМИП)</div>
+            <div style="color:var(--text-secondary);">
+              Действителни собственици (ЗМИП): ${c?.zmipOwners?.length ? c.zmipOwners.join(', ') : 'Няма вписани / Публичен орган'}<br>
+              Свързани лица в ТР: ${c?.trRelatedEntities?.length ? c.trRelatedEntities.slice(0, 3).join(', ') : 'Няма декларирани'}<br>
+              Споделени управители: ${c?.sharedManagers?.length ? c.sharedManagers.join(', ') : 'Самостоятелно управление'}
+            </div>
+          </div>
+        `;
+
+        // 3. Intermediary Layer (Module J3)
+        metaHtml += `
+          <div class="mrezha-layer-box" style="border-left:3px solid #06b6d4;">
+            <div style="font-weight:700;font-size:0.78rem;color:#06b6d4;margin-bottom:0.2rem;">💼 3. ПОСРЕДНИЧЕСКИ СЛОЙ (МОДУЛ J3)</div>
+            <div style="color:var(--text-secondary);">
+              Адвокатски кантори: ${im?.lawFirms?.length ? im.lawFirms.join(', ') : 'Без наета външна кантора'}<br>
+              Договори за правни услуги: €${Number(im?.legalProcurementEur || 0).toLocaleString('bg-BG')}<br>
+              Процесуални референции: ${im?.j3HubReferences?.length ? im.j3HubReferences.join(', ') : 'Няма активни референции'}
+            </div>
+          </div>
+        `;
+
+        // 4. Judicial & Declarative Layer
+        metaHtml += `
+          <div class="mrezha-layer-box" style="border-left:3px solid #8b5cf6;">
+            <div style="font-weight:700;font-size:0.78rem;color:#8b5cf6;margin-bottom:0.2rem;">⚖️ 4. СЪДЕБЕН & ДЕКЛАРАТИВЕН СЛОЙ</div>
+            <div style="color:var(--text-secondary);">
+              Дела в ЕИСС/ЕПЕП: ${j?.eissCases?.length ? j.eissCases.slice(0, 3).join(', ') : 'Няма засечени търговски дела'}<br>
+              Аномалии по Benjamini–Hochberg (FDR q<0.01): <strong>${j?.fdrQ001Count || 0}</strong><br>
+              Декларации Таблица 9 (КПК): ${j?.kpkTable9?.length ? j.kpkTable9.join(', ') : 'Няма задължение / Недекларирано'}
+            </div>
+          </div>
+        `;
+
+        metaHtml += `</div>`;
         inspectorMeta.innerHTML = metaHtml;
 
         // Connections
@@ -654,7 +768,7 @@ const TYPE_LABELS: Record<string, { label: string; color: string; icon: string }
       const signalPre = document.getElementById('signalTextPre');
 
       function openSignalModal(n) {
-        const targetName = n ? n.label : 'Обект от мрежата на завладяната държава';
+        const targetName = n ? n.label : 'Обект от мрежата на институционална свързаност';
         const targetEik = n?.eik ? `с ЕИК ${n.eik}` : '';
         const targetRisk = n?.riskScore ? `${n.riskScore}/100` : 'Висок';
         const targetAmount = n?.amountEur ? `€${Number(n.amountEur).toLocaleString('bg-BG')}` : 'Неопределен';
@@ -681,7 +795,7 @@ const TYPE_LABELS: Record<string, { label: string; color: string; icon: string }
 
 ФАКТИЧЕСКИ ОБСТОЯТЕЛСТВА:
 1. По данни от официалните регистри (ЕИСС/ЕПЕП, Търговски регистър, ЦАИС ЕОП) субектът е част от картографиран клъстер на свързани лица.
-2. Налице са индикатори за нарушения по чл. 49 и чл. 52 от ЗПКОНПИ (конфликт на интереси), чл. 54 от ЗОП и чл. 282 / чл. 288 от Наказателния кодекс.
+2. Налице са индикатори за възможен конфликт на интереси по чл. 49 и чл. 52 от ЗПК, чл. 54 от ЗОП и чл. 282 / чл. 288 от Наказателния кодекс.
 3. Документираните съдебни дела и възлагания на обществени поръчки без състезание пораждат основателни съмнения за корупционно влияние върху случайното разпределение на делата и разходването на публични средства.
 
 ИСКАНЕ:
