@@ -62,6 +62,12 @@ const jsonLd = JSON.stringify({
       operatingSystem: 'Web',
       inLanguage: 'bg-BG',
       isAccessibleForFree: true,
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'EUR',
+        availability: 'https://schema.org/InStock',
+      },
       license: 'https://opensource.org/licenses/MIT',
       description,
       dateModified: asOf,
@@ -72,6 +78,8 @@ const jsonLd = JSON.stringify({
       name: 'NAsvetlo — Отворен одитен масив за обществени поръчки и публични регистри в България (€53,22 млрд., 206 907 договора)',
       description: 'Кръстосан граждански одитен масив върху отворените данни (CC-BY 4.0) на МИДТ / СИГМА 2.0, АОП / ЦАИС ЕОП, Сметна палата и ЕРИК, КПК, АДФИ, КЗК, ВСС (ЕПЕП/ЕИСС), ВАС, ТРРЮЛНЦ, НОИ и НСИ.',
       url: canonicalUrl,
+      identifier: 'https://doi.org/10.5281/zenodo.24580253',
+      sameAs: 'https://zenodo.org/records/24580253',
       creator: {
         '@type': 'Person',
         name: 'Димитър Ставрев Продромов',
