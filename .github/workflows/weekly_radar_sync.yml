@@ -1,0 +1,63 @@
+name: Weekly Live Radar Sync (EISS Diff, Astro Build & IndexNow)
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  weekly-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Cache EISS judicial raw pages
+        uses: actions/cache@v4
+        with:
+          path: .cache_eiss_universe
+          key: eiss-cache-${{ github.run_id }}
+          restore-keys: |
+            eiss-cache-
+
+      - name: Attempt live 2026 EISS crawl refresh (non-blocking if court API geo-blocks CI)
+        continue-on-error: true
+        env:
+          EISS_CACHE_DIR: ${{ github.workspace }}/.cache_eiss_universe
+        run: python scripts/sync_nasvetlo_eiss_audit.py --years 2026 --crawl-only
+
+      - name: Compute weekly RED-flag diff & update bulletin/feeds
+        run: node scripts/weekly_radar_diff.mjs --update-baseline
+
+      - name: Install dependencies, build site & verify all tests
+        run: |
+          npm ci
+          npm run build
+          node --test tests/*.test.mjs
+
+      - name: Commit & push changes if docs updated
+        run: |
+          git config user.name "nasvetlo-radar-bot"
+          git config user.email "bot@nasvetlo.website"
+          git add docs/data/eiss_weekly_baseline.json docs/data/nasvetlo_weekly_bulletin.json docs/feed.xml docs/sitemap.xml
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(radar): weekly EISS radar bulletin update"
+            git push origin main
+            node scripts/weekly_radar_diff.mjs --ping-indexnow
+          else
+            echo "No changes to commit."
+          fi

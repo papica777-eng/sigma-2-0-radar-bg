@@ -9,3 +9,4 @@ dist/
 .cache_nasvetlo_50/
 
 rust-verifier/target/
+.cache_eiss_universe/

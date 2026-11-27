@@ -18,6 +18,7 @@ import argparse
 import hashlib
 import json
 import math
+import os
 import re
 import ssl
 import statistics
@@ -32,9 +33,15 @@ from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = REPO_ROOT / "docs" / "data"
-CACHE_DIR = Path(
+_DEFAULT_WIN_CACHE = Path(
     r"C:\Users\papic\Desktop\LEGAL_AND_CIVIL_DOSSIERS\SIGMA_2_0_CORRUPTION_AUDIT\raw_api\judicial_cache\eiss_universe"
 )
+if os.environ.get("EISS_CACHE_DIR"):
+    CACHE_DIR = Path(os.environ["EISS_CACHE_DIR"])
+elif _DEFAULT_WIN_CACHE.exists():
+    CACHE_DIR = _DEFAULT_WIN_CACHE
+else:
+    CACHE_DIR = REPO_ROOT / ".cache_eiss_universe"
 CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
 OUT_JSON = DATA_DIR / "nasvetlo_eiss_audit.json"
