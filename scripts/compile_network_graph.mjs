@@ -1547,6 +1547,228 @@ if (nodesMap.has('eik:106530686') && nodesMap.has('eik:106513772')) {
 }
 
 // ============================================================================
+// 6C. UN-GRAPHED HIGH-IMPACT SCHEMES:
+//     (1) Mini Maritsa Iztok (Black Box #5) + PIMK <-> Nivel Stroy DZZD Bridge
+//     (2) Top Hidden DZZD Consortium Officials (deep_links.hiddenConsortiumLeaderboard)
+//     (3) KMS Phoenix Chain (Insolvent -> New EAD 26 days -> Toplofikacia Sofia)
+// ============================================================================
+
+// 6C.1 "Мини Марица-изток" ЕАД (833017552, €477M, CLOSED_BLOCKED) & linked contracts
+const mmiId = addNode({
+  id: 'eik:833017552',
+  label: 'МИНИ МАРИЦА - ИЗТОК ЕАД',
+  type: 'authority',
+  cluster: 'ENERGY_SECTOR',
+  subLabel: '№ 5 Black Box (CLOSED_BLOCKED) · €477,0 млн. ЗОП',
+  eik: '833017552',
+  amountEur: 477020843.95,
+  riskScore: 88,
+  badges: ['№ 5 Black Box (Open Access 14/100)', 'Нула данни в data.egov.bg'],
+  financialLayer: { directContractsCount: 741, directContractsEur: 477020843.95 },
+  corporateLayer: { eik: '833017552', zmipOwners: ['Български енергиен холдинг ЕАД (държавно)'] },
+  details: { eik: '833017552', accessStatus: 'CLOSED_BLOCKED', openAccessScore: 14 },
+});
+
+const mmiContractors = [
+  {
+    eik: '123737210',
+    name: 'МЕДИНА МЕД ООД',
+    eur: 32917881.93,
+    contracts: 41,
+    risk: 86,
+    sub: 'Партийна рекламна агенция (ЕРИК) · €32,9 млн. ЗОП',
+    badges: ['Engine 4 · Партийна агенция × ЗОП', '€16,9M след избори'],
+    edgeLabel: 'Договори по ЗОП + Партийна агенция (€32,9 млн.)',
+    primaryId: 'ЦАИС ЕОП / ЕРИК · ЕИК 123737210',
+  },
+  {
+    eik: '123743940',
+    name: 'ЙОСИНИ ЕООД',
+    eur: 1756520.0,
+    contracts: 1,
+    risk: 80,
+    sub: 'Доставка на минерална вода · €1,76 млн. (1 договор)',
+    badges: ['КПК свързаност', '€1,76 млн. минерална вода'],
+    edgeLabel: 'Доставка на минерална вода (€1,76 млн.)',
+    primaryId: 'ЦАИС ЕОП УНП 00265-2026-0010',
+  },
+  {
+    eik: '206883018',
+    name: 'СЕЛПЛЕКС ЕООД',
+    eur: 147496.37,
+    contracts: 1,
+    risk: 82,
+    sub: 'Пряко възлагане · 1 оферта · Марка Caterpillar',
+    badges: ['Engine 7 · Шита спецификация (79/100)', 'Пряко без обявление'],
+    edgeLabel: 'Пряко възлагане · 1 оферта (Caterpillar)',
+    primaryId: 'ЦАИС ЕОП УНП 00265-2025-0079',
+  },
+];
+
+for (const mc of mmiContractors) {
+  const cid = addNode({
+    id: `eik:${mc.eik}`,
+    label: mc.name,
+    type: 'company',
+    cluster: 'ENERGY_SECTOR',
+    subLabel: mc.sub,
+    eik: mc.eik,
+    amountEur: mc.eur,
+    riskScore: mc.risk,
+    badges: mc.badges,
+    financialLayer: { directContractsCount: mc.contracts, directContractsEur: mc.eur },
+    corporateLayer: { eik: mc.eik },
+    details: { eik: mc.eik },
+  });
+  if (cid && mmiId) {
+    addEdge({
+      source: cid,
+      target: mmiId,
+      kind: 'won_zop',
+      label: mc.edgeLabel,
+      primaryId: mc.primaryId,
+      amountEur: mc.eur,
+      evidence: 'ЦАИС ЕОП · СИГМА 3.0',
+    });
+  }
+}
+
+// 6C.2 ПИМК ООД (115536179, €53.45M total) <-> НИВЕЛ СТРОЙ ЕООД (113580690) DZZD Bridge!
+const pimkId = addNode({
+  id: 'eik:115536179',
+  label: 'ПИМК ООД',
+  type: 'company',
+  cluster: 'ROAD_SECTOR',
+  subLabel: 'с. Марково · €22,3 млн. директни + €31,1 млн. ДЗЗД',
+  eik: '115536179',
+  amountEur: 53450000,
+  riskScore: 87,
+  badges: ['€53,45 млн. общо (ЗОП + ДЗЗД)', '4 съвместни ДЗЗД с Нивел Строй'],
+  financialLayer: { directContractsCount: 1, directContractsEur: 22321779.25, dzzdCount: 9, dzzdEur: 31128000 },
+  corporateLayer: { eik: '115536179', trRelatedEntities: ['НИВЕЛ СТРОЙ ЕООД', 'МАРИЦА ИНФРА ЕООД', 'ПИМК Кариери ЕООД'] },
+  details: { eik: '115536179', seatCity: 'с. Марково' },
+});
+
+const pimkNivelDzzdId = addNode({
+  id: 'company:DZZD_PIMK_NIVEL_CLUSTER',
+  label: 'ДЗЗД ПИМК – НИВЕЛ (4 консорциума)',
+  type: 'company',
+  cluster: 'ROAD_SECTOR',
+  subLabel: 'Рогош 24, Пазарджик 24, ПИМК Нивел 2023, Марица 24 · €23,55 млн.',
+  amountEur: 23540000,
+  riskScore: 86,
+  badges: ['Съвместни ДЗЗД (4 договора)', 'Мост ПИМК ↔ Нивел Строй'],
+  financialLayer: { dzzdCount: 4, dzzdEur: 23540000, directContractsEur: 23540000 },
+  corporateLayer: { trRelatedEntities: ['ПИМК ООД', 'НИВЕЛ СТРОЙ ЕООД'] },
+});
+
+if (pimkId && pimkNivelDzzdId) {
+  addEdge({
+    source: pimkId,
+    target: pimkNivelDzzdId,
+    kind: 'consortium_member',
+    label: 'Партньор в 4 ДЗЗД (€23,55 млн.)',
+    primaryId: 'ЦАИС ЕОП · ЕИК 115536179',
+    amountEur: 23540000,
+    evidence: 'ЦАИС ЕОП · Рогош 24 / Пазарджик 24 / ПИМК Нивел 2023 / Марица 24',
+  });
+  if (nodesMap.has('eik:113580690')) {
+    addEdge({
+      source: 'eik:113580690',
+      target: pimkNivelDzzdId,
+      kind: 'consortium_member',
+      label: 'Партньор в 4 ДЗЗД с ПИМК (€23,55 млн.)',
+      primaryId: 'ЦАИС ЕОП · ЕИК 113580690',
+      amountEur: 23540000,
+      evidence: 'ЦАИС ЕОП · Нивел Строй ↔ ПИМК',
+    });
+  }
+}
+
+// 6C.3 Phoenix Chain: Старо КМС (121034658, В несъстоятелност) -> Ново КМС ЕАД (207387391, 26 дни -> Топлофикация София!)
+if (nodesMap.has('eik:207387391')) {
+  const oldKmsId = addNode({
+    id: 'eik:121034658',
+    label: 'КМС (В несъстоятелност)',
+    type: 'company',
+    cluster: 'ENERGY_SECTOR',
+    subLabel: 'ТР: В несъстоятелност (deedStatus=4) · Феникс-верига към КМС ЕАД',
+    eik: '121034658',
+    amountEur: 12000000,
+    riskScore: 93,
+    badges: ['ТР: В несъстоятелност', 'Феникс-верига (Module 5)'],
+    corporateLayer: { eik: '121034658', trRelatedEntities: ['КМС ЕАД (207387391)'] },
+    details: { eik: '121034658', statusLabel: 'В несъстоятелност' },
+  });
+  if (oldKmsId) {
+    addEdge({
+      source: oldKmsId,
+      target: 'eik:207387391',
+      kind: 'holding_control',
+      label: 'Феникс-преход: Несъстоятелност → Ново КМС ЕАД (26 дни до ЗОП)',
+      primaryId: 'ТРРЮЛНЦ Module 5 · 121034658 → 207387391',
+      amountEur: 52346733.08,
+      evidence: 'ТРРЮЛНЦ / СИГМА 3.0 Module 5',
+    });
+  }
+}
+
+// 6C.4 Top Hidden DZZD Consortium Officials (deep_links.hiddenConsortiumLeaderboard — €1.65B+ un-graphed!)
+for (const hc of (deepLinksRaw.hiddenConsortiumLeaderboard || []).slice(0, 10)) {
+  const offName = cleanPersonName(hc.officialName || '');
+  if (!offName || EXCLUDED_NAMES_RE.test(offName)) continue;
+  const hiddenEur = Number(hc.hiddenConsortiumEur || hc.consortiumTotalEur || 0);
+  const directEur = Number(hc.directTotalEur || 0);
+  if (hiddenEur < 2e7) continue;
+
+  const offId = addNode({
+    id: canonicalEntityId('official', offName, ''),
+    label: offName,
+    type: 'official',
+    cluster: 'MUNICIPAL_AFFILIATION',
+    subLabel: `${cleanText(hc.institution || 'Публично лице')} · €${(hiddenEur / 1e6).toFixed(1)} млн. скрити ДЗЗД`,
+    amountEur: Math.max(hiddenEur, directEur),
+    riskScore: hiddenEur >= 1e8 ? 92 : 85,
+    badges: ['Скрити ДЗЗД (КПК × ЦАИС)', `ДЗЗД €${(hiddenEur / 1e6).toFixed(1)} млн.`],
+    financialLayer: { dzzdCount: Number(hc.consortiumCount || 2), dzzdEur: hiddenEur, directContractsEur: directEur },
+    judicialLayer: { kpkTable9: [`КПК / СИГМА 2.0 · ${cleanText(hc.institution || '')}`] },
+    details: { institution: hc.institution, hiddenConsortiumEur: hiddenEur },
+  });
+
+  for (const cObj of (hc.companies || []).slice(0, 2)) {
+    const cName = cleanText(typeof cObj === 'string' ? cObj : cObj.name || '');
+    const cEik = resolveEik(cName, typeof cObj === 'string' ? '' : cObj.eik || '');
+    if (!cName || !cEik) continue;
+    const cCluster = inferSectorCluster(cName, cEik);
+    const compId = addNode({
+      id: canonicalEntityId('company', cName, cEik),
+      label: cName,
+      type: 'company',
+      cluster: cCluster,
+      subLabel: `Свързано дружество (Скрити ДЗЗД) · ЕИК ${cEik}`,
+      eik: cEik,
+      amountEur: Math.max(directEur, companyEikToInfo.get(cEik)?.wonEur || 0),
+      riskScore: hiddenEur >= 1e8 ? 88 : 80,
+      badges: ['Скрити ДЗЗД консорциуми', 'Свързано с публично лице (КПК)'],
+      financialLayer: { dzzdEur: hiddenEur },
+      corporateLayer: { eik: cEik, trRelatedEntities: [offName] },
+      details: { eik: cEik },
+    });
+    if (offId && compId) {
+      addEdge({
+        source: offId,
+        target: compId,
+        kind: 'conflict_of_interest',
+        label: `Декларирана връзка + €${(hiddenEur / 1e6).toFixed(1)} млн. в ДЗЗД`,
+        primaryId: `КПК / ЦАИС ДЗЗД · ЕИК ${cEik}`,
+        amountEur: hiddenEur,
+        evidence: 'КПК × ЦАИС ЕОП (Скрити ДЗЗД)',
+      });
+    }
+  }
+}
+
+// ============================================================================
 // 7. GRAPH-THEORETIC ANALYTICS (Brandes Betweenness, PageRank, Components)
 // ============================================================================
 const validNodesSet = new Set(nodesMap.keys());
