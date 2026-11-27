@@ -1,0 +1,590 @@
+---
+import eissAudit from '../../docs/data/nasvetlo_eiss_audit.json';
+import judicial6 from '../../docs/data/sigma3_judicial_6.json';
+import macroData from '../../docs/data/sigma3_macro.json';
+import telkRadar from '../../docs/data/nasvetlo_telk_radar.json';
+
+const EXCLUDED_RE = /росица.*велкова|велкова-желева|поля.*занева|занева-димитрова/i;
+const FORBIDDEN_RE = /20\.Д-72|94-00-322|Вх\.\s*№/gi;
+
+function sanitize(s: unknown): string {
+  return String(s ?? '')
+    .replace(FORBIDDEN_RE, '[redacted]')
+    .replace(/\b\d{10}\b/g, '[redacted]');
+}
+
+function isCleanEntity(name: unknown): boolean {
+  return !EXCLUDED_RE.test(String(name ?? ''));
+}
+
+const u = (eissAudit as any)?.universe || {};
+const m6 = (judicial6 as any)?.module6_criminalEppo || {};
+const macroTotals = (macroData as any)?.meta?.totals || {};
+const macroSingle = (macroData as any)?.meta?.singleOffer || {};
+const telkNat = (telkRadar as any)?.national || {};
+
+const ZENODO_DOI = '10.5281/zenodo.24580253';
+const ZENODO_URL = 'https://zenodo.org/records/24580253';
+const SHA256_SNAPSHOT =
+  u.datasetSha256 || 'a30faab18bbfa551a3fc8a2389c2f8661115f9b85137e35b5eb0ad41b7a912ca';
+
+const fmtIntEn = (n: number) => Math.round(Number(n || 0)).toLocaleString('en-US');
+const fmtEurB = (n: number) => `€${(Number(n || 0) / 1e9).toFixed(2)}B`;
+const fmtEurM = (n: number) => `€${Number(n || 0).toFixed(2)}M`;
+const fmtQ = (q: unknown) => {
+  const num = Number(q || 0);
+  if (!isFinite(num)) return '—';
+  return num < 0.0001 ? num.toExponential(2) : num.toFixed(4);
+};
+
+const totalCases = Number(u.casesUnique || 2234509);
+const casesWithJudge = Number(u.casesWithJudge || 2232269);
+const courtsCount = Number(u.courts || 180);
+const judgesCount = Number(u.judges || 3244);
+const testsRun = Number(u.testsRun || 62166);
+const redTotal = Number(u.redFlagsTotal || 869);
+const amberTotal = Number(u.amberFlagsTotal || 1071);
+const unexplainedCount = Number(u.unexplainedRedTotal || 154);
+
+const priorityRedFlags = ((eissAudit as any)?.redFlags || [])
+  .filter(
+    (r: any) =>
+      r.explanationTier === 'UNEXPLAINED_PRIORITY' &&
+      isCleanEntity(r.judge) &&
+      isCleanEntity(r.party)
+  )
+  .sort((a: any, b: any) => Number(a.q || 1) - Number(b.q || 1) || Number(b.ratio || 0) - Number(a.ratio || 0));
+
+const multiFlagHubs = ((eissAudit as any)?.multiFlagJudgeHubs || []).filter((h: any) =>
+  isCleanEntity(h.judge)
+);
+const lawyerFlags = ((eissAudit as any)?.lawyerJudgeFlags || []).filter(
+  (l: any) => isCleanEntity(l.judge) && isCleanEntity(l.representative)
+);
+const coiBridge = ((eissAudit as any)?.conflictBridge || []).filter((c: any) =>
+  isCleanEntity(c.party)
+);
+const multiYearAll = ((eissAudit as any)?.multiYearPersistent || []).filter(
+  (m: any) => isCleanEntity(m.judge) && isCleanEntity(m.party)
+);
+const multiYearUnexplained = multiYearAll.filter(
+  (m: any) =>
+    m.explanationTier === 'UNEXPLAINED_PRIORITY' || m.tier === 'UNEXPLAINED_PRIORITY'
+);
+
+const TIER_MAP: Record<string, string> = {
+  UNEXPLAINED_PRIORITY: 'Unexplained · High Priority (Supreme Judicial Inspectorate)',
+  STATUTORY_ZSRS_DUTY: 'Statutory · Special Intelligence / Telecom / Duty Roster',
+  STATUTORY_PUBLIC_SPECIALIZED: 'Public Body Specialization (Tax / Asylum / Social)',
+  MASS_CREDITOR_SUMMARY: 'Mass Creditor Summary Orders (Art. 410/417 CPC)',
+  BATCH_FILING_ARTIFACT: 'Single-Day Batch Filing Clustering',
+};
+
+const jsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Dataset',
+      name: 'NaSvetlo.website — Bulgaria EISS/EPEP 4-Year Judicial Allocation & Public Procurement Audit (2023–2026)',
+      description: `Independent GDPR-compliant statistical audit of ${fmtIntEn(totalCases)} Bulgarian court case allocations across ${courtsCount} courts and ${judgesCount} judges (2023–2026), identifying ${redTotal} Benjamini-Hochberg FDR RED anomalies (${unexplainedCount} unexplained priority cases) cross-referenced with ${fmtIntEn(macroTotals.contracts || 206907)} CAIS-EOP public contracts (${fmtEurB(macroTotals.valueEur || 53224934606.37)}) and EU-funded EPPO risk cohorts.`,
+      url: 'https://nasvetlo.website/en/',
+      sameAs: ZENODO_URL,
+      identifier: `https://doi.org/${ZENODO_DOI}`,
+      license: 'https://creativecommons.org/licenses/by/4.0/',
+      inLanguage: 'en',
+      temporalCoverage: '2023-01-01/2026-11-26',
+      spatialCoverage: {
+        '@type': 'Country',
+        name: 'Bulgaria',
+      },
+      creator: {
+        '@type': 'Organization',
+        name: 'NaSvetlo Independent Civic Audit Platform',
+        url: 'https://nasvetlo.website/',
+      },
+      distribution: [
+        {
+          '@type': 'DataDownload',
+          encodingFormat: 'application/json',
+          contentUrl: 'https://nasvetlo.website/data/nasvetlo_eiss_audit.json',
+        },
+        {
+          '@type': 'DataDownload',
+          encodingFormat: 'application/json',
+          contentUrl: 'https://nasvetlo.website/data/sigma3_judicial_6.json',
+        },
+        {
+          '@type': 'DataDownload',
+          encodingFormat: 'application/json',
+          contentUrl: 'https://nasvetlo.website/data/sigma3_macro.json',
+        },
+      ],
+    },
+  ],
+});
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NaSvetlo · Bulgaria 4-Year Judicial Allocation &amp; EU Procurement Audit (2023–2026) — Executive Brief</title>
+    <meta
+      name="description"
+      content={`Statistical audit of ${fmtIntEn(totalCases)} Bulgarian court cases (2023–2026) across ${courtsCount} courts and ${judgesCount} judges: ${redTotal} BH-FDR anomalies (${unexplainedCount} unexplained), cross-linked with CAIS-EOP public procurement (${fmtEurB(macroTotals.valueEur || 53224934606.37)}) and EPPO EU-fund risks.`}
+    />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://nasvetlo.website/en/" />
+    <link rel="alternate" hreflang="en" href="https://nasvetlo.website/en/" />
+    <link rel="alternate" hreflang="bg" href="https://nasvetlo.website/ot-mrak-kam-svetlina.html" />
+    <link rel="alternate" hreflang="x-default" href="https://nasvetlo.website/ot-mrak-kam-svetlina.html" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="NaSvetlo — Bulgaria Judicial Allocation &amp; EU Procurement Audit (2023–2026)" />
+    <meta
+      property="og:description"
+      content={`${fmtIntEn(totalCases)} court cases · ${unexplainedCount} unexplained FDR priority anomalies · ${fmtIntEn(m6.eppoHighRiskCount || 302)} EPPO-relevant high-risk EU contracts (${fmtEurB(m6.eppoHighRiskEur || 1583261952.55)}). CERN Zenodo DOI: ${ZENODO_DOI}.`}
+    />
+    <meta property="og:url" content="https://nasvetlo.website/en/" />
+    <link rel="stylesheet" href="/sigma3/styles.css?v=20261127a" />
+    <script type="application/ld+json" set:html={jsonLd}></script>
+    <style>
+      .en-topbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 20px;
+        border-bottom: 1px solid var(--line, #e2e8f0);
+        background: var(--surface, #ffffff);
+      }
+      .en-brand {
+        font-weight: 800;
+        font-size: 1.05rem;
+        letter-spacing: -0.01em;
+        color: var(--ink, #0f172a);
+        text-decoration: none;
+      }
+      .en-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+      .en-doi-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: #ecfdf5;
+        border: 1px solid #10b981;
+        color: #065f46;
+        font-size: 0.76rem;
+        font-weight: 700;
+        text-decoration: none;
+      }
+      [data-theme="dark"] .en-doi-pill {
+        background: rgba(16, 185, 129, 0.14);
+        color: #6ee7b7;
+        border-color: rgba(16, 185, 129, 0.45);
+      }
+      .en-wrap {
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 20px 18px 48px;
+      }
+      .en-callout-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 12px;
+        margin: 16px 0;
+      }
+      .en-callout {
+        padding: 14px 16px;
+        border-radius: 12px;
+        border: 1px solid var(--line, #e2e8f0);
+        background: var(--surface, #ffffff);
+      }
+      .en-callout h3 {
+        margin: 0 0 6px;
+        font-size: 0.9rem;
+      }
+      .en-callout p {
+        margin: 0;
+        font-size: 0.82rem;
+        color: var(--ink-muted, #475569);
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="en-topbar">
+      <a class="en-brand" href="/">NAsvetlo.website · Open Institutional Audit (Bulgaria)</a>
+      <nav class="en-nav" aria-label="Primary English Brief Navigation">
+        <a class="subbar-link" href="/ot-mrak-kam-svetlina.html">BG Interactive Graph &amp; 869 Flags &rarr;</a>
+        <a class="subbar-link" href="/">Main Procurement Portal</a>
+        <a class="en-doi-pill" href={ZENODO_URL} target="_blank" rel="noopener noreferrer">
+          CERN Zenodo DOI: {ZENODO_DOI} ↗
+        </a>
+        <button type="button" class="subbar-link-btn" id="enThemeToggle">Dark Mode</button>
+      </nav>
+    </header>
+
+    <main class="en-wrap">
+      <section class="svetlina-vault is-unlocked" style="margin-bottom:18px;">
+        <div class="svetlina-kicker">
+          <span class="svetlina-pulse" aria-hidden="true"></span>
+          <span>EXECUTIVE INSTITUTIONAL BRIEF · EPPO · EC DG JUST · GRECO · OCCRP</span>
+        </div>
+
+        <h1 class="svetlina-title">
+          Statistical Audit of Judicial Case Allocation (EISS) &amp; EU-Funded Public Procurement in Bulgaria (2023–2026)
+        </h1>
+
+        <p class="svetlina-sub">
+          Automated cross-registry verification over <strong>{fmtIntEn(totalCases)} unique court cases</strong> from the official Unified Judicial Portal (<code>ecase.justice.bg</code>, {courtsCount} courts, {judgesCount} judges), joined by company registration ID (EIK) against <strong>{fmtIntEn(macroTotals.contracts || 206907)} public procurement contracts ({fmtEurB(macroTotals.valueEur || 53224934606.37)})</strong> and official asset declarations.
+        </p>
+
+        <div class="svetlina-published-banner">
+          <span class="published-badge">● IMMUTABLE SCIENTIFIC ARCHIVE</span>
+          <span class="published-desc">
+            CC-BY 4.0 dataset permanently deposited at CERN Zenodo:
+            <a href={ZENODO_URL} target="_blank" rel="noopener noreferrer" style="font-weight:700;text-decoration:underline;">
+              https://doi.org/{ZENODO_DOI}
+            </a>
+          </span>
+        </div>
+
+        <div class="svetlina-meta-pills">
+          <span>EISS / EPEP: {fmtIntEn(totalCases)} cases (2023–2026)</span>
+          <span>Judge Attribution Rate: {((casesWithJudge / totalCases) * 100).toFixed(2)}% ({fmtIntEn(casesWithJudge)})</span>
+          <span>Exact One-Sided Binomial Tests: {fmtIntEn(testsRun)} (BH FDR q &lt; 0.01)</span>
+          <span>GDPR Strict Filter: 0 personal EGN IDs · Legal entities &amp; public bodies only</span>
+        </div>
+      </section>
+
+      <!-- CORE METRICS -->
+      <section class="svetlina-kpi-grid" aria-label="Core Audit Metrics">
+        <div class="svetlina-kpi-card">
+          <div class="kpi-num">{fmtIntEn(redTotal)}</div>
+          <div class="kpi-lbl">Total BH-FDR RED Anomalies</div>
+          <div class="kpi-sub">q &lt; 0.01, k ≥ 5, multiplier ≥ 3.0×</div>
+        </div>
+        <div class="svetlina-kpi-card" style="border-color:var(--crimson);">
+          <div class="kpi-num" style="color:var(--crimson);">{fmtIntEn(unexplainedCount)}</div>
+          <div class="kpi-lbl">Unexplained Priority Flags</div>
+          <div class="kpi-sub">After excluding duty/statutory/batch rules</div>
+        </div>
+        <div class="svetlina-kpi-card">
+          <div class="kpi-num">{fmtIntEn(multiYearUnexplained.length)} / {fmtIntEn(multiYearAll.length)}</div>
+          <div class="kpi-lbl">Multi-Year Recurrence (Unexpl./All)</div>
+          <div class="kpi-sub">Repeat RED pairs across 2–4 consecutive years</div>
+        </div>
+        <div class="svetlina-kpi-card">
+          <div class="kpi-num">{fmtIntEn(m6.eppoHighRiskCount || 302)}</div>
+          <div class="kpi-lbl">EPPO-Relevant EU Fund Contracts</div>
+          <div class="kpi-sub">{fmtEurB(m6.eppoHighRiskEur || 1583261952.55)} high-risk cohort</div>
+        </div>
+        <div class="svetlina-kpi-card">
+          <div class="kpi-num">{fmtIntEn(m6.zmipBeneficialOwnerGaps || 30)}</div>
+          <div class="kpi-lbl">AML / ZMIP Beneficial Owner Gaps</div>
+          <div class="kpi-sub">€2.99B total in top non-disclosed contractors</div>
+        </div>
+        <div class="svetlina-kpi-card">
+          <div class="kpi-num">{fmtIntEn(multiFlagHubs.length)} / {fmtIntEn(lawyerFlags.length)}</div>
+          <div class="kpi-lbl">Judge Hubs &amp; Counsel Clusters</div>
+          <div class="kpi-sub">Judges ≥2 unexplained flags · Counsel → Judge</div>
+        </div>
+      </section>
+
+      <!-- EU & EPPO CROSS-REGISTRY RISK OVERVIEW -->
+      <section class="en-callout-grid" aria-label="Procurement and Systemic Findings">
+        <article class="en-callout">
+          <h3>1. Tier 1–5 Causal Filtering (Why 154 Stand Out)</h3>
+          <p>
+            Raw EISS randomness tests identify <strong>{fmtIntEn(redTotal)} RED</strong> pairs ({fmtIntEn(amberTotal)} AMBER). Automated statutory triage rules out
+            <strong>{fmtIntEn(u?.tierCounts?.STATUTORY_ZSRS_DUTY || 301)}</strong> special-intelligence / duty-roster allocations,
+            <strong>{fmtIntEn(u?.tierCounts?.STATUTORY_PUBLIC_SPECIALIZED || 220)}</strong> public agency specialization cohorts (Tax / Asylum / Social),
+            <strong>{fmtIntEn(u?.tierCounts?.MASS_CREDITOR_SUMMARY || 132)}</strong> Art. 410/417 summary payment orders, and
+            <strong>{fmtIntEn(u?.tierCounts?.BATCH_FILING_ARTIFACT || 62)}</strong> single-day batch filings — isolating <strong>{unexplainedCount} unexplained priority pairs</strong> across commercial and administrative dockets.
+          </p>
+        </article>
+        <article class="en-callout">
+          <h3>2. CAIS-EOP Procurement &amp; EU Funds (EPPO Mandate)</h3>
+          <p>
+            Across <strong>{fmtIntEn(macroTotals.contracts || 206907)}</strong> national procurement awards ({fmtEurB(macroTotals.valueEur || 53224934606.37)}),
+            <strong>{Number(macroSingle.share || 45.4).toFixed(1)}%</strong> ({fmtIntEn(macroSingle.contracts || 83993)}) had only a single bidder. Within EU-funded tenders specifically (<strong>{fmtIntEn(m6.euFundedContractsTotal || 28339)}</strong> contracts / {fmtEurB(m6.euFundedTotalEur || 10736531653.57)}), <strong>{fmtIntEn(m6.euSingleOfferCount || 9397)}</strong> single-bidder awards total <strong>{fmtEurB(m6.euSingleOfferEur || 1790393301.77)}</strong>, with <strong>{fmtIntEn(m6.eppoHighRiskCount || 302)} high-risk EPPO-flagged contracts ({fmtEurB(m6.eppoHighRiskEur || 1583261952.55)})</strong>.
+          </p>
+        </article>
+        <article class="en-callout">
+          <h3>3. Conflict Bridge &amp; Fiscal Disability Outflow</h3>
+          <p>
+            Cross-matching EIK company numbers links <strong>{fmtIntEn(coiBridge.length)} RED-flagged court litigants</strong> with public procurement awards and <strong>{fmtIntEn(u.linkedOfficialsTotal || 50)} declared public officials</strong>. In parallel, aggregated National Social Security (NOI) and NSI public statistics indicate <strong>{fmtIntEn(telkNat.invPensioners2025 || 409145)}</strong> disability pensioners in 2025 (+10.77% over 2 years; {fmtEurB(telkNat.invSpendEur2025 || 1981315144.47)} annual outlay; <strong>{fmtEurM((telkNat.excessFiscalAnomalyAreasEur || 133794087.86) / 1e6)}</strong> excess regional variance).
+          </p>
+        </article>
+      </section>
+
+      <!-- TABLE 1: TOP UNEXPLAINED PRIORITY RED FLAGS -->
+      <section class="svetlina-section" aria-label="Unexplained Priority Red Flags">
+        <div class="svetlina-section-head">
+          <h2>1. Priority Unexplained Judicial Allocation Anomalies (Top 50 of {priorityRedFlags.length} · BH FDR q &lt; 0.01)</h2>
+          <span class="mono" style="font-size:0.74rem;color:var(--crimson);font-weight:700;">
+            Every link opens the official live court docket at ecase.justice.bg
+          </span>
+        </div>
+        <div class="table-wrap svetlina-compact-scroll" style="max-height:460px;">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Court &amp; Case Type (Year)</th>
+                <th>Litigant Entity (EIK)</th>
+                <th>Assigned Judge</th>
+                <th class="num">k / n</th>
+                <th class="num">Multiplier</th>
+                <th class="num">Time Span</th>
+                <th class="num">FDR q</th>
+                <th>CAIS-EOP</th>
+                <th>EPEP Record</th>
+              </tr>
+            </thead>
+            <tbody>
+              {priorityRedFlags.slice(0, 50).map((rf: any, idx: number) => {
+                const sample = rf.sampleCases && rf.sampleCases[0] ? rf.sampleCases[0] : null;
+                const caseUrl = sample ? sample.caseUrl : '';
+                const caseRef = sample ? `${sample.regNumber}/${sample.regYear}` : 'Portal';
+                return (
+                  <tr>
+                    <td class="mono muted">{idx + 1}</td>
+                    <td>
+                      <strong>{sanitize(rf.courtName)}</strong>
+                      <div class="muted" style="font-size:0.71rem;">{sanitize(rf.caseKind)} ({rf.year})</div>
+                    </td>
+                    <td>
+                      <strong>{sanitize(rf.party)}</strong>
+                      {rf.partyEik ? <div class="mono muted" style="font-size:0.7rem;">EIK {sanitize(rf.partyEik)}</div> : ''}
+                    </td>
+                    <td><strong>{sanitize(rf.judge)}</strong></td>
+                    <td class="mono num"><strong>{rf.k} / {rf.nParty}</strong></td>
+                    <td class="mono num" style="color:var(--crimson);font-weight:700;">&times;{Number(rf.ratio || 0).toFixed(2)}</td>
+                    <td class="mono num" style="font-size:0.71rem;">{rf.distinctDays}d / {rf.distinctMonths}m</td>
+                    <td class="mono num">{fmtQ(rf.q)}</td>
+                    <td class="mono" style="color:var(--ochre);font-weight:700;">
+                      {Number(rf.procurementEurM || 0) > 0 ? fmtEurM(rf.procurementEurM) : '—'}
+                    </td>
+                    <td>
+                      {caseUrl ? (
+                        <a class="svet-inspect-pill" href={caseUrl} target="_blank" rel="noopener noreferrer">{caseRef} ↗</a>
+                      ) : (
+                        <span class="muted">—</span>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TABLE 2: MULTI-FLAG JUDICIAL HUBS & LAWYER CLUSTERS -->
+      <section class="svetlina-section" aria-label="Judicial Hubs and Counsel Clusters">
+        <div class="svetlina-section-head">
+          <h2>2. Level 3 Structural Nodes: Multi-Flag Judicial Hubs ({multiFlagHubs.length}) &amp; Counsel &rarr; Judge Clusters ({lawyerFlags.length})</h2>
+        </div>
+        <div class="table-wrap svetlina-compact-scroll" style="max-height:360px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Node Type</th>
+                <th>Court</th>
+                <th>Judge / Counsel</th>
+                <th class="num">Flags / Cases</th>
+                <th class="num">Peak Ratio</th>
+                <th class="num">Linked EOP</th>
+                <th>Concentrated Parties / Pattern</th>
+              </tr>
+            </thead>
+            <tbody>
+              {lawyerFlags.map((lf: any) => (
+                <tr>
+                  <td><span class="svetlina-badge is-plum">Counsel &rarr; Judge</span></td>
+                  <td>
+                    <strong>{sanitize(lf.courtName)}</strong>
+                    <div class="muted" style="font-size:0.7rem;">{sanitize(lf.caseKind)} ({lf.year})</div>
+                  </td>
+                  <td>
+                    <strong>{sanitize(lf.representative)}</strong>
+                    <div class="muted" style="font-size:0.72rem;">&rarr; {sanitize(lf.judge)}</div>
+                  </td>
+                  <td class="mono num"><strong>{lf.k} / {lf.nRep}</strong></td>
+                  <td class="mono num" style="color:var(--crimson);font-weight:700;">&times;{Number(lf.ratio || 0).toFixed(2)}</td>
+                  <td class="mono num">q={fmtQ(lf.q)}</td>
+                  <td style="font-size:0.73rem;">{(lf.topClients || []).slice(0, 3).map(sanitize).join(' · ')}</td>
+                </tr>
+              ))}
+              {multiFlagHubs.slice(0, 20).map((h: any) => (
+                <tr>
+                  <td><span class="svetlina-badge is-crimson">Judge Hub ({h.unexplainedCount} unexpl.)</span></td>
+                  <td><strong>{sanitize(h.courtName)}</strong></td>
+                  <td><strong>{sanitize(h.judge)}</strong></td>
+                  <td class="mono num"><strong>{h.totalFlaggedCases} cases</strong></td>
+                  <td class="mono num" style="color:var(--crimson);font-weight:700;">&times;{Number(h.maxRatio || 0).toFixed(2)}</td>
+                  <td class="mono num" style="color:var(--ochre);font-weight:700;">
+                    {Number(h.combinedProcurementEurM || 0) > 0 ? fmtEurM(h.combinedProcurementEurM) : '—'}
+                  </td>
+                  <td style="font-size:0.73rem;">
+                    {(h.parties || []).slice(0, 3).map((p: any) => `${sanitize(p.party)} (×${Number(p.ratio || 0).toFixed(1)})`).join(' · ')}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TABLE 3: CONFLICT-OF-INTEREST BRIDGE -->
+      <section class="svetlina-section" aria-label="Conflict of Interest Bridge">
+        <div class="svetlina-section-head">
+          <h2>3. Level 4 Conflict Bridge: EISS Red-Flag Litigants Linked to Public Procurement &amp; Officials ({coiBridge.length})</h2>
+        </div>
+        <div class="table-wrap svetlina-compact-scroll" style="max-height:360px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Entity (EIK) &amp; Courts</th>
+                <th class="num">Unexpl. / Total RED</th>
+                <th class="num">Peak Ratio</th>
+                <th class="num">Procurement (Contracts)</th>
+                <th>Flagged Judges</th>
+                <th>Linked Declared Officials (Audit Office)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {coiBridge.map((cb: any) => (
+                <tr>
+                  <td>
+                    <strong>{sanitize(cb.party)}</strong>
+                    <div class="mono muted" style="font-size:0.7rem;">EIK {sanitize(cb.eik)} · {(cb.courts || []).slice(0, 2).map(sanitize).join(', ')}</div>
+                  </td>
+                  <td class="mono num"><strong style="color:var(--crimson);">{cb.unexplainedRedCount}</strong> / {cb.redFlagsCount}</td>
+                  <td class="mono num" style="color:var(--crimson);font-weight:700;">&times;{Number(cb.maxRatio || 0).toFixed(2)}</td>
+                  <td class="mono num" style="color:var(--ochre);font-weight:700;">
+                    {Number(cb.procurementEurM || 0) > 0 ? `${fmtEurM(cb.procurementEurM)} (${cb.procurementContracts})` : '—'}
+                  </td>
+                  <td style="font-size:0.73rem;">{(cb.judges || []).slice(0, 3).map(sanitize).join(', ')}</td>
+                  <td style="font-size:0.73rem;">
+                    {cb.officials && cb.officials.length > 0
+                      ? cb.officials.slice(0, 3).map((o: any) => sanitize(o.name)).join(' · ')
+                      : 'CAIS-EOP × EISS corporate match'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TABLE 4: LEVEL 5 MULTI-YEAR PERSISTENCE -->
+      <section class="svetlina-section" aria-label="Multi-Year Persistence">
+        <div class="svetlina-section-head">
+          <h2>4. Level 5 Multi-Year Persistent Anomalies ({multiYearUnexplained.length} Unexplained of {multiYearAll.length} Pairs Across 2023–2026)</h2>
+        </div>
+        <div class="table-wrap svetlina-compact-scroll" style="max-height:360px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Years</th>
+                <th>Court &amp; Case Type</th>
+                <th>Litigant Entity</th>
+                <th>Assigned Judge</th>
+                <th class="num">k / n (Days)</th>
+                <th class="num">Peak Ratio</th>
+                <th class="num">Procurement</th>
+                <th>EPEP</th>
+              </tr>
+            </thead>
+            <tbody>
+              {multiYearUnexplained.map((my: any) => (
+                <tr>
+                  <td class="mono"><strong>{(my.years || []).join(', ')}</strong></td>
+                  <td>
+                    <strong>{sanitize(my.courtName)}</strong>
+                    <div class="muted" style="font-size:0.71rem;">{sanitize(my.caseKind)}</div>
+                  </td>
+                  <td>
+                    <strong>{sanitize(my.party)}</strong>
+                    {(my.partyEik || my.eik) ? <div class="mono muted" style="font-size:0.7rem;">EIK {sanitize(my.partyEik || my.eik)}</div> : ''}
+                  </td>
+                  <td><strong>{sanitize(my.judge)}</strong></td>
+                  <td class="mono num"><strong>{my.totalK} / {my.totalN}</strong> ({my.totalDistinctDays}d)</td>
+                  <td class="mono num" style="color:var(--crimson);font-weight:700;">&times;{Number(my.maxRatio || 0).toFixed(2)}</td>
+                  <td class="mono num" style="color:var(--ochre);font-weight:700;">
+                    {Number(my.procurementEurM || 0) > 0 ? fmtEurM(my.procurementEurM) : '—'}
+                  </td>
+                  <td>
+                    {my.topCaseUrl ? (
+                      <a class="svet-inspect-pill" href={my.topCaseUrl} target="_blank" rel="noopener noreferrer">EPEP ↗</a>
+                    ) : (
+                      <span class="muted">—</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- METHODOLOGY, VERIFICATION & OPEN DATA DOWNLOADS -->
+      <section class="svetlina-section" aria-label="Methodology and Verification">
+        <div class="svetlina-section-head">
+          <h2>5. Methodology, Presumption of Innocence &amp; Cryptographic Verification</h2>
+        </div>
+        <div style="font-size:0.86rem;line-height:1.65;color:var(--ink, #0f172a);">
+          <p>
+            <strong>Exact Binomial Model &amp; BH FDR:</strong> Within every stratum (<code>court × department × case type × year</code>), each judge&apos;s baseline allocation share <code>s_j</code> is measured directly from assigned cases. Parties representing &gt;40% of a stratum are excluded as structural monopolists. One-sided exact binomial probabilities <code>P(X ≥ k | n_P, s_j)</code> are corrected across all {fmtIntEn(testsRun)} tests via Benjamini–Hochberg FDR. RED flags satisfy <code>q &lt; 0.01</code>, <code>k ≥ 5</code>, and <code>ratio ≥ 3.0</code>.
+          </p>
+          <p>
+            <strong>Legal Disclaimer &amp; GDPR:</strong> Red/Amber indicators are <em>purely statistical triage signals</em> warranting institutional inspection under Art. 9 of the Bulgarian Judiciary Act (random case allocation); they do not assert guilt or unlawful conduct. Automated ingress filtering excludes all natural persons, personal identification numbers (EGN), and sensitive health records.
+          </p>
+          <p class="mono" style="font-size:0.78rem;word-break:break-all;">
+            <strong>Snapshot SHA-256 (nasvetlo_eiss_audit.json):</strong> {SHA256_SNAPSHOT}<br />
+            <strong>CERN Zenodo Permanent Archive:</strong> <a href={ZENODO_URL} target="_blank" rel="noopener noreferrer">https://doi.org/{ZENODO_DOI}</a>
+          </p>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;">
+            <a class="subbar-link" href="/data/nasvetlo_eiss_audit.json" download>Download Full EISS Audit JSON (3.7 MB)</a>
+            <a class="subbar-link" href="/data/sigma3_judicial_6.json" download>Download 6-Module Procurement Radar JSON</a>
+            <a class="subbar-link" href="/data/SIGMA_2_0_ALL_OFFICIALS_571.csv" download>Download 571 Officials Registry CSV</a>
+            <a class="subbar-link" href="/ot-mrak-kam-svetlina.html">Open Interactive Force Graph &amp; Signal Generator (BG) &rarr;</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script is:inline>
+      (function () {
+        var root = document.documentElement;
+        var btn = document.getElementById('enThemeToggle');
+        try {
+          if (localStorage.getItem('nasvetlo_theme') === 'dark') {
+            root.setAttribute('data-theme', 'dark');
+            if (btn) btn.textContent = 'Light Mode';
+          }
+        } catch (e) {}
+        if (btn) {
+          btn.addEventListener('click', function () {
+            var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            root.setAttribute('data-theme', next);
+            btn.textContent = next === 'dark' ? 'Light Mode' : 'Dark Mode';
+            try {
+              localStorage.setItem('nasvetlo_theme', next);
+            } catch (e) {}
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>

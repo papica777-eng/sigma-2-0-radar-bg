@@ -5,8 +5,15 @@
     <link>https://nasvetlo.website/</link>
     <description>Независима гражданска платформа върху отворените данни (CC-BY 4.0) на МИДТ / СИГМА 2.0, ЕПЕП/ЕИСС (2 234 509 дела), ЦАИС ЕОП (€53,22 млрд.), КПК, АДФИ, КЗК, НОИ и EPPO.</description>
     <language>bg-BG</language>
-    <lastBuildDate>Thu, 26 Nov 2026 20:15:00 +0200</lastBuildDate>
+    <lastBuildDate>Fri, 27 Nov 2026 09:15:00 +0200</lastBuildDate>
     <atom:link href="https://nasvetlo.website/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>English Executive Brief (EPPO / EC / OCCRP) + CERN Zenodo DOI 10.5281/zenodo.24580253 &amp; 1-Click АПК Signal Generator</title>
+      <link>https://nasvetlo.website/en/</link>
+      <guid isPermaLink="true">https://nasvetlo.website/en/</guid>
+      <pubDate>Fri, 27 Nov 2026 09:15:00 +0200</pubDate>
+      <description>4-year EISS/EPEP judicial allocation dataset (2,234,509 cases, 869 RED / 154 unexplained) deposited immutably on CERN Zenodo (DOI 10.5281/zenodo.24580253, CC-BY 4.0), accompanied by the English EPPO/DG JUST briefing page at /en/ and interactive 1-click ИВСС/АДФИ/EPPO signal generator.</description>
+    </item>
     <item>
       <title>От мрак към светлина — Одит на 2 234 509 дела в ЕИСС (869 RED / 154 необяснени) + Интерактивен мрежов граф</title>
       <link>https://nasvetlo.website/ot-mrak-kam-svetlina.html</link>

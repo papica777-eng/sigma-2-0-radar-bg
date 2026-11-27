@@ -725,8 +725,35 @@ const networkData = {
   })),
 };
 
+const signalFlags = allRedFlagsList.map((rf: any) => ({
+  idx: rf.idx,
+  tier: rf.tier,
+  tierShort: rf.tierShort,
+  oblastName: rf.oblastName,
+  court: rf.court,
+  kind: rf.kind,
+  year: rf.year,
+  party: rf.party,
+  eik: rf.eik || '',
+  judge: rf.judge,
+  k: rf.k,
+  n: rf.n,
+  ratio: Number(Number(rf.ratio || 0).toFixed(2)),
+  q: rf.q,
+  distinctDays: rf.distinctDays,
+  distinctMonths: rf.distinctMonths,
+  procEur: Math.round(Number(rf.procEur || 0)),
+  caseUrl: rf.caseUrl || '',
+  caseRef: rf.caseRef || '',
+  basis: rf.basis || '',
+}));
+
 const graphPayloadJson = JSON.stringify({
   asOf,
+  zenodoDoi: '10.5281/zenodo.24580253',
+  zenodoUrl: 'https://zenodo.org/records/24580253',
+  datasetSha256:
+    datasetSha256 || 'a30faab18bbfa551a3fc8a2389c2f8661115f9b85137e35b5eb0ad41b7a912ca',
   universeMeta: {
     casesFmt: totalCasesFmt,
     judgesFmt: totalJudgesFmt,
@@ -739,6 +766,7 @@ const graphPayloadJson = JSON.stringify({
   },
   sectors: ministrySectors,
   judicialMap: judicialMapConfig,
+  signalFlags,
   politicians,
   corpFlags,
   securityFlags,
@@ -844,7 +872,7 @@ const extraJsonLd = JSON.stringify({
   asOf={asOf}
   subpage={true}
   canonicalPath="/ot-mrak-kam-svetlina.html"
-  subpageScript="sigma3/ot_mrak_kam_svetlina.js?v=20261126k"
+  subpageScript="sigma3/ot_mrak_kam_svetlina.js?v=20261127a"
   subpageSyncHref="data/nasvetlo_eiss_audit.json"
   extraJsonLd={extraJsonLd}
 >
@@ -874,6 +902,18 @@ const extraJsonLd = JSON.stringify({
         <div class="svetlina-published-banner">
           <span class="published-badge">● ОФИЦИАЛНО ПУБЛИКУВАН ОДИТ</span>
           <span class="published-desc">Пълен достъп до всички 28 области, {totalCourtsFmt} съдилища, {totalJudgesFmt} съдии и {allRedFlagsList.length} RED флага ({yearRangeLabel})</span>
+          <a
+            class="svet-zenodo-badge"
+            href="https://zenodo.org/records/24580253"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            CERN Zenodo DOI: 10.5281/zenodo.24580253 ↗
+          </a>
+          <a class="svet-zenodo-badge is-en" href="/en/">EN Brief (EPPO / EU) ↗</a>
+          <button type="button" class="svet-signal-btn" id="svetOpenSignalQuickBtn">
+            ⚖ Генерирай сигнал (ИВСС / АДФИ / EPPO)
+          </button>
         </div>
 
         <div class="svetlina-timer-grid" id="svetlinaTimerGrid" aria-live="polite" hidden style="display:none;"></div>
@@ -883,6 +923,7 @@ const extraJsonLd = JSON.stringify({
           <span>ЕПЕП / ЕИСС: {totalCasesFmt} дела ({yearRangeLabel})</span>
           <span>Метод: биномен тест · Benjamini–Hochberg FDR</span>
           <span>Ниво 1–5: {unexplainedRedTotal} необяснени · 9 необяснени многогодишни ({multiYearPersistent.length} общо)</span>
+          <span>CERN Zenodo Архив: 10.5281/zenodo.24580253</span>
           <span>GDPR: без ЕГН и лични данни на физически лица</span>
         </div>
       </div>
@@ -1587,19 +1628,30 @@ const extraJsonLd = JSON.stringify({
                   </td>
                   <td class="mono num">{qStr}</td>
                   <td>
-                    {rf.caseUrl ? (
-                      <a
-                        class="svet-inspect-pill"
-                        href={rf.caseUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                    <div class="svet-cell-actions">
+                      {rf.caseUrl ? (
+                        <a
+                          class="svet-inspect-pill"
+                          href={rf.caseUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onclick="event.stopPropagation();"
+                        >
+                          {rf.caseRef} ↗
+                        </a>
+                      ) : (
+                        <span class="svet-inspect-pill">Досие &rarr;</span>
+                      )}
+                      <button
+                        type="button"
+                        class="svet-signal-btn"
+                        data-svet-signal-idx={rf.idx}
                         onclick="event.stopPropagation();"
+                        title="Създай готов сигнал по Глава VIII АПК до ИВСС / АДФИ / EPPO"
                       >
-                        {rf.caseRef} ↗
-                      </a>
-                    ) : (
-                      <span class="svet-inspect-pill">Досие &rarr;</span>
-                    )}
+                        ⚖ Сигнал
+                      </button>
+                    </div>
                   </td>
                 </tr>
               );
@@ -1715,7 +1767,20 @@ const extraJsonLd = JSON.stringify({
                     <span class="muted">Само ЗОП × ЕИСС (без пряк политик в Сметна палата)</span>
                   )}
                 </td>
-                <td><span class="svet-inspect-pill">Верига ЕИК &rarr;</span></td>
+                <td>
+                  <div class="svet-cell-actions">
+                    <span class="svet-inspect-pill">Верига ЕИК &rarr;</span>
+                    <button
+                      type="button"
+                      class="svet-signal-btn"
+                      data-svet-signal-coi={cb.eik}
+                      onclick="event.stopPropagation();"
+                      title="Създай сигнал по веригата ЕИСС × ЦАИС ЕОП до КПК / АДФИ / EPPO"
+                    >
+                      ⚖ Сигнал
+                    </button>
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -1994,6 +2059,9 @@ const extraJsonLd = JSON.stringify({
           проверката на компетентните органи. За всички посочени лица важи презумпцията за невиновност.
         </p>
         <p class="svetlina-method-meta">Данни към {asOf} · Отворени данни CC-BY 4.0 · Без ЕГН и лични данни на физически лица</p>
+        <p class="svetlina-method-meta" style="margin-top:4px;">
+          Неизменяем архив в CERN Zenodo: <a href="https://zenodo.org/records/24580253" target="_blank" rel="noopener noreferrer" style="text-decoration:underline;font-weight:700;">DOI 10.5281/zenodo.24580253</a> · <a href="/en/" style="text-decoration:underline;">English Brief (EPPO / EC)</a>
+        </p>
         {datasetSha256 ? <p class="svetlina-method-meta mono" style="word-break:break-all;margin-top:4px;">SHA-256 ({allRedFlagsList.length} RED snapshot): {datasetSha256}</p> : ''}
       </div>
     </section>
@@ -2074,6 +2142,49 @@ const extraJsonLd = JSON.stringify({
     </div>
     <div class="drawer-body" id="svetDrawerBody"></div>
   </aside>
+
+  <!-- 1-CLICK CITIZEN & JOURNALIST SIGNAL MODAL (АПК / ИВСС / АДФИ / EPPO) -->
+  <div class="svet-signal-backdrop" id="svetSignalBackdrop" hidden></div>
+  <section
+    class="svet-signal-modal"
+    id="svetSignalModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="svetSignalModalTitle"
+    hidden
+  >
+    <div class="svet-signal-head">
+      <div>
+        <div class="svet-signal-kicker">ГРАЖДАНСКИ И ЖУРНАЛИСТИЧЕСКИ ИНСТРУМЕНТ · ГЛАВА VIII АПК</div>
+        <h3 id="svetSignalModalTitle">Генератор на официален сигнал</h3>
+      </div>
+      <button type="button" class="drawer-close" id="svetSignalCloseBtn" aria-label="Затвори генератора">&times;</button>
+    </div>
+
+    <div class="svet-signal-tabs" role="tablist" aria-label="Избор на адресат">
+      <button type="button" class="svet-signal-tab active" data-svet-signal-authority="ivss">
+        ИВСС · Случайно разпределение (чл. 54 ЗСВ)
+      </button>
+      <button type="button" class="svet-signal-tab" data-svet-signal-authority="adfi">
+        АДФИ / КПК · ЗОП и конфликт на интереси
+      </button>
+      <button type="button" class="svet-signal-tab" data-svet-signal-authority="eppo">
+        EPPO / OLAF · European Funds Signal (EN)
+      </button>
+    </div>
+
+    <div class="svet-signal-meta" id="svetSignalMeta"></div>
+
+    <label for="svetSignalText" class="sr-only">Текст на сигнала</label>
+    <textarea class="svet-signal-textarea mono" id="svetSignalText" rows="16"></textarea>
+
+    <div class="svet-signal-actions">
+      <button type="button" class="btn btn-dark" id="svetSignalCopyBtn">Копирай сигнала</button>
+      <button type="button" class="btn" id="svetSignalDownloadBtn">Изтегли .TXT</button>
+      <button type="button" class="btn" id="svetSignalPrintBtn">Принтирай / PDF (A4)</button>
+      <span class="svet-copy-toast" id="svetSignalToast" hidden>Готово — копирано в клипборда</span>
+    </div>
+  </section>
 
   <script type="application/json" id="svetlinaGraphPayload" set:html={graphPayloadJson}></script>
 </BaseLayout>

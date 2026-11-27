@@ -5350,121 +5350,6 @@ body[data-density=compact] .panel-box {
   color: #004b87;
 }
 
-.topbar-btn-audit {
-  border-color: var(--node-judicial, #4f46e5);
-  color: var(--node-judicial, #4f46e5);
-  font-weight: 700;
-}
-.topbar-btn-audit:hover {
-  background: var(--node-judicial, #4f46e5);
-  color: #fff;
-}
-
-.eiss-audit-hero {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-left: 5px solid var(--node-judicial, #4f46e5);
-  border-radius: var(--radius);
-  padding: 20px 24px;
-  margin-top: 16px;
-  margin-bottom: 18px;
-}
-
-.eiss-filter-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 16px;
-  padding: 12px 14px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-}
-.eiss-filter-bar select,
-.eiss-filter-bar input {
-  min-height: 36px;
-  padding: 6px 10px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--surface-2);
-  color: var(--ink);
-  font-size: 0.86rem;
-}
-.eiss-filter-bar select {
-  min-width: 240px;
-  max-width: 360px;
-}
-.eiss-filter-bar input {
-  flex: 1 1 240px;
-}
-
-.eiss-filter-count {
-  font-size: 0.8rem;
-  color: var(--ink-muted);
-  font-variant-numeric: tabular-nums;
-}
-
-.eiss-badge {
-  display: inline-block;
-  padding: 2px 7px;
-  border-radius: 4px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-.eiss-badge.is-red {
-  background: rgba(185, 28, 28, 0.14);
-  color: var(--crimson);
-  border: 1px solid rgba(185, 28, 28, 0.35);
-}
-.eiss-badge.is-amber {
-  background: rgba(180, 83, 9, 0.14);
-  color: var(--ochre);
-  border: 1px solid rgba(180, 83, 9, 0.35);
-}
-.eiss-badge.is-proc {
-  background: rgba(13, 148, 136, 0.14);
-  color: var(--teal);
-  border: 1px solid rgba(13, 148, 136, 0.35);
-}
-
-.eiss-details-box {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 12px 16px;
-  margin-bottom: 16px;
-}
-.eiss-details-box summary {
-  cursor: pointer;
-  font-weight: 700;
-  font-size: 0.98rem;
-  color: var(--ink);
-  list-style-position: inside;
-}
-.eiss-details-box[open] summary {
-  margin-bottom: 12px;
-}
-
-.eiss-case-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-.eiss-case-links a {
-  font-size: 0.74rem;
-  font-family: "IBM Plex Mono", monospace;
-  padding: 1px 6px;
-  border-radius: 4px;
-  border: 1px solid var(--border);
-  text-decoration: none;
-  color: var(--accent);
-}
-.eiss-case-links a:hover {
-  background: var(--surface-2);
-}
-
 .svetlina-vault {
   position: relative;
   margin: 14px 0 18px;
@@ -6975,4 +6860,190 @@ body[data-density=compact] .panel-box {
 }
 #svetNetworkCanvas:active {
   cursor: grabbing;
+}
+
+/* --- CERN Zenodo Badge & 1-Click Citizen/Journalist Signal Modal --- */
+.svet-zenodo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-decoration: none;
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  color: #065f46;
+  transition: transform 120ms ease, background 120ms ease;
+}
+.svet-zenodo-badge:hover {
+  transform: translateY(-1px);
+  background: rgba(16, 185, 129, 0.22);
+}
+.svet-zenodo-badge.is-en {
+  background: rgba(30, 58, 138, 0.12);
+  border-color: rgba(30, 58, 138, 0.35);
+  color: #1e3a8a;
+}
+
+.svet-cell-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.svet-signal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(185, 28, 28, 0.35);
+  background: rgba(185, 28, 28, 0.08);
+  color: var(--crimson, #b91c1c);
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 120ms ease, color 120ms ease;
+}
+.svet-signal-btn:hover {
+  background: var(--crimson, #b91c1c);
+  color: #ffffff;
+}
+
+.svet-signal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1090;
+  background: rgba(15, 23, 42, 0.58);
+  backdrop-filter: blur(3px);
+}
+
+.svet-signal-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1100;
+  width: min(860px, 100vw - 24px);
+  max-height: calc(100vh - 28px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px 20px;
+  border-radius: 14px;
+  background: var(--surface, #ffffff);
+  color: var(--ink, #0f172a);
+  border: 1px solid var(--line, #cbd5e1);
+  box-shadow: 0 24px 64px rgba(15, 23, 42, 0.28);
+  overflow-y: auto;
+}
+
+.svet-signal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+.svet-signal-head h3 {
+  margin: 2px 0 0;
+  font-size: 1.05rem;
+}
+
+.svet-signal-kicker {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--crimson, #b91c1c);
+}
+
+.svet-signal-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.svet-signal-tab {
+  padding: 6px 11px;
+  border-radius: 8px;
+  border: 1px solid var(--line, #cbd5e1);
+  background: transparent;
+  color: var(--ink, #0f172a);
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.svet-signal-tab.active {
+  background: var(--crimson, #b91c1c);
+  border-color: var(--crimson, #b91c1c);
+  color: #ffffff;
+}
+
+.svet-signal-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.04);
+  font-size: 0.76rem;
+}
+
+.svet-signal-textarea {
+  width: 100%;
+  min-height: 290px;
+  padding: 11px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line, #cbd5e1);
+  background: var(--bg, #f8fafc);
+  color: var(--ink, #0f172a);
+  font-size: 0.77rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.svet-signal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+[data-theme=dark] .svet-zenodo-badge {
+  background: rgba(16, 185, 129, 0.18);
+  color: #6ee7b7;
+}
+[data-theme=dark] .svet-zenodo-badge.is-en {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(96, 165, 250, 0.45);
+  color: #93c5fd;
+}
+[data-theme=dark] .svet-signal-btn {
+  background: rgba(248, 113, 113, 0.16);
+  border-color: rgba(248, 113, 113, 0.45);
+  color: #fca5a5;
+}
+[data-theme=dark] .svet-signal-btn:hover {
+  background: #b91c1c;
+  color: #ffffff;
+}
+[data-theme=dark] .svet-signal-modal {
+  background: #0f172a;
+  color: #f1f5f9;
+  border-color: #334155;
+}
+[data-theme=dark] .svet-signal-tab {
+  color: #e2e8f0;
+  border-color: #334155;
+}
+[data-theme=dark] .svet-signal-meta {
+  background: rgba(255, 255, 255, 0.05);
+}
+[data-theme=dark] .svet-signal-textarea {
+  background: #020617;
+  color: #f8fafc;
+  border-color: #334155;
 }

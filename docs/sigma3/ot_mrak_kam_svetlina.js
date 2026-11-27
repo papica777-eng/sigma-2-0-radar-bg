@@ -553,6 +553,7 @@
       return (
         '<div class="svet-drawer-actions">' +
         '<button type="button" class="btn btn-dark" id="svetCopyBriefBtn">Копирай одитна справка</button>' +
+        '<button type="button" class="btn svet-signal-btn" id="svetDrawerSignalBtn">⚖ Генерирай сигнал</button>' +
         (filterQuery
           ? '<button type="button" class="btn" data-svet-apply-filter="' +
             esc(filterQuery) +
@@ -2030,6 +2031,19 @@
             }
           });
         }
+        return;
+      }
+
+      if (target.id === 'svetDrawerSignalBtn') {
+        document.dispatchEvent(
+          new CustomEvent('svet:open-signal', {
+            detail: {
+              kind: 'drawer',
+              title: titleEl ? titleEl.textContent : 'Досие от ЕИСС',
+              summary: lastCopyText || '',
+            },
+          })
+        );
       }
     });
 
@@ -3705,6 +3719,407 @@
     };
   }
 
+  // ===========================================================================
+  // 1-CLICK CITIZEN & JOURNALIST SIGNAL GENERATOR (ИВСС / АДФИ / КПК / EPPO)
+  // ===========================================================================
+  function initSignalGenerator(payload) {
+    var modal = document.getElementById('svetSignalModal');
+    var backdrop = document.getElementById('svetSignalBackdrop');
+    var titleEl = document.getElementById('svetSignalModalTitle');
+    var metaEl = document.getElementById('svetSignalMeta');
+    var textEl = document.getElementById('svetSignalText');
+    var closeBtn = document.getElementById('svetSignalCloseBtn');
+    var copyBtn = document.getElementById('svetSignalCopyBtn');
+    var dlBtn = document.getElementById('svetSignalDownloadBtn');
+    var printBtn = document.getElementById('svetSignalPrintBtn');
+    var toastEl = document.getElementById('svetSignalToast');
+    var quickBtn = document.getElementById('svetOpenSignalQuickBtn');
+    if (!modal || !backdrop || !textEl) return;
+
+    var doi = (payload && payload.zenodoDoi) || '10.5281/zenodo.24580253';
+    var doiUrl = (payload && payload.zenodoUrl) || 'https://zenodo.org/records/24580253';
+    var sha =
+      (payload && payload.datasetSha256) ||
+      'a30faab18bbfa551a3fc8a2389c2f8661115f9b85137e35b5eb0ad41b7a912ca';
+    var uMeta = (payload && payload.universeMeta) || {};
+    var casesFmt = uMeta.casesFmt || '2 234 509';
+    var courtsFmt = uMeta.courtsFmt || '180';
+    var judgesFmt = uMeta.judgesFmt || '3 244';
+    var yearRange = uMeta.yearRange || '2023–2026';
+
+    var flagByIdx = {};
+    ((payload && payload.signalFlags) || []).forEach(function (rf) {
+      if (rf && rf.idx != null) flagByIdx[String(rf.idx)] = rf;
+    });
+
+    var coiByEik = {};
+    ((payload && payload.networkData && payload.networkData.conflictBridge) || []).forEach(function (cb) {
+      if (cb && cb.eik) coiByEik[String(cb.eik)] = cb;
+    });
+
+    var activeAuthority = 'ivss';
+    var activeContext = {
+      kind: 'macro',
+      title: 'Национален 4-годишен одит ЕИСС (' + yearRange + ')',
+      party: 'Обобщен одит на случайното разпределение в ЕИСС',
+      eik: '',
+      court: courtsFmt + ' съдилища',
+      caseKind: 'Търговски, граждански и административни дела',
+      year: yearRange,
+      judge: 'Национален извадков списък (869 RED / 154 необяснени)',
+      kn: '869 RED от 62 166 теста',
+      ratio: '≥ 3,00×',
+      q: '< 0,01 (BH FDR)',
+      daysMonths: '4 последователни години',
+      procEur: 53224934606,
+      caseUrl: 'https://nasvetlo.website/ot-mrak-kam-svetlina.html',
+      summary: '',
+    };
+
+    function fmtProcBg(v) {
+      var num = Number(v || 0);
+      if (!isFinite(num) || num <= 0) return 'Няма пряко отчетен ЗОП обем за конкретната страна';
+      return fmtEur(num);
+    }
+
+    function fmtQVal(q) {
+      var num = Number(q);
+      if (!isFinite(num)) return String(q || '—');
+      return num < 0.0001 ? num.toExponential(2) : num.toFixed(4);
+    }
+
+    function renderSignalBody() {
+      var ctx = activeContext;
+      var refLine = ctx.caseUrl ? '\n- Директна препратка в ЕПЕП: ' + ctx.caseUrl : '';
+      var eikLine = ctx.eik ? ' (ЕИК ' + ctx.eik + ')' : '';
+      var disclaimerBg =
+        'ПРАВНА БЕЛЕЖКА И GDPR: Посочените данни представляват математико-статистически сигнал за ' +
+        'извършване на институционална проверка и не съставляват обвинение или влязъл в сила акт ' +
+        '(при спазване на презумпцията за невиновност). Масивът не съдържа ЕГН и лични данни на физически лица.';
+      var archiveBlockBg =
+        '\nКРИПТОГРАФСКА ВЕРИФИКАЦИЯ И ПУБЛИЧЕН АРХИВ:\n' +
+        '- Източник: ' +
+        casesFmt +
+        ' дела в ЕПЕП/ЕИСС (' +
+        yearRange +
+        ', ' +
+        courtsFmt +
+        ' съдилища, ' +
+        judgesFmt +
+        ' съдии)\n' +
+        '- CERN Zenodo DOI: ' +
+        doi +
+        ' (' +
+        doiUrl +
+        ')\n' +
+        '- SHA-256 контролна сума (nasvetlo_eiss_audit.json): ' +
+        sha +
+        '\n- Пълно уеб досие: https://nasvetlo.website/ot-mrak-kam-svetlina.html';
+
+      if (activeAuthority === 'ivss') {
+        return (
+          'ДО: ИНСПЕКТОРАТА КЪМ ВИСШИЯ СЪДЕБЕН СЪВЕТ (ИВСС) и СЪДИЙСКАТА КОЛЕГИЯ НА ВСС\n' +
+          'ОТНОСНО: Сигнал по Глава VIII АПК и искане за проверка на случайното разпределение по чл. 9 и чл. 54 ЗСВ\n\n' +
+          'Уважаеми Главни инспектори и Членове на ВСС,\n\n' +
+          'На основание чл. 107–125 АПК и чл. 54, ал. 1, т. 1 и т. 4 ЗСВ представям статистически сигнал, ' +
+          'установен при независим биномен тест (Benjamini–Hochberg FDR q < 0,01) върху публичните записи на ЕПЕП/ЕИСС:\n\n' +
+          'КОНКРЕТЕН ПРЕДМЕТ НА ПРОВЕРКА:\n' +
+          '- Съд и категория: ' +
+          ctx.court +
+          ' · ' +
+          ctx.caseKind +
+          ' (' +
+          ctx.year +
+          ')\n' +
+          '- Страна / Субект: ' +
+          ctx.party +
+          eikLine +
+          '\n' +
+          '- Разпределен съдия-докладчик: ' +
+          ctx.judge +
+          '\n' +
+          '- Концентрация (k / n): ' +
+          ctx.kn +
+          ' дела | Кратност спрямо дела в клетката: ' +
+          ctx.ratio +
+          ' | BH FDR q = ' +
+          ctx.q +
+          '\n' +
+          '- Времева дисперсия: ' +
+          ctx.daysMonths +
+          refLine +
+          (ctx.summary ? '\n\nДОПЪЛНИТЕЛНИ ДАННИ ОТ ДОСИЕТО:\n' + ctx.summary : '') +
+          '\n\nМОЛЯ ДА ПРОВЕРИТЕ В ЕИСС:\n' +
+          '1. Приложените коефициенти за натовареност, изключвания на съдии и протоколи за разпределение на горепосочените дела.\n' +
+          '2. Наличието на повторно/ръчно преразпределение или деактивиране на случайния избор по чл. 9 ЗСВ.\n' +
+          archiveBlockBg +
+          '\n\n' +
+          disclaimerBg +
+          '\n\nПодател: __________________________ (Гражданин / Журналист / Организация)\nЕлектронна поща за обратна връзка: __________________________\nДата: __________________________'
+        );
+      }
+
+      if (activeAuthority === 'adfi') {
+        return (
+          'ДО: АГЕНЦИЯ ЗА ДЪРЖАВНА ФИНАНСОВА ИНСПЕКЦИЯ (АДФИ) и КОМИСИЯ ЗА ПРОТИВОДЕЙСТВИЕ НА КОРУПЦИЯТА (КПК)\n' +
+          'ОТНОСНО: Сигнал за кръстосан риск по ЦАИС ЕОП (ЗОП), ЗПК и свързани съдебни спорове в ЕИСС\n\n' +
+          'Уважаеми Директоре на АДФИ / Членове на КПК,\n\n' +
+          'Моля за извършване на финансова инспекция и проверка за конфликт на интереси (ЗПК) и концентрация по ЗОП ' +
+          'във връзка със засечена кръстосана аномалия между публичните договори в ЦАИС ЕОП и съдебните дела в ЕПЕП/ЕИСС:\n\n' +
+          'ЗАСЕЧЕН СУБЕКТ И ИНДИКАТОРИ:\n' +
+          '- Субект / Възложител / Изпълнител: ' +
+          ctx.party +
+          eikLine +
+          '\n' +
+          '- Засечен обем обществени поръчки: ' +
+          fmtProcBg(ctx.procEur) +
+          '\n' +
+          '- Съдебна концентрация в ЕИСС: ' +
+          ctx.court +
+          ' · Съдия ' +
+          ctx.judge +
+          ' (' +
+          ctx.kn +
+          ', кратност ' +
+          ctx.ratio +
+          ', q = ' +
+          ctx.q +
+          ')' +
+          refLine +
+          (ctx.summary ? '\n\nДЕТАЙЛИ ПО ВЕРИГАТА:\n' + ctx.summary : '') +
+          '\n\nМОЛЯ ЗА ПРОВЕРКА ПО КОМПЕТЕНТНОСТ:\n' +
+          '1. Дали са спазени процедурите по ЗОП (вкл. договори с 1 оферта, анекси по чл. 116 ЗОП и вписани действителни собственици по ЗМИП).\n' +
+          '2. Наличие на свързани лица и несъвместимост/конфликт на интереси по декларираните обстоятелства пред КПК.\n' +
+          archiveBlockBg +
+          '\n\n' +
+          disclaimerBg +
+          '\n\nПодател: __________________________\nКонтакт за уведомление по чл. 123 АПК: __________________________'
+        );
+      }
+
+      return (
+        'TO: EUROPEAN PUBLIC PROSECUTOR\'S OFFICE (EPPO — Luxembourg / Sofia European Delegated Prosecutors) & OLAF\n' +
+        'SUBJECT: Statistical Cross-Registry Integrity Alert — Bulgaria EISS Judicial Allocation & EU-Funded Procurement (2023–2026)\n\n' +
+        'Dear European Chief Prosecutor and European Delegated Prosecutors,\n\n' +
+        'Pursuant to Council Regulation (EU) 2017/1939, please find below a reproducible, GDPR-compliant statistical triage record ' +
+        'linking official Bulgarian Unified Judicial Portal records (EISS/EPEP) with public procurement awards (CAIS-EOP):\n\n' +
+        'SPECIFIC SIGNAL RECORD:\n' +
+        '- Entity / Party: ' +
+        ctx.party +
+        eikLine +
+        '\n' +
+        '- Court & Docket: ' +
+        ctx.court +
+        ' | ' +
+        ctx.caseKind +
+        ' (' +
+        ctx.year +
+        ')\n' +
+        '- Judge Allocation Anomaly: ' +
+        ctx.judge +
+        ' | k/n = ' +
+        ctx.kn +
+        ' | Multiplier = ' +
+        ctx.ratio +
+        ' | BH FDR q = ' +
+        ctx.q +
+        ' (' +
+        ctx.daysMonths +
+        ')\n' +
+        '- Linked Public Procurement Volume (CAIS-EOP): ' +
+        fmtProcBg(ctx.procEur) +
+        refLine +
+        (ctx.summary ? '\n\nDOSSIER CONTEXT:\n' + ctx.summary : '') +
+        '\n\nMACRO CONTEXT (EU FUNDS RISK):\n' +
+        '- 28,339 EU-funded CAIS-EOP contracts monitored (EUR 10.74B); 9,397 single-bidder awards (EUR 1.79B); 302 high-risk EPPO cohort contracts (EUR 1.58B).\n' +
+        '- Immutable CERN Zenodo Dataset DOI: ' +
+        doi +
+        ' (' +
+        doiUrl +
+        ')\n' +
+        '- Cryptographic Snapshot SHA-256: ' +
+        sha +
+        '\n- English Executive Brief: https://nasvetlo.website/en/\n\n' +
+        'DISCLAIMER: Statistical indicators represent automated triage anomalies over official public registries (0 personal EGN identifiers) ' +
+        'and do not constitute criminal accusations under the presumption of innocence.\n\n' +
+        'Submitted by: __________________________\nContact Email: __________________________'
+      );
+    }
+
+    function refreshModal() {
+      if (titleEl) titleEl.textContent = 'Сигнал: ' + activeContext.title;
+      if (metaEl) {
+        metaEl.innerHTML =
+          '<span><strong>Субект:</strong> ' +
+          esc(activeContext.party) +
+          '</span>' +
+          '<span><strong>Кратност:</strong> ' +
+          esc(activeContext.ratio) +
+          '</span>' +
+          '<span><strong>CERN Zenodo DOI:</strong> ' +
+          esc(doi) +
+          '</span>';
+      }
+      textEl.value = renderSignalBody();
+    }
+
+    function openSignalModal(ctx) {
+      activeContext = ctx;
+      refreshModal();
+      backdrop.hidden = false;
+      modal.hidden = false;
+      window.setTimeout(function () {
+        textEl.focus();
+      }, 40);
+    }
+
+    function closeSignalModal() {
+      backdrop.hidden = true;
+      modal.hidden = true;
+    }
+
+    modal.querySelectorAll('[data-svet-signal-authority]').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        modal.querySelectorAll('[data-svet-signal-authority]').forEach(function (b) {
+          b.classList.remove('active');
+        });
+        tab.classList.add('active');
+        activeAuthority = tab.getAttribute('data-svet-signal-authority') || 'ivss';
+        refreshModal();
+      });
+    });
+
+    document.addEventListener('click', function (ev) {
+      var idxBtn = ev.target.closest('[data-svet-signal-idx]');
+      if (idxBtn) {
+        ev.stopPropagation();
+        var rf = flagByIdx[idxBtn.getAttribute('data-svet-signal-idx')];
+        if (!rf) return;
+        openSignalModal({
+          kind: 'redflag',
+          title: rf.party + ' → ' + rf.judge,
+          party: rf.party,
+          eik: rf.eik || '',
+          court: rf.court,
+          caseKind: rf.kind,
+          year: String(rf.year || ''),
+          judge: rf.judge,
+          kn: rf.k + ' / ' + rf.n,
+          ratio: '×' + Number(rf.ratio || 0).toFixed(2).replace('.', ','),
+          q: fmtQVal(rf.q),
+          daysMonths: (rf.distinctDays || 0) + ' дни / ' + (rf.distinctMonths || 0) + ' мес.',
+          procEur: rf.procEur || 0,
+          caseUrl: rf.caseUrl || '',
+          summary: rf.basis || '',
+        });
+        return;
+      }
+
+      var coiBtn = ev.target.closest('[data-svet-signal-coi]');
+      if (coiBtn) {
+        ev.stopPropagation();
+        var cb = coiByEik[coiBtn.getAttribute('data-svet-signal-coi')];
+        if (!cb) return;
+        openSignalModal({
+          kind: 'coi',
+          title: 'Верига ЕИК ' + cb.eik + ' · ' + cb.party,
+          party: cb.party,
+          eik: cb.eik || '',
+          court: (cb.courts || []).join(', ') || 'Множество съдилища в ЕИСС',
+          caseKind: 'Конфликт на интереси и търговски/административни дела',
+          year: yearRange,
+          judge: 'Засечени съдии в ' + (cb.redFlagsCount || 0) + ' RED флага',
+          kn: (cb.unexplainedRedCount || 0) + ' необяснени / ' + (cb.redFlagsCount || 0) + ' общо RED',
+          ratio: '×' + Number(cb.maxRatio || 0).toFixed(2).replace('.', ','),
+          q: '< 0,01 (BH FDR)',
+          daysMonths: 'Многоинституционално кръстосване',
+          procEur: Number(cb.procurementEurM || 0) * 1e6,
+          caseUrl: 'https://nasvetlo.website/ot-mrak-kam-svetlina.html',
+          summary: 'Общ брой ЗОП договори: ' + (cb.procurementContracts || 0),
+        });
+      }
+    });
+
+    document.addEventListener('svet:open-signal', function (ev) {
+      var d = (ev && ev.detail) || {};
+      openSignalModal({
+        kind: 'drawer',
+        title: d.title || 'Отворено досие',
+        party: d.title || 'Отворено досие',
+        eik: '',
+        court: courtsFmt + ' съдилища (ЕПЕП/ЕИСС)',
+        caseKind: 'Кросиран възел от одитното досие',
+        year: yearRange,
+        judge: 'Съгласно приложеното досие по-долу',
+        kn: 'Виж статистическата справка по-долу',
+        ratio: 'FDR < 0,01',
+        q: '< 0,01',
+        daysMonths: yearRange,
+        procEur: 0,
+        caseUrl: 'https://nasvetlo.website/ot-mrak-kam-svetlina.html',
+        summary: d.summary || '',
+      });
+    });
+
+    if (quickBtn) {
+      quickBtn.addEventListener('click', function () {
+        openSignalModal(activeContext);
+      });
+    }
+    if (closeBtn) closeBtn.addEventListener('click', closeSignalModal);
+    backdrop.addEventListener('click', closeSignalModal);
+    document.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Escape' && !modal.hidden) closeSignalModal();
+    });
+
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(textEl.value).then(function () {
+            if (toastEl) {
+              toastEl.hidden = false;
+              window.setTimeout(function () {
+                toastEl.hidden = true;
+              }, 2200);
+            }
+          });
+        }
+      });
+    }
+
+    if (dlBtn) {
+      dlBtn.addEventListener('click', function () {
+        var blob = new Blob(['\uFEFF' + textEl.value], { type: 'text/plain;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'nasvetlo_signal_' + activeAuthority + '.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+    }
+
+    if (printBtn) {
+      printBtn.addEventListener('click', function () {
+        var w = window.open('', '_blank', 'width=840,height=920');
+        if (!w) return;
+        w.document.open();
+        w.document.write(
+          '<!doctype html><html><head><meta charset="utf-8"><title>' +
+            esc(activeContext.title) +
+            '</title><style>body{font-family:Georgia,serif;max-width:740px;margin:28px auto;padding:0 18px;line-height:1.55;color:#111;}pre{white-space:pre-wrap;font-family:inherit;font-size:13.5px;}</style></head><body><pre>' +
+            esc(textEl.value) +
+            '</pre></body></html>'
+        );
+        w.document.close();
+        w.focus();
+        w.print();
+      });
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initTheme();
     initGate();
@@ -3716,5 +4131,6 @@
     if (filterApi && filterApi.searchAll) {
       filterProxy.searchAll = filterApi.searchAll;
     }
+    initSignalGenerator(parsePayload());
   });
 })();

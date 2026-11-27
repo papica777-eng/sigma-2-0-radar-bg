@@ -188,6 +188,7 @@ const jsonLd = JSON.stringify({
   <meta name="twitter:image" content="https://nasvetlo.website/sigma3/og-card.png" />
   <link rel="canonical" href={canonicalUrl} />
   <link rel="alternate" hreflang="bg" href={canonicalUrl} />
+  <link rel="alternate" hreflang="en" href="https://nasvetlo.website/en/" />
   <link rel="alternate" hreflang="x-default" href={canonicalUrl} />
   <link rel="alternate" type="application/rss+xml" title="NAsvetlo · От мрак към светлина (RSS)" href="https://nasvetlo.website/feed.xml" />
   <link rel="sitemap" type="application/xml" title="Sitemap" href="https://nasvetlo.website/sitemap.xml" />
@@ -207,7 +208,7 @@ const jsonLd = JSON.stringify({
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="sigma3/styles.css?v=20261126e" />
+  <link rel="stylesheet" href="sigma3/styles.css?v=20261127a" />
 </head>
 <body>
 
@@ -263,6 +264,7 @@ const jsonLd = JSON.stringify({
       <span class="info-subbar-sep" id="nasvetloVisitSep" aria-hidden="true" hidden style="display:none;"></span>
       {subpage ? (
         <>
+          <a class="subbar-link" href="/en/">EN · EPPO Brief</a>
           <a class="subbar-link" href="data/nasvetlo_telk_radar.json" download>ТЕЛК 28-областен JSON</a>
           <a class="subbar-link" href="data/nasvetlo_50_admins.json" download>Индекс JSON</a>
           <a class="subbar-link" href="data/nasvetlo_investigations.json" download>Разследвания JSON</a>
@@ -270,6 +272,7 @@ const jsonLd = JSON.stringify({
         </>
       ) : (
         <>
+          <a class="subbar-link" href="/en/">EN · EPPO Brief</a>
           <button type="button" class="subbar-link-btn" id="quickOpenProposalBtn">Архитектура &amp; Методология</button>
           <a class="subbar-link" href="data/SIGMA_2_0_ALL_OFFICIALS_571.csv" download>CSV</a>
           <a class="subbar-link" href="https://sigma.midt.bg" target="_blank" rel="noopener">СИГМА 2.0 ↗</a>
@@ -288,6 +291,7 @@ const jsonLd = JSON.stringify({
   <span style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
     <span class="footer-visits" id="nasvetloFooterVisits" title="Постоянен брояч на посещенията (без нулиране)" hidden style="display:none;"></span>
     <a href="ot-mrak-kam-svetlina.html">От мрак към светлина</a>
+    <a href="/en/">English Brief (EPPO / EU)</a>
     <a href="https://sigma.midt.bg" target="_blank" rel="noopener">sigma.midt.bg</a>
     <a href="https://sigma-budget.midt.bg" target="_blank" rel="noopener">СИГМА Бюджет</a>
     <a href="https://ecase.justice.bg" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ЕПЕП / ЕИСС</a>

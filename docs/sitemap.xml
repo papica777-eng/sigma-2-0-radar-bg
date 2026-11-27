@@ -13,13 +13,19 @@
   </url>
   <url>
     <loc>https://nasvetlo.website/ot-mrak-kam-svetlina.html</loc>
-    <lastmod>2026-11-26</lastmod>
+    <lastmod>2026-11-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://nasvetlo.website/sigma3/og-card.png</image:loc>
       <image:title>NAsvetlo · От мрак към светлина — Одит на 2 234 509 дела в ЕИСС и интерактивен мрежов граф</image:title>
     </image:image>
+  </url>
+  <url>
+    <loc>https://nasvetlo.website/en/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
   </url>
   <url>
     <loc>https://nasvetlo.website/razsledvaniya.html</loc>
