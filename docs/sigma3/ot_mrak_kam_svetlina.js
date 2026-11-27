@@ -59,7 +59,11 @@
     return out;
   }
 
+  var mergedPayloadCache = null;
+  var runtimePayloadPromise = null;
+
   function parsePayload() {
+    if (mergedPayloadCache) return mergedPayloadCache;
     var el = document.getElementById('svetlinaGraphPayload');
     if (!el) return null;
     try {
@@ -67,6 +71,31 @@
     } catch (e) {
       return null;
     }
+  }
+
+  function ensureRuntimePayload() {
+    if (runtimePayloadPromise) return runtimePayloadPromise;
+    var base = parsePayload() || {};
+    if (base.judicialMap && base.networkData) {
+      mergedPayloadCache = base;
+      runtimePayloadPromise = Promise.resolve(base);
+      return runtimePayloadPromise;
+    }
+    var url = base.runtimePayloadUrl || 'data/svetlina_runtime_payload.json?v=20261127c';
+    runtimePayloadPromise = fetch(url)
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(function (extra) {
+        mergedPayloadCache = Object.assign({}, base, extra || {});
+        return mergedPayloadCache;
+      })
+      .catch(function () {
+        mergedPayloadCache = base;
+        return base;
+      });
+    return runtimePayloadPromise;
   }
 
   // ===========================================================================
@@ -2135,7 +2164,65 @@
     var allRedOblastSel = document.getElementById('svetAllRedOblastFilter');
     var allRedKindSel = document.getElementById('svetAllRedKindFilter');
     var allRedCountEl = document.getElementById('svetAllRedCount');
+    var allRedTbody = document.getElementById('svetAllRedTbody');
+    var loadAllRedBtn = document.getElementById('svetLoadAllRedBtn');
+    var allRedMoreBar = document.getElementById('svetAllRedMoreBar');
     if (!input) return null;
+
+    var extraRowsHydrated = false;
+    function ensureExtraRowsHydrated() {
+      if (extraRowsHydrated) return;
+      extraRowsHydrated = true;
+      var payload = parsePayload() || {};
+      var extraRows = payload.extraRedRows || [];
+      if (allRedTbody && extraRows.length) {
+        var frag = document.createDocumentFragment();
+        extraRows.forEach(function (rf) {
+          var tr = document.createElement('tr');
+          tr.className = 'svet-row-clickable';
+          tr.setAttribute('data-sector', 'jud');
+          tr.setAttribute('data-nuts3', rf.nuts3 || '');
+          tr.setAttribute('data-kind', rf.kind || '');
+          tr.setAttribute('data-tier', rf.tier || '');
+          tr.setAttribute('data-svet-open-judge', rf.judge || '');
+          tr.setAttribute('tabindex', '0');
+
+          var qNum = Number(rf.q || 0);
+          var qStr = qNum < 0.001 ? qNum.toExponential(2) : qNum.toFixed(4);
+          var ratioStr = Number(rf.ratio || 0).toFixed(2).replace('.', ',');
+          var obShort = String(rf.oblastName || '').replace(' (столица)', ' (гр.)');
+          var zopHtml = Number(rf.procEur || 0) > 0 ? '<div class="sv-zop">ЗОП: ' + esc(fmtEur(rf.procEur)) + '</div>' : '';
+          var restrHtml = Number(rf.restrPct || 0) >= 50 ? '<div class="muted">Огр. достъп: ' + esc(rf.restrPct) + '%</div>' : '';
+          var eikHtml = rf.eik ? '<div class="mono muted sv-eik">ЕИК ' + esc(rf.eik) + '</div>' : '';
+          var caseHtml = rf.caseUrl
+            ? '<a class="svet-inspect-pill" href="' + esc(rf.caseUrl) + '" target="_blank" rel="noopener noreferrer">' + esc(rf.caseRef || 'ЕПЕП') + ' ↗</a>'
+            : '<span class="svet-inspect-pill">Досие &rarr;</span>';
+
+          tr.innerHTML =
+            '<td class="mono muted">' + esc(rf.idx) + '</td>' +
+            '<td><span class="svetlina-badge ' + esc(rf.tierCls) + '">' + esc(rf.tierShort) + '</span></td>' +
+            '<td><span class="svetlina-badge is-indigo">' + esc(obShort) + '</span></td>' +
+            '<td><strong>' + esc(rf.court) + '</strong><div class="muted sv-sub">' + esc(rf.kind) + ' (' + esc(rf.year) + ')</div></td>' +
+            '<td><strong>' + esc(rf.party) + '</strong>' + eikHtml + '</td>' +
+            '<td><strong>' + esc(rf.judge) + '</strong></td>' +
+            '<td class="mono num"><strong>' + esc(rf.k) + ' / ' + esc(rf.n) + '</strong></td>' +
+            '<td class="mono num sv-rat">&times;' + esc(ratioStr) + '</td>' +
+            '<td class="mono sv-tm"><div><strong>' + esc(rf.distinctDays) + ' д. / ' + esc(rf.distinctMonths) + ' мес.</strong> <span class="muted">(макс. ' + esc(rf.maxDayPct) + '%/д)</span></div>' + zopHtml + restrHtml + '</td>' +
+            '<td class="mono num">' + esc(qStr) + '</td>' +
+            '<td><div class="svet-cell-actions">' + caseHtml + '<button type="button" class="svet-signal-btn" data-svet-signal-idx="' + esc(rf.idx) + '" title="Създай готов сигнал по Глава VIII АПК">⚖ Сигнал</button></div></td>';
+          frag.appendChild(tr);
+        });
+        allRedTbody.appendChild(frag);
+      }
+      if (allRedMoreBar) allRedMoreBar.hidden = true;
+    }
+
+    if (loadAllRedBtn) {
+      loadAllRedBtn.addEventListener('click', function () {
+        ensureExtraRowsHydrated();
+        applyFilter();
+      });
+    }
 
     var activeSector = 'jud';
     var activeTab = 'all';
@@ -2166,6 +2253,9 @@
       var tierFilter = allRedTierSel ? allRedTierSel.value : '';
       var obFilter = allRedOblastSel ? allRedOblastSel.value : '';
       var kindFilter = allRedKindSel ? allRedKindSel.value : '';
+      if (q || tierFilter || obFilter || kindFilter || activeTab === 'allred') {
+        ensureExtraRowsHydrated();
+      }
       var totalRows = 0;
       var shownRows = 0;
 
@@ -4131,14 +4221,22 @@
   document.addEventListener('DOMContentLoaded', function () {
     initTheme();
     initGate();
-    initJudicialMap();
-    var filterProxy = { searchAll: null };
-    var drawerApi = initDependencyDrawer(filterProxy);
-    var networkGraphApi = initJudicialNetworkGraph(drawerApi);
-    var filterApi = initControls(networkGraphApi);
-    if (filterApi && filterApi.searchAll) {
-      filterProxy.searchAll = filterApi.searchAll;
-    }
-    initSignalGenerator(parsePayload());
+    document.addEventListener('click', function (ev) {
+      var pill = ev.target && ev.target.closest ? ev.target.closest('a.svet-inspect-pill') : null;
+      if (pill && pill.closest('tr.svet-row-clickable')) {
+        ev.stopPropagation();
+      }
+    });
+    ensureRuntimePayload().then(function () {
+      initJudicialMap();
+      var filterProxy = { searchAll: null };
+      var drawerApi = initDependencyDrawer(filterProxy);
+      var networkGraphApi = initJudicialNetworkGraph(drawerApi);
+      var filterApi = initControls(networkGraphApi);
+      if (filterApi && filterApi.searchAll) {
+        filterProxy.searchAll = filterApi.searchAll;
+      }
+      initSignalGenerator(parsePayload());
+    });
   });
 })();

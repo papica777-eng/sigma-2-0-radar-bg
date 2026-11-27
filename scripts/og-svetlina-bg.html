@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      width: 1200px; height: 630px;
+      overflow: hidden;
+      background: #f7f6f2;
+      color: #131720;
+      font-family: 'Segoe UI', -apple-system, sans-serif;
+    }
+    .frame {
+      width: 1200px; height: 630px;
+      padding: 40px 52px;
+      border-top: 10px solid #b91c1c;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .kicker {
+      font-family: Consolas, monospace;
+      font-size: 15px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: #b91c1c;
+      display: flex; justify-content: space-between;
+    }
+    .headline {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 44px; font-weight: 700; line-height: 1.12;
+      margin: 12px 0 18px; letter-spacing: -0.02em;
+    }
+    .headline em { color: #b91c1c; font-style: italic; }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      flex: 1;
+      align-content: center;
+    }
+    .m-card {
+      background: #ffffff;
+      border: 1px solid #d4d0c5;
+      border-left: 5px solid #131720;
+      padding: 20px 24px;
+    }
+    .m-card.red { border-left-color: #b91c1c; background: #fffafa; }
+    .m-card.amber { border-left-color: #b45309; }
+    .m-card.teal { border-left-color: #0f766e; }
+    .m-lbl { font-size: 14px; text-transform: uppercase; letter-spacing: 0.04em; color: #5b6372; font-weight: 700; }
+    .m-val { font-family: Consolas, monospace; font-size: 40px; font-weight: 700; margin: 6px 0 4px; color: #131720; }
+    .m-card.red .m-val { color: #b91c1c; }
+    .m-card.amber .m-val { color: #b45309; }
+    .m-card.teal .m-val { color: #0f766e; }
+    .m-sub { font-size: 14px; color: #5b6372; }
+    .foot {
+      border-top: 1px solid #d4d0c5;
+      padding-top: 14px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 14px; color: #5b6372;
+    }
+    .url { font-family: Consolas, monospace; font-weight: 700; color: #131720; font-size: 15px; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <div>
+      <div class="kicker">
+        <span>NASVETLO · НАЦИОНАЛЕН СЪДЕБЕН ОДИТ · 2023–2026</span>
+        <span>CERN ZENODO DOI: 10.5281/zenodo.24580253</span>
+      </div>
+      <div class="headline">От мрак към светлина: <em>2 234 509 дела</em> в ЕИСС, адвокатите и свързаната власт</div>
+    </div>
+
+    <div class="metrics">
+      <div class="m-card red">
+        <div class="m-lbl">Чисти необяснени аномалии (Приоритет ИВСС)</div>
+        <div class="m-val">154 от 869 RED</div>
+        <div class="m-sub">След филтър Ниво 1 (BH FDR q &lt; 0,01 · 62 166 теста)</div>
+      </div>
+      <div class="m-card">
+        <div class="m-lbl">Пълен 4-годишен обхват (ЕПЕП / ЕИСС)</div>
+        <div class="m-val">2 234 509 дела</div>
+        <div class="m-sub">180 съдилища · 3 244 съдии · 0 ЕГН (GDPR)</div>
+      </div>
+      <div class="m-card amber">
+        <div class="m-lbl">Ниво 3 · Структурни възли</div>
+        <div class="m-val">31 хъба · 7 адв.&rarr;съдия</div>
+        <div class="m-sub">Съдии с &ge;2 необясними флага · 9 многогодишни рецидива</div>
+      </div>
+      <div class="m-card teal">
+        <div class="m-lbl">Мост към ЗОП и еврофондове</div>
+        <div class="m-val">&euro;53,22 млрд. · 302 EPPO</div>
+        <div class="m-sub">206 907 договора · 32 субекта &times; 50 лица · Rust/Wasm SHA-256</div>
+      </div>
+    </div>
+
+    <div class="foot">
+      <span class="url">nasvetlo.website/ot-mrak-kam-svetlina.html</span>
+      <span>100% Отворени държавни данни (CC-BY 4.0) · Презумпция за невиновност</span>
+    </div>
+  </div>
+</body>
+</html>

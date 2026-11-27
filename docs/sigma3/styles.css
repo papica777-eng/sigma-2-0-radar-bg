@@ -7081,3 +7081,159 @@ body[data-density=compact] .panel-box {
   color: #f8fafc;
   border-color: #334155;
 }
+
+/* --- Stage 3: Compact Table Cells, Load-More Bar & Rust/Wasm Verifier Card --- */
+.sv-sub {
+  font-size: 0.7rem;
+}
+
+.sv-eik {
+  font-size: 0.69rem;
+}
+
+.sv-rat {
+  color: var(--crimson, #b91c1c);
+  font-weight: 700;
+}
+
+.sv-tm {
+  font-size: 0.71rem;
+  white-space: nowrap;
+}
+
+.sv-zop {
+  color: var(--ochre, #b45309);
+  font-weight: 700;
+}
+
+.svet-load-more-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 12px;
+  border-top: 1px solid var(--line, #e2e8f0);
+  background: var(--surface, #ffffff);
+}
+
+.svet-wasm-card {
+  margin: 14px 0;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 118, 110, 0.35);
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.svet-wasm-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.svet-wasm-status {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: var(--ink-muted, #475569);
+}
+
+.svet-wasm-result {
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #10b981;
+  background: rgba(255, 255, 255, 0.9);
+}
+.svet-wasm-result.is-warn {
+  border-color: #d97706;
+  background: rgba(254, 243, 199, 0.5);
+}
+
+.svet-wasm-head-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: #065f46;
+  margin-bottom: 8px;
+}
+
+.svet-wasm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 8px;
+}
+
+.svet-wasm-pill {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.04);
+  font-size: 0.74rem;
+}
+.svet-wasm-pill strong {
+  font-size: 0.79rem;
+  color: var(--ink, #0f172a);
+}
+
+.svet-wasm-sub {
+  margin-top: 8px;
+  font-size: 0.73rem;
+  word-break: break-all;
+}
+
+.svet-wasm-calc {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(15, 118, 110, 0.3);
+  font-size: 0.75rem;
+}
+.svet-wasm-calc label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+}
+.svet-wasm-calc input {
+  width: 78px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid var(--line, #cbd5e1);
+  background: var(--surface, #ffffff);
+  color: var(--ink, #0f172a);
+  font-family: monospace;
+  font-size: 0.76rem;
+}
+
+[data-theme=dark] .svet-load-more-bar {
+  background: #0f172a;
+  border-color: #334155;
+}
+[data-theme=dark] .svet-wasm-card {
+  background: rgba(16, 185, 129, 0.09);
+  border-color: rgba(52, 211, 153, 0.35);
+}
+[data-theme=dark] .svet-wasm-result {
+  background: rgba(15, 23, 42, 0.9);
+}
+[data-theme=dark] .svet-wasm-head-row {
+  color: #6ee7b7;
+}
+[data-theme=dark] .svet-wasm-pill {
+  background: rgba(255, 255, 255, 0.05);
+}
+[data-theme=dark] .svet-wasm-pill strong {
+  color: #f8fafc;
+}
+[data-theme=dark] .svet-wasm-calc input {
+  background: #020617;
+  color: #f8fafc;
+  border-color: #334155;
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      width: 1200px; height: 630px;
+      overflow: hidden;
+      background: #0f172a;
+      color: #f8fafc;
+      font-family: 'Segoe UI', -apple-system, sans-serif;
+    }
+    .frame {
+      width: 1200px; height: 630px;
+      padding: 40px 52px;
+      border-top: 10px solid #10b981;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: radial-gradient(circle at top right, rgba(30, 58, 138, 0.45), transparent 60%);
+    }
+    .kicker {
+      font-family: Consolas, monospace;
+      font-size: 14px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: #34d399;
+      display: flex; justify-content: space-between;
+    }
+    .headline {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 42px; font-weight: 700; line-height: 1.15;
+      margin: 12px 0 18px; letter-spacing: -0.02em;
+    }
+    .headline em { color: #f87171; font-style: italic; }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      flex: 1;
+      align-content: center;
+    }
+    .m-card {
+      background: rgba(30, 41, 59, 0.85);
+      border: 1px solid #334155;
+      border-left: 5px solid #38bdf8;
+      padding: 20px 24px;
+      border-radius: 6px;
+    }
+    .m-card.red { border-left-color: #f87171; }
+    .m-card.amber { border-left-color: #fbbf24; }
+    .m-card.green { border-left-color: #34d399; }
+    .m-lbl { font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; font-weight: 700; }
+    .m-val { font-family: Consolas, monospace; font-size: 38px; font-weight: 700; margin: 6px 0 4px; color: #ffffff; }
+    .m-card.red .m-val { color: #fca5a5; }
+    .m-card.amber .m-val { color: #fde68a; }
+    .m-card.green .m-val { color: #6ee7b7; }
+    .m-sub { font-size: 14px; color: #cbd5e1; }
+    .foot {
+      border-top: 1px solid #334155;
+      padding-top: 14px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 14px; color: #94a3b8;
+    }
+    .url { font-family: Consolas, monospace; font-weight: 700; color: #f8fafc; font-size: 15px; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <div>
+      <div class="kicker">
+        <span>NASVETLO.WEBSITE · EXECUTIVE BRIEF · EPPO / EC DG JUST / OCCRP</span>
+        <span>CERN ZENODO DOI: 10.5281/zenodo.24580253</span>
+      </div>
+      <div class="headline">Bulgaria 4-Year Judicial Allocation &amp; <em>EU Procurement</em> Audit (2023–2026)</div>
+    </div>
+
+    <div class="metrics">
+      <div class="m-card">
+        <div class="m-lbl">Unified Judicial Portal (EISS / EPEP)</div>
+        <div class="m-val">2,234,509 Cases</div>
+        <div class="m-sub">180 courts · 3,244 judges · 62,166 exact binomial tests</div>
+      </div>
+      <div class="m-card red">
+        <div class="m-lbl">Unexplained Priority FDR Anomalies</div>
+        <div class="m-val">154 of 869 RED</div>
+        <div class="m-sub">BH FDR q &lt; 0.01 · After statutory/duty/batch exclusions</div>
+      </div>
+      <div class="m-card amber">
+        <div class="m-lbl">EPPO-Relevant High-Risk EU Contracts</div>
+        <div class="m-val">302 Contracts (&euro;1.58B)</div>
+        <div class="m-sub">Of 28,339 EU-funded tenders (&euro;10.74B total CAIS-EOP)</div>
+      </div>
+      <div class="m-card green">
+        <div class="m-lbl">AML / ZMIP Beneficial Ownership Gaps</div>
+        <div class="m-val">30 Entities (&euro;2.99B)</div>
+        <div class="m-sub">Zero personal EGN IDs (GDPR) · Rust/Wasm verified SHA-256</div>
+      </div>
+    </div>
+
+    <div class="foot">
+      <span class="url">nasvetlo.website/en/</span>
+      <span>CC-BY 4.0 Open Scientific Archive · Presumption of Innocence</span>
+    </div>
+  </div>
+</body>
+</html>

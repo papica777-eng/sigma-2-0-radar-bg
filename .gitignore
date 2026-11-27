@@ -7,3 +7,5 @@ dist/
 .astro/
 .cache_sigma3_judicial/
 .cache_nasvetlo_50/
+
+rust-verifier/target/

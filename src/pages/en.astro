@@ -146,7 +146,14 @@ const jsonLd = JSON.stringify({
       content={`${fmtIntEn(totalCases)} court cases · ${unexplainedCount} unexplained FDR priority anomalies · ${fmtIntEn(m6.eppoHighRiskCount || 302)} EPPO-relevant high-risk EU contracts (${fmtEurB(m6.eppoHighRiskEur || 1583261952.55)}). CERN Zenodo DOI: ${ZENODO_DOI}.`}
     />
     <meta property="og:url" content="https://nasvetlo.website/en/" />
-    <link rel="stylesheet" href="/sigma3/styles.css?v=20261127b" />
+    <meta property="og:image" content="https://nasvetlo.website/sigma3/og-en-eppo.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="NaSvetlo — Bulgaria Judicial Allocation &amp; EU Procurement Audit (2023–2026)" />
+    <meta name="twitter:description" content={`${fmtIntEn(totalCases)} court cases · ${unexplainedCount} unexplained FDR priority anomalies · ${fmtIntEn(m6.eppoHighRiskCount || 302)} EPPO EU contracts.`} />
+    <meta name="twitter:image" content="https://nasvetlo.website/sigma3/og-en-eppo.png" />
+    <link rel="stylesheet" href="/sigma3/styles.css?v=20261127c" />
     <script type="application/ld+json" set:html={jsonLd}></script>
     <style>
       .en-topbar {
@@ -551,10 +558,35 @@ const jsonLd = JSON.stringify({
             <strong>Legal Disclaimer &amp; GDPR:</strong> Red/Amber indicators are <em>purely statistical triage signals</em> warranting institutional inspection under Art. 9 of the Bulgarian Judiciary Act (random case allocation); they do not assert guilt or unlawful conduct. Automated ingress filtering excludes all natural persons, personal identification numbers (EGN), and sensitive health records.
           </p>
           <p class="mono" style="font-size:0.78rem;word-break:break-all;">
-            <strong>Snapshot SHA-256 (nasvetlo_eiss_audit.json):</strong> {SHA256_SNAPSHOT}<br />
+            <strong>Raw File SHA-256 (Zenodo &amp; Live JSON):</strong> b6a49ec4644042f43657c10d413e5d055cb3f1e04b57fa3595565999fdec2bc3<br />
+            <strong>Canonical RED Snapshot SHA-256:</strong> {SHA256_SNAPSHOT}<br />
             <strong>CERN Zenodo Permanent Archive:</strong> <a href={ZENODO_URL} target="_blank" rel="noopener noreferrer">https://doi.org/{ZENODO_DOI}</a>
           </p>
+          <div class="svet-wasm-card" id="svetWasmVerifierCard">
+            <div class="svet-wasm-top">
+              <div>
+                <strong>Zero-Trust Cryptographic &amp; Statistical Verifier (Rust &rarr; WebAssembly)</strong>
+                <div class="muted" style="font-size:0.78rem;">
+                  Fetches the raw 3.74 MB audit JSON in your browser, verifies SHA-256 via FIPS 180-4 in Rust/Wasm + WebCrypto parity, scans for 0 personal EGN bytes, and recomputes all {redTotal} exact binomial tail probabilities locally.
+                </div>
+              </div>
+              <button type="button" class="btn btn-dark" id="svetRunWasmVerifyBtn">
+                Verify SHA-256 &amp; Binomial FDR Locally (Rust/Wasm)
+              </button>
+            </div>
+            <div id="svetWasmVerifyOutput" hidden></div>
+            <div class="svet-wasm-calc">
+              <span class="mono" style="font-size:0.74rem;font-weight:700;">Custom Row Test:</span>
+              <label>k <input type="number" id="svetCalcK" value="345" min="1" /></label>
+              <label>n <input type="number" id="svetCalcN" value="789" min="1" /></label>
+              <label>Expected <input type="number" id="svetCalcExp" value="60.69" step="0.01" min="0.01" /></label>
+              <label>Tests <input type="number" id="svetCalcTests" value="62166" min="1" /></label>
+              <button type="button" class="btn" id="svetCalcRunBtn">Compute p &amp; q (Wasm)</button>
+            </div>
+            <div id="svetCalcOut" hidden></div>
+          </div>
           <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;">
+            <a class="subbar-link" href="/reports/NASVETLO_EPPO_DG_JUST_EXECUTIVE_BRIEF_2026_EN.pdf" download>Download Executive Brief PDF (A4)</a>
             <a class="subbar-link" href="/data/nasvetlo_eiss_audit.json" download>Download Full EISS Audit JSON (3.7 MB)</a>
             <a class="subbar-link" href="/data/sigma3_judicial_6.json" download>Download 6-Module Procurement Radar JSON</a>
             <a class="subbar-link" href="/data/SIGMA_2_0_ALL_OFFICIALS_571.csv" download>Download 571 Officials Registry CSV</a>
@@ -563,6 +595,8 @@ const jsonLd = JSON.stringify({
         </div>
       </section>
     </main>
+
+    <script defer src="/sigma3/nasvetlo_verifier.js?v=20261127c"></script>
 
     <script is:inline>
       (function () {

@@ -17,7 +17,7 @@
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://nasvetlo.website/sigma3/og-card.png</image:loc>
+      <image:loc>https://nasvetlo.website/sigma3/og-svetlina-bg.png</image:loc>
       <image:title>NAsvetlo · От мрак към светлина — Одит на 2 234 509 дела в ЕИСС и интерактивен мрежов граф</image:title>
     </image:image>
   </url>
@@ -26,6 +26,10 @@
     <lastmod>2026-11-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://nasvetlo.website/sigma3/og-en-eppo.png</image:loc>
+      <image:title>NaSvetlo — Bulgaria 4-Year Judicial Allocation &amp; EU Procurement Audit (2023–2026)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://nasvetlo.website/razsledvaniya.html</loc>

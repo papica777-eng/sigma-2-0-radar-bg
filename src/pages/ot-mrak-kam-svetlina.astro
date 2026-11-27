@@ -1,4 +1,6 @@
 ---
+import fs from 'node:fs';
+import path from 'node:path';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import eissAuditRaw from '../../docs/data/nasvetlo_eiss_audit.json';
 import j6Raw from '../../docs/data/sigma3_judicial_6.json';
@@ -748,12 +750,60 @@ const signalFlags = allRedFlagsList.map((rf: any) => ({
   basis: rf.basis || '',
 }));
 
+const ssrIdxSet = new Set(allRedFlagsList.slice(0, 370).map((r: any) => r.idx));
+for (const zr of allRedFlagsList.filter((r: any) => r.tier === 'STATUTORY_ZSRS_DUTY').slice(0, 10)) {
+  ssrIdxSet.add(zr.idx);
+}
+const ssrRedFlagsList = allRedFlagsList.filter((r: any) => ssrIdxSet.has(r.idx));
+const extraRedFlagsList = allRedFlagsList
+  .filter((r: any) => !ssrIdxSet.has(r.idx))
+  .map((rf: any) => ({
+  idx: rf.idx,
+  tier: rf.tier,
+  tierShort: rf.tierShort,
+  tierCls: rf.tierCls,
+  nuts3: rf.nuts3,
+  oblastName: rf.oblastName,
+  court: rf.court,
+  kind: rf.kind,
+  year: rf.year,
+  party: rf.party,
+  eik: rf.eik || '',
+  judge: rf.judge,
+  k: rf.k,
+  n: rf.n,
+  ratio: Number(Number(rf.ratio || 0).toFixed(2)),
+  q: rf.q,
+  distinctDays: rf.distinctDays,
+  distinctMonths: rf.distinctMonths,
+  maxDayPct: Math.round(Number(rf.maxDayShare || 0) * 100),
+  restrPct: Math.round(Number(rf.restrictedShare || 0) * 100),
+  procEur: Math.round(Number(rf.procEur || 0)),
+  caseUrl: rf.caseUrl || '',
+  caseRef: rf.caseRef || '',
+}));
+
+const RAW_FILE_SHA256 = 'b6a49ec4644042f43657c10d413e5d055cb3f1e04b57fa3595565999fdec2bc3';
+
+fs.writeFileSync(
+  path.resolve('docs/data/svetlina_runtime_payload.json'),
+  JSON.stringify({
+    judicialMap: judicialMapConfig,
+    signalFlags,
+    networkData,
+    extraRedRows: extraRedFlagsList,
+  }),
+  'utf8'
+);
+
 const graphPayloadJson = JSON.stringify({
   asOf,
   zenodoDoi: '10.5281/zenodo.24580253',
   zenodoUrl: 'https://zenodo.org/records/24580253',
   datasetSha256:
     datasetSha256 || 'a30faab18bbfa551a3fc8a2389c2f8661115f9b85137e35b5eb0ad41b7a912ca',
+  fileSha256: RAW_FILE_SHA256,
+  runtimePayloadUrl: 'data/svetlina_runtime_payload.json?v=20261127c',
   universeMeta: {
     casesFmt: totalCasesFmt,
     judgesFmt: totalJudgesFmt,
@@ -765,14 +815,11 @@ const graphPayloadJson = JSON.stringify({
     yearRange: yearRangeLabel,
   },
   sectors: ministrySectors,
-  judicialMap: judicialMapConfig,
-  signalFlags,
   politicians,
   corpFlags,
   securityFlags,
   cartelZmipRows,
   eppoLawSecurityRows,
-  networkData,
 });
 
 const extraJsonLd = JSON.stringify({
@@ -872,9 +919,10 @@ const extraJsonLd = JSON.stringify({
   asOf={asOf}
   subpage={true}
   canonicalPath="/ot-mrak-kam-svetlina.html"
-  subpageScript="sigma3/ot_mrak_kam_svetlina.js?v=20261127b"
+  subpageScript="sigma3/ot_mrak_kam_svetlina.js?v=20261127c"
   subpageSyncHref="data/nasvetlo_eiss_audit.json"
   extraJsonLd={extraJsonLd}
+  ogImage="https://nasvetlo.website/sigma3/og-svetlina-bg.png"
 >
   <!-- COUNTDOWN VAULT & HERO (JUDICIAL-FIRST NARRATIVE) -->
   <section
@@ -1591,7 +1639,7 @@ const extraJsonLd = JSON.stringify({
             </tr>
           </thead>
           <tbody id="svetAllRedTbody">
-            {allRedFlagsList.map((rf) => {
+            {ssrRedFlagsList.map((rf) => {
               const qStr = Number(rf.q) < 0.001 ? Number(rf.q).toExponential(2) : Number(rf.q).toFixed(4);
               const maxDayPct = Math.round(Number(rf.maxDayShare || 0) * 100);
               const restrPct = Math.round(Number(rf.restrictedShare || 0) * 100);
@@ -1607,36 +1655,30 @@ const extraJsonLd = JSON.stringify({
                 >
                   <td class="mono muted">{rf.idx}</td>
                   <td>
-                    <span class={`svetlina-badge ${rf.tierCls}`} title={rf.basis}>{rf.tierShort}</span>
+                    <span class={`svetlina-badge ${rf.tierCls}`}>{rf.tierShort}</span>
                   </td>
                   <td><span class="svetlina-badge is-indigo">{rf.oblastName.replace(' (столица)', ' (гр.)')}</span></td>
                   <td>
                     <strong>{rf.court}</strong>
-                    <div class="muted" style="font-size:0.7rem;">{rf.kind} ({rf.year})</div>
+                    <div class="muted sv-sub">{rf.kind} ({rf.year})</div>
                   </td>
                   <td>
                     <strong>{rf.party}</strong>
-                    {rf.eik ? <div class="mono muted" style="font-size:0.69rem;">ЕИК {rf.eik}</div> : ''}
+                    {rf.eik ? <div class="mono muted sv-eik">ЕИК {rf.eik}</div> : ''}
                   </td>
                   <td><strong>{rf.judge}</strong></td>
                   <td class="mono num"><strong>{rf.k} / {rf.n}</strong></td>
-                  <td class="mono num" style="color:var(--crimson);font-weight:700;">&times;{Number(rf.ratio).toFixed(2).replace('.', ',')}</td>
-                  <td class="mono" style="font-size:0.71rem;white-space:nowrap;">
+                  <td class="mono num sv-rat">&times;{Number(rf.ratio).toFixed(2).replace('.', ',')}</td>
+                  <td class="mono sv-tm">
                     <div><strong>{rf.distinctDays} д. / {rf.distinctMonths} мес.</strong> <span class="muted">(макс. {maxDayPct}%/д)</span></div>
-                    {rf.procEur > 0 ? <div style="color:var(--ochre);font-weight:700;">ЗОП: {fmtEurShort(rf.procEur)}</div> : ''}
+                    {rf.procEur > 0 ? <div class="sv-zop">ЗОП: {fmtEurShort(rf.procEur)}</div> : ''}
                     {restrPct >= 50 ? <div class="muted">Огр. достъп: {restrPct}%</div> : ''}
                   </td>
                   <td class="mono num">{qStr}</td>
                   <td>
                     <div class="svet-cell-actions">
                       {rf.caseUrl ? (
-                        <a
-                          class="svet-inspect-pill"
-                          href={rf.caseUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onclick="event.stopPropagation();"
-                        >
+                        <a class="svet-inspect-pill" href={rf.caseUrl} target="_blank" rel="noopener noreferrer">
                           {rf.caseRef} ↗
                         </a>
                       ) : (
@@ -1646,8 +1688,7 @@ const extraJsonLd = JSON.stringify({
                         type="button"
                         class="svet-signal-btn"
                         data-svet-signal-idx={rf.idx}
-                        onclick="event.stopPropagation();"
-                        title="Създай готов сигнал по Глава VIII АПК до ИВСС / АДФИ / EPPO"
+                        title="Създай готов сигнал по Глава VIII АПК"
                       >
                         ⚖ Сигнал
                       </button>
@@ -1658,6 +1699,11 @@ const extraJsonLd = JSON.stringify({
             })}
           </tbody>
         </table>
+        <div class="svet-load-more-bar" id="svetAllRedMoreBar">
+          <button type="button" class="btn" id="svetLoadAllRedBtn">
+            Покажи всички {allRedFlagsList.length} RED флага (+{extraRedFlagsList.length} допълнителни реда)
+          </button>
+        </div>
       </div>
     </section>
 
@@ -2058,10 +2104,34 @@ const extraJsonLd = JSON.stringify({
           официални източници. Те не представляват констатация за извършено нарушение или престъпление и не заместват
           проверката на компетентните органи. За всички посочени лица важи презумпцията за невиновност.
         </p>
+        <div class="svet-wasm-card" id="svetWasmVerifierCard">
+          <div class="svet-wasm-top">
+            <div>
+              <strong>Локален криптографски и математически верификатор (Rust &rarr; WebAssembly)</strong>
+              <div class="muted" style="font-size:0.76rem;">
+                Изтегля суровия 3,74 MB одитен JSON директно в браузъра, проверява SHA-256 (FIPS 180-4 + WebCrypto), сканира за 0 ЕГН и преизчислява точната биномна вероятност на всички {allRedFlagsList.length} RED флага.
+              </div>
+            </div>
+            <button type="button" class="btn btn-dark" id="svetRunWasmVerifyBtn">
+              Верифицирай SHA-256 &amp; Binomial FDR локално (Rust/Wasm)
+            </button>
+          </div>
+          <div id="svetWasmVerifyOutput" hidden></div>
+          <div class="svet-wasm-calc">
+            <span class="mono" style="font-size:0.74rem;font-weight:700;">Тест на единичен ред:</span>
+            <label>k <input type="number" id="svetCalcK" value="345" min="1" /></label>
+            <label>n <input type="number" id="svetCalcN" value="789" min="1" /></label>
+            <label>Очаквано <input type="number" id="svetCalcExp" value="60.69" step="0.01" min="0.01" /></label>
+            <label>Тестове <input type="number" id="svetCalcTests" value="62166" min="1" /></label>
+            <button type="button" class="btn" id="svetCalcRunBtn">Изчисли p &amp; q (Wasm)</button>
+          </div>
+          <div id="svetCalcOut" hidden></div>
+        </div>
         <p class="svetlina-method-meta">Данни към {asOf} · Отворени данни CC-BY 4.0 · Без ЕГН и лични данни на физически лица</p>
         <p class="svetlina-method-meta" style="margin-top:4px;">
           Неизменяем архив в CERN Zenodo: <a href="https://zenodo.org/records/24580253" target="_blank" rel="noopener noreferrer" style="text-decoration:underline;font-weight:700;">DOI 10.5281/zenodo.24580253</a> · <a href="/en/" style="text-decoration:underline;">English Brief (EPPO / EC)</a>
         </p>
+        <p class="svetlina-method-meta mono" style="word-break:break-all;margin-top:4px;">File SHA-256 (Zenodo &amp; live JSON): {RAW_FILE_SHA256}</p>
         {datasetSha256 ? <p class="svetlina-method-meta mono" style="word-break:break-all;margin-top:4px;">SHA-256 ({allRedFlagsList.length} RED snapshot): {datasetSha256}</p> : ''}
       </div>
     </section>
@@ -2188,4 +2258,5 @@ const extraJsonLd = JSON.stringify({
   </section>
 
   <script type="application/json" id="svetlinaGraphPayload" set:html={graphPayloadJson}></script>
+  <script defer src="sigma3/nasvetlo_verifier.js?v=20261127c"></script>
 </BaseLayout>
