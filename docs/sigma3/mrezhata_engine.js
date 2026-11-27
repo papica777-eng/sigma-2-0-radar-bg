@@ -135,37 +135,13 @@
   // 1. Metadata & Precision Monochrome SVG Templates (ZERO EMOJIS)
   // ---------------------------------------------------------------------------
   var TYPE_META = {
-    company: {
-      label: 'Фирма / Изпълнител',
-      short: 'ФИРМА',
-      color: '#e11d48',
-      glow: 'rgba(225, 29, 72, 0.35)',
-      shape: 'hexagon',
-      tier: 2,
-    },
-    authority: {
-      label: 'Възложител / Ведомство',
-      short: 'ВЪЗЛОЖИТЕЛ',
-      color: '#2563eb',
-      glow: 'rgba(37, 99, 235, 0.35)',
-      shape: 'shield',
-      tier: 1,
-    },
-    judge: {
-      label: 'Съдия / Магистрат',
-      short: 'СЪДИЯ',
-      color: '#7c3aed',
-      glow: 'rgba(124, 58, 237, 0.38)',
-      shape: 'octagon',
-      tier: 4,
-    },
-    lawyer: {
-      label: 'Адвокат / Кантора',
-      short: 'КАНТОРА',
-      color: '#0891b2',
-      glow: 'rgba(8, 145, 178, 0.35)',
-      shape: 'square',
-      tier: 3,
+    ubo: {
+      label: 'Краен собственик (ЗМИП чл. 63)',
+      short: 'ЗМИП UBO',
+      color: '#059669',
+      glow: 'rgba(5, 150, 105, 0.42)',
+      shape: 'pentagon',
+      tier: 0,
     },
     official: {
       label: 'Публично лице (ЗПК)',
@@ -173,7 +149,39 @@
       color: '#d97706',
       glow: 'rgba(217, 119, 6, 0.35)',
       shape: 'ring',
-      tier: 0,
+      tier: 1,
+    },
+    authority: {
+      label: 'Възложител / Ведомство',
+      short: 'ВЪЗЛОЖИТЕЛ',
+      color: '#2563eb',
+      glow: 'rgba(37, 99, 235, 0.35)',
+      shape: 'shield',
+      tier: 2,
+    },
+    company: {
+      label: 'Фирма / ДЗЗД / Холдинг',
+      short: 'ФИРМА',
+      color: '#e11d48',
+      glow: 'rgba(225, 29, 72, 0.35)',
+      shape: 'hexagon',
+      tier: 3,
+    },
+    lawyer: {
+      label: 'Адвокат / Кантора',
+      short: 'КАНТОРА',
+      color: '#0891b2',
+      glow: 'rgba(8, 145, 178, 0.35)',
+      shape: 'square',
+      tier: 4,
+    },
+    judge: {
+      label: 'Съдия / Магистрат',
+      short: 'СЪДИЯ',
+      color: '#7c3aed',
+      glow: 'rgba(124, 58, 237, 0.38)',
+      shape: 'octagon',
+      tier: 5,
     },
     case: {
       label: 'Съдебно дело / Спор',
@@ -181,12 +189,15 @@
       color: '#db2777',
       glow: 'rgba(219, 39, 119, 0.35)',
       shape: 'diamond',
-      tier: 5,
+      tier: 6,
     },
   };
 
   var EDGE_META = {
-    won_zop: { label: 'ЗОП договор', color: '#10b981', dashed: false },
+    beneficial_owner: { label: 'Действителен собственик (ЗМИП)', color: '#10b981', dashed: false },
+    holding_control: { label: 'Холдингов контрол / Майка', color: '#f97316', dashed: true },
+    consortium_member: { label: 'Участие в мега-консорциум (ДЗЗД)', color: '#eab308', dashed: false },
+    won_zop: { label: 'ЗОП договор', color: '#22c55e', dashed: false },
     conflict_of_interest: { label: 'Свързаност чл. 49 ЗПК', color: '#ef4444', dashed: true },
     owns_share: { label: 'Собственост / Участие в ТР', color: '#f59e0b', dashed: false },
     awarded_legal_tender: { label: 'Правни услуги (Модул J3)', color: '#06b6d4', dashed: false },
@@ -204,18 +215,22 @@
   };
 
   var STRATIFIED_HEADERS = [
-    { tier: 0, type: 'official', title: 'ПУБЛИЧНИ ЛИЦА (ЗПК)', color: '#d97706' },
-    { tier: 1, type: 'authority', title: 'ВЪЗЛОЖИТЕЛИ / ОРГАНИ', color: '#2563eb' },
-    { tier: 2, type: 'company', title: 'ФИРМИ / ИЗПЪЛНИТЕЛИ', color: '#e11d48' },
-    { tier: 3, type: 'lawyer', title: 'АДВОКАТИ / КАНТОРИ (J3)', color: '#0891b2' },
-    { tier: 4, type: 'judge', title: 'СЪДИИ / МАГИСТРАТИ', color: '#7c3aed' },
-    { tier: 5, type: 'case', title: 'СЪДЕБНИ ДЕЛА (ЕИСС)', color: '#db2777' },
+    { tier: 0, type: 'ubo', title: 'КРАЙНИ СОБСТВЕНИЦИ (ЗМИП)', color: '#059669' },
+    { tier: 1, type: 'official', title: 'ПУБЛИЧНИ ЛИЦА (ЗПК)', color: '#d97706' },
+    { tier: 2, type: 'authority', title: 'ВЪЗЛОЖИТЕЛИ / ОРГАНИ', color: '#2563eb' },
+    { tier: 3, type: 'company', title: 'ФИРМИ / ДЗЗД / ХОЛДИНГИ', color: '#e11d48' },
+    { tier: 4, type: 'lawyer', title: 'АДВОКАТИ / КАНТОРИ (J3)', color: '#0891b2' },
+    { tier: 5, type: 'judge', title: 'СЪДИИ / МАГИСТРАТИ', color: '#7c3aed' },
+    { tier: 6, type: 'case', title: 'СЪДЕБНИ ДЕЛА (ЕИСС)', color: '#db2777' },
   ];
 
   function getSvgGlyphHtml(type, size) {
     var sz = size || 13;
     var m = TYPE_META[type] || TYPE_META.company;
     var c = m.color;
+    if (type === 'ubo') {
+      return '<svg width="' + sz + '" height="' + sz + '" viewBox="0 0 16 16" aria-hidden="true"><polygon points="8,1.2 14.5,6 12,14 4,14 1.5,6" fill="' + c + '" fill-opacity="0.26" stroke="' + c + '" stroke-width="1.6"/><circle cx="8" cy="8.2" r="2.1" fill="' + c + '"/></svg>';
+    }
     if (type === 'company') {
       return '<svg width="' + sz + '" height="' + sz + '" viewBox="0 0 16 16" aria-hidden="true"><polygon points="8,1.5 14,5 14,11 8,14.5 2,11 2,5" fill="' + c + '" fill-opacity="0.22" stroke="' + c + '" stroke-width="1.6"/></svg>';
     }
@@ -280,7 +295,8 @@
     var pulsePhase = 0;
 
     // Filter State
-    var activeTypes = new Set(['company', 'authority', 'judge', 'lawyer', 'official', 'case']);
+    var ALL_NODE_TYPES = ['ubo', 'company', 'authority', 'judge', 'lawyer', 'official', 'case'];
+    var activeTypes = new Set(ALL_NODE_TYPES);
     var activeCluster = 'ALL';
     var activeEdgeKind = 'ALL';
     var minRisk = 0;
@@ -450,7 +466,7 @@
       var visEdges = 0;
       for (var i = 0; i < simNodes.length; i++) if (isNodeVisible(simNodes[i])) visNodes++;
       for (var j = 0; j < simEdges.length; j++) if (isEdgeVisible(simEdges[j])) visEdges++;
-      var modeNames = { force: 'Клъстерна физика', radial: 'Концентрична йерархия', stratified: '6-слойна верига', matrix: 'Секторна матрица' };
+      var modeNames = { force: 'Клъстерна физика', radial: 'Концентрична йерархия', stratified: '7-слойна верига', matrix: 'Секторна матрица' };
       telemetryEl.innerHTML =
         '<span>Видими: <strong>' + visNodes + '</strong> / ' + simNodes.length + ' възела</span>' +
         '<span class="tel-sep">·</span>' +
@@ -494,12 +510,12 @@
 
     function computeStratifiedTargets() {
       var targets = new Map();
-      var cols = [[], [], [], [], [], []];
+      var cols = [[], [], [], [], [], [], []];
       simNodes.forEach(function (n) {
-        var tier = (TYPE_META[n.type] && TYPE_META[n.type].tier != null) ? TYPE_META[n.type].tier : 2;
+        var tier = (TYPE_META[n.type] && TYPE_META[n.type].tier != null) ? TYPE_META[n.type].tier : 3;
         cols[tier].push(n);
       });
-      var colSpacing = 270;
+      var colSpacing = 240;
       var startX = -((cols.length - 1) * colSpacing) / 2;
       cols.forEach(function (group, cIdx) {
         group.sort(function (a, b) {
@@ -790,7 +806,15 @@
 
     function drawNodeShapePath(c, shape, x, y, r) {
       c.beginPath();
-      if (shape === 'hexagon') {
+      if (shape === 'pentagon') {
+        for (var p = 0; p < 5; p++) {
+          var pa = (p * Math.PI * 2) / 5 - Math.PI / 2;
+          var ppx = x + Math.cos(pa) * r * 1.08;
+          var ppy = y + Math.sin(pa) * r * 1.08;
+          if (p === 0) c.moveTo(ppx, ppy); else c.lineTo(ppx, ppy);
+        }
+        c.closePath();
+      } else if (shape === 'hexagon') {
         for (var i = 0; i < 6; i++) {
           var a = (i * Math.PI) / 3 - Math.PI / 6;
           var px = x + Math.cos(a) * r;
@@ -845,7 +869,17 @@
       c.lineWidth = Math.max(1.1, r * 0.11);
       c.lineCap = 'round';
       c.lineJoin = 'round';
-      if (type === 'company') {
+      if (type === 'ubo') {
+        c.beginPath();
+        c.arc(x - s * 0.28, y - s * 0.1, s * 0.42, 0, Math.PI * 2);
+        c.moveTo(x + s * 0.14, y - s * 0.1);
+        c.lineTo(x + s * 0.92, y - s * 0.1);
+        c.moveTo(x + s * 0.65, y - s * 0.1);
+        c.lineTo(x + s * 0.65, y + s * 0.38);
+        c.moveTo(x + s * 0.92, y - s * 0.1);
+        c.lineTo(x + s * 0.92, y + s * 0.3);
+        c.stroke();
+      } else if (type === 'company') {
         c.strokeRect(x - s * 0.85, y - s * 0.8, s * 1.7, s * 1.65);
         c.beginPath();
         c.moveTo(x - s * 0.35, y - s * 0.3); c.lineTo(x - s * 0.35, y + s * 0.35);
@@ -932,7 +966,7 @@
           c.fillText(rg.lbl, 0, -rg.r - 8);
         });
       } else if (layoutMode === 'stratified') {
-        var colSpacing = 270;
+        var colSpacing = 240;
         var sX = -((STRATIFIED_HEADERS.length - 1) * colSpacing) / 2;
         STRATIFIED_HEADERS.forEach(function (hdr) {
           var cx = sX + hdr.tier * colSpacing;
@@ -2003,7 +2037,7 @@
     function ensureNodeUnfiltered(n) {
       if (!n) return;
       if (!activeTypes.has(n.type)) {
-        activeTypes = new Set(['company', 'authority', 'judge', 'lawyer', 'official', 'case']);
+        activeTypes = new Set(ALL_NODE_TYPES);
         typeBtns.forEach(function (b) { b.classList.toggle('is-active', b.getAttribute('data-filter') === 'all'); });
       }
       if (activeCluster !== 'ALL' && n.cluster !== activeCluster && (!n.allClusters || n.allClusters.indexOf(activeCluster) === -1)) {
@@ -2054,13 +2088,13 @@
       btn.addEventListener('click', function () {
         var f = btn.getAttribute('data-filter');
         if (f === 'all') {
-          activeTypes = new Set(['company', 'authority', 'judge', 'lawyer', 'official', 'case']);
+          activeTypes = new Set(ALL_NODE_TYPES);
           typeBtns.forEach(function (b) { b.classList.toggle('is-active', b.getAttribute('data-filter') === 'all'); });
         } else {
           // Single-focus toggle for crisp exploration; clicking active solo chip returns to all
           var isAlreadySolo = activeTypes.size === 1 && activeTypes.has(f);
           if (isAlreadySolo) {
-            activeTypes = new Set(['company', 'authority', 'judge', 'lawyer', 'official', 'case']);
+            activeTypes = new Set(ALL_NODE_TYPES);
             typeBtns.forEach(function (b) { b.classList.toggle('is-active', b.getAttribute('data-filter') === 'all'); });
           } else {
             activeTypes = new Set([f]);
@@ -2103,7 +2137,7 @@
     });
 
     document.getElementById('btnResetFilters')?.addEventListener('click', function () {
-      activeTypes = new Set(['company', 'authority', 'judge', 'lawyer', 'official', 'case']);
+      activeTypes = new Set(ALL_NODE_TYPES);
       typeBtns.forEach(function (b) { b.classList.toggle('is-active', b.getAttribute('data-filter') === 'all'); });
       activeCluster = 'ALL';
       activeEdgeKind = 'ALL';
@@ -2375,7 +2409,10 @@
         'СУБЕКТ: ' + targetName + ' ' + targetEik + '\n' +
         'КАТЕГОРИЯ: ' + ((n && TYPE_META[n.type] && TYPE_META[n.type].label) || 'Субект') + '\n' +
         'ИНДЕКС НА РИСК: ' + targetRisk + ' | ИНДЕКС НА ЦЕНТРАЛНОСТ: ' + targetCent + '\n' +
-        'ФИНАНСОВ ОБЕМ (ЦАИС ЕОП): ' + targetAmount + '\n\n' +
+        'ФИНАНСОВ ОБЕМ (ЦАИС ЕОП): ' + targetAmount + '\n' +
+        (n && n.corporateLayer && n.corporateLayer.zmipOwners && n.corporateLayer.zmipOwners.length
+          ? 'ДЕЙСТВИТЕЛНИ СОБСТВЕНИЦИ (ЗМИП чл. 63 / ТР): ' + n.corporateLayer.zmipOwners.join(', ') + '\n'
+          : '') + '\n' +
         'ПЪРВИЧНИ РЕГИСТРОВИ ВРЪЗКИ:\n' +
         (connLines || '   1. Свързаност по официални регистри (ЦАИС ЕОП, ЕИСС, ТРРЮЛНЦ, КПК).') + '\n\n' +
         'ПРАВНО ОСНОВАНИЕ ЗА ПРОВЕРКА:\n' +

@@ -65,24 +65,25 @@ const graphPayloadJson = JSON.stringify({
 ---
 
 <BaseLayout
-  title="NAsvetlo — МРЕЖАТА: Крос-регистров граф на институционалната свързаност"
-  description={`Интерактивен форензик граф на институционалната и корпоративна свързаност в България: ${fmtInt(s.totalNodes)} възела, ${fmtInt(s.totalEdges)} верифицирани връзки, ${fmtInt(s.bridgeNodesCount)} мулти-клъстерни моста върху ${fmtEurShort(s.totalInvestigatedResourceEur)} публичен ресурс.`}
+  title="NAsvetlo — МРЕЖАТА: Пълна верига на капитала и институционалната свързаност"
+  description={`Интерактивен форензик граф на пълната капиталова и институционална верига в България: ${fmtInt(s.totalNodes)} възела, ${fmtInt(s.totalUbos)} крайни собственици (ЗМИП), ${fmtInt(s.totalEdges)} верифицирани връзки и ${fmtInt(s.bridgeNodesCount)} мулти-клъстерни моста върху ${fmtEurShort(s.totalInvestigatedResourceEur)} публичен ресурс.`}
   asOf={asOf}
   subpage={true}
   canonicalPath="/mrezhata.html"
-  subpageScript="sigma3/mrezhata_engine.js?v=20261127a"
+  subpageScript="sigma3/mrezhata_engine.js?v=20261127b"
   subpageSyncHref="data/nasvetlo_network_graph.json"
 >
   <!-- Hero Section -->
   <section class="mrezha-hero" id="top">
     <div class="mrezha-kicker">
       <span class="kicker-dot" aria-hidden="true"></span>
-      <span>КРОС-РЕГИСТРОВ ФОРЕНЗИК ГРАФ &middot; BRANDES CENTRALITY &middot; SHA-256 ВЕРИФИКАЦИЯ</span>
+      <span>ПЪЛНА КАПИТАЛОВА ВЕРИГА &middot; ЗМИП ЧЛ. 63 &middot; BRANDES CENTRALITY &middot; SHA-256</span>
     </div>
-    <h1 class="mrezha-title">МРЕЖАТА: Крос-регистров граф на институционалната свързаност</h1>
+    <h1 class="mrezha-title">МРЕЖАТА: Пълна верига на капитала и институционалната свързаност</h1>
     <p class="mrezha-subtitle">
-      Интерактивна аналитична система, обединяваща по единен ЕИК корпоративни капитали, обществени поръчки (ЦАИС ЕОП),
-      търговски и съдебни дела (ЕПЕП/ЕИСС), адвокатски кантори (Модул J3) и декларации пред КПК по ЗПК.
+      Интерактивна аналитична система, проследяваща пълната документална верига по единен ЕИК:
+      <strong>Възложител &rarr; ДЗЗД консорциум &rarr; Изпълнител &rarr; Холдинг-майка &rarr; Действителен собственик (чл. 63 ЗМИП)</strong>,
+      кръстосана с търговски дела (ЕПЕП/ЕИСС), адвокатски кантори (Модул J3) и декларации пред КПК по ЗПК.
       Всяка връзка носи първичен официален идентификатор и подлежи на локална Rust/Wasm криптографска проверка.
     </p>
 
@@ -92,6 +93,10 @@ const graphPayloadJson = JSON.stringify({
         <div class="mrezha-kpi-val">{fmtEurShort(s.totalInvestigatedResourceEur)}</div>
         <div class="mrezha-kpi-lbl">Анализиран финансов ресурс</div>
       </div>
+      <div class="mrezha-kpi-card is-teal">
+        <div class="mrezha-kpi-val">{fmtInt(s.totalUbos || 0)}</div>
+        <div class="mrezha-kpi-lbl">Крайни собственици (ЗМИП)</div>
+      </div>
       <div class="mrezha-kpi-card is-purple">
         <div class="mrezha-kpi-val">{fmtInt(s.totalNodes)}</div>
         <div class="mrezha-kpi-lbl">Картографирани възела</div>
@@ -100,13 +105,9 @@ const graphPayloadJson = JSON.stringify({
         <div class="mrezha-kpi-val">{fmtInt(s.totalEdges)}</div>
         <div class="mrezha-kpi-lbl">Верифицирани връзки</div>
       </div>
-      <div class="mrezha-kpi-card is-teal">
+      <div class="mrezha-kpi-card is-amber">
         <div class="mrezha-kpi-val">{fmtInt(s.bridgeNodesCount)}</div>
         <div class="mrezha-kpi-lbl">Мулти-клъстерни мостове</div>
-      </div>
-      <div class="mrezha-kpi-card is-amber">
-        <div class="mrezha-kpi-val">{fmtInt(s.criticalRiskNodesCount)}</div>
-        <div class="mrezha-kpi-lbl">Критични обекта (Score &ge; 80)</div>
       </div>
       <div class="mrezha-kpi-card is-ink">
         <div class="mrezha-kpi-val is-compact">{fmtInt(s.largestComponentSize)} / {fmtInt(s.connectedComponentsCount)}</div>
@@ -158,7 +159,7 @@ const graphPayloadJson = JSON.stringify({
             </svg>
             <span>Радиален</span>
           </button>
-          <button type="button" class="mrezha-layout-btn" data-layout="stratified" title="6-слойна институционална верига">
+          <button type="button" class="mrezha-layout-btn" data-layout="stratified" title="7-слойна пълна капиталова и съдебна верига (ЗМИП → ЗПК → Възложител → Фирма → Кантора → Съдия → Дело)">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <line x1="4" y1="4" x2="4" y2="20"></line>
               <line x1="12" y1="4" x2="12" y2="20"></line>
@@ -167,7 +168,7 @@ const graphPayloadJson = JSON.stringify({
               <circle cx="12" cy="13" r="2" fill="currentColor"></circle>
               <circle cx="20" cy="9" r="2" fill="currentColor"></circle>
             </svg>
-            <span>6-слоен</span>
+            <span>7-слоен</span>
           </button>
           <button type="button" class="mrezha-layout-btn" data-layout="matrix" title="Секторна матрица по 5 клъстера">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -269,9 +270,13 @@ const graphPayloadJson = JSON.stringify({
           <button type="button" class="mrezha-filter-btn is-active" data-filter="all">
             <span>Всички ({nodes.length})</span>
           </button>
+          <button type="button" class="mrezha-filter-btn" data-filter="ubo">
+            <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true"><polygon points="8,1.2 14.5,6 12,14 4,14 1.5,6" fill="#059669" fill-opacity="0.28" stroke="#059669" stroke-width="1.7"/><circle cx="8" cy="8.2" r="2" fill="#059669"/></svg>
+            <span>ЗМИП собственици ({s.totalUbos || 0})</span>
+          </button>
           <button type="button" class="mrezha-filter-btn" data-filter="company">
             <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true"><polygon points="8,1.5 14,5 14,11 8,14.5 2,11 2,5" fill="#e11d48" fill-opacity="0.25" stroke="#e11d48" stroke-width="1.7"/></svg>
-            <span>Фирми ({s.totalCompanies || 0})</span>
+            <span>Фирми &amp; ДЗЗД ({s.totalCompanies || 0})</span>
           </button>
           <button type="button" class="mrezha-filter-btn" data-filter="authority">
             <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5L13.5 3.8V8.2C13.5 11.4 11.1 13.7 8 14.8C4.9 13.7 2.5 11.4 2.5 8.2V3.8L8 1.5Z" fill="#2563eb" fill-opacity="0.25" stroke="#2563eb" stroke-width="1.7"/></svg>
@@ -307,9 +312,12 @@ const graphPayloadJson = JSON.stringify({
 
           <select id="mrezhaEdgeFilter" class="mrezha-select" aria-label="Филтър по тип връзка">
             <option value="ALL">Всички връзки</option>
+            <option value="beneficial_owner">Действителен собственик (ЗМИП)</option>
+            <option value="holding_control">Холдингов контрол / Майка</option>
+            <option value="consortium_member">Мега-консорциум (ДЗЗД)</option>
             <option value="won_zop">ЗОП договори</option>
             <option value="conflict_of_interest">Свързаност чл. 49 ЗПК</option>
-            <option value="owns_share">Собственост в ТР</option>
+            <option value="owns_share">Собственост / Акции (КПК)</option>
             <option value="awarded_legal_tender">Правни услуги (J3)</option>
             <option value="presided_case">Съдия / ЕИСС концентрация</option>
             <option value="disputes_with">Търговски / Съдебен спор</option>
@@ -345,8 +353,12 @@ const graphPayloadJson = JSON.stringify({
       <div class="mrezha-canvas-legend">
         <div class="legend-section-title">ВЪЗЛИ (ГЕОМЕТРИЯ)</div>
         <div class="legend-item">
+          <svg width="11" height="11" viewBox="0 0 16 16"><polygon points="8,1.2 14.5,6 12,14 4,14 1.5,6" fill="#059669"/></svg>
+          <span>Краен собственик (ЗМИП)</span>
+        </div>
+        <div class="legend-item">
           <svg width="11" height="11" viewBox="0 0 16 16"><polygon points="8,1.5 14,5 14,11 8,14.5 2,11 2,5" fill="#e11d48"/></svg>
-          <span>Фирма / Изпълнител</span>
+          <span>Фирма / ДЗЗД / Холдинг</span>
         </div>
         <div class="legend-item">
           <svg width="11" height="11" viewBox="0 0 16 16"><path d="M8 1.5L13.5 3.8V8.2C13.5 11.4 11.1 13.7 8 14.8C4.9 13.7 2.5 11.4 2.5 8.2V3.8L8 1.5Z" fill="#2563eb"/></svg>
@@ -370,7 +382,8 @@ const graphPayloadJson = JSON.stringify({
         </div>
         <div class="legend-divider"></div>
         <div class="legend-section-title">РЕБРА &amp; МАРКЕРИ</div>
-        <div class="legend-item"><span class="legend-line" style="background:#10b981;"></span><span>ЗОП договор</span></div>
+        <div class="legend-item"><span class="legend-line" style="background:#10b981;"></span><span>ЗМИП собственик / ЗОП</span></div>
+        <div class="legend-item"><span class="legend-line is-dashed" style="border-color:#f97316;"></span><span>Холдинг-майка / ДЗЗД</span></div>
         <div class="legend-item"><span class="legend-line is-dashed" style="border-color:#ef4444;"></span><span>Чл. 49 ЗПК / Мост</span></div>
         <div class="legend-item"><span class="legend-line" style="background:#8b5cf6;"></span><span>ЕИСС разпределение</span></div>
         <div class="legend-item"><span class="legend-ring-bridge"></span><span>Мулти-клъстерен мост</span></div>
@@ -468,7 +481,8 @@ const graphPayloadJson = JSON.stringify({
         <input type="text" id="mrezhaTableSearch" class="mrezha-table-input" placeholder="Филтрирай таблицата по име, ЕИК, съд..." />
         <select id="mrezhaTableType" class="mrezha-select" aria-label="Категория в таблицата">
           <option value="ALL">Всички категории</option>
-          <option value="company">Фирми / Изпълнители</option>
+          <option value="ubo">Крайни собственици (ЗМИП)</option>
+          <option value="company">Фирми / ДЗЗД / Холдинги</option>
           <option value="authority">Възложители / Ведомства</option>
           <option value="judge">Съдии / Магистрати</option>
           <option value="lawyer">Адвокатски кантори</option>

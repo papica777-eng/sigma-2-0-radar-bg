@@ -58,10 +58,22 @@ describe('Forensic Network Graph v2.0 (Мрежата)', () => {
       data.summary.totalJudges +
       data.summary.totalLawyers +
       data.summary.totalOfficials +
-      data.summary.totalCases;
+      data.summary.totalCases +
+      (data.summary.totalUbos || 0);
     assert.equal(typeSum, data.summary.totalNodes, 'Sum of category counts must exactly match totalNodes');
+    assert.ok((data.summary.totalUbos || 0) >= 20, `Expected >= 20 verified ZMIП UBO nodes, got ${data.summary.totalUbos}`);
+    assert.ok(data.edges.some((e) => e.kind === 'beneficial_owner'), 'Must include beneficial_owner edges');
+    assert.ok(data.edges.some((e) => e.kind === 'holding_control'), 'Must include holding_control edges');
+    assert.ok(data.edges.some((e) => e.kind === 'consortium_member'), 'Must include consortium_member edges');
 
-    const validTypes = new Set(['company', 'authority', 'judge', 'prosecutor', 'lawyer', 'official', 'case']);
+    // Core verified UBO natural persons must be present and linked
+    for (const uboName of ['ГРИГОР ЦВЕТКОВ ИВАНОВ', 'КАМЕН СИМЕОНОВ ПЕШОВ', 'ВЕЛИКО ДИМИТРОВ ЖЕЛЕВ', 'ДИМИТЪР ВЕЛИКОВ ЖЕЛЕВ', 'ДИМО ХРИСТОВ ДИМОВ', 'ХРИСТО АСЕНОВ САВЕВ']) {
+      const hit = data.nodes.find((n) => n.type === 'ubo' && n.label.toUpperCase() === uboName);
+      assert.ok(hit, `Expected verified ZMIП UBO node: ${uboName}`);
+      assert.ok(hit.degree >= 1, `UBO node ${uboName} must have >= 1 verified edge`);
+    }
+
+    const validTypes = new Set(['ubo', 'company', 'authority', 'judge', 'prosecutor', 'lawyer', 'official', 'case']);
     for (const n of data.nodes) {
       assert.ok(n.id && n.label, `Node must have id and label`);
       assert.ok(validTypes.has(n.type), `Node ${n.id} has invalid type: ${n.type}`);

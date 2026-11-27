@@ -37,13 +37,47 @@ function sanitizeIdPart(s) {
     .replace(/^_+|_+$/g, '');
 }
 
-console.log('Compiling Forensic Cross-Registry Knowledge Graph (NAsvetlo v2.0)...');
+console.log('Compiling Forensic Cross-Registry Knowledge Graph (NAsvetlo v3.0 — Full Capital Chain)...');
 
 const circlesRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'circles_graph.json'), 'utf8'));
 const judicialRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'sigma3_judicial_6.json'), 'utf8'));
 const eissAuditRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'nasvetlo_eiss_audit.json'), 'utf8'));
 const authRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'authorities_index.json'), 'utf8'));
 const compRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'companies_index.json'), 'utf8'));
+const deepLinksRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'deep_links.json'), 'utf8'));
+const forensicsRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'sigma3_forensics_7.json'), 'utf8'));
+
+function cleanPersonName(raw) {
+  let s = cleanText(raw || '')
+    .replace(/Дата на изтичане на мандата:\s*[\d.]+\s*г?\.?\s*/gi, '')
+    .replace(/Начин,\s*по\s*който\s*се\s*определя.*$/gi, '')
+    .replace(/^[,;.\s"„“']+|[,;.\s"„“']+$/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!s || s.length < 5 || s.split(' ').length < 2) return '';
+  return s
+    .split(' ')
+    .map((w) => (w ? w[0].toUpperCase() + w.slice(1).toLowerCase() : ''))
+    .join(' ');
+}
+
+function isCorporateOwnerString(raw) {
+  const s = cleanText(raw || '').toUpperCase();
+  return /ЕИК|ПИК|\bЕООД\b|\bООД\b|\bЕАД\b|\bАД\b|\bДЗЗД\b|\bСД\b|\bКД\b|ХОЛДИНГ|ГРУП|ОБЩИНА|МИНИСТЕРСТВО|ФОНДОВА БОРСА|БЪЛГАРСКА|\bДП\b|ИНВЕСТ|КОМПАНИ|МЕНИДЖМЪНТ|САНТИС ХЕЛТ/.test(s);
+}
+
+function parseCorporateOwnerRef(raw) {
+  const txt = cleanText(raw || '');
+  const m = txt.match(/ЕИК\/?ПИК\s*(\d{9,13})/i) || txt.match(/\b(\d{9})\b/);
+  const eik = m ? m[1] : '';
+  const name = txt
+    .replace(/,?\s*ЕИК\/?ПИК\s*\d{9,13}/gi, '')
+    .replace(/["„“']/g, '')
+    .replace(/^[,\s]+|[,\s]+$/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return { name, eik };
+}
 
 // Build authoritative EIK indexes
 const authoritiesEikSet = new Set();
@@ -158,6 +192,7 @@ function canonicalEntityId(type, name, eik) {
   if (type === 'judge') return `judge:${part}`;
   if (type === 'lawyer') return `lawyer:${part}`;
   if (type === 'official') return `off:${part}`;
+  if (type === 'ubo') return `ubo:${part}`;
   if (type === 'case') return `case:${part}`;
   return `${type}:${part}`;
 }
@@ -958,6 +993,560 @@ if (nodesMap.has('eik:831911400') && nodesMap.has('eik:108501669')) {
 }
 
 // ============================================================================
+// 6B. FULL CAPITAL & UBO OWNERSHIP CHAINS (ЗМИП чл. 63, ДЗЗД, Холдинги, Бързи фирми)
+// ============================================================================
+function ensureUboNode(personNameRaw, cluster, subLabel, amountEur, riskScore, badgeList, trRelated, evidenceNote) {
+  const personName = cleanPersonName(personNameRaw);
+  if (!personName || EXCLUDED_NAMES_RE.test(personName)) return null;
+  const uboId = canonicalEntityId('ubo', personName, '');
+  return addNode({
+    id: uboId,
+    label: personName,
+    type: 'ubo',
+    cluster: cluster || 'ROAD_SECTOR',
+    subLabel: subLabel || 'Действителен собственик (чл. 63 ЗМИП)',
+    amountEur: Number(amountEur || 0),
+    riskScore: Number(riskScore || 78),
+    badges: badgeList && badgeList.length ? badgeList : ['Действителен собственик (ЗМИП чл. 63)', 'ТРРЮЛНЦ'],
+    financialLayer: { directContractsEur: Number(amountEur || 0) },
+    corporateLayer: { zmipOwners: [personName], trRelatedEntities: trRelated || [], sharedManagers: [personName] },
+    details: { registry: 'ТРРЮЛНЦ / ЗМИП чл. 63', note: evidenceNote || '' },
+  });
+}
+
+// 6B.1 Mega-Consortia (ДЗЗД) -> Member Companies -> Holding Parents -> Natural-Person UBOs (ЗМИП чл. 63)
+const MEGA_CONSORTIUM_AUTH_MAP = [
+  { re: /хем[уу]с|русе|струма|софия 2023|бургас 2023|поддържане|благоевград|видин 2023|северозапад|сторгозия|роуд проджект|шумен 2023|европа-2022/i, eik: '000695089', name: 'АГЕНЦИЯ "ПЪТНА ИНФРАСТРУКТУРА"', cluster: 'ROAD_SECTOR' },
+  { re: /жп медковец/i, eik: '130823243', name: 'НАЦИОНАЛНА КОМПАНИЯ "ЖЕЛЕЗОПЪТНА ИНФРАСТРУКТУРА" ДП', cluster: 'ROAD_SECTOR' },
+  { re: /чирен|интернешънал газ|тех енерджи/i, eik: '175203478', name: 'БУЛГАРТРАНСГАЗ ЕАД', cluster: 'ENERGY_SECTOR' },
+  { re: /хил интернешънал/i, eik: '175203478', name: 'БУЛГАРТРАНСГАЗ ЕАД', cluster: 'ENERGY_SECTOR' },
+];
+
+function extractConsortiumShortLabel(rawName) {
+  const parts = String(rawName || '').split(';').map((s) => cleanText(s)).filter(Boolean);
+  const dzzdPart = parts.find((p) => /дззд|консорциум|ам |пп |трп |сторгозия|видин 2023|северозапад|поддържане|интернешънал газ|хил интернешънал – гбс|европа-2022/i.test(p));
+  const picked = dzzdPart || parts[0] || cleanText(rawName);
+  return picked.length > 52 ? `${picked.slice(0, 50)}…` : picked;
+}
+
+for (const mc of deepLinksRaw.megaConsortia || []) {
+  const members = mc.members || [];
+  const bgMembers = members.filter((m) => m.eik || (m.beneficialOwners && m.beneficialOwners.length) || (m.owners && m.owners.length));
+  if (bgMembers.length === 0) continue;
+
+  const wonEur = Number(mc.wonEur || 0);
+  const authMatch = MEGA_CONSORTIUM_AUTH_MAP.find((r) => r.re.test(mc.consortiumName || ''));
+  const mcCluster = authMatch ? authMatch.cluster : 'ROAD_SECTOR';
+  const mcLabel = extractConsortiumShortLabel(mc.consortiumName);
+
+  // Skip standalone company entries that already exist as single company (e.g., АБ АД with no resolved UBOs)
+  if (bgMembers.length === 1 && mc.consortiumEik && !bgMembers[0].beneficialOwners?.length && !bgMembers[0].owners?.length) {
+    continue;
+  }
+
+  const mcId = mc.consortiumEik
+    ? canonicalEntityId('company', mcLabel, mc.consortiumEik)
+    : `company:DZZD_${sanitizeIdPart(mcLabel)}`;
+
+  const savedMcId = addNode({
+    id: mcId,
+    label: mcLabel,
+    type: 'company',
+    cluster: mcCluster,
+    subLabel: `Мега-консорциум (ДЗЗД) · €${(wonEur / 1e6).toFixed(1)} млн.`,
+    eik: mc.consortiumEik || '',
+    amountEur: wonEur,
+    riskScore: wonEur >= 2e8 ? 90 : wonEur >= 1e8 ? 85 : 79,
+    badges: ['Мега-консорциум (ДЗЗД)', `Обем €${(wonEur / 1e6).toFixed(1)} млн.`],
+    financialLayer: { dzzdCount: mc.contracts || 1, dzzdEur: wonEur, directContractsEur: wonEur },
+    corporateLayer: { trRelatedEntities: bgMembers.map((m) => m.name) },
+    details: { fullConsortium: mc.consortiumName, wonEur },
+  });
+
+  if (authMatch && savedMcId) {
+    const authId = addNode({
+      id: canonicalEntityId('authority', authMatch.name, authMatch.eik),
+      label: authMatch.name,
+      type: 'authority',
+      cluster: mcCluster,
+      subLabel: `Възложител · ЕИК ${authMatch.eik}`,
+      eik: authMatch.eik,
+      riskScore: 82,
+      badges: ['Ключов национален възложител', 'Мега-консорциуми ЗОП'],
+      details: { eik: authMatch.eik },
+    });
+    if (authId) {
+      addEdge({
+        source: savedMcId,
+        target: authId,
+        kind: 'won_zop',
+        label: `Мега-поръчка ДЗЗД (€${(wonEur / 1e6).toFixed(1)} млн.)`,
+        primaryId: `ЦАИС ЕОП · ДЗЗД (${authMatch.eik})`,
+        amountEur: wonEur,
+        evidence: 'ЦАИС ЕОП · Мега-консорциум',
+      });
+    }
+  }
+
+  for (const m of bgMembers) {
+    const mName = cleanText(m.name);
+    const mEik = resolveEik(mName, m.eik);
+    if (!mName || !mEik) continue;
+    const mWon = Number(m.ownWonEur || 0);
+    const zmipClean = (m.beneficialOwners || []).map(cleanPersonName).filter(Boolean);
+    const directPersonOwners = (m.owners || []).filter((o) => !isCorporateOwnerString(o)).map(cleanPersonName).filter(Boolean);
+    const corpOwners = (m.owners || []).filter((o) => isCorporateOwnerString(o)).map(parseCorporateOwnerRef).filter((o) => o.name);
+    const allMemberUbos = uniqArr([...zmipClean, ...directPersonOwners], 8);
+
+    const memberId = addNode({
+      id: canonicalEntityId('company', mName, mEik),
+      label: mName,
+      type: 'company',
+      cluster: mcCluster,
+      subLabel: `${m.seatCity ? m.seatCity + ' · ' : ''}ЗОП €${(mWon / 1e6).toFixed(1)} млн.`,
+      eik: mEik,
+      amountEur: mWon,
+      riskScore: mWon >= 1e8 ? 88 : mWon >= 3e7 ? 82 : 74,
+      badges: ['Участник в мега-консорциум', allMemberUbos.length ? 'Разкрит UBO (ЗМИП)' : 'Корпоративен участник'],
+      financialLayer: { directContractsCount: m.ownContracts || 0, directContractsEur: mWon, dzzdCount: 1, dzzdEur: wonEur },
+      corporateLayer: {
+        eik: mEik,
+        zmipOwners: allMemberUbos,
+        trRelatedEntities: corpOwners.map((co) => co.name),
+        sharedManagers: (m.managers || []).map(cleanPersonName).filter(Boolean).slice(0, 4),
+      },
+      details: { eik: mEik, seatCity: m.seatCity || '' },
+    });
+
+    if (memberId && savedMcId && memberId !== savedMcId) {
+      addEdge({
+        source: memberId,
+        target: savedMcId,
+        kind: 'consortium_member',
+        label: 'Участник в ДЗЗД консорциум',
+        primaryId: `ЦАИС ЕОП · ЕИК ${mEik}`,
+        amountEur: wonEur,
+        evidence: `ДЗЗД · ${mcLabel}`,
+      });
+    }
+
+    // Holding parents (explicit holdingParents[] OR corporate owners[])
+    const holdingList = [];
+    for (const hp of m.holdingParents || []) {
+      holdingList.push({
+        eik: resolveEik(hp.name, hp.eik),
+        name: cleanText(hp.name).replace(/["„“']/g, '').replace(/\s+/g, ' ').trim(),
+        owners: [...(hp.owners || []), ...(hp.beneficialOwners || [])],
+        managers: hp.managers || [],
+      });
+    }
+    for (const co of corpOwners) {
+      const coEik = resolveEik(co.name, co.eik);
+      if (coEik && !holdingList.some((h) => h.eik === coEik)) {
+        holdingList.push({ eik: coEik, name: co.name, owners: [], managers: [] });
+      }
+    }
+
+    let linkedThroughHolding = false;
+    for (const hp of holdingList) {
+      if (!hp.name || !hp.eik || hp.eik === mEik) continue;
+      const hpUbos = (hp.owners || []).filter((o) => !isCorporateOwnerString(o)).map(cleanPersonName).filter(Boolean);
+      const hpId = addNode({
+        id: canonicalEntityId('company', hp.name, hp.eik),
+        label: hp.name,
+        type: 'company',
+        cluster: mcCluster,
+        subLabel: `Холдинг-майка · ЕИК ${hp.eik}`,
+        eik: hp.eik,
+        amountEur: mWon,
+        riskScore: 84,
+        badges: ['Холдинг-майка (ТРРЮЛНЦ)', 'Капиталова верига'],
+        corporateLayer: {
+          eik: hp.eik,
+          zmipOwners: hpUbos.length ? hpUbos : allMemberUbos,
+          trRelatedEntities: [mName],
+          sharedManagers: (hp.managers || []).map(cleanPersonName).filter(Boolean),
+        },
+        details: { eik: hp.eik, role: 'Холдинг-майка' },
+      });
+
+      if (hpId && memberId) {
+        addEdge({
+          source: hpId,
+          target: memberId,
+          kind: 'holding_control',
+          label: 'Едноличен собственик / Холдингов контрол',
+          primaryId: `ТРРЮЛНЦ · ЕИК ${hp.eik} → ${mEik}`,
+          amountEur: mWon,
+          evidence: 'Търговски регистър (ТРРЮЛНЦ)',
+        });
+      }
+
+      for (const hUboName of hpUbos) {
+        const uId = ensureUboNode(
+          hUboName,
+          mcCluster,
+          `Действителен собственик · ${hp.name}`,
+          mWon,
+          86,
+          ['Действителен собственик (ЗМИП чл. 63)', 'Холдингова верига'],
+          [hp.name, mName],
+          `Контрол чрез ${hp.name} (ЕИК ${hp.eik}) → ${mName} (ЕИК ${mEik})`
+        );
+        if (uId && hpId) {
+          addEdge({
+            source: uId,
+            target: hpId,
+            kind: 'beneficial_owner',
+            label: 'Действителен собственик (чл. 63 ЗМИП)',
+            primaryId: `ТРРЮЛНЦ ЗМИП · ЕИК ${hp.eik}`,
+            amountEur: mWon,
+            evidence: 'ЗМИП чл. 63 · ТРРЮЛНЦ',
+          });
+          linkedThroughHolding = true;
+        }
+      }
+    }
+
+    // Direct ZMIП beneficial owners / direct natural-person owners of member company
+    for (const uName of allMemberUbos) {
+      const uId = ensureUboNode(
+        uName,
+        mcCluster,
+        `Действителен собственик · ${mName}`,
+        mWon,
+        mWon >= 1e8 ? 88 : 82,
+        ['Действителен собственик (ЗМИП чл. 63)', 'Мега-консорциум'],
+        [mName],
+        `Вписан действителен собственик/съдружник на ${mName} (ЕИК ${mEik})`
+      );
+      if (uId && memberId && !(linkedThroughHolding && holdingList.some((h) => (h.owners || []).some((o) => cleanPersonName(o) === uName)))) {
+        addEdge({
+          source: uId,
+          target: memberId,
+          kind: 'beneficial_owner',
+          label: zmipClean.includes(uName) ? 'Действителен собственик (чл. 63 ЗМИП)' : 'Собственик / Съдружник (ТРРЮЛНЦ)',
+          primaryId: `ТРРЮЛНЦ · ЕИК ${mEik}`,
+          amountEur: mWon,
+          evidence: 'ЗМИП чл. 63 · ТРРЮЛНЦ',
+        });
+      }
+    }
+  }
+}
+
+// 6B.2 Live-Verified Commercial Register UBOs for Key Graph Hubs (ТРРЮЛНЦ Direct Verification)
+const LIVE_CR_UBOS = [
+  {
+    eik: '115816551',
+    companyName: 'ЗАПРЯНОВИ - 03 ООД',
+    cluster: 'ROAD_SECTOR',
+    wonEur: 110400000,
+    ubos: ['Вакрил Георгиев Запрянов', 'Георги Вакрилов Запрянов'],
+    relLabel: 'Съдружник 50% и управител (ТРРЮЛНЦ)',
+  },
+  {
+    eik: '112580619',
+    companyName: 'ЕКО-ХИДРО-90 ООД',
+    cluster: 'ROAD_SECTOR',
+    wonEur: 45400000,
+    ubos: ['Георги Стефанов Делчев', 'Йорданка Кирилова Делчева'],
+    relLabel: 'Собственик / Съдружник (ТРРЮЛНЦ)',
+  },
+  {
+    eik: '130834663',
+    companyName: 'ГРАДИВ ЕООД',
+    cluster: 'ROAD_SECTOR',
+    wonEur: 11900000,
+    ubos: ['Елена Крумова Аджемян'],
+    relLabel: 'Едноличен собственик / Управител (ТРРЮЛНЦ)',
+  },
+];
+
+for (const item of LIVE_CR_UBOS) {
+  const cId = addNode({
+    id: canonicalEntityId('company', item.companyName, item.eik),
+    label: item.companyName,
+    type: 'company',
+    cluster: item.cluster,
+    eik: item.eik,
+    amountEur: item.wonEur,
+    riskScore: 84,
+    corporateLayer: { eik: item.eik, zmipOwners: item.ubos, sharedManagers: item.ubos },
+  });
+  for (const uName of item.ubos) {
+    const uId = ensureUboNode(
+      uName,
+      item.cluster,
+      `Собственик · ${item.companyName}`,
+      item.wonEur,
+      82,
+      ['Собственик (ТРРЮЛНЦ Live)', 'Крос-регистрова верига'],
+      [item.companyName],
+      `Верифицирано по ТРРЮЛНЦ за ЕИК ${item.eik}`
+    );
+    if (uId && cId) {
+      addEdge({
+        source: uId,
+        target: cId,
+        kind: 'beneficial_owner',
+        label: item.relLabel,
+        primaryId: `ТРРЮЛНЦ Live · ЕИК ${item.eik}`,
+        amountEur: item.wonEur,
+        evidence: 'Търговски регистър (ТРРЮЛНЦ)',
+      });
+    }
+  }
+}
+
+// 6B.3 Rapid-Award / Low-Capital / Re-Registered Corporate Chains (Engine 2 Forensics)
+const SHELL_PRIORITY_EIKS = new Set([
+  '207875565', // ИВКОНИ ЕКСПРЕС ЕАД (€415.8M, МТС)
+  '207104361', // Електрохолд ИПС ЕООД (€132.0M)
+  '207387391', // КМС ЕАД (€52.3M, 26 дни -> Топлофикация София!)
+  '207071685', // НОВЕ ХОЛД ЕООД (€19.3M, 63 дни)
+  '208048682', // Сантис Медикъл Солюшънс ЕООД (€15.3M, 81.4% 1 оферта -> МЗ)
+  '207500145', // НОЕЛ ИНЖЕНЕРИНГ ЕООД (€14.6M)
+  '207343982', // КАБО ФАРМА ЕООД (€10.6M)
+  '207698969', // МедСтройИнвест ЕООД (€5.78M, 115 606x капитал)
+  '208430365', // ЮПИТЕР 05 АД (€4.92M -> Столична община, след заличения ЮПИТЕР 05 ООД)
+  '207914559', // ДИ ЕС - 46 ЕООД (€4.75M, капитал €25.56, 185 978x, 56 дни)
+]);
+
+const shellCompanies = (forensicsRaw.engine2_shellCompanies?.companies || []).filter((sc) => SHELL_PRIORITY_EIKS.has(sc.eik));
+for (const sc of shellCompanies) {
+  const scCluster = inferSectorCluster(`${sc.name} ${sc.topAuthority}`, sc.eik);
+  const scEik = sc.eik;
+  const scWon = Number(sc.totalEur || 0);
+  const scId = addNode({
+    id: canonicalEntityId('company', sc.name, scEik),
+    label: cleanText(sc.name),
+    type: 'company',
+    cluster: scCluster,
+    subLabel: `Учр. ${sc.incorpDate} · 1-ви договор след ${sc.daysToFirstContract} дни · €${(scWon / 1e6).toFixed(1)} млн.`,
+    eik: scEik,
+    amountEur: scWon,
+    riskScore: Math.max(82, Math.min(96, Number(sc.shellScore || 75) + 12)),
+    badges: [
+      `1-ви договор: ${sc.daysToFirstContract} дни`,
+      sc.wonToCapitalRatio >= 1000 ? `ЗОП/капитал ${Math.round(sc.wonToCapitalRatio).toLocaleString('bg-BG')}×` : 'Новорегистрирано дружество',
+    ],
+    financialLayer: { directContractsCount: sc.contracts || 0, directContractsEur: scWon },
+    corporateLayer: {
+      eik: scEik,
+      zmipOwners: (sc.owners || []).filter((o) => !isCorporateOwnerString(o)).map(cleanPersonName).filter(Boolean),
+      trRelatedEntities: (sc.owners || []).filter((o) => isCorporateOwnerString(o)).map((o) => parseCorporateOwnerRef(o).name),
+      sharedManagers: (sc.managers || []).map(cleanPersonName).filter(Boolean),
+    },
+    details: {
+      eik: scEik,
+      incorpDate: sc.incorpDate,
+      daysToFirstContract: sc.daysToFirstContract,
+      capitalEur: sc.capitalEur,
+      wonToCapitalRatio: sc.wonToCapitalRatio,
+      gfoCount: sc.gfoCount,
+    },
+  });
+
+  // Link to topAuthority (merges cleanly with Топлофикация София, Столична община, МЗ, МТС, Фонд затворно дело!)
+  const authEik = resolveEik(sc.topAuthority, '');
+  if (sc.topAuthority && scId) {
+    const authId = addNode({
+      id: canonicalEntityId('authority', sc.topAuthority, authEik),
+      label: cleanText(sc.topAuthority),
+      type: 'authority',
+      cluster: scCluster,
+      subLabel: authEik ? `Възложител · ЕИК ${authEik}` : 'Публичен възложител',
+      eik: authEik,
+      riskScore: 78,
+      badges: ['Възложител (Engine 2 · Нови дружества)'],
+      details: { eik: authEik },
+    });
+    if (authId) {
+      addEdge({
+        source: scId,
+        target: authId,
+        kind: 'won_zop',
+        label: `ЗОП след ${sc.daysToFirstContract} дни (€${(scWon / 1e6).toFixed(1)} млн.)`,
+        primaryId: `ЦАИС ЕОП · ЕИК ${scEik}`,
+        amountEur: scWon,
+        evidence: `Учредено ${sc.incorpDate} · Капитал €${sc.capitalEur}`,
+      });
+    }
+  }
+
+  // Link natural-person owners as UBOs or corporate parents as holding_control
+  for (const rawOwner of sc.owners || []) {
+    if (isCorporateOwnerString(rawOwner)) {
+      const ref = parseCorporateOwnerRef(rawOwner);
+      const hpEik = resolveEik(ref.name, ref.eik);
+      if (ref.name && hpEik && hpEik !== scEik) {
+        const hpId = addNode({
+          id: canonicalEntityId('company', ref.name, hpEik),
+          label: ref.name,
+          type: 'company',
+          cluster: scCluster,
+          subLabel: `Дружество-майка · ЕИК ${hpEik}`,
+          eik: hpEik,
+          amountEur: scWon,
+          riskScore: 82,
+          badges: ['Холдинг-майка (ТРРЮЛНЦ)', 'Engine 2 Верига'],
+          corporateLayer: { eik: hpEik, trRelatedEntities: [cleanText(sc.name)] },
+          details: { eik: hpEik },
+        });
+        if (hpId && scId) {
+          addEdge({
+            source: hpId,
+            target: scId,
+            kind: 'holding_control',
+            label: 'Едноличен собственик на капитала',
+            primaryId: `ТРРЮЛНЦ · ЕИК ${hpEik} → ${scEik}`,
+            amountEur: scWon,
+            evidence: 'Търговски регистър (ТРРЮЛНЦ)',
+          });
+        }
+      }
+    } else {
+      const uId = ensureUboNode(
+        rawOwner,
+        scCluster,
+        `Собственик · ${cleanText(sc.name)}`,
+        scWon,
+        scWon >= 1e7 ? 88 : 82,
+        ['Собственик (ТРРЮЛНЦ)', `1-ви договор: ${sc.daysToFirstContract} дни`],
+        [cleanText(sc.name)],
+        `Капитал €${sc.capitalEur}, ЗОП €${(scWon / 1e6).toFixed(2)} млн.`
+      );
+      if (uId && scId) {
+        addEdge({
+          source: uId,
+          target: scId,
+          kind: 'beneficial_owner',
+          label: 'Едноличен собственик и управител (ТР)',
+          primaryId: `ТРРЮЛНЦ · ЕИК ${scEik}`,
+          amountEur: scWon,
+          evidence: `Учредено ${sc.incorpDate} · Капитал €${sc.capitalEur}`,
+        });
+      }
+    }
+  }
+}
+
+// Explicit link: Заличен ЮПИТЕР 05 ООД (115578467) -> Новоучредено ЮПИТЕР 05 АД (208430365)
+if (nodesMap.has('eik:208430365')) {
+  const oldJupiterId = addNode({
+    id: 'eik:115578467',
+    label: 'ЮПИТЕР 05 ООД (Заличен търговец)',
+    type: 'company',
+    cluster: 'ROAD_SECTOR',
+    subLabel: 'Заличен търговец в ТР след €52,4 млн. АПИ',
+    eik: '115578467',
+    amountEur: 52400000,
+    riskScore: 91,
+    badges: ['Заличен търговец (ТРРЮЛНЦ)', 'Прехвърлена дейност'],
+    financialLayer: { directContractsEur: 52400000 },
+    corporateLayer: { eik: '115578467', trRelatedEntities: ['ЮПИТЕР 05 АД (208430365)'] },
+    details: { eik: '115578467', deedStatus: 'Заличен търговец' },
+  });
+  if (oldJupiterId) {
+    addEdge({
+      source: oldJupiterId,
+      target: 'eik:208430365',
+      kind: 'holding_control',
+      label: 'Заличено ООД → Новоучредено АД (06.08.2025)',
+      primaryId: 'ТРРЮЛНЦ · 115578467 → 208430365',
+      amountEur: 52400000,
+      evidence: 'ТРРЮЛНЦ Live верификация',
+    });
+    if (nodesMap.has('eik:000695089')) {
+      addEdge({
+        source: oldJupiterId,
+        target: 'eik:000695089',
+        kind: 'won_zop',
+        label: 'Договори по ЗОП (€52,4 млн.)',
+        primaryId: 'ЦАИС ЕОП · ЕИК 115578467',
+        amountEur: 52400000,
+        evidence: 'ЦАИС ЕОП',
+      });
+    }
+  }
+}
+
+// 6B.4 High-Impact KPK XML Deep Links Beyond SIGMA 2.0 (Strictly respecting EXCLUDED_NAMES_RE)
+const DEEP_LINK_PRIORITY_EIKS = new Set([
+  '123682269', // ТРЕЙС ГРУП ХОЛД АД (Иван Минев - НС)
+  '106530686', // АТОМЕНЕРГОРЕМОНТ АД (Владислав Панев - НС)
+  '103267194', // СОФАРМА ТРЕЙДИНГ АД (Радослав Рибарски - НС)
+  '175206054', // ДЕМАКС ДИ ПИ АЙ АД (Петър Кънев - НС)
+  '831453003', // ДЕМАКС АД (Петър Кънев - НС)
+  '121467570', // ГРАВИС БЪЛГАРИЯ АД (Георги Григоров - НС)
+  '832082699', // ЕТРОПАЛ АД (Кирил Бошов - НС на НОИ)
+  '204266744', // Ди Ти Ай Солюшънс ООД (Владимир Владимиров - РЗОК Монтана, заем Табл. 7)
+]);
+
+for (const dl of deepLinksRaw.deepLinks || []) {
+  const polName = cleanText(dl.politician || '');
+  if (!polName || EXCLUDED_NAMES_RE.test(polName)) continue;
+  if (!DEEP_LINK_PRIORITY_EIKS.has(dl.companyEik)) continue;
+
+  const dlCluster = inferSectorCluster(`${dl.companyName} ${dl.institution}`, dl.companyEik);
+  const compId = addNode({
+    id: canonicalEntityId('company', dl.companyName, dl.companyEik),
+    label: cleanText(dl.companyName).replace(/\s+АД\s+АД$/i, ' АД'),
+    type: 'company',
+    cluster: dlCluster,
+    subLabel: `ЗОП €${(Number(dl.companyWonEur || 0) / 1e6).toFixed(1)} млн. · КПК Табл. ${dl.tableNum}`,
+    eik: dl.companyEik,
+    amountEur: Number(dl.companyWonEur || 0),
+    riskScore: Number(dl.companyWonEur || 0) >= 5e7 ? 84 : 76,
+    badges: [`КПК Табл. ${dl.tableNum}`, dl.missedBySigma ? 'Дълбока връзка XML' : 'Декларирано в КПК'],
+    financialLayer: { directContractsCount: dl.companyContracts || 0, directContractsEur: Number(dl.companyWonEur || 0) },
+    corporateLayer: { eik: dl.companyEik },
+    judicialLayer: { kpkTable9: [`КПК Табл. ${dl.tableNum} · ${polName}`] },
+    details: { eik: dl.companyEik, declarationUrl: dl.declarationUrl || '' },
+  });
+
+  const polId = addNode({
+    id: canonicalEntityId('official', polName, ''),
+    label: polName,
+    type: 'official',
+    cluster: 'MUNICIPAL_AFFILIATION',
+    subLabel: `${cleanText(dl.position || 'Публично лице')} · ${cleanText(dl.institution || '')}`,
+    amountEur: Number(dl.companyWonEur || 0),
+    riskScore: dl.tier === 'private_link' ? 86 : 74,
+    badges: [`КПК Табл. ${dl.tableNum} (${dl.declarationYear})`, cleanText(dl.institution || 'Публична длъжност')],
+    judicialLayer: { kpkTable9: [`${dl.linkType} · ${dl.companyName}`] },
+    details: { institution: dl.institution, position: dl.position, declarationUrl: dl.declarationUrl || '' },
+  });
+
+  if (polId && compId) {
+    addEdge({
+      source: polId,
+      target: compId,
+      kind: 'owns_share',
+      label: `${cleanText(dl.linkType)} (${dl.declarationYear})`,
+      primaryId: `КПК XML Табл. ${dl.tableNum} · ЕИК ${dl.companyEik}`,
+      amountEur: Number(dl.companyWonEur || 0),
+      evidence: `Декларация КПК ${dl.declarationDate || dl.declarationYear}`,
+      url: dl.declarationUrl || '',
+    });
+  }
+}
+
+// Link Атоменергоремонт АД (106530686) -> АЕЦ Козлодуй ЕАД (106513772) when both exist
+if (nodesMap.has('eik:106530686') && nodesMap.has('eik:106513772')) {
+  addEdge({
+    source: 'eik:106530686',
+    target: 'eik:106513772',
+    kind: 'won_zop',
+    label: 'Ремонтни договори по ЗОП (€232,5 млн.)',
+    primaryId: 'ЦАИС ЕОП · ЕИК 106530686',
+    amountEur: 232534905,
+    evidence: 'ЦАИС ЕОП',
+  });
+}
+
+// ============================================================================
 // 7. GRAPH-THEORETIC ANALYTICS (Brandes Betweenness, PageRank, Components)
 // ============================================================================
 const validNodesSet = new Set(nodesMap.keys());
@@ -970,6 +1559,67 @@ for (const n of allNodes) adj.set(n.id, new Set());
 for (const e of validEdges) {
   adj.get(e.source).add(e.target);
   adj.get(e.target).add(e.source);
+}
+
+// 7.0 Roll up controlled capital on UBO nodes (2-hop walk through beneficial_owner / holding_control / consortium_member)
+const outOwnEdges = new Map();
+for (const e of validEdges) {
+  if (e.kind === 'beneficial_owner' || e.kind === 'holding_control' || e.kind === 'consortium_member') {
+    if (!outOwnEdges.has(e.source)) outOwnEdges.set(e.source, []);
+    outOwnEdges.get(e.source).push(e);
+  }
+}
+
+let totalUboControlledEur = 0;
+for (const n of allNodes) {
+  if (n.type !== 'ubo') continue;
+  const reachedCompanies = new Set();
+  const reachedDzzd = new Set();
+  const queue = [{ id: n.id, depth: 0 }];
+  const seen = new Set([n.id]);
+  while (queue.length > 0) {
+    const cur = queue.shift();
+    if (cur.depth >= 3) continue;
+    for (const edge of outOwnEdges.get(cur.id) || []) {
+      const targetNode = nodesMap.get(edge.target);
+      if (!targetNode || seen.has(edge.target)) continue;
+      seen.add(edge.target);
+      if (targetNode.type === 'company') {
+        if (edge.kind === 'consortium_member' || targetNode.id.startsWith('company:DZZD_')) {
+          reachedDzzd.add(targetNode.id);
+        } else {
+          reachedCompanies.add(targetNode.id);
+        }
+      }
+      queue.push({ id: edge.target, depth: cur.depth + 1 });
+    }
+  }
+  let directSum = 0;
+  let dzzdSum = 0;
+  const relNames = [];
+  for (const cid of reachedCompanies) {
+    const cn = nodesMap.get(cid);
+    if (cn) {
+      directSum += Number(cn.amountEur || 0);
+      relNames.push(cn.label);
+    }
+  }
+  for (const did of reachedDzzd) {
+    const dn = nodesMap.get(did);
+    if (dn) {
+      dzzdSum += Number(dn.amountEur || 0);
+      relNames.push(dn.label);
+    }
+  }
+  const controlledTotal = Math.max(n.amountEur || 0, directSum + dzzdSum);
+  n.amountEur = Math.round(controlledTotal);
+  n.financialLayer.directContractsEur = Math.round(directSum);
+  n.financialLayer.dzzdCount = reachedDzzd.size;
+  n.financialLayer.dzzdEur = Math.round(dzzdSum);
+  n.corporateLayer.trRelatedEntities = uniqArr([...(n.corporateLayer.trRelatedEntities || []), ...relNames], 10);
+  if (controlledTotal >= 1e8) n.riskScore = Math.max(n.riskScore, 90);
+  else if (controlledTotal >= 3e7) n.riskScore = Math.max(n.riskScore, 84);
+  totalUboControlledEur += controlledTotal;
 }
 
 // 7a. Degree
@@ -1136,13 +1786,15 @@ function findShortestPath(startId, endId) {
 
 const featuredPaths = [];
 const candidatePairs = [
-  { title: 'Белово: ЗПК лице → Община → Изпълнител → Дело → Съдия', from: 'off:ХРИСТО_АТАНАСОВ_ЛАЗАРОВ', to: 'judge:ИВАНКА_ГЕОРГИЕВА_ИЛИНОВА' },
+  { title: 'Пътна верига (ЗМИП): АПИ → ДЗЗД Хемус → ИГ Холдинг → Григор Иванов', from: 'eik:000695089', to: 'ubo:ГРИГОР_ЦВЕТКОВ_ИВАНОВ' },
+  { title: 'ГБС & Газ (ЗМИП): Булгартрансгаз → Чирен ДЗЗД → ГБС → Камен Пешов', from: 'eik:175203478', to: 'ubo:КАМЕН_СИМЕОНОВ_ПЕШОВ' },
+  { title: 'Белово (Пълна верига): ЗПК лице → Община → Еко-Хидро-90 → Георги Делчев', from: 'off:ХРИСТО_АТАНАСОВ_ЛАЗАРОВ', to: 'ubo:ГЕОРГИ_СТЕФАНОВ_ДЕЛЧЕВ' },
   { title: 'Пловдив: ЗПК лице → Община → ВТД 574/2026 → Съдия САС', from: 'off:ЙОРДАН_ВАСИЛЕВ_ВАСИЛЕВ', to: 'judge:БИСТРА_НИКОЛОВА' },
-  { title: 'Енергетика: Кантора J3 → АЕЦ Козлодуй → ТЕЦ Марица 3', from: 'eik:175825028', to: 'eik:126017122' },
+  { title: 'Топлофикация София → КМС ЕАД (26 дни) → ЕТК Груп', from: 'eik:831609046', to: 'eik:200306230' },
 ];
 for (const cp of candidatePairs) {
   const pathIds = findShortestPath(cp.from, cp.to);
-  if (pathIds && pathIds.length >= 3 && featuredPaths.length < 3) {
+  if (pathIds && pathIds.length >= 3 && featuredPaths.length < 5) {
     featuredPaths.push({
       title: cp.title,
       fromId: cp.from,
@@ -1188,12 +1840,13 @@ const clusterStats = {
 let totalResourceEur = 0;
 for (const n of allNodes) {
   const c = clusterStats[n.cluster];
+  const countableAmt = n.type === 'ubo' ? 0 : (n.amountEur || 0);
   if (c) {
     c.nodes += 1;
-    c.amountEur += n.amountEur || 0;
+    c.amountEur += countableAmt;
     if (n.riskScore > c.maxRisk) c.maxRisk = n.riskScore;
   }
-  totalResourceEur += n.amountEur || 0;
+  totalResourceEur += countableAmt;
 }
 
 // Compute canonical SHA-256 integrity hash
@@ -1207,17 +1860,19 @@ const bridgeNodesCount = allNodes.filter((n) => n.allClusters.length > 1).length
 
 const finalPayload = {
   generatedAtUtc: new Date().toISOString(),
-  methodologyVersion: 'NAsvetlo-Network v2.0 (Cross-Registry Institutional Linkage, Brandes Betweenness & PageRank)',
+  methodologyVersion: 'NAsvetlo-Network v3.0 (Full Capital & ZMIП UBO Ownership Chain, Brandes Betweenness & PageRank)',
   summary: {
     totalNodes: allNodes.length,
     totalEdges: validEdges.length,
     totalInvestigatedResourceEur: Math.round(totalResourceEur),
+    totalUboControlledEur: Math.round(totalUboControlledEur),
     totalCompanies: allNodes.filter((n) => n.type === 'company').length,
     totalAuthorities: allNodes.filter((n) => n.type === 'authority').length,
     totalJudges: allNodes.filter((n) => n.type === 'judge').length,
     totalLawyers: allNodes.filter((n) => n.type === 'lawyer').length,
     totalOfficials: allNodes.filter((n) => n.type === 'official').length,
     totalCases: allNodes.filter((n) => n.type === 'case').length,
+    totalUbos: allNodes.filter((n) => n.type === 'ubo').length,
     criticalRiskNodesCount: allNodes.filter((n) => n.riskScore >= 80).length,
     bridgeNodesCount,
     connectedComponentsCount: compCounter,
@@ -1242,13 +1897,13 @@ const finalPayload = {
 const outPath = path.join(dataDir, 'nasvetlo_network_graph.json');
 fs.writeFileSync(outPath, JSON.stringify(finalPayload, null, 2), 'utf8');
 
-console.log(`Forensic Network Graph v2.0 compiled successfully:`);
+console.log(`Forensic Network Graph v3.0 (Full Capital Chain) compiled successfully:`);
 console.log(`  Nodes: ${finalPayload.summary.totalNodes} | Edges: ${finalPayload.summary.totalEdges}`);
-console.log(`  Companies: ${finalPayload.summary.totalCompanies} | Authorities: ${finalPayload.summary.totalAuthorities} | Judges: ${finalPayload.summary.totalJudges}`);
+console.log(`  UBOs (ZMIP): ${finalPayload.summary.totalUbos} | Companies: ${finalPayload.summary.totalCompanies} | Authorities: ${finalPayload.summary.totalAuthorities} | Judges: ${finalPayload.summary.totalJudges}`);
 console.log(`  Lawyers: ${finalPayload.summary.totalLawyers} | Officials: ${finalPayload.summary.totalOfficials} | Cases: ${finalPayload.summary.totalCases}`);
 console.log(`  Critical (>=80): ${finalPayload.summary.criticalRiskNodesCount} | Multi-Cluster Bridges: ${bridgeNodesCount}`);
 console.log(`  Components: ${compCounter} (Largest: ${largestComponentSize}) | Avg Degree: ${finalPayload.summary.avgDegree}`);
 console.log(`  Top Bridge (Brandes): ${finalPayload.summary.topBridgeLabel}`);
 console.log(`  Featured Paths: ${featuredPaths.length} (${featuredPaths.map((p) => `${p.title} [${p.hops} hops]`).join('; ')})`);
-console.log(`  Total Resource: EUR ${(finalPayload.summary.totalInvestigatedResourceEur / 1e6).toFixed(1)}M`);
+console.log(`  Total Resource: EUR ${(finalPayload.summary.totalInvestigatedResourceEur / 1e6).toFixed(1)}M | UBO Controlled: EUR ${(finalPayload.summary.totalUboControlledEur / 1e6).toFixed(1)}M`);
 console.log(`  SHA-256: ${finalPayload.summary.datasetSha256}`);
