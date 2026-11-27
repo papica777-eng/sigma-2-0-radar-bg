@@ -46,6 +46,7 @@ const authRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'authorities_index
 const compRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'companies_index.json'), 'utf8'));
 const deepLinksRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'deep_links.json'), 'utf8'));
 const forensicsRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'sigma3_forensics_7.json'), 'utf8'));
+const investigationsRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'nasvetlo_investigations.json'), 'utf8'));
 
 function cleanPersonName(raw) {
   let s = cleanText(raw || '')
@@ -2045,6 +2046,306 @@ for (const ag of ANNEX_GIANTS) {
       amountEur: ag.annexEur,
       evidence: 'Engine 1 · Оскъпяване след подписване (чл. 116 ЗОП)',
     });
+  }
+}
+
+// ============================================================================
+// 6G. CROSS-REGISTRY ANOMALIES:
+//     (1) IVSS Sanctioned / Non-Filer EISS RED-Flag Judges (inspectoratvss.bg)
+//     (2) ME Quarry & Mineral Concessions x Mega-Builders in Graph
+//     (3) DNSK Expired Construction-Supervision Consultants x ZOP & KPK
+//     (4) MVR Revoked Security Licenses x Armed Security ZOP Tenders
+//     (5) State Reserve Obliged Fuel Oligopoly x ZOP
+// ============================================================================
+const invModules = investigationsRaw?.investigations || {};
+
+// 6G.1 IVSS Judicial Asset Declaration Sanctions (verified exact 3-name matches against live inspectoratvss.bg)
+const ivssHubId = addNode({
+  id: 'authority:IVSS_BG',
+  label: 'ИНСПЕКТОРАТ КЪМ ВСС (ИВСС)',
+  type: 'authority',
+  cluster: 'JUDICIAL_CONCENTRATION',
+  subLabel: 'Регистър по чл. 175а–175г ЗСВ · 155 санкции и просрочия (inspectoratvss.bg)',
+  amountEur: 0,
+  riskScore: 80,
+  badges: ['ИВСС чл. 175а ЗСВ', 'Списъци НП и неподали в срок'],
+  details: { portalUrl: 'https://www.inspectoratvss.bg/bg/page/129' },
+});
+
+const VERIFIED_IVSS_JUDGE_HITS = [
+  {
+    nodeId: 'judge:АНДРЕЙ_КРАСИМИРОВ_ГЕОРГИЕВ',
+    badge: 'ИВСС НП № 16/2018 (чл. 175а ЗСВ)',
+    edgeLabel: 'Влязло в сила НП № 16/16.10.2018 г. (глоба 300 лв. · неподадена декларация)',
+    primaryId: 'ИВСС НП № 16/16.10.2018 г. (в сила 01.11.2018 г.)',
+    evidence: 'ИВСС /bg/page/140 · чл. 175а, ал. 1, т. 1 ЗСВ',
+    url: 'https://www.inspectoratvss.bg/bg/page/140',
+  },
+  {
+    nodeId: 'judge:РАДИНА_КАЛИНОВА_КАЛЕВА',
+    badge: 'ИВСС Списък неподали декларация (чл. 175а ЗСВ)',
+    edgeLabel: 'Неподадена в срок имуществена декларация (чл. 175в, ал. 1, т. 2 ЗСВ)',
+    primaryId: 'ИВСС Списък чл. 175а / 175в ЗСВ (Мл. съдия СГС)',
+    evidence: 'ИВСС /bg/page/130 · чл. 175а вр. чл. 175в, ал. 1, т. 2 ЗСВ',
+    url: 'https://www.inspectoratvss.bg/bg/page/130',
+  },
+];
+
+for (const ih of VERIFIED_IVSS_JUDGE_HITS) {
+  const jNode = nodesMap.get(ih.nodeId);
+  if (jNode && ivssHubId) {
+    jNode.badges = uniqArr([ih.badge, ...(jNode.badges || [])], 8);
+    jNode.riskScore = Math.max(jNode.riskScore || 0, 95);
+    jNode.judicialLayer.kpkTable9 = uniqArr([...(jNode.judicialLayer.kpkTable9 || []), ih.primaryId], 8);
+    jNode.details = { ...(jNode.details || {}), ivssSanctionUrl: ih.url, ivssRecord: ih.primaryId };
+    addEdge({
+      source: ih.nodeId,
+      target: ivssHubId,
+      kind: 'ivss_sanction',
+      label: ih.edgeLabel,
+      primaryId: ih.primaryId,
+      amountEur: 0,
+      evidence: ih.evidence,
+      url: ih.url,
+    });
+  }
+}
+
+// 6G.2 Ministry of Energy (ME) Quarry & Mineral Concessions x Mega-Builders already in Graph
+const meConcessions = invModules.meConcessions?.topFindings || [];
+const meInGraph = meConcessions.filter((c) => nodesMap.has(`eik:${c.eik}`));
+if (meInGraph.length > 0) {
+  const meAuthId = addNode({
+    id: 'eik:176789460',
+    label: 'МИНИСТЕРСТВО НА ЕНЕРГЕТИКАТА (КОНЦЕСИИ)',
+    type: 'authority',
+    cluster: 'ROAD_SECTOR',
+    subLabel: `Регистър подземни богатства · ${meInGraph.length} концесионери в графа (€1,20 млрд. ЗОП + €3,64 млрд. ДЗЗД)`,
+    eik: '176789460',
+    amountEur: 1200000000,
+    riskScore: 84,
+    badges: ['МЕ Концесии за кариери', 'Вертикален монопол: Кариера + АПИ'],
+    corporateLayer: { eik: '176789460' },
+    details: { eik: '176789460', datasetUrl: invModules.meConcessions?.datasetUrl || '' },
+  });
+  for (const mc of meInGraph) {
+    const compNode = nodesMap.get(`eik:${mc.eik}`);
+    if (!compNode || !meAuthId) continue;
+    const dep = cleanText(mc.deposit || '');
+    const minType = cleanText(mc.mineralType || mc.mineralGroup || '');
+    const term = cleanText(mc.term || '');
+    compNode.badges = uniqArr([`Концесия МЕ: ${dep}`, ...(compNode.badges || [])], 8);
+    compNode.details = { ...(compNode.details || {}), quarryConcession: `${dep} (${minType}, ${term})` };
+    addEdge({
+      source: `eik:${mc.eik}`,
+      target: meAuthId,
+      kind: 'state_concession',
+      label: `Кариера „${dep}“ · ${minType} (${term})`,
+      primaryId: `МЕ Концесия · ЕИК ${mc.eik} · ${dep}`,
+      amountEur: Number(mc.wonEur || 0) + Number(mc.consortiumEur || 0),
+      evidence: `МЕ Регистър подземни богатства · Подписана ${cleanText(mc.signedDate || '')}`,
+      url: invModules.meConcessions?.datasetUrl || '',
+    });
+  }
+}
+
+// 6G.3 DNSK Expired Construction-Supervision Consultants winning ZOP (чл. 166 ЗУТ)
+const dnskExpired = (invModules.dnsk?.topConsultants || []).filter((c) => c.isExpired).slice(0, 6);
+if (dnskExpired.length > 0) {
+  const dnskAuthId = addNode({
+    id: 'eik:130008993',
+    label: 'ДНСК (СТРОИТЕЛЕН НАДЗОР ЧЛ. 166 ЗУТ)',
+    type: 'authority',
+    cluster: 'ROAD_SECTOR',
+    subLabel: `92 изтекли удостоверения сред изпълнители по ЗОП (€242,6 млн. сектор)`,
+    eik: '130008993',
+    amountEur: Number(invModules.dnsk?.zopConsultantsTotalEur || 242560000),
+    riskScore: 86,
+    badges: ['ДНСК чл. 166 ЗУТ', '92 изтекли консултанти по ЗОП'],
+    corporateLayer: { eik: '130008993' },
+    details: { eik: '130008993', datasetUrl: invModules.dnsk?.datasetUrlConsultants || '' },
+  });
+
+  for (const dc of dnskExpired) {
+    const dcEik = String(dc.eik || '').trim();
+    if (!dcEik) continue;
+    const dcWon = Number(dc.wonEur || 0);
+    const dcValid = cleanText(dc.validUntil || '');
+    const dcId = addNode({
+      id: `eik:${dcEik}`,
+      label: cleanText(dc.name),
+      type: 'company',
+      cluster: 'ROAD_SECTOR',
+      subLabel: `ДНСК изтекъл на ${dcValid} · €${(dcWon / 1e6).toFixed(2)} млн. (${dc.contracts} дог.)`,
+      eik: dcEik,
+      amountEur: dcWon,
+      riskScore: dcWon >= 1e7 ? 90 : 84,
+      badges: [`ДНСК изтекъл: ${dcValid}`, `${dc.contracts} ЗОП договора`],
+      financialLayer: { directContractsCount: dc.contracts || 0, directContractsEur: dcWon },
+      corporateLayer: { eik: dcEik },
+      details: { eik: dcEik, dnskValidUntil: dcValid, city: cleanText(dc.city || '') },
+    });
+    if (dcId && dnskAuthId) {
+      addEdge({
+        source: dcId,
+        target: dnskAuthId,
+        kind: 'license_violation',
+        label: `Изтекло удостоверение ДНСК (${dcValid}) · €${(dcWon / 1e6).toFixed(2)} млн. ЗОП`,
+        primaryId: `ДНСК Регистър чл. 166 ЗУТ · ЕИК ${dcEik}`,
+        amountEur: dcWon,
+        evidence: `Издадено ${cleanText(dc.issued || '')} · Валидно до ${dcValid} · ${dc.authorities} възложители`,
+        url: invModules.dnsk?.datasetUrlConsultants || '',
+      });
+    }
+    for (const offNameRaw of dc.linkedOfficials || []) {
+      const offName = cleanPersonName(offNameRaw);
+      if (!offName || EXCLUDED_NAMES_RE.test(offName)) continue;
+      const oId = addNode({
+        id: canonicalEntityId('official', offName, ''),
+        label: offName,
+        type: 'official',
+        cluster: 'MUNICIPAL_AFFILIATION',
+        subLabel: `Публично лице (ЗПК) · Собствен дял в консултант с изтекъл ДНСК лиценз`,
+        amountEur: dcWon,
+        riskScore: 86,
+        badges: ['КПК собствен дял', 'ДНСК изтекъл лиценз'],
+        judicialLayer: { kpkTable9: [`КПК собствен дял · ${cleanText(dc.name)}`] },
+        details: { linkedCompany: cleanText(dc.name) },
+      });
+      if (oId && dcId) {
+        addEdge({
+          source: oId,
+          target: dcId,
+          kind: 'owns_share',
+          label: `Деклариран собствен дял (КПК) · ДНСК изтекъл ${dcValid}`,
+          primaryId: `КПК × ДНСК · ЕИК ${dcEik}`,
+          amountEur: dcWon,
+          evidence: 'КПК Декларация × Регистър ДНСК',
+        });
+      }
+    }
+  }
+}
+
+// 6G.4 MVR ZChOD Revoked Security Licenses Winning Armed Security ZOP Contracts
+const MVR_REVOKED_CASES = [
+  {
+    eik: '130548570',
+    name: 'БАТ СЕКЮРИТИ ЕООД',
+    eur: 67490.53,
+    licenseDoc: 'Отнет · Лиценз № 361 (10.09.2004)',
+    authEik: '000672343',
+    authName: 'БЪЛГАРСКО НАЦИОНАЛНО РАДИО (БНР)',
+    unp: '00388-2020-0017',
+    subject: 'Въоръжена денонощна физическа охрана на РРС Благоевград (БНР/БНТ)',
+  },
+  {
+    eik: '130997265',
+    name: 'СЕЛЕНА 52 ЕООД',
+    eur: 30554.8,
+    licenseDoc: 'Отнет · Лиценз № 704 (14.11.2005)',
+    authEik: '176789478',
+    authName: 'МИНИСТЕРСТВО НА ТУРИЗМА',
+    unp: '05024-2020-0006',
+    subject: 'Охрана на сградите на Министерството на туризма (София и Пловдив)',
+  },
+];
+
+for (const mv of MVR_REVOKED_CASES) {
+  const secCompId = addNode({
+    id: `eik:${mv.eik}`,
+    label: mv.name,
+    type: 'company',
+    cluster: 'MUNICIPAL_AFFILIATION',
+    subLabel: `МВР ЗЧОД: ${mv.licenseDoc} · Охранителен договор по ЗОП`,
+    eik: mv.eik,
+    amountEur: mv.eur,
+    riskScore: 92,
+    badges: ['МВР ЗЧОД: Отнет лиценз', 'Охранителен договор без действащ лиценз'],
+    financialLayer: { directContractsCount: 1, directContractsEur: mv.eur, primaryUnps: [mv.unp] },
+    corporateLayer: { eik: mv.eik },
+    details: { eik: mv.eik, mvrStatus: 'Отнет', unp: mv.unp },
+  });
+  const secAuthId = addNode({
+    id: `eik:${mv.authEik}`,
+    label: mv.authName,
+    type: 'authority',
+    cluster: 'MUNICIPAL_AFFILIATION',
+    subLabel: `Възложил охрана на фирма с отнет лиценз по ЗЧОД (УНП ${mv.unp})`,
+    eik: mv.authEik,
+    amountEur: mv.eur,
+    riskScore: 84,
+    badges: ['МВР ЗЧОД аномалия', `УНП ${mv.unp}`],
+    corporateLayer: { eik: mv.authEik },
+    details: { eik: mv.authEik, unp: mv.unp },
+  });
+  if (secCompId && secAuthId) {
+    addEdge({
+      source: secCompId,
+      target: secAuthId,
+      kind: 'license_violation',
+      label: `Отнет лиценз МВР × Охранителна поръчка (${mv.subject})`,
+      primaryId: `МВР ЗЧОД × ЦАИС ЕОП УНП ${mv.unp}`,
+      amountEur: mv.eur,
+      evidence: `${mv.licenseDoc} · ЕИК ${mv.eik}`,
+      url: invModules.mvrSecurity?.datasetUrl || '',
+    });
+  }
+}
+
+for (const rh of invModules.mvrSecurity?.revokedHighlights || []) {
+  const existing = nodesMap.get(`eik:${rh.eik}`);
+  if (existing && rh.noActiveLicense) {
+    existing.badges = uniqArr([...(existing.badges || []), `МВР ЗЧОД: ${cleanText(rh.latestStatus || 'Неактивен')}`], 8);
+  }
+}
+
+// 6G.5 State Reserve Obliged Fuel Companies x ZOP (€642.86M total)
+const topFuel = (invModules.reserveAndEnergy?.topFuelFindings || []).slice(0, 3);
+if (topFuel.length > 0) {
+  const resAuthId = addNode({
+    id: 'eik:831913661',
+    label: 'ДА ДЪРЖАВЕН РЕЗЕРВ (ЗЗНН ГОРИВА)',
+    type: 'authority',
+    cluster: 'ENERGY_SECTOR',
+    subLabel: '110 задължени горивни компании по ЗЗНН × €642,9 млн. ЗОП',
+    eik: '831913661',
+    amountEur: Number(invModules.reserveAndEnergy?.zopMatchedFuelEur || 642860000),
+    riskScore: 82,
+    badges: ['ЗЗНН Държавен резерв', '€642,9 млн. горивни ЗОП'],
+    corporateLayer: { eik: '831913661' },
+    details: { eik: '831913661', datasetUrl: invModules.reserveAndEnergy?.datasetUrl || '' },
+  });
+  for (const tf of topFuel) {
+    const tfEik = String(tf.eik || '').trim();
+    if (!tfEik) continue;
+    const tfWon = Number(tf.wonEur || 0);
+    const tfId = addNode({
+      id: `eik:${tfEik}`,
+      label: cleanText(tf.name),
+      type: 'company',
+      cluster: 'ENERGY_SECTOR',
+      subLabel: `Задължено лице ЗЗНН · €${(tfWon / 1e6).toFixed(1)} млн. ЗОП (${tf.contracts} дог.)`,
+      eik: tfEik,
+      amountEur: tfWon,
+      riskScore: tfWon >= 5e7 ? 85 : 80,
+      badges: ['Държавен резерв (ЗЗНН)', `€${(tfWon / 1e6).toFixed(1)} млн. ЗОП`],
+      financialLayer: { directContractsCount: tf.contracts || 0, directContractsEur: tfWon },
+      corporateLayer: { eik: tfEik },
+      details: { eik: tfEik, zznnPeriod: cleanText(tf.detail || '') },
+    });
+    if (tfId && resAuthId) {
+      addEdge({
+        source: tfId,
+        target: resAuthId,
+        kind: 'state_concession',
+        label: `Задължено лице ЗЗНН (${cleanText(tf.detail || '2026–2027')}) · €${(tfWon / 1e6).toFixed(1)} млн. ЗОП`,
+        primaryId: `ДА ДРВВЗ ЗЗНН · ЕИК ${tfEik}`,
+        amountEur: tfWon,
+        evidence: 'Регистър ДА Държавен резерв × ЦАИС ЕОП',
+        url: invModules.reserveAndEnergy?.datasetUrl || '',
+      });
+    }
   }
 }
 
