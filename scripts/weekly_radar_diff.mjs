@@ -12,6 +12,7 @@ const INDEXNOW_KEY = '7f4a9c2e8b1d4063a5f2e9c18d7b3a40';
 const ALL_URLS = [
   'https://nasvetlo.website/',
   'https://nasvetlo.website/ot-mrak-kam-svetlina.html',
+  'https://nasvetlo.website/mrezhata.html',
   'https://nasvetlo.website/en/',
   'https://nasvetlo.website/razsledvaniya.html',
   'https://nasvetlo.website/telk-skener.html',
@@ -20,6 +21,7 @@ const ALL_URLS = [
   'https://nasvetlo.website/sitemap.xml',
   'https://nasvetlo.website/feed.xml',
   'https://nasvetlo.website/data/nasvetlo_weekly_bulletin.json',
+  'https://nasvetlo.website/data/nasvetlo_network_graph.json',
 ];
 
 function sanitizeText(s) {

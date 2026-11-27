@@ -1,0 +1,4939 @@
+{
+  "generatedAtUtc": "2026-11-27T15:14:44.134Z",
+  "methodologyVersion": "NAsvetlo-Network v1.0 (State Capture Graph Engine)",
+  "summary": {
+    "totalNodes": 178,
+    "totalEdges": 188,
+    "totalInvestigatedResourceEur": 2944357357,
+    "totalCompanies": 53,
+    "totalAuthorities": 39,
+    "totalJudges": 27,
+    "totalLawyers": 22,
+    "totalOfficials": 29,
+    "totalCases": 8,
+    "criticalRiskNodesCount": 92
+  },
+  "clusters": [
+    {
+      "id": "ROAD_CARTEL",
+      "title": "Строително-пътен картел & АПИ",
+      "nodesCount": 21,
+      "amountEur": 344025109
+    },
+    {
+      "id": "MUNICIPAL_CAPTURE",
+      "title": "Общински феодализъм & Конфликт на интереси",
+      "nodesCount": 77,
+      "amountEur": 468551430
+    },
+    {
+      "id": "JUDICIAL_BROKERAGE",
+      "title": "Съдебни лобита & Адвокатски абонаменти",
+      "nodesCount": 71,
+      "amountEur": 843468327
+    },
+    {
+      "id": "ENERGY_WATER_OCTOPUS",
+      "title": "Енергиен & ВиК октопод",
+      "nodesCount": 5,
+      "amountEur": 1190000000
+    },
+    {
+      "id": "HEALTH_PROCUREMENT",
+      "title": "Здравен монопол & ТЕЛК врати",
+      "nodesCount": 4,
+      "amountEur": 98312491
+    },
+    {
+      "id": "GENERAL",
+      "title": "Институционални зависимости",
+      "nodesCount": 0,
+      "amountEur": 0
+    }
+  ],
+  "nodes": [
+    {
+      "id": "comp:835009611",
+      "label": "ПЪТИНЖЕНЕРИНГСТРОЙ-Т ЕАД",
+      "type": "company",
+      "cluster": "ROAD_CARTEL",
+      "subLabel": "Договори за €153.3 млн.",
+      "eik": "835009611",
+      "amountEur": 153347828.57,
+      "riskScore": 88,
+      "badges": [
+        "Строителен картел",
+        "Съдебен иск срещу държавата"
+      ],
+      "details": {
+        "sector": "Пътно строителство и инфраструктура",
+        "wonEur": 153347828.57
+      }
+    },
+    {
+      "id": "auth:000695089",
+      "label": "АГЕНЦИЯ ПЪТНА ИНФРАСТРУКТУРА",
+      "type": "authority",
+      "cluster": "ROAD_CARTEL",
+      "subLabel": "Възложител · ЕИК 000695089",
+      "eik": "000695089",
+      "amountEur": 0,
+      "riskScore": 65,
+      "badges": [
+        "Държавен възложител"
+      ],
+      "details": {
+        "eik": "000695089"
+      }
+    },
+    {
+      "id": "case:Окръжен_съд_-_Търговище:ТД_59_2026",
+      "label": "ТД № 59/2026 (Окръжен съд - Търговище)",
+      "type": "case",
+      "cluster": "ROAD_CARTEL",
+      "subLabel": "Съдия: МИЛЕН ИВАНОВ СТОЙЧЕВ",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 80,
+      "badges": [
+        "ЕИСС Търговско дело",
+        "Претенция за плащане"
+      ],
+      "details": {
+        "court": "Окръжен съд - Търговище",
+        "caseNo": "ТД № 59/2026",
+        "judge": "МИЛЕН ИВАНОВ СТОЙЧЕВ"
+      }
+    },
+    {
+      "id": "judge:МИЛЕН_ИВАНОВ_СТОЙЧЕВ",
+      "label": "МИЛЕН ИВАНОВ СТОЙЧЕВ",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Окръжен съд - Търговище",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 78,
+      "badges": [
+        "Съдия по търговски спор"
+      ],
+      "details": {
+        "court": "Окръжен съд - Търговище"
+      }
+    },
+    {
+      "id": "lawyer:Адвокат_И_И_И",
+      "label": "Адвокат И.И.И",
+      "type": "lawyer",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Процесуален представител",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 70,
+      "badges": [
+        "Адвокат по спора"
+      ],
+      "details": {}
+    },
+    {
+      "id": "auth:000875817",
+      "label": "ОБЩИНА ОМУРТАГ",
+      "type": "authority",
+      "cluster": "ROAD_CARTEL",
+      "subLabel": "Възложител · ЕИК 000875817",
+      "eik": "000875817",
+      "amountEur": 0,
+      "riskScore": 65,
+      "badges": [
+        "Държавен възложител"
+      ],
+      "details": {
+        "eik": "000875817"
+      }
+    },
+    {
+      "id": "case:Окръжен_съд_-_Търговище:ТД_46_2026",
+      "label": "ТД № 46/2026 (Окръжен съд - Търговище)",
+      "type": "case",
+      "cluster": "ROAD_CARTEL",
+      "subLabel": "Съдия: МИЛЕН ИВАНОВ СТОЙЧЕВ",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 80,
+      "badges": [
+        "ЕИСС Търговско дело",
+        "Претенция за плащане"
+      ],
+      "details": {
+        "court": "Окръжен съд - Търговище",
+        "caseNo": "ТД № 46/2026",
+        "judge": "МИЛЕН ИВАНОВ СТОЙЧЕВ"
+      }
+    },
+    {
+      "id": "lawyer:Адвокат_Д_А_М",
+      "label": "Адвокат Д.А.М",
+      "type": "lawyer",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Процесуален представител",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 70,
+      "badges": [
+        "Адвокат по спора"
+      ],
+      "details": {}
+    },
+    {
+      "id": "comp:813029821",
+      "label": "ПЪТИЩА И МОСТОВЕ ЕООД",
+      "type": "company",
+      "cluster": "ROAD_CARTEL",
+      "subLabel": "Договори за €19.5 млн.",
+      "eik": "813029821",
+      "amountEur": 19501403.94,
+      "riskScore": 82,
+      "badges": [
+        "Строителен картел",
+        "Съдебен иск срещу държавата"
+      ],
+      "details": {
+        "sector": "Пътно строителство и инфраструктура",
+        "wonEur": 19501403.94
+      }
+    },
+    {
+      "id": "auth:000093442",
+      "label": "ОБЩИНА ВАРНА",
+      "type": "authority",
+      "cluster": "ROAD_CARTEL",
+      "subLabel": "Възложител · ЕИК 000093442",
+      "eik": "000093442",
+      "amountEur": 0,
+      "riskScore": 65,
+      "badges": [
+        "Държавен възложител"
+      ],
+      "details": {
+        "eik": "000093442"
+      }
+    },
+    {
+      "id": "case:Окръжен_съд_-_Варна:ТД_58_2026",
+      "label": "ТД № 58/2026 (Окръжен съд - Варна)",
+      "type": "case",
+      "cluster": "ROAD_CARTEL",
+      "subLabel": "Съдия: Ралица Цанкова Райкова",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 80,
+      "badges": [
+        "ЕИСС Търговско дело",
+        "Претенция за плащане"
+      ],
+      "details": {
+        "court": "Окръжен съд - Варна",
+        "caseNo": "ТД № 58/2026",
+        "judge": "Ралица Цанкова Райкова"
+      }
+    },
+    {
+      "id": "judge:Ралица_Цанкова_Райкова",
+      "label": "Ралица Цанкова Райкова",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Окръжен съд - Варна",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 78,
+      "badges": [
+        "Съдия по търговски спор"
+      ],
+      "details": {
+        "court": "Окръжен съд - Варна"
+      }
+    },
+    {
+      "id": "lawyer:Адвокат_Л_Х_К",
+      "label": "Адвокат Л.Х.К",
+      "type": "lawyer",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Процесуален представител",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 70,
+      "badges": [
+        "Адвокат по спора"
+      ],
+      "details": {}
+    },
+    {
+      "id": "comp:115816551",
+      "label": "ЗАПРЯНОВИ - 03 ООД",
+      "type": "company",
+      "cluster": "ROAD_CARTEL",
+      "subLabel": "Договори за €110.4 млн.",
+      "eik": "115816551",
+      "amountEur": 110350784.69,
+      "riskScore": 85,
+      "badges": [
+        "Строителен картел",
+        "Съдебен иск срещу държавата"
+      ],
+      "details": {
+        "sector": "Пътно строителство и инфраструктура",
+        "wonEur": 110350784.69
+      }
+    },
+    {
+      "id": "auth:000471059",
+      "label": "ОБЩИНА АСЕНОВГРАД",
+      "type": "authority",
+      "cluster": "ROAD_CARTEL",
+      "subLabel": "Възложител · ЕИК 000471059",
+      "eik": "000471059",
+      "amountEur": 0,
+      "riskScore": 65,
+      "badges": [
+        "Държавен възложител"
+      ],
+      "details": {
+        "eik": "000471059"
+      }
+    },
+    {
+      "id": "case:Окръжен_съд_-_Пловдив:ТД_65_2026",
+      "label": "ТД № 65/2026 (Окръжен съд - Пловдив)",
+      "type": "case",
+      "cluster": "ROAD_CARTEL",
+      "subLabel": "Съдия: Галя Костадинова",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 80,
+      "badges": [
+        "ЕИСС Търговско дело",
+        "Претенция за плащане"
+      ],
+      "details": {
+        "court": "Окръжен съд - Пловдив",
+        "caseNo": "ТД № 65/2026",
+        "judge": "Галя Костадинова"
+      }
+    },
+    {
+      "id": "judge:Галя_Костадинова",
+      "label": "Галя Костадинова",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Окръжен съд - Пловдив",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 78,
+      "badges": [
+        "Съдия по търговски спор"
+      ],
+      "details": {
+        "court": "Окръжен съд - Пловдив"
+      }
+    },
+    {
+      "id": "lawyer:Адвокат_С_М_Ж",
+      "label": "Адвокат С.М.Ж",
+      "type": "lawyer",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Процесуален представител",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 70,
+      "badges": [
+        "Адвокат по спора"
+      ],
+      "details": {}
+    },
+    {
+      "id": "comp:120008016",
+      "label": "ДЮЛГЕР ООД",
+      "type": "company",
+      "cluster": "ROAD_CARTEL",
+      "subLabel": "Договори за €3.5 млн.",
+      "eik": "120008016",
+      "amountEur": 3488694.62,
+      "riskScore": 76,
+      "badges": [
+        "Строителен картел",
+        "Съдебен иск срещу държавата"
+      ],
+      "details": {
+        "sector": "Пътно строителство и инфраструктура",
+        "wonEur": 3488694.62
+      }
+    },
+    {
+      "id": "auth:000614938",
+      "label": "ОБЩИНА ЗЛАТОГРАД",
+      "type": "authority",
+      "cluster": "ROAD_CARTEL",
+      "subLabel": "Възложител · ЕИК 000614938",
+      "eik": "000614938",
+      "amountEur": 0,
+      "riskScore": 65,
+      "badges": [
+        "Държавен възложител"
+      ],
+      "details": {
+        "eik": "000614938"
+      }
+    },
+    {
+      "id": "case:Окръжен_съд_-_Смолян:ТД_17_2026",
+      "label": "ТД № 17/2026 (Окръжен съд - Смолян)",
+      "type": "case",
+      "cluster": "ROAD_CARTEL",
+      "subLabel": "Съдия: Меденка Минчева Недкова",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 80,
+      "badges": [
+        "ЕИСС Търговско дело",
+        "Претенция за плащане"
+      ],
+      "details": {
+        "court": "Окръжен съд - Смолян",
+        "caseNo": "ТД № 17/2026",
+        "judge": "Меденка Минчева Недкова"
+      }
+    },
+    {
+      "id": "judge:Меденка_Минчева_Недкова",
+      "label": "Меденка Минчева Недкова",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Окръжен съд - Смолян",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 78,
+      "badges": [
+        "Съдия по търговски спор"
+      ],
+      "details": {
+        "court": "Окръжен съд - Смолян"
+      }
+    },
+    {
+      "id": "lawyer:Адвокат_Н_Г_Т",
+      "label": "Адвокат Н.Г.Т",
+      "type": "lawyer",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Процесуален представител",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 70,
+      "badges": [
+        "Адвокат по спора"
+      ],
+      "details": {}
+    },
+    {
+      "id": "comp:112580619",
+      "label": "ЕКО-ХИДРО-90 ООД",
+      "type": "company",
+      "cluster": "ROAD_CARTEL",
+      "subLabel": "Договори за €45.4 млн.",
+      "eik": "112580619",
+      "amountEur": 45430535.69,
+      "riskScore": 91,
+      "badges": [
+        "Строителен картел",
+        "Съдебен иск срещу държавата"
+      ],
+      "details": {
+        "sector": "Пътно строителство и инфраструктура",
+        "wonEur": 45430535.69
+      }
+    },
+    {
+      "id": "auth:000351558",
+      "label": "ОБЩИНА БЕЛОВО",
+      "type": "authority",
+      "cluster": "ROAD_CARTEL",
+      "subLabel": "Възложител · ЕИК 000351558",
+      "eik": "000351558",
+      "amountEur": 0,
+      "riskScore": 65,
+      "badges": [
+        "Държавен възложител"
+      ],
+      "details": {
+        "eik": "000351558"
+      }
+    },
+    {
+      "id": "case:Окръжен_съд_-_Пазарджик:ТД_91_2026",
+      "label": "ТД № 91/2026 (Окръжен съд - Пазарджик)",
+      "type": "case",
+      "cluster": "ROAD_CARTEL",
+      "subLabel": "Съдия: Иванка Георгиева Илинова",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 80,
+      "badges": [
+        "ЕИСС Търговско дело",
+        "Претенция за плащане"
+      ],
+      "details": {
+        "court": "Окръжен съд - Пазарджик",
+        "caseNo": "ТД № 91/2026",
+        "judge": "Иванка Георгиева Илинова"
+      }
+    },
+    {
+      "id": "judge:Иванка_Георгиева_Илинова",
+      "label": "Иванка Георгиева Илинова",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Окръжен съд - Пазарджик",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 78,
+      "badges": [
+        "Съдия по търговски спор"
+      ],
+      "details": {
+        "court": "Окръжен съд - Пазарджик"
+      }
+    },
+    {
+      "id": "lawyer:Адвокат_Е_В_П",
+      "label": "Адвокат Е.В.П",
+      "type": "lawyer",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Процесуален представител",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 70,
+      "badges": [
+        "Адвокат по спора"
+      ],
+      "details": {}
+    },
+    {
+      "id": "case:Окръжен_съд_-_Пазарджик:ТД_65_2026",
+      "label": "ТД № 65/2026 (Окръжен съд - Пазарджик)",
+      "type": "case",
+      "cluster": "ROAD_CARTEL",
+      "subLabel": "Съдия: Илиана Георгиева Димитрова Васева",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 80,
+      "badges": [
+        "ЕИСС Търговско дело",
+        "Претенция за плащане"
+      ],
+      "details": {
+        "court": "Окръжен съд - Пазарджик",
+        "caseNo": "ТД № 65/2026",
+        "judge": "Илиана Георгиева Димитрова Васева"
+      }
+    },
+    {
+      "id": "judge:Илиана_Георгиева_Димитрова_Васева",
+      "label": "Илиана Георгиева Димитрова Васева",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Окръжен съд - Пазарджик",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 78,
+      "badges": [
+        "Съдия по търговски спор"
+      ],
+      "details": {
+        "court": "Окръжен съд - Пазарджик"
+      }
+    },
+    {
+      "id": "comp:130834663",
+      "label": "ГРАДИВ ООД / ЕООД",
+      "type": "company",
+      "cluster": "ROAD_CARTEL",
+      "subLabel": "Договори за €11.9 млн.",
+      "eik": "130834663",
+      "amountEur": 11905861.59,
+      "riskScore": 79,
+      "badges": [
+        "Строителен картел",
+        "Съдебен иск срещу държавата"
+      ],
+      "details": {
+        "sector": "Пътно строителство и инфраструктура",
+        "wonEur": 11905861.59
+      }
+    },
+    {
+      "id": "auth:000696327",
+      "label": "СТОЛИЧНА ОБЩИНА",
+      "type": "authority",
+      "cluster": "ROAD_CARTEL",
+      "subLabel": "Възложител · ЕИК 000696327",
+      "eik": "000696327",
+      "amountEur": 0,
+      "riskScore": 65,
+      "badges": [
+        "Държавен възложител"
+      ],
+      "details": {
+        "eik": "000696327"
+      }
+    },
+    {
+      "id": "case:Софийски_градски_съд:ТД_728_2026",
+      "label": "ТД № 728/2026 (Софийски градски съд)",
+      "type": "case",
+      "cluster": "ROAD_CARTEL",
+      "subLabel": "Съдия: Светослав Василев",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 80,
+      "badges": [
+        "ЕИСС Търговско дело",
+        "Претенция за плащане"
+      ],
+      "details": {
+        "court": "Софийски градски съд",
+        "caseNo": "ТД № 728/2026",
+        "judge": "Светослав Василев"
+      }
+    },
+    {
+      "id": "judge:Светослав_Василев",
+      "label": "Светослав Василев",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Софийски градски съд",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 78,
+      "badges": [
+        "Съдия по търговски спор"
+      ],
+      "details": {
+        "court": "Софийски градски съд"
+      }
+    },
+    {
+      "id": "lawyer:Адвокат_Д_Д_С",
+      "label": "Адвокат Д.Д.С",
+      "type": "lawyer",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Процесуален представител",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 70,
+      "badges": [
+        "Адвокат по спора"
+      ],
+      "details": {}
+    },
+    {
+      "id": "inst:Община_ОбС_Благоевград",
+      "label": "Община / ОбС Благоевград",
+      "type": "authority",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Общини, Кметове и Общински съвети · €29.4 млн. конфликт",
+      "eik": "",
+      "amountEur": 29442352.4,
+      "riskScore": 80,
+      "badges": [
+        "Публична институция",
+        "Собствени поръчки (Конфликт)"
+      ],
+      "details": {
+        "officialsCount": 7,
+        "companiesCount": 7
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6YzJhYTNlM2RlOGY3ZTY4OTBiYWM1OWRiZjQ3YWEzMGJmNWI0M2E2ODU2YWM2YjQwMWZmYmMwMmNkZmY3OWM1ZA",
+      "label": "Гергана Владимирова Муртова",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Благоевград",
+      "eik": "",
+      "amountEur": 39943804.96,
+      "riskScore": 92,
+      "badges": [
+        "Конфликт чл.49 ЗПКОНПИ",
+        "Собствена институция"
+      ],
+      "details": {
+        "contractCount": 98,
+        "periodEur": 29420040.03
+      }
+    },
+    {
+      "id": "comp_off:РАСТЕР-ЮГ_ООД",
+      "label": "РАСТЕР-ЮГ ООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на Гергана Владимирова Муртова",
+      "eik": "",
+      "amountEur": 29420040.03,
+      "riskScore": 90,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "Гергана Владимирова Муртова"
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6NmE3ZTk2OWM4ZGJhNTIwZTAwNDg1MzNiOWY1YzBmNmQ1M2I0OWQxNTdjYzA3ZGU4ZWI3MWE3YWZjMmViOWFjOA",
+      "label": "Боряна Боянова Шалявска",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Благоевград",
+      "eik": "",
+      "amountEur": 663052.22,
+      "riskScore": 68,
+      "badges": [
+        "Декларирана фирма"
+      ],
+      "details": {
+        "contractCount": 4,
+        "periodEur": 22312.37
+      }
+    },
+    {
+      "id": "comp_off:ТЕРРА_ВЕДЖИС_ЕООД",
+      "label": "ТЕРРА ВЕДЖИС ЕООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на Боряна Боянова Шалявска",
+      "eik": "",
+      "amountEur": 22312.37,
+      "riskScore": 65,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "Боряна Боянова Шалявска"
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6MDdkMjc4NjgzMGViZjY1ZDI0Y2JhYWY1YzA3NzlmMjMzYmYzODYzMGY5Njk0OGY2ODM1ZjgzOGI0MmRlMTU1ZQ",
+      "label": "Анита Петрова Коцелова",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Благоевград",
+      "eik": "",
+      "amountEur": 27599.93,
+      "riskScore": 68,
+      "badges": [
+        "Декларирана фирма"
+      ],
+      "details": {
+        "contractCount": 2,
+        "periodEur": 0
+      }
+    },
+    {
+      "id": "comp_off:АТ_-_КОНСУЛТИНГ_ЕООД",
+      "label": "АТ - КОНСУЛТИНГ ЕООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на Анита Петрова Коцелова",
+      "eik": "",
+      "amountEur": 27599.93,
+      "riskScore": 65,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "Анита Петрова Коцелова"
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6NzE1MmNlNTliNTYxMzRkNTkyMWYyYzdiYjlhZmIyYTMzZjZkYTUyMWQxZDRmMzM3NjhhNjlkY2ViYzdlZWJiZQ",
+      "label": "СОНЯ БОЯНОВА СТАВРЕВА",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Благоевград",
+      "eik": "",
+      "amountEur": 1175.97,
+      "riskScore": 68,
+      "badges": [
+        "Декларирана фирма"
+      ],
+      "details": {
+        "contractCount": 1,
+        "periodEur": 0
+      }
+    },
+    {
+      "id": "comp_off:МЕДИЯ_ГРУП_ПРЕС_ЕООД",
+      "label": "МЕДИЯ ГРУП ПРЕС ЕООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на СОНЯ БОЯНОВА СТАВРЕВА",
+      "eik": "",
+      "amountEur": 1175.97,
+      "riskScore": 65,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "СОНЯ БОЯНОВА СТАВРЕВА"
+      }
+    },
+    {
+      "id": "inst:Община_ОбС_Хасково",
+      "label": "Община / ОбС Хасково",
+      "type": "authority",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Общини, Кметове и Общински съвети · €14.9 млн. конфликт",
+      "eik": "",
+      "amountEur": 14943299.26,
+      "riskScore": 95,
+      "badges": [
+        "Публична институция",
+        "Собствени поръчки (Конфликт)"
+      ],
+      "details": {
+        "officialsCount": 6,
+        "companiesCount": 12
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6NjFiYmViNzZjMDM1NTQ2NTQ5ZGMzMzAzYTRmNjU1NjY3MjllOGJiOGU5MDJjYzRkNjgxYzI2ZTFkOGJlZGY4Nw",
+      "label": "ДАНИЕЛ РУМЕНОВ ГАРГОВ",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Хасково",
+      "eik": "",
+      "amountEur": 87577896.9,
+      "riskScore": 92,
+      "badges": [
+        "Конфликт чл.49 ЗПКОНПИ",
+        "Собствена институция"
+      ],
+      "details": {
+        "contractCount": 136,
+        "periodEur": 14610532.11
+      }
+    },
+    {
+      "id": "comp_off:ГЛОБЪЛ_КЛИНЪР_ООД",
+      "label": "ГЛОБЪЛ КЛИНЪР ООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на ДАНИЕЛ РУМЕНОВ ГАРГОВ",
+      "eik": "",
+      "amountEur": 14610532.11,
+      "riskScore": 90,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "ДАНИЕЛ РУМЕНОВ ГАРГОВ"
+      }
+    },
+    {
+      "id": "comp_off:ЕКО_-_ТИТАН_ГРУП_АД",
+      "label": "ЕКО - ТИТАН ГРУП АД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на ДАНИЕЛ РУМЕНОВ ГАРГОВ",
+      "eik": "",
+      "amountEur": 14610532.11,
+      "riskScore": 90,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "ДАНИЕЛ РУМЕНОВ ГАРГОВ"
+      }
+    },
+    {
+      "id": "comp_off:ЕКО_ТРАДЕКС_ГРУП_АД",
+      "label": "ЕКО ТРАДЕКС ГРУП АД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на ДАНИЕЛ РУМЕНОВ ГАРГОВ",
+      "eik": "",
+      "amountEur": 14610532.11,
+      "riskScore": 90,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "ДАНИЕЛ РУМЕНОВ ГАРГОВ"
+      }
+    },
+    {
+      "id": "comp_off:ХЛЕБНА_ПРОМИШЛЕНОСТ_АД",
+      "label": "ХЛЕБНА ПРОМИШЛЕНОСТ АД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на ДАНИЕЛ РУМЕНОВ ГАРГОВ",
+      "eik": "",
+      "amountEur": 14610532.11,
+      "riskScore": 90,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "ДАНИЕЛ РУМЕНОВ ГАРГОВ"
+      }
+    },
+    {
+      "id": "comp_off:ХЛЕБОЗАВОД_АД",
+      "label": "ХЛЕБОЗАВОД АД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на ДАНИЕЛ РУМЕНОВ ГАРГОВ",
+      "eik": "",
+      "amountEur": 14610532.11,
+      "riskScore": 90,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "ДАНИЕЛ РУМЕНОВ ГАРГОВ"
+      }
+    },
+    {
+      "id": "comp_off:ЯНТРА_-_ТРАНСПОРТ_АД",
+      "label": "ЯНТРА - ТРАНСПОРТ АД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на ДАНИЕЛ РУМЕНОВ ГАРГОВ",
+      "eik": "",
+      "amountEur": 14610532.11,
+      "riskScore": 90,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "ДАНИЕЛ РУМЕНОВ ГАРГОВ"
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6NzhjZWI1NTBjYjE5NzhiZmE2YzUzMWMyMWIxZTFlZDIyOGZiOGI1ODU3NDMxNTE5MWFmYmNlOTQ3YzcxNjNjMA",
+      "label": "ГЕОРГИ ДЕЛЧЕВ ГЕОРГИЕВ",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Хасково",
+      "eik": "",
+      "amountEur": 768824.53,
+      "riskScore": 92,
+      "badges": [
+        "Конфликт чл.49 ЗПКОНПИ",
+        "Собствена институция"
+      ],
+      "details": {
+        "contractCount": 72,
+        "periodEur": 246563.33
+      }
+    },
+    {
+      "id": "comp_off:ГАРАНТ_-_2000_ООД",
+      "label": "ГАРАНТ - 2000 ООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на ГЕОРГИ ДЕЛЧЕВ ГЕОРГИЕВ",
+      "eik": "",
+      "amountEur": 246563.33,
+      "riskScore": 90,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "ГЕОРГИ ДЕЛЧЕВ ГЕОРГИЕВ"
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6ZmRjYTE4OGU5OGE2NDZjNWFjN2NjOTEzZWU5NDA3MTk5MDgzNzAxNGE1ZTA1ZGIyODEzMDAxYzY3MGZlYzE4ZQ",
+      "label": "МЮМЮН САЛИ МЮМЮН",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Хасково",
+      "eik": "",
+      "amountEur": 85897.04,
+      "riskScore": 68,
+      "badges": [
+        "Декларирана фирма"
+      ],
+      "details": {
+        "contractCount": 1,
+        "periodEur": 85897.04
+      }
+    },
+    {
+      "id": "comp_off:ДЖЕНИ_СПОРТ_ЕООД",
+      "label": "ДЖЕНИ СПОРТ ЕООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на МЮМЮН САЛИ МЮМЮН",
+      "eik": "",
+      "amountEur": 85897.04,
+      "riskScore": 65,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "МЮМЮН САЛИ МЮМЮН"
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6NWIyOWU3YjVkZTgwYTQ5Mzc5OTk4ZjUzYWZmYjg3MjRkNmY4NWI0NmVlMGU0N2Y5ZjVjNDMzZDg0ZmMwYzUwZQ",
+      "label": "ПЕТЪР ЕВГЕНИЕВ НИКОЛОВ",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Хасково",
+      "eik": "",
+      "amountEur": 307022.22,
+      "riskScore": 92,
+      "badges": [
+        "Конфликт чл.49 ЗПКОНПИ",
+        "Собствена институция"
+      ],
+      "details": {
+        "contractCount": 66,
+        "periodEur": 306.78
+      }
+    },
+    {
+      "id": "comp_off:АДЛОН_И_КО_ЕООД",
+      "label": "АДЛОН И КО ЕООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на ПЕТЪР ЕВГЕНИЕВ НИКОЛОВ",
+      "eik": "",
+      "amountEur": 306.78,
+      "riskScore": 90,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "ПЕТЪР ЕВГЕНИЕВ НИКОЛОВ"
+      }
+    },
+    {
+      "id": "inst:Община_ОбС_Неделино",
+      "label": "Община / ОбС Неделино",
+      "type": "authority",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Общини, Кметове и Общински съвети · €11.0 млн. конфликт",
+      "eik": "",
+      "amountEur": 11008668.95,
+      "riskScore": 80,
+      "badges": [
+        "Публична институция",
+        "Собствени поръчки (Конфликт)"
+      ],
+      "details": {
+        "officialsCount": 3,
+        "companiesCount": 4
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6ZGEzNWE5MDc1OTgwNDFkZjBlZGM5ZWU0MWNmZWVkMzA1MGU3OGU3Yjk3OGIzOGM5YjE3MzZiNzE3MjJjMjI0Mg",
+      "label": "БОРИСЛАВ ОГНЯНОВ БЕШИРОВ",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Неделино",
+      "eik": "",
+      "amountEur": 18444702.19,
+      "riskScore": 92,
+      "badges": [
+        "Конфликт чл.49 ЗПКОНПИ",
+        "Собствена институция"
+      ],
+      "details": {
+        "contractCount": 24,
+        "periodEur": 10885457.94
+      }
+    },
+    {
+      "id": "comp_off:МАРИБОР_-_СТРОЙ_ЕООД",
+      "label": "МАРИБОР - СТРОЙ ЕООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на БОРИСЛАВ ОГНЯНОВ БЕШИРОВ",
+      "eik": "",
+      "amountEur": 10885457.94,
+      "riskScore": 90,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "БОРИСЛАВ ОГНЯНОВ БЕШИРОВ"
+      }
+    },
+    {
+      "id": "comp_off:МАРИБОР_ББ_СТРОЙ_ЕООД",
+      "label": "МАРИБОР ББ СТРОЙ ЕООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на БОРИСЛАВ ОГНЯНОВ БЕШИРОВ",
+      "eik": "",
+      "amountEur": 10885457.94,
+      "riskScore": 90,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "БОРИСЛАВ ОГНЯНОВ БЕШИРОВ"
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6OTQwNWYzNTA3YzQ3YWFhNDFiZmIxNWYwMjYzNjY0NWYwZGRjY2ViZWFmYWYxODM5NGNkNjFmMGI1YmViODdhNA",
+      "label": "ВЕСЕЛИН ДАНЧЕВ КЕХАЙОВ",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Неделино",
+      "eik": "",
+      "amountEur": 175921.38,
+      "riskScore": 92,
+      "badges": [
+        "Конфликт чл.49 ЗПКОНПИ",
+        "Собствена институция"
+      ],
+      "details": {
+        "contractCount": 6,
+        "periodEur": 123211.01
+      }
+    },
+    {
+      "id": "comp_off:ЕТ_ВЕСДАН-81_-_ВЕСЕЛИН_КЕХАЙОВ",
+      "label": "ЕТ ВЕСДАН-81 - ВЕСЕЛИН КЕХАЙОВ",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на ВЕСЕЛИН ДАНЧЕВ КЕХАЙОВ",
+      "eik": "",
+      "amountEur": 123211.01,
+      "riskScore": 90,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "ВЕСЕЛИН ДАНЧЕВ КЕХАЙОВ"
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6YmI1ZmI5NmY2ZTY3YjI2MjUwMzJlNDUwMGM1NDNjZWIyMTUxMmUxNGZhZGZjNDExNjVhNWUxYzRmZTQ2OGY5MQ",
+      "label": "СТЕФАН ИВАНОВ ГЬОЛАДЖИЕВ",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Неделино",
+      "eik": "",
+      "amountEur": 213556.18,
+      "riskScore": 68,
+      "badges": [
+        "Декларирана фирма"
+      ],
+      "details": {
+        "contractCount": 5,
+        "periodEur": 0
+      }
+    },
+    {
+      "id": "comp_off:ЕТ_СТЕФАН_ГЬОЛАДЖИЕВ",
+      "label": "ЕТ СТЕФАН ГЬОЛАДЖИЕВ",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на СТЕФАН ИВАНОВ ГЬОЛАДЖИЕВ",
+      "eik": "",
+      "amountEur": 213556.18,
+      "riskScore": 65,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "СТЕФАН ИВАНОВ ГЬОЛАДЖИЕВ"
+      }
+    },
+    {
+      "id": "inst:Народно_събрание",
+      "label": "Народно събрание",
+      "type": "authority",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Народно събрание (Депутати) · €5.6 млн. конфликт",
+      "eik": "",
+      "amountEur": 5627335.46,
+      "riskScore": 80,
+      "badges": [
+        "Публична институция",
+        "Собствени поръчки (Конфликт)"
+      ],
+      "details": {
+        "officialsCount": 56,
+        "companiesCount": 68
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6ODQ5YjQ2YmJhMzVkY2RjYTJjZWFiZTFkNDlmODYxOTBhNTZiYzc2NGVmNWJjNGNmZmMzYjZlNDJkNDNiZWEzZg",
+      "label": "СТЕФАН ИВАНОВ ЦАНКОВ",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Народно събрание",
+      "eik": "",
+      "amountEur": 15092220.48,
+      "riskScore": 68,
+      "badges": [
+        "Декларирана фирма"
+      ],
+      "details": {
+        "contractCount": 102,
+        "periodEur": 1875500.58
+      }
+    },
+    {
+      "id": "comp_off:ДЕСТИНАЦИЯ_БЪЛГАРИЯ_ЕООД",
+      "label": "ДЕСТИНАЦИЯ БЪЛГАРИЯ ЕООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на СТЕФАН ИВАНОВ ЦАНКОВ",
+      "eik": "",
+      "amountEur": 1875500.58,
+      "riskScore": 65,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "СТЕФАН ИВАНОВ ЦАНКОВ"
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6MzY5NTI2MTVjM2U1ZDI3N2UyY2JiZTI3YTNkZWIwNDhkMzFkY2ZlZTQ3ZmQ0M2Q3Yzc5NDgyYTNlOTkxMDNiOA",
+      "label": "ДЖИПО НИКОЛОВ ДЖИПОВ",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Народно събрание",
+      "eik": "",
+      "amountEur": 6204582.72,
+      "riskScore": 68,
+      "badges": [
+        "Декларирана фирма"
+      ],
+      "details": {
+        "contractCount": 50,
+        "periodEur": 806196.17
+      }
+    },
+    {
+      "id": "comp_off:МАТ_ООД",
+      "label": "МАТ ООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на ДЖИПО НИКОЛОВ ДЖИПОВ",
+      "eik": "",
+      "amountEur": 806196.17,
+      "riskScore": 65,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "ДЖИПО НИКОЛОВ ДЖИПОВ"
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6NTk4OGQyODdmOTQ4NjQ5NmU0MmI0MTMxYTgyZWEyMmRhMGI5NmVmNmIxODRmMWIyMWJiMWY5MzE2YTE2OTM2Mg",
+      "label": "Димитър Крумов Александров",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Народно събрание",
+      "eik": "",
+      "amountEur": 2852975.55,
+      "riskScore": 68,
+      "badges": [
+        "Декларирана фирма"
+      ],
+      "details": {
+        "contractCount": 27,
+        "periodEur": 777933.31
+      }
+    },
+    {
+      "id": "comp_off:АЛ_И_КО_АД",
+      "label": "АЛ И КО АД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на Димитър Крумов Александров",
+      "eik": "",
+      "amountEur": 777933.31,
+      "riskScore": 65,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "Димитър Крумов Александров"
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6NjEwMzUwNGViMGM5YzEyMDQxNGU2ZWZmNDVmY2I3YTg5NGFmYzNmMDMwNjhjMTU1YzAxOGE1OTY5OTY1OGZkZg",
+      "label": "ЕМИЛ ЦЕНОВ ГЕОРГИЕВ",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Народно събрание",
+      "eik": "",
+      "amountEur": 899873.71,
+      "riskScore": 68,
+      "badges": [
+        "Декларирана фирма"
+      ],
+      "details": {
+        "contractCount": 2,
+        "periodEur": 414146.42
+      }
+    },
+    {
+      "id": "comp_off:СДРУЖЕНИЕ_ФЕДЕРАЦИЯ_НА_ПОТРЕБИТЕЛИТЕ_В_БЪЛГАРИЯ_Сдружение",
+      "label": "СДРУЖЕНИЕ \"ФЕДЕРАЦИЯ НА ПОТРЕБИТЕЛИТЕ В БЪЛГАРИЯ\" Сдружение",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на ЕМИЛ ЦЕНОВ ГЕОРГИЕВ",
+      "eik": "",
+      "amountEur": 414146.42,
+      "riskScore": 65,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "ЕМИЛ ЦЕНОВ ГЕОРГИЕВ"
+      }
+    },
+    {
+      "id": "inst:Община_ОбС_Шумен",
+      "label": "Община / ОбС Шумен",
+      "type": "authority",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Областни администрации · €3.7 млн. конфликт",
+      "eik": "",
+      "amountEur": 3663577,
+      "riskScore": 95,
+      "badges": [
+        "Публична институция",
+        "Собствени поръчки (Конфликт)"
+      ],
+      "details": {
+        "officialsCount": 6,
+        "companiesCount": 7
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6MTk5MGU1YjM0ZTMyZDAxNzBiZGU4OWFhOTk4NWMzZWIwZjZkNmZjMDU2M2M2MjE1MWYwMjNhNzVlMTEwZWFmOQ",
+      "label": "Владимир Станчев Йолов",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Шумен",
+      "eik": "",
+      "amountEur": 3690748.55,
+      "riskScore": 92,
+      "badges": [
+        "Конфликт чл.49 ЗПКОНПИ",
+        "Собствена институция"
+      ],
+      "details": {
+        "contractCount": 16,
+        "periodEur": 2843383.37
+      }
+    },
+    {
+      "id": "comp_off:Е_-_ПЛАНТ_ЕООД",
+      "label": "Е - ПЛАНТ ЕООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на Владимир Станчев Йолов",
+      "eik": "",
+      "amountEur": 2843383.37,
+      "riskScore": 90,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "Владимир Станчев Йолов"
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6MjgxNzY0ZjY2ZDA3Nzc2NTI1NjJmM2NiZGRmZmE3Y2M5MGFiNzM5Zjc5ODY4MDEzNzQxNTc3ODYxY2Q2YTg5MQ",
+      "label": "ЛИЛЯНА ДИМИТРОВА ЯНКОВА-ГАЙДАРЖИЕВА",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Шумен",
+      "eik": "",
+      "amountEur": 85612.01,
+      "riskScore": 68,
+      "badges": [
+        "Декларирана фирма"
+      ],
+      "details": {
+        "contractCount": 18,
+        "periodEur": 22031.57
+      }
+    },
+    {
+      "id": "comp_off:КОНТРОЛСТРОЙ_БГ_ООД",
+      "label": "КОНТРОЛСТРОЙ БГ ООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на ЛИЛЯНА ДИМИТРОВА ЯНКОВА-ГАЙДАРЖИЕВА",
+      "eik": "",
+      "amountEur": 22031.57,
+      "riskScore": 65,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "ЛИЛЯНА ДИМИТРОВА ЯНКОВА-ГАЙДАРЖИЕВА"
+      }
+    },
+    {
+      "id": "comp_off:СТРОЙКОНТРОЛ_-_ГТ_ООД",
+      "label": "СТРОЙКОНТРОЛ - ГТ ООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на ЛИЛЯНА ДИМИТРОВА ЯНКОВА-ГАЙДАРЖИЕВА",
+      "eik": "",
+      "amountEur": 22031.57,
+      "riskScore": 65,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "ЛИЛЯНА ДИМИТРОВА ЯНКОВА-ГАЙДАРЖИЕВА"
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6M2E3OWIwYTE5NTdiODIxZDg2OGJmZTVmOWQ0NWQ1YjkzZjg0NjVkNzM3NmIwNjk5YTE4NDI4YTg2YTI2ZGUwOQ",
+      "label": "Иван Митев Йонков",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Шумен",
+      "eik": "",
+      "amountEur": 656364.55,
+      "riskScore": 92,
+      "badges": [
+        "Конфликт чл.49 ЗПКОНПИ",
+        "Собствена институция"
+      ],
+      "details": {
+        "contractCount": 12,
+        "periodEur": 20228.75
+      }
+    },
+    {
+      "id": "comp_off:Еко_груп_рисайклинг_ООД",
+      "label": "Еко груп рисайклинг ООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на Иван Митев Йонков",
+      "eik": "",
+      "amountEur": 20228.75,
+      "riskScore": 90,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "Иван Митев Йонков"
+      }
+    },
+    {
+      "id": "inst:Община_ОбС_Белово",
+      "label": "Община / ОбС Белово",
+      "type": "authority",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Общини, Кметове и Общински съвети · €3.1 млн. конфликт",
+      "eik": "",
+      "amountEur": 3094684.98,
+      "riskScore": 65,
+      "badges": [
+        "Публична институция",
+        "Собствени поръчки (Конфликт)"
+      ],
+      "details": {
+        "officialsCount": 2,
+        "companiesCount": 2
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6OTI0ZmUxZjVmMTI5ODBkMDczNjA1MjU4ZDM5MTk3OTYwMzVkMWM3ODBmNmEzMzdiOTE1NGZmMzZhNTZlNDRiZA",
+      "label": "ХРИСТО АТАНАСОВ ЛАЗАРОВ",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Белово",
+      "eik": "",
+      "amountEur": 3237167.8,
+      "riskScore": 68,
+      "badges": [
+        "Декларирана фирма"
+      ],
+      "details": {
+        "contractCount": 3,
+        "periodEur": 2898534.13
+      }
+    },
+    {
+      "id": "comp_off:Ейч_Ел_Ес_трейд_ЕООД",
+      "label": "Ейч Ел Ес трейд ЕООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на ХРИСТО АТАНАСОВ ЛАЗАРОВ",
+      "eik": "",
+      "amountEur": 2898534.13,
+      "riskScore": 65,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "ХРИСТО АТАНАСОВ ЛАЗАРОВ"
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6ZTljNTI5ZDFmNTFhYzU1OGIxZjE3NTE0YzE3YzY3N2EzZTUxZWVjMWRhMWE1ZWQ4M2EwMGYxMWI2NjE2ZGJlNA",
+      "label": "РУМЕН СТЕФАНОВ СТЕФАНОВ",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Белово",
+      "eik": "",
+      "amountEur": 5754370,
+      "riskScore": 92,
+      "badges": [
+        "Конфликт чл.49 ЗПКОНПИ",
+        "Собствена институция"
+      ],
+      "details": {
+        "contractCount": 11,
+        "periodEur": 196150.85
+      }
+    },
+    {
+      "id": "comp_off:СИГМА-СТРОЙ_ООД",
+      "label": "СИГМА-СТРОЙ ООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на РУМЕН СТЕФАНОВ СТЕФАНОВ",
+      "eik": "",
+      "amountEur": 196150.85,
+      "riskScore": 90,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "РУМЕН СТЕФАНОВ СТЕФАНОВ"
+      }
+    },
+    {
+      "id": "inst:Областна_администрация_Шумен",
+      "label": "Областна администрация Шумен",
+      "type": "authority",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Областни администрации · €2.8 млн. конфликт",
+      "eik": "",
+      "amountEur": 2843383.37,
+      "riskScore": 65,
+      "badges": [
+        "Публична институция",
+        "Собствени поръчки (Конфликт)"
+      ],
+      "details": {
+        "officialsCount": 2,
+        "companiesCount": 2
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6YjM5YmI3ZjM4NDU3MTk2NDZhNzVhY2E4MTkzNTBmOTYyZTMyZTQ5ZmJhYjk3MjFjOTc2MGYyYzY4ZTEyZWIxNA",
+      "label": "ФИКРЕТ ДАУД ИБРЯМ",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Областна администрация Шумен",
+      "eik": "",
+      "amountEur": 986319.85,
+      "riskScore": 68,
+      "badges": [
+        "Декларирана фирма"
+      ],
+      "details": {
+        "contractCount": 29,
+        "periodEur": 0
+      }
+    },
+    {
+      "id": "comp_off:ХИГИЯМЕД_ООД",
+      "label": "ХИГИЯМЕД ООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на ФИКРЕТ ДАУД ИБРЯМ",
+      "eik": "",
+      "amountEur": 986319.85,
+      "riskScore": 65,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "ФИКРЕТ ДАУД ИБРЯМ"
+      }
+    },
+    {
+      "id": "inst:Община_ОбС_Самоков",
+      "label": "Община / ОбС Самоков",
+      "type": "authority",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Общини, Кметове и Общински съвети · €2.7 млн. конфликт",
+      "eik": "",
+      "amountEur": 2710075.27,
+      "riskScore": 65,
+      "badges": [
+        "Публична институция",
+        "Собствени поръчки (Конфликт)"
+      ],
+      "details": {
+        "officialsCount": 4,
+        "companiesCount": 6
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6MTM0MGE3NjdhZWQxYzViOGM2NmQ2YjhkYzJjN2NjYTk3NGIxOWQ1MWY2Yzg2MWRhZDk4Y2ViMzg5NGU2ZmI3Ng",
+      "label": "ПЕТЪР НИКОЛОВ ГЕОРГИЕВ",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Самоков",
+      "eik": "",
+      "amountEur": 6872875.61,
+      "riskScore": 92,
+      "badges": [
+        "Конфликт чл.49 ЗПКОНПИ",
+        "Собствена институция"
+      ],
+      "details": {
+        "contractCount": 27,
+        "periodEur": 2710075.27
+      }
+    },
+    {
+      "id": "comp_off:КОМЕКЕС_АД",
+      "label": "КОМЕКЕС АД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на ПЕТЪР НИКОЛОВ ГЕОРГИЕВ",
+      "eik": "",
+      "amountEur": 2710075.27,
+      "riskScore": 90,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "ПЕТЪР НИКОЛОВ ГЕОРГИЕВ"
+      }
+    },
+    {
+      "id": "comp_off:САМЕЛ_-_90_АД",
+      "label": "САМЕЛ - 90 АД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на ПЕТЪР НИКОЛОВ ГЕОРГИЕВ",
+      "eik": "",
+      "amountEur": 2710075.27,
+      "riskScore": 90,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "ПЕТЪР НИКОЛОВ ГЕОРГИЕВ"
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6NDg1OGY1YTY1YjU0MjcxNDE4MDJiNGYyZGU3OTFmMzMyZTg1YzQ0OGJjYTA2YWU3MzQ3NjEwOGE1MmRlNmUwOQ",
+      "label": "ЛЮБОМИР СПАСОВ  ЛОБУТОВ",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Самоков",
+      "eik": "",
+      "amountEur": 474102.86,
+      "riskScore": 68,
+      "badges": [
+        "Декларирана фирма"
+      ],
+      "details": {
+        "contractCount": 9,
+        "periodEur": 0
+      }
+    },
+    {
+      "id": "comp_off:ЛОБУТОВ_МЛ_ЕООД",
+      "label": "ЛОБУТОВ МЛ ЕООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на ЛЮБОМИР СПАСОВ  ЛОБУТОВ",
+      "eik": "",
+      "amountEur": 474102.86,
+      "riskScore": 65,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "ЛЮБОМИР СПАСОВ  ЛОБУТОВ"
+      }
+    },
+    {
+      "id": "comp_off:ДИЛ_ТРАНС_ООД",
+      "label": "ДИЛ ТРАНС ООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на ЛЮБОМИР СПАСОВ  ЛОБУТОВ",
+      "eik": "",
+      "amountEur": 474102.86,
+      "riskScore": 65,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "ЛЮБОМИР СПАСОВ  ЛОБУТОВ"
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6ZDkwNjE0NzNhMmM5NTk0MDY5M2U5Mjk0ZTRlYWRiYTE2YTVmNDhmNzcwMGZiNWMxZjkwYzc3MmJkYjMwYjg4Mg",
+      "label": "ЕМИЛ НИКОЛОВ КРИВОШИЕВ",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Самоков",
+      "eik": "",
+      "amountEur": 5339881.75,
+      "riskScore": 68,
+      "badges": [
+        "Декларирана фирма"
+      ],
+      "details": {
+        "contractCount": 22,
+        "periodEur": 0
+      }
+    },
+    {
+      "id": "comp_off:БЕКАСТРОЙ_ЕАД",
+      "label": "БЕКАСТРОЙ ЕАД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на ЕМИЛ НИКОЛОВ КРИВОШИЕВ",
+      "eik": "",
+      "amountEur": 5339881.75,
+      "riskScore": 65,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "ЕМИЛ НИКОЛОВ КРИВОШИЕВ"
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6ZWU3NGExOTUxZTQ4MTFkNWEwNDQ5NzVhMDg0NTkyMGM5YmQ3YjVhMTE3YjIwZDI3OWIzYWFhN2YwY2EwMjAzMw",
+      "label": "Сия Георгиева Шехтанова",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Самоков",
+      "eik": "",
+      "amountEur": 2003059.96,
+      "riskScore": 68,
+      "badges": [
+        "Декларирана фирма"
+      ],
+      "details": {
+        "contractCount": 3,
+        "periodEur": 0
+      }
+    },
+    {
+      "id": "comp_off:ТРАНСТЕХ_ООД",
+      "label": "ТРАНСТЕХ ООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на Сия Георгиева Шехтанова",
+      "eik": "",
+      "amountEur": 2003059.96,
+      "riskScore": 65,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "Сия Георгиева Шехтанова"
+      }
+    },
+    {
+      "id": "inst:Община_ОбС_Суворово",
+      "label": "Община / ОбС Суворово",
+      "type": "authority",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Общини, Кметове и Общински съвети · €2.7 млн. конфликт",
+      "eik": "",
+      "amountEur": 2671932.82,
+      "riskScore": 65,
+      "badges": [
+        "Публична институция",
+        "Собствени поръчки (Конфликт)"
+      ],
+      "details": {
+        "officialsCount": 2,
+        "companiesCount": 2
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6OThiOWYzOTFjNjdlNDYxMTFjMzQ3MmE1NDZjOWEwNDljOWQ3ODUxYjNhNjkzMjQ1OTljNzM0YzZlN2JjODZkZQ",
+      "label": "НИКОЛАЙ ОРЛИНОВ РОЕВ",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Суворово",
+      "eik": "",
+      "amountEur": 9999157.1,
+      "riskScore": 92,
+      "badges": [
+        "Конфликт чл.49 ЗПКОНПИ",
+        "Собствена институция"
+      ],
+      "details": {
+        "contractCount": 44,
+        "periodEur": 2547617.67
+      }
+    },
+    {
+      "id": "comp_off:ЕР_БИЛД_-_ИНЖЕНЕРИНГ_ЕООД",
+      "label": "ЕР БИЛД - ИНЖЕНЕРИНГ ЕООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на НИКОЛАЙ ОРЛИНОВ РОЕВ",
+      "eik": "",
+      "amountEur": 2547617.67,
+      "riskScore": 90,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "НИКОЛАЙ ОРЛИНОВ РОЕВ"
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6ODc3NmVhNTAxY2M3YzliYzI2NDMyOTgwYTc4ZGI1ZjAwZjcyMTA2ZTMyNWY4ZDVkYmY5MDk4YmYyMzBlNzY5Yg",
+      "label": "ЗЕЙНЕБ ИСМЕТОВА БЕКИРОВА",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Суворово",
+      "eik": "",
+      "amountEur": 776530.74,
+      "riskScore": 68,
+      "badges": [
+        "Декларирана фирма"
+      ],
+      "details": {
+        "contractCount": 23,
+        "periodEur": 124315.15
+      }
+    },
+    {
+      "id": "comp_off:БОКСЕР_ЕООД",
+      "label": "БОКСЕР ЕООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на ЗЕЙНЕБ ИСМЕТОВА БЕКИРОВА",
+      "eik": "",
+      "amountEur": 124315.15,
+      "riskScore": 65,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "ЗЕЙНЕБ ИСМЕТОВА БЕКИРОВА"
+      }
+    },
+    {
+      "id": "inst:Община_ОбС_Несебър",
+      "label": "Община / ОбС Несебър",
+      "type": "authority",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Общини, Кметове и Общински съвети · €2.3 млн. конфликт",
+      "eik": "",
+      "amountEur": 2280392.19,
+      "riskScore": 65,
+      "badges": [
+        "Публична институция",
+        "Собствени поръчки (Конфликт)"
+      ],
+      "details": {
+        "officialsCount": 2,
+        "companiesCount": 2
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6M2E0YTNmY2VhYTNlOWQ4ZmVhZWJlMjY0ZmQ4OTMyYTJlZjgwZDYyN2Q4YmRiNTgyNTY0ZGNiMDE4ZTVmOTY2Nw",
+      "label": "Върбан Валентинов Кръстев",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Несебър",
+      "eik": "",
+      "amountEur": 7878060.09,
+      "riskScore": 92,
+      "badges": [
+        "Конфликт чл.49 ЗПКОНПИ",
+        "Собствена институция"
+      ],
+      "details": {
+        "contractCount": 18,
+        "periodEur": 2280392.19
+      }
+    },
+    {
+      "id": "comp_off:АТЛАНТ_2013_ЕООД",
+      "label": "АТЛАНТ 2013 ЕООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на Върбан Валентинов Кръстев",
+      "eik": "",
+      "amountEur": 2280392.19,
+      "riskScore": 90,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "Върбан Валентинов Кръстев"
+      }
+    },
+    {
+      "id": "off:aWRlbnRpdHk6ODkwMDhhNzI2MTI1NjBmYzQ1MTViMDQ3MzEyOWRkZDdkMWQ1MmUwNzllZWQzODRjOTA4ZTA4ODgwMzBmZDQ4Mw",
+      "label": "КОСТАДИН ГЕОРГИЕВ НИЩЕЛКОВ",
+      "type": "official",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Длъжностно лице · Община / ОбС Несебър",
+      "eik": "",
+      "amountEur": 75760.16,
+      "riskScore": 68,
+      "badges": [
+        "Декларирана фирма"
+      ],
+      "details": {
+        "contractCount": 1,
+        "periodEur": 0
+      }
+    },
+    {
+      "id": "comp_off:ДИН_СТРОЙ_ЕООД",
+      "label": "ДИН СТРОЙ ЕООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_CAPTURE",
+      "subLabel": "Фирма на КОСТАДИН ГЕОРГИЕВ НИЩЕЛКОВ",
+      "eik": "",
+      "amountEur": 75760.16,
+      "riskScore": 65,
+      "badges": [
+        "Фирма на публично лице",
+        "Победител в поръчки"
+      ],
+      "details": {
+        "owner": "КОСТАДИН ГЕОРГИЕВ НИЩЕЛКОВ"
+      }
+    },
+    {
+      "id": "law_firm:175253221",
+      "label": "АДВОКАТСКО ДРУЖЕСТВО КАМБУРОВ И СЪДРУЖНИЦИ",
+      "type": "lawyer",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Адвокатско дружество · €1564k договор",
+      "eik": "175253221",
+      "amountEur": 1563688.65,
+      "riskScore": 86,
+      "badges": [
+        "Адвокатски договор",
+        "Без състезание (0 оферти)"
+      ],
+      "details": {
+        "subject": "Договор за правни услуги - процесуално представителство",
+        "unp": "T390221",
+        "signedAt": "2024-05-02"
+      }
+    },
+    {
+      "id": "auth:000695025",
+      "label": "МИНИСТЕРСКИ СЪВЕТ",
+      "type": "authority",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Възложител на правни услуги",
+      "eik": "000695025",
+      "amountEur": 0,
+      "riskScore": 68,
+      "badges": [
+        "Държавно предприятие / Ведомство"
+      ],
+      "details": {
+        "eik": "000695025"
+      }
+    },
+    {
+      "id": "law_firm:121162565",
+      "label": "ИНТЕРЛАНГ ЕООД",
+      "type": "lawyer",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Адвокатско дружество · €895k договор",
+      "eik": "121162565",
+      "amountEur": 894760.79,
+      "riskScore": 60,
+      "badges": [
+        "Адвокатски договор",
+        "Държавен абонамент"
+      ],
+      "details": {
+        "subject": "„Предоставяне на специализирани юридически писмени преводачески услуги по международни арбитражни дела“",
+        "unp": "T569003",
+        "signedAt": "2026-04-08"
+      }
+    },
+    {
+      "id": "auth:000695406",
+      "label": "МИНИСТЕРСТВО НА ФИНАНСИТЕ",
+      "type": "authority",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Възложител на правни услуги",
+      "eik": "000695406",
+      "amountEur": 0,
+      "riskScore": 68,
+      "badges": [
+        "Държавно предприятие / Ведомство"
+      ],
+      "details": {
+        "eik": "000695406"
+      }
+    },
+    {
+      "id": "law_firm:103913291",
+      "label": "МИТРА ТРАНСЛЕЙШЪНС ООД",
+      "type": "lawyer",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Адвокатско дружество · €537k договор",
+      "eik": "103913291",
+      "amountEur": 536856.47,
+      "riskScore": 60,
+      "badges": [
+        "Адвокатски договор",
+        "Държавен абонамент"
+      ],
+      "details": {
+        "subject": "„Предоставяне на специализирани юридически писмени преводачески услуги по международни арбитражни дела“",
+        "unp": "T569003",
+        "signedAt": "2026-04-17"
+      }
+    },
+    {
+      "id": "law_firm:WHITE_&CASE_LLP",
+      "label": "WHITE &CASE LLP",
+      "type": "lawyer",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Адвокатско дружество · €410k договор",
+      "eik": "",
+      "amountEur": 410000,
+      "riskScore": 86,
+      "badges": [
+        "Адвокатски договор",
+        "Без състезание (0 оферти)"
+      ],
+      "details": {
+        "subject": "Процесуално представителство и правно консултиране пред Общия Съд на Европейския Съюз",
+        "unp": "T394429",
+        "signedAt": "2024-03-12"
+      }
+    },
+    {
+      "id": "auth:175203478",
+      "label": "БУЛГАРТРАНСГАЗ ЕАД",
+      "type": "authority",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Възложител на правни услуги",
+      "eik": "175203478",
+      "amountEur": 0,
+      "riskScore": 68,
+      "badges": [
+        "Държавно предприятие / Ведомство"
+      ],
+      "details": {
+        "eik": "175203478"
+      }
+    },
+    {
+      "id": "law_firm:204842656",
+      "label": "НОВА ТРАНСЛЕЙТ ЕООД",
+      "type": "lawyer",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Адвокатско дружество · €358k договор",
+      "eik": "204842656",
+      "amountEur": 357904.32,
+      "riskScore": 60,
+      "badges": [
+        "Адвокатски договор",
+        "Държавен абонамент"
+      ],
+      "details": {
+        "subject": "„Предоставяне на специализирани юридически писмени преводачески услуги по международни арбитражни дела“",
+        "unp": "T569003",
+        "signedAt": "2026-04-17"
+      }
+    },
+    {
+      "id": "law_firm:175382262",
+      "label": "АДВОКАТСКО ДРУЖЕСТВО \"ПОПОВ, АРНАУДОВ И ПАРТНЬОРИ\"",
+      "type": "lawyer",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Адвокатско дружество · €245k договор",
+      "eik": "175382262",
+      "amountEur": 245420.1,
+      "riskScore": 86,
+      "badges": [
+        "Адвокатски договор",
+        "Без състезание (0 оферти)"
+      ],
+      "details": {
+        "subject": "Договор за правни услуги - процесуално представителство",
+        "unp": "T356428",
+        "signedAt": "2022-08-19"
+      }
+    },
+    {
+      "id": "law_firm:131472060",
+      "label": "АДВОКАТСКО ДРУЖЕСТВО \"ДОБРЕВ И ЛЮЦКАНОВ\"",
+      "type": "lawyer",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Адвокатско дружество · €217k договор",
+      "eik": "131472060",
+      "amountEur": 217336.37,
+      "riskScore": 60,
+      "badges": [
+        "Адвокатски договор",
+        "Държавен абонамент"
+      ],
+      "details": {
+        "subject": "Процесуално представителство и защита във връзка с предявяване и водене на искове срещу община Варна",
+        "unp": "T382545",
+        "signedAt": "2023-07-14"
+      }
+    },
+    {
+      "id": "auth:177549105",
+      "label": "МИНИСТЕРСТВО НА ИКОНОМИКАТА И ИНДУСТРИЯТА",
+      "type": "authority",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Възложител на правни услуги",
+      "eik": "177549105",
+      "amountEur": 0,
+      "riskScore": 68,
+      "badges": [
+        "Държавно предприятие / Ведомство"
+      ],
+      "details": {
+        "eik": "177549105"
+      }
+    },
+    {
+      "id": "law_firm:175825028",
+      "label": "Адвокатско дружество \"ШОПОВ И ЯНКОВ\"",
+      "type": "lawyer",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Адвокатско дружество · €204k договор",
+      "eik": "175825028",
+      "amountEur": 203724.25,
+      "riskScore": 60,
+      "badges": [
+        "Адвокатски договор",
+        "Държавен абонамент"
+      ],
+      "details": {
+        "subject": "Процесуално представителство по т.д. 32/2020 - ТЕЦ Марица 3",
+        "unp": "T375567",
+        "signedAt": "2022-12-12"
+      }
+    },
+    {
+      "id": "auth:106513772",
+      "label": "АЕЦ КОЗЛОДУЙ ЕАД",
+      "type": "authority",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Възложител на правни услуги",
+      "eik": "106513772",
+      "amountEur": 0,
+      "riskScore": 68,
+      "badges": [
+        "Държавно предприятие / Ведомство"
+      ],
+      "details": {
+        "eik": "106513772"
+      }
+    },
+    {
+      "id": "law_firm:106038717",
+      "label": "ГОШО ПЕТРОВ ПЕШКОВСКИ",
+      "type": "lawyer",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Адвокатско дружество · €147k договор",
+      "eik": "106038717",
+      "amountEur": 147252.06,
+      "riskScore": 86,
+      "badges": [
+        "Адвокатски договор",
+        "Без състезание (0 оферти)"
+      ],
+      "details": {
+        "subject": "Процесуално представителство по дела пред АС Враца и ВАС",
+        "unp": "T379676",
+        "signedAt": "2023-10-10"
+      }
+    },
+    {
+      "id": "auth:816090199",
+      "label": "ВОДОСНАБДЯВАНЕ И КАНАЛИЗАЦИЯ ООД",
+      "type": "authority",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Възложител на правни услуги",
+      "eik": "816090199",
+      "amountEur": 0,
+      "riskScore": 68,
+      "badges": [
+        "Държавно предприятие / Ведомство"
+      ],
+      "details": {
+        "eik": "816090199"
+      }
+    },
+    {
+      "id": "law_firm:адв._Галина_Стамболиева",
+      "label": "адв. Галина Стамболиева",
+      "type": "lawyer",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Адвокатско дружество · €121k договор",
+      "eik": "",
+      "amountEur": 121176.18,
+      "riskScore": 86,
+      "badges": [
+        "Адвокатски договор",
+        "Без състезание (0 оферти)"
+      ],
+      "details": {
+        "subject": "Процесуално представителство пред ВАС",
+        "unp": "T371758",
+        "signedAt": "2023-08-04"
+      }
+    },
+    {
+      "id": "auth:115010670",
+      "label": "ВОДОСНАБДЯВАНЕ И КАНАЛИЗАЦИЯ ЕООД",
+      "type": "authority",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Възложител на правни услуги",
+      "eik": "115010670",
+      "amountEur": 0,
+      "riskScore": 68,
+      "badges": [
+        "Държавно предприятие / Ведомство"
+      ],
+      "details": {
+        "eik": "115010670"
+      }
+    },
+    {
+      "id": "law_firm:175250218",
+      "label": "АДВОКАТСКО ДРУЖЕСТВО \"СТОЙЧЕВ, Д-Р ВЪЛКОВ И КО\"",
+      "type": "lawyer",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Адвокатско дружество · €88k договор",
+      "eik": "175250218",
+      "amountEur": 87883.79,
+      "riskScore": 60,
+      "badges": [
+        "Адвокатски договор",
+        "Държавен абонамент"
+      ],
+      "details": {
+        "subject": "Процесуално представителство и защита във връзка с претенция на \"АЕЦ Козлодуй\" ЕАД срещу \"ТЕЦ Марица 3\" АД",
+        "unp": "T368159",
+        "signedAt": "2021-09-30"
+      }
+    },
+    {
+      "id": "law_firm:176642834",
+      "label": "Адвокатско дружество АНДРЕЕВ, ХРИСТОВ И ПАРТНЬОРИ",
+      "type": "lawyer",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Адвокатско дружество · €66k договор",
+      "eik": "176642834",
+      "amountEur": 65693.85,
+      "riskScore": 86,
+      "badges": [
+        "Адвокатски договор",
+        "Без състезание (0 оферти)"
+      ],
+      "details": {
+        "subject": "Процесуално представителство пред Софийски градски съд",
+        "unp": "T404170",
+        "signedAt": "2023-11-09"
+      }
+    },
+    {
+      "id": "auth:129009070",
+      "label": "ФОНД ЗАТВОРНО ДЕЛО ДП",
+      "type": "authority",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Възложител на правни услуги",
+      "eik": "129009070",
+      "amountEur": 0,
+      "riskScore": 68,
+      "badges": [
+        "Държавно предприятие / Ведомство"
+      ],
+      "details": {
+        "eik": "129009070"
+      }
+    },
+    {
+      "id": "law_firm:176093905",
+      "label": "\"АДВОКАТСКО ДРУЖЕСТВО ГРИГОРОВ И СЪДРУЖНИЦИ\"",
+      "type": "lawyer",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Адвокатско дружество · €64k договор",
+      "eik": "176093905",
+      "amountEur": 64422.78,
+      "riskScore": 60,
+      "badges": [
+        "Адвокатски договор",
+        "Държавен абонамент"
+      ],
+      "details": {
+        "subject": "Процесуално представителство и защита по т.д. № 796/2024г.",
+        "unp": "T463662",
+        "signedAt": "2025-02-11"
+      }
+    },
+    {
+      "id": "law_firm:адв._Васил_Василев",
+      "label": "адв. Васил Василев",
+      "type": "lawyer",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Адвокатско дружество · €51k договор",
+      "eik": "",
+      "amountEur": 51129.19,
+      "riskScore": 86,
+      "badges": [
+        "Адвокатски договор",
+        "Без състезание (0 оферти)"
+      ],
+      "details": {
+        "subject": "Процесуално представителство и защита по адм. дело №235/2024 по описа на Административен съд Смолян",
+        "unp": "T409702",
+        "signedAt": "2024-07-02"
+      }
+    },
+    {
+      "id": "auth:830166530",
+      "label": "ВОДОСНАБДЯВАНЕ И КАНАЛИЗАЦИЯ ЕООД",
+      "type": "authority",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Възложител на правни услуги",
+      "eik": "830166530",
+      "amountEur": 0,
+      "riskScore": 68,
+      "badges": [
+        "Държавно предприятие / Ведомство"
+      ],
+      "details": {
+        "eik": "830166530"
+      }
+    },
+    {
+      "id": "law_firm:101678670",
+      "label": "ЕДНОЛИЧНО АДВОКАТСКО ДРУЖЕСТВО - САВОВА",
+      "type": "lawyer",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Адвокатско дружество · €51k договор",
+      "eik": "101678670",
+      "amountEur": 51077.99,
+      "riskScore": 60,
+      "badges": [
+        "Адвокатски договор",
+        "Държавен абонамент"
+      ],
+      "details": {
+        "subject": "Предоставяне на правна помощ и процесуално представителство",
+        "unp": "T550893",
+        "signedAt": "2025-12-17"
+      }
+    },
+    {
+      "id": "auth:202766380",
+      "label": "БЪЛГАРСКИ СПОРТЕН ТОТАЛИЗАТОР ДП",
+      "type": "authority",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Възложител на правни услуги",
+      "eik": "202766380",
+      "amountEur": 0,
+      "riskScore": 68,
+      "badges": [
+        "Държавно предприятие / Ведомство"
+      ],
+      "details": {
+        "eik": "202766380"
+      }
+    },
+    {
+      "id": "judge:Дафина_Николаева_Арабаджиева",
+      "label": "Дафина Николаева Арабаджиева",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Районен съд - Пловдив",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 94,
+      "badges": [
+        "Необяснена концентрация",
+        "Ratio: 9.04x над нормата",
+        "FDR q < 0.01"
+      ],
+      "details": {
+        "court": "Районен съд - Пловдив",
+        "caseKind": "Частно гражданско дело",
+        "allocatedCases": 35,
+        "expectedCases": 3.87,
+        "ratio": 9.04,
+        "qValue": 3.779e-22
+      }
+    },
+    {
+      "id": "party:175451413",
+      "label": "ИНСПЕКТОРАТ КЪМ ВИСШИЯ СЪДЕБЕН СЪВЕТ",
+      "type": "company",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Страна по дела в Районен съд - Пловдив",
+      "eik": "175451413",
+      "amountEur": 365000,
+      "riskScore": 84,
+      "badges": [
+        "Страна с монополно разпределение"
+      ],
+      "details": {
+        "eik": "175451413",
+        "procurementEurM": 0.365
+      }
+    },
+    {
+      "id": "judge:НОРА_ВЛАДИМИРОВА_МАРИНОВА",
+      "label": "НОРА ВЛАДИМИРОВА МАРИНОВА",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Софийски районен съд",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 94,
+      "badges": [
+        "Необяснена концентрация",
+        "Ratio: 4.87x над нормата",
+        "FDR q < 0.01",
+        "Ratio: 6.67x над нормата",
+        "Ratio: 7.46x над нормата"
+      ],
+      "details": {
+        "court": "Софийски районен съд",
+        "caseKind": "Гражданско дело",
+        "allocatedCases": 43,
+        "expectedCases": 8.84,
+        "ratio": 4.87,
+        "qValue": 8.122e-15
+      }
+    },
+    {
+      "id": "party:831609046",
+      "label": "ТОПЛОФИКАЦИЯ СОФИЯ ЕАД",
+      "type": "company",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Страна по дела в Софийски районен съд",
+      "eik": "831609046",
+      "amountEur": 481131000,
+      "riskScore": 84,
+      "badges": [
+        "Страна с монополно разпределение"
+      ],
+      "details": {
+        "eik": "831609046",
+        "procurementEurM": 481.131
+      }
+    },
+    {
+      "id": "judge:Диляна_Василева_Славова",
+      "label": "Диляна Василева Славова",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Районен съд - Пловдив",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 94,
+      "badges": [
+        "Необяснена концентрация",
+        "Ratio: 10.4x над нормата",
+        "FDR q < 0.01"
+      ],
+      "details": {
+        "court": "Районен съд - Пловдив",
+        "caseKind": "Частно гражданско дело",
+        "allocatedCases": 23,
+        "expectedCases": 2.21,
+        "ratio": 10.4,
+        "qValue": 8.152e-15
+      }
+    },
+    {
+      "id": "judge:ЛЮБОМИР_ИЛИЕВ_ИГНАТОВ",
+      "label": "ЛЮБОМИР ИЛИЕВ ИГНАТОВ",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Софийски районен съд",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 94,
+      "badges": [
+        "Необяснена концентрация",
+        "Ratio: 9.85x над нормата",
+        "FDR q < 0.01",
+        "Ratio: 4.81x над нормата"
+      ],
+      "details": {
+        "court": "Софийски районен съд",
+        "caseKind": "Гражданско дело",
+        "allocatedCases": 23,
+        "expectedCases": 2.34,
+        "ratio": 9.85,
+        "qValue": 1.032e-13
+      }
+    },
+    {
+      "id": "judge:ПЛАМЕНА_САШЕВА_ТРЕНЧЕВА",
+      "label": "ПЛАМЕНА САШЕВА ТРЕНЧЕВА",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Софийски районен съд",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 94,
+      "badges": [
+        "Необяснена концентрация",
+        "Ratio: 6.92x над нормата",
+        "FDR q < 0.01"
+      ],
+      "details": {
+        "court": "Софийски районен съд",
+        "caseKind": "Гражданско дело",
+        "allocatedCases": 27,
+        "expectedCases": 3.9,
+        "ratio": 6.92,
+        "qValue": 7.046e-13
+      }
+    },
+    {
+      "id": "judge:Александър_Венков_Точевски",
+      "label": "Александър Венков Точевски",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Районен съд - Пловдив",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 94,
+      "badges": [
+        "Необяснена концентрация",
+        "Ratio: 7.62x над нормата",
+        "FDR q < 0.01"
+      ],
+      "details": {
+        "court": "Районен съд - Пловдив",
+        "caseKind": "Частно гражданско дело",
+        "allocatedCases": 20,
+        "expectedCases": 2.63,
+        "ratio": 7.62,
+        "qValue": 2.655e-10
+      }
+    },
+    {
+      "id": "judge:МАРИЯ_ИЛЧЕВА_ИЛИЕВА",
+      "label": "МАРИЯ ИЛЧЕВА ИЛИЕВА",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Софийски районен съд",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 94,
+      "badges": [
+        "Необяснена концентрация",
+        "Ratio: 5.11x над нормата",
+        "FDR q < 0.01",
+        "Ratio: 9.14x над нормата"
+      ],
+      "details": {
+        "court": "Софийски районен съд",
+        "caseKind": "Гражданско дело",
+        "allocatedCases": 27,
+        "expectedCases": 5.29,
+        "ratio": 5.11,
+        "qValue": 1.933e-9
+      }
+    },
+    {
+      "id": "judge:АСПАРУХ_ЕМИЛОВ_ХРИСТОВ",
+      "label": "АСПАРУХ ЕМИЛОВ ХРИСТОВ",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Софийски районен съд",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 94,
+      "badges": [
+        "Необяснена концентрация",
+        "Ratio: 7.28x над нормата",
+        "FDR q < 0.01"
+      ],
+      "details": {
+        "court": "Софийски районен съд",
+        "caseKind": "Гражданско дело",
+        "allocatedCases": 18,
+        "expectedCases": 2.47,
+        "ratio": 7.28,
+        "qValue": 1.546e-8
+      }
+    },
+    {
+      "id": "judge:СВЕТЛАНА_НИКОЛАЕВА_РАЧЕВА_ЯНЕВА",
+      "label": "СВЕТЛАНА НИКОЛАЕВА РАЧЕВА ЯНЕВА",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Софийски районен съд",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 94,
+      "badges": [
+        "Необяснена концентрация",
+        "Ratio: 3.81x над нормата",
+        "FDR q < 0.01"
+      ],
+      "details": {
+        "court": "Софийски районен съд",
+        "caseKind": "Гражданско дело",
+        "allocatedCases": 33,
+        "expectedCases": 8.67,
+        "ratio": 3.81,
+        "qValue": 2.369e-8
+      }
+    },
+    {
+      "id": "judge:Спасена_Венелинова_Драготинова",
+      "label": "Спасена Венелинова Драготинова",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Окръжен съд - Стара Загора",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 94,
+      "badges": [
+        "Необяснена концентрация",
+        "Ratio: 21.96x над нормата",
+        "FDR q < 0.01"
+      ],
+      "details": {
+        "court": "Окръжен съд - Стара Загора",
+        "caseKind": "Частно наказателно дело",
+        "allocatedCases": 8,
+        "expectedCases": 0.36,
+        "ratio": 21.96,
+        "qValue": 2.427e-8
+      }
+    },
+    {
+      "id": "party:ОБЛАСТНА_АДМИНИСТРАЦИЯ_ГЮСИНГ,_АВСТРИЯ",
+      "label": "ОБЛАСТНА АДМИНИСТРАЦИЯ ГЮСИНГ, АВСТРИЯ",
+      "type": "authority",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Страна по дела в Окръжен съд - Стара Загора",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 84,
+      "badges": [
+        "Страна с монополно разпределение"
+      ],
+      "details": {
+        "eik": "",
+        "procurementEurM": 0
+      }
+    },
+    {
+      "id": "judge:Петя_Георгиева",
+      "label": "Петя Георгиева",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Софийски градски съд",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 94,
+      "badges": [
+        "Необяснена концентрация",
+        "Ratio: 26.25x над нормата",
+        "FDR q < 0.01"
+      ],
+      "details": {
+        "court": "Софийски градски съд",
+        "caseKind": "Търговско дело",
+        "allocatedCases": 7,
+        "expectedCases": 0.27,
+        "ratio": 26.25,
+        "qValue": 6.272e-8
+      }
+    },
+    {
+      "id": "party:131282355",
+      "label": "АГЕНЦИЯ ПО ВПИСВАНИЯТА",
+      "type": "company",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Страна по дела в Софийски градски съд",
+      "eik": "131282355",
+      "amountEur": 22181000,
+      "riskScore": 84,
+      "badges": [
+        "Страна с монополно разпределение"
+      ],
+      "details": {
+        "eik": "131282355",
+        "procurementEurM": 22.181
+      }
+    },
+    {
+      "id": "judge:Ива_Илиева_Стойчева_Коджабашева",
+      "label": "Ива Илиева Стойчева Коджабашева",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Районен съд - Сливен",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 94,
+      "badges": [
+        "Необяснена концентрация",
+        "Ratio: 5.66x над нормата",
+        "FDR q < 0.01"
+      ],
+      "details": {
+        "court": "Районен съд - Сливен",
+        "caseKind": "Гражданско дело",
+        "allocatedCases": 14,
+        "expectedCases": 2.47,
+        "ratio": 5.66,
+        "qValue": 2.423e-7
+      }
+    },
+    {
+      "id": "party:829053806",
+      "label": "ВОДОСНАБДЯВАНЕ И КАНАЛИЗАЦИЯ - СЛИВЕН ООД",
+      "type": "company",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Страна по дела в Районен съд - Сливен",
+      "eik": "829053806",
+      "amountEur": 35774000,
+      "riskScore": 84,
+      "badges": [
+        "Страна с монополно разпределение"
+      ],
+      "details": {
+        "eik": "829053806",
+        "procurementEurM": 35.774
+      }
+    },
+    {
+      "id": "judge:РАФАЕЛА_СТОИЛОВА_МАТЕВА",
+      "label": "РАФАЕЛА СТОИЛОВА МАТЕВА",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Софийски районен съд",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 94,
+      "badges": [
+        "Необяснена концентрация",
+        "Ratio: 7.63x над нормата",
+        "FDR q < 0.01"
+      ],
+      "details": {
+        "court": "Софийски районен съд",
+        "caseKind": "Гражданско дело",
+        "allocatedCases": 15,
+        "expectedCases": 1.97,
+        "ratio": 7.63,
+        "qValue": 3.025e-7
+      }
+    },
+    {
+      "id": "party:040638060",
+      "label": "ЗАД АЛИАНЦ БЪЛГАРИЯ АД",
+      "type": "company",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Страна по дела в Софийски районен съд",
+      "eik": "040638060",
+      "amountEur": 871000,
+      "riskScore": 84,
+      "badges": [
+        "Страна с монополно разпределение"
+      ],
+      "details": {
+        "eik": "040638060",
+        "procurementEurM": 0.871
+      }
+    },
+    {
+      "id": "judge:Милена_Костова_-_Колева",
+      "label": "Милена Костова - Колева",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Административен съд - София-област",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 94,
+      "badges": [
+        "Необяснена концентрация",
+        "Ratio: 8.06x над нормата",
+        "FDR q < 0.01"
+      ],
+      "details": {
+        "court": "Административен съд - София-област",
+        "caseKind": "Административно дело",
+        "allocatedCases": 12,
+        "expectedCases": 1.49,
+        "ratio": 8.06,
+        "qValue": 5.714e-7
+      }
+    },
+    {
+      "id": "party:КМЕТА_НА_ОБЩИНА_БОЖУРИЩЕ",
+      "label": "КМЕТА НА ОБЩИНА БОЖУРИЩЕ",
+      "type": "authority",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Страна по дела в Административен съд - София-област",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 84,
+      "badges": [
+        "Страна с монополно разпределение"
+      ],
+      "details": {
+        "eik": "",
+        "procurementEurM": 0
+      }
+    },
+    {
+      "id": "judge:ВЛАДИМИР_СТАНЧЕВ_КЪНЕВ",
+      "label": "ВЛАДИМИР СТАНЧЕВ КЪНЕВ",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Софийски районен съд",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 94,
+      "badges": [
+        "Необяснена концентрация",
+        "Ratio: 11.5x над нормата",
+        "FDR q < 0.01"
+      ],
+      "details": {
+        "court": "Софийски районен съд",
+        "caseKind": "Гражданско дело",
+        "allocatedCases": 11,
+        "expectedCases": 0.96,
+        "ratio": 11.5,
+        "qValue": 6.269e-7
+      }
+    },
+    {
+      "id": "party:АГЕНЦИЯ_ЗА_СЪБИРАНЕ_НА_ВЗЕМАНИЯ_ЕАД",
+      "label": "АГЕНЦИЯ ЗА СЪБИРАНЕ НА ВЗЕМАНИЯ ЕАД",
+      "type": "authority",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Страна по дела в Софийски районен съд",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 84,
+      "badges": [
+        "Страна с монополно разпределение"
+      ],
+      "details": {
+        "eik": "",
+        "procurementEurM": 0
+      }
+    },
+    {
+      "id": "judge:РАДИНА_КАЛИНОВА_КАЛЕВА",
+      "label": "РАДИНА КАЛИНОВА КАЛЕВА",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Софийски районен съд",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 94,
+      "badges": [
+        "Необяснена концентрация",
+        "Ratio: 5x над нормата",
+        "FDR q < 0.01"
+      ],
+      "details": {
+        "court": "Софийски районен съд",
+        "caseKind": "Гражданско дело",
+        "allocatedCases": 20,
+        "expectedCases": 4,
+        "ratio": 5,
+        "qValue": 0.000001006
+      }
+    },
+    {
+      "id": "judge:АНГЕЛИНА_КОЛЕВА_БОЕВА",
+      "label": "АНГЕЛИНА КОЛЕВА БОЕВА",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Софийски районен съд",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 94,
+      "badges": [
+        "Необяснена концентрация",
+        "Ratio: 5.42x над нормата",
+        "FDR q < 0.01",
+        "Ratio: 7.32x над нормата"
+      ],
+      "details": {
+        "court": "Софийски районен съд",
+        "caseKind": "Гражданско дело",
+        "allocatedCases": 16,
+        "expectedCases": 2.95,
+        "ratio": 5.42,
+        "qValue": 0.000001673
+      }
+    },
+    {
+      "id": "party:131468980",
+      "label": "А1 БЪЛГАРИЯ ЕАД",
+      "type": "company",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Страна по дела в Софийски районен съд",
+      "eik": "131468980",
+      "amountEur": 298128000,
+      "riskScore": 84,
+      "badges": [
+        "Страна с монополно разпределение"
+      ],
+      "details": {
+        "eik": "131468980",
+        "procurementEurM": 298.128
+      }
+    },
+    {
+      "id": "party:МИНОЛБИ_ЕООД",
+      "label": "МИНОЛБИ ЕООД",
+      "type": "authority",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Страна по дела в Софийски районен съд",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 84,
+      "badges": [
+        "Страна с монополно разпределение"
+      ],
+      "details": {
+        "eik": "",
+        "procurementEurM": 0
+      }
+    },
+    {
+      "id": "judge:Евгения_Баева",
+      "label": "Евгения Баева",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Административен съд - София-град",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 94,
+      "badges": [
+        "Необяснена концентрация",
+        "Ratio: 9.91x над нормата",
+        "FDR q < 0.01"
+      ],
+      "details": {
+        "court": "Административен съд - София-град",
+        "caseKind": "Административно дело",
+        "allocatedCases": 11,
+        "expectedCases": 1.11,
+        "ratio": 9.91,
+        "qValue": 0.000002246
+      }
+    },
+    {
+      "id": "party:ГЛАВЕН_АРХИТЕКТ_НА_СТОЛИЧНА_ОБЩИНА",
+      "label": "ГЛАВЕН АРХИТЕКТ НА СТОЛИЧНА ОБЩИНА",
+      "type": "authority",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Страна по дела в Административен съд - София-град",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 84,
+      "badges": [
+        "Страна с монополно разпределение"
+      ],
+      "details": {
+        "eik": "",
+        "procurementEurM": 0
+      }
+    },
+    {
+      "id": "judge:Анета_Юргакиева",
+      "label": "Анета Юргакиева",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Административен съд - София-град",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 94,
+      "badges": [
+        "Необяснена концентрация",
+        "Ratio: 45.51x над нормата",
+        "FDR q < 0.01"
+      ],
+      "details": {
+        "court": "Административен съд - София-град",
+        "caseKind": "Административно дело",
+        "allocatedCases": 5,
+        "expectedCases": 0.11,
+        "ratio": 45.51,
+        "qValue": 0.00000354
+      }
+    },
+    {
+      "id": "party:КОМИСИЯТА_ЗА_ЕНЕРГИЙНО_И_ВОДНО_РЕГУЛИРАНЕ",
+      "label": "КОМИСИЯТА ЗА ЕНЕРГИЙНО И ВОДНО РЕГУЛИРАНЕ",
+      "type": "authority",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Страна по дела в Административен съд - София-град",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 84,
+      "badges": [
+        "Страна с монополно разпределение"
+      ],
+      "details": {
+        "eik": "",
+        "procurementEurM": 0
+      }
+    },
+    {
+      "id": "judge:Красимира_Милачкова",
+      "label": "Красимира Милачкова",
+      "type": "judge",
+      "cluster": "JUDICIAL_BROKERAGE",
+      "subLabel": "Административен съд - София-град",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 94,
+      "badges": [
+        "Необяснена концентрация",
+        "Ratio: 10.48x над нормата",
+        "FDR q < 0.01"
+      ],
+      "details": {
+        "court": "Административен съд - София-град",
+        "caseKind": "Административно дело",
+        "allocatedCases": 10,
+        "expectedCases": 0.95,
+        "ratio": 10.48,
+        "qValue": 0.000006029
+      }
+    },
+    {
+      "id": "energy:106513772",
+      "label": "АЕЦ КОЗЛОДУЙ ЕАД",
+      "type": "authority",
+      "cluster": "ENERGY_WATER_OCTOPUS",
+      "subLabel": "Енергиен / ВиК сектор · ЕИК 106513772",
+      "eik": "106513772",
+      "amountEur": 450000000,
+      "riskScore": 75,
+      "badges": [
+        "Стратегически енергиен монопол",
+        "Милионни спорове"
+      ],
+      "details": {
+        "eik": "106513772",
+        "sector": "Енергетика и ВиК"
+      }
+    },
+    {
+      "id": "energy:126017122",
+      "label": "ТЕЦ МАРИЦА 3 АД",
+      "type": "company",
+      "cluster": "ENERGY_WATER_OCTOPUS",
+      "subLabel": "Енергиен / ВиК сектор · ЕИК 126017122",
+      "eik": "126017122",
+      "amountEur": 85000000,
+      "riskScore": 89,
+      "badges": [
+        "Стратегически енергиен монопол",
+        "Милионни спорове"
+      ],
+      "details": {
+        "eik": "126017122",
+        "sector": "Енергетика и ВиК"
+      }
+    },
+    {
+      "id": "energy:175203478",
+      "label": "БУЛГАРТРАНСГАЗ ЕАД",
+      "type": "authority",
+      "cluster": "ENERGY_WATER_OCTOPUS",
+      "subLabel": "Енергиен / ВиК сектор · ЕИК 175203478",
+      "eik": "175203478",
+      "amountEur": 320000000,
+      "riskScore": 78,
+      "badges": [
+        "Стратегически енергиен монопол",
+        "Милионни спорове"
+      ],
+      "details": {
+        "eik": "175203478",
+        "sector": "Енергетика и ВиК"
+      }
+    },
+    {
+      "id": "energy:175201304",
+      "label": "ЕЛЕКТРОЕНЕРГИЕН СИСТЕМЕН ОПЕРАТОР ЕАД",
+      "type": "authority",
+      "cluster": "ENERGY_WATER_OCTOPUS",
+      "subLabel": "Енергиен / ВиК сектор · ЕИК 175201304",
+      "eik": "175201304",
+      "amountEur": 290000000,
+      "riskScore": 74,
+      "badges": [
+        "Стратегически енергиен монопол",
+        "Милионни спорове"
+      ],
+      "details": {
+        "eik": "175201304",
+        "sector": "Енергетика и ВиК"
+      }
+    },
+    {
+      "id": "energy:833066300",
+      "label": "ВОДОСНАБДЯВАНЕ И КАНАЛИЗАЦИЯ ООД - СТАРА ЗАГОРА",
+      "type": "authority",
+      "cluster": "ENERGY_WATER_OCTOPUS",
+      "subLabel": "Енергиен / ВиК сектор · ЕИК 833066300",
+      "eik": "833066300",
+      "amountEur": 45000000,
+      "riskScore": 80,
+      "badges": [
+        "Стратегически енергиен монопол",
+        "Милионни спорове"
+      ],
+      "details": {
+        "eik": "833066300",
+        "sector": "Енергетика и ВиК"
+      }
+    },
+    {
+      "id": "health:108501669",
+      "label": "МБАЛ Д-Р АТАНАС ДАФОВСКИ АД - КЪРДЖАЛИ",
+      "type": "authority",
+      "cluster": "HEALTH_PROCUREMENT",
+      "subLabel": "ТЕЛК епицентър Кърджали",
+      "eik": "108501669",
+      "amountEur": 50523208.37,
+      "riskScore": 83,
+      "badges": [
+        "Здравен сектор",
+        "Критичен фискален обем"
+      ],
+      "details": {
+        "note": "ТЕЛК епицентър Кърджали",
+        "eik": "108501669"
+      }
+    },
+    {
+      "id": "health:118501906",
+      "label": "МБАЛ-СИЛИСТРА АД",
+      "type": "authority",
+      "cluster": "HEALTH_PROCUREMENT",
+      "subLabel": "ТЕЛК епицентър Силистра (41% пенсии)",
+      "eik": "118501906",
+      "amountEur": 10898089.19,
+      "riskScore": 72,
+      "badges": [
+        "Здравен сектор",
+        "Критичен фискален обем"
+      ],
+      "details": {
+        "note": "ТЕЛК епицентър Силистра (41% пенсии)",
+        "eik": "118501906"
+      }
+    },
+    {
+      "id": "health:831911400",
+      "label": "АКВАХИМ АД",
+      "type": "company",
+      "cluster": "HEALTH_PROCUREMENT",
+      "subLabel": "Свързана с длъжностно лице Борислав Великов",
+      "eik": "831911400",
+      "amountEur": 29039661.16,
+      "riskScore": 84,
+      "badges": [
+        "Здравен сектор",
+        "Критичен фискален обем"
+      ],
+      "details": {
+        "note": "Свързана с длъжностно лице Борислав Великов",
+        "eik": "831911400"
+      }
+    },
+    {
+      "id": "health:121130788",
+      "label": "ЗК ЛЕВ ИНС АД",
+      "type": "company",
+      "cluster": "HEALTH_PROCUREMENT",
+      "subLabel": "Търговски спорове със столични болници (СГС ТД 89/2026)",
+      "eik": "121130788",
+      "amountEur": 7851532.63,
+      "riskScore": 85,
+      "badges": [
+        "Здравен сектор",
+        "Критичен фискален обем"
+      ],
+      "details": {
+        "note": "Търговски спорове със столични болници (СГС ТД 89/2026)",
+        "eik": "121130788"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "comp:835009611",
+      "target": "auth:000695089",
+      "kind": "won_zop",
+      "label": "Изпълнител на ЗОП",
+      "amountEur": 153347828.57,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "comp:835009611",
+      "target": "case:Окръжен_съд_-_Търговище:ТД_59_2026",
+      "kind": "disputes_with",
+      "label": "Заведено търговско дело",
+      "amountEur": 0,
+      "evidence": "ЕИСС / ЕПЕП",
+      "url": ""
+    },
+    {
+      "source": "auth:000695089",
+      "target": "case:Окръжен_съд_-_Търговище:ТД_59_2026",
+      "kind": "disputes_with",
+      "label": "Ответник по делото",
+      "amountEur": 0,
+      "evidence": "ЕИСС / ЕПЕП",
+      "url": ""
+    },
+    {
+      "source": "judge:МИЛЕН_ИВАНОВ_СТОЙЧЕВ",
+      "target": "case:Окръжен_съд_-_Търговище:ТД_59_2026",
+      "kind": "presided_case",
+      "label": "Докладчик / Решаващ състав",
+      "amountEur": 0,
+      "evidence": "ЕИСС",
+      "url": ""
+    },
+    {
+      "source": "lawyer:Адвокат_И_И_И",
+      "target": "case:Окръжен_съд_-_Търговище:ТД_59_2026",
+      "kind": "represented_by",
+      "label": "Процесуална защита",
+      "amountEur": 0,
+      "evidence": "ЕИСС Решение",
+      "url": ""
+    },
+    {
+      "source": "comp:835009611",
+      "target": "auth:000875817",
+      "kind": "won_zop",
+      "label": "Изпълнител на ЗОП",
+      "amountEur": 153347828.57,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "comp:835009611",
+      "target": "case:Окръжен_съд_-_Търговище:ТД_46_2026",
+      "kind": "disputes_with",
+      "label": "Заведено търговско дело",
+      "amountEur": 0,
+      "evidence": "ЕИСС / ЕПЕП",
+      "url": ""
+    },
+    {
+      "source": "auth:000875817",
+      "target": "case:Окръжен_съд_-_Търговище:ТД_46_2026",
+      "kind": "disputes_with",
+      "label": "Ответник по делото",
+      "amountEur": 0,
+      "evidence": "ЕИСС / ЕПЕП",
+      "url": ""
+    },
+    {
+      "source": "judge:МИЛЕН_ИВАНОВ_СТОЙЧЕВ",
+      "target": "case:Окръжен_съд_-_Търговище:ТД_46_2026",
+      "kind": "presided_case",
+      "label": "Докладчик / Решаващ състав",
+      "amountEur": 0,
+      "evidence": "ЕИСС",
+      "url": ""
+    },
+    {
+      "source": "lawyer:Адвокат_Д_А_М",
+      "target": "case:Окръжен_съд_-_Търговище:ТД_46_2026",
+      "kind": "represented_by",
+      "label": "Процесуална защита",
+      "amountEur": 0,
+      "evidence": "ЕИСС Решение",
+      "url": ""
+    },
+    {
+      "source": "comp:813029821",
+      "target": "auth:000093442",
+      "kind": "won_zop",
+      "label": "Изпълнител на ЗОП",
+      "amountEur": 19501403.94,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "comp:813029821",
+      "target": "case:Окръжен_съд_-_Варна:ТД_58_2026",
+      "kind": "disputes_with",
+      "label": "Заведено търговско дело",
+      "amountEur": 0,
+      "evidence": "ЕИСС / ЕПЕП",
+      "url": ""
+    },
+    {
+      "source": "auth:000093442",
+      "target": "case:Окръжен_съд_-_Варна:ТД_58_2026",
+      "kind": "disputes_with",
+      "label": "Ответник по делото",
+      "amountEur": 0,
+      "evidence": "ЕИСС / ЕПЕП",
+      "url": ""
+    },
+    {
+      "source": "judge:Ралица_Цанкова_Райкова",
+      "target": "case:Окръжен_съд_-_Варна:ТД_58_2026",
+      "kind": "presided_case",
+      "label": "Докладчик / Решаващ състав",
+      "amountEur": 0,
+      "evidence": "ЕИСС",
+      "url": ""
+    },
+    {
+      "source": "lawyer:Адвокат_Л_Х_К",
+      "target": "case:Окръжен_съд_-_Варна:ТД_58_2026",
+      "kind": "represented_by",
+      "label": "Процесуална защита",
+      "amountEur": 0,
+      "evidence": "ЕИСС Решение",
+      "url": ""
+    },
+    {
+      "source": "comp:115816551",
+      "target": "auth:000471059",
+      "kind": "won_zop",
+      "label": "Изпълнител на ЗОП",
+      "amountEur": 110350784.69,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "comp:115816551",
+      "target": "case:Окръжен_съд_-_Пловдив:ТД_65_2026",
+      "kind": "disputes_with",
+      "label": "Заведено търговско дело",
+      "amountEur": 0,
+      "evidence": "ЕИСС / ЕПЕП",
+      "url": ""
+    },
+    {
+      "source": "auth:000471059",
+      "target": "case:Окръжен_съд_-_Пловдив:ТД_65_2026",
+      "kind": "disputes_with",
+      "label": "Ответник по делото",
+      "amountEur": 0,
+      "evidence": "ЕИСС / ЕПЕП",
+      "url": ""
+    },
+    {
+      "source": "judge:Галя_Костадинова",
+      "target": "case:Окръжен_съд_-_Пловдив:ТД_65_2026",
+      "kind": "presided_case",
+      "label": "Докладчик / Решаващ състав",
+      "amountEur": 0,
+      "evidence": "ЕИСС",
+      "url": ""
+    },
+    {
+      "source": "lawyer:Адвокат_С_М_Ж",
+      "target": "case:Окръжен_съд_-_Пловдив:ТД_65_2026",
+      "kind": "represented_by",
+      "label": "Процесуална защита",
+      "amountEur": 0,
+      "evidence": "ЕИСС Решение",
+      "url": ""
+    },
+    {
+      "source": "comp:120008016",
+      "target": "auth:000614938",
+      "kind": "won_zop",
+      "label": "Изпълнител на ЗОП",
+      "amountEur": 3488694.62,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "comp:120008016",
+      "target": "case:Окръжен_съд_-_Смолян:ТД_17_2026",
+      "kind": "disputes_with",
+      "label": "Заведено търговско дело",
+      "amountEur": 0,
+      "evidence": "ЕИСС / ЕПЕП",
+      "url": ""
+    },
+    {
+      "source": "auth:000614938",
+      "target": "case:Окръжен_съд_-_Смолян:ТД_17_2026",
+      "kind": "disputes_with",
+      "label": "Ответник по делото",
+      "amountEur": 0,
+      "evidence": "ЕИСС / ЕПЕП",
+      "url": ""
+    },
+    {
+      "source": "judge:Меденка_Минчева_Недкова",
+      "target": "case:Окръжен_съд_-_Смолян:ТД_17_2026",
+      "kind": "presided_case",
+      "label": "Докладчик / Решаващ състав",
+      "amountEur": 0,
+      "evidence": "ЕИСС",
+      "url": ""
+    },
+    {
+      "source": "lawyer:Адвокат_Н_Г_Т",
+      "target": "case:Окръжен_съд_-_Смолян:ТД_17_2026",
+      "kind": "represented_by",
+      "label": "Процесуална защита",
+      "amountEur": 0,
+      "evidence": "ЕИСС Решение",
+      "url": ""
+    },
+    {
+      "source": "comp:112580619",
+      "target": "auth:000351558",
+      "kind": "won_zop",
+      "label": "Изпълнител на ЗОП",
+      "amountEur": 45430535.69,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "comp:112580619",
+      "target": "case:Окръжен_съд_-_Пазарджик:ТД_91_2026",
+      "kind": "disputes_with",
+      "label": "Заведено търговско дело",
+      "amountEur": 0,
+      "evidence": "ЕИСС / ЕПЕП",
+      "url": ""
+    },
+    {
+      "source": "auth:000351558",
+      "target": "case:Окръжен_съд_-_Пазарджик:ТД_91_2026",
+      "kind": "disputes_with",
+      "label": "Ответник по делото",
+      "amountEur": 0,
+      "evidence": "ЕИСС / ЕПЕП",
+      "url": ""
+    },
+    {
+      "source": "judge:Иванка_Георгиева_Илинова",
+      "target": "case:Окръжен_съд_-_Пазарджик:ТД_91_2026",
+      "kind": "presided_case",
+      "label": "Докладчик / Решаващ състав",
+      "amountEur": 0,
+      "evidence": "ЕИСС",
+      "url": ""
+    },
+    {
+      "source": "lawyer:Адвокат_Е_В_П",
+      "target": "case:Окръжен_съд_-_Пазарджик:ТД_91_2026",
+      "kind": "represented_by",
+      "label": "Процесуална защита",
+      "amountEur": 0,
+      "evidence": "ЕИСС Решение",
+      "url": ""
+    },
+    {
+      "source": "comp:112580619",
+      "target": "case:Окръжен_съд_-_Пазарджик:ТД_65_2026",
+      "kind": "disputes_with",
+      "label": "Заведено търговско дело",
+      "amountEur": 0,
+      "evidence": "ЕИСС / ЕПЕП",
+      "url": ""
+    },
+    {
+      "source": "auth:000351558",
+      "target": "case:Окръжен_съд_-_Пазарджик:ТД_65_2026",
+      "kind": "disputes_with",
+      "label": "Ответник по делото",
+      "amountEur": 0,
+      "evidence": "ЕИСС / ЕПЕП",
+      "url": ""
+    },
+    {
+      "source": "judge:Илиана_Георгиева_Димитрова_Васева",
+      "target": "case:Окръжен_съд_-_Пазарджик:ТД_65_2026",
+      "kind": "presided_case",
+      "label": "Докладчик / Решаващ състав",
+      "amountEur": 0,
+      "evidence": "ЕИСС",
+      "url": ""
+    },
+    {
+      "source": "lawyer:Адвокат_Е_В_П",
+      "target": "case:Окръжен_съд_-_Пазарджик:ТД_65_2026",
+      "kind": "represented_by",
+      "label": "Процесуална защита",
+      "amountEur": 0,
+      "evidence": "ЕИСС Решение",
+      "url": ""
+    },
+    {
+      "source": "comp:130834663",
+      "target": "auth:000696327",
+      "kind": "won_zop",
+      "label": "Изпълнител на ЗОП",
+      "amountEur": 11905861.59,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "comp:130834663",
+      "target": "case:Софийски_градски_съд:ТД_728_2026",
+      "kind": "disputes_with",
+      "label": "Заведено търговско дело",
+      "amountEur": 0,
+      "evidence": "ЕИСС / ЕПЕП",
+      "url": ""
+    },
+    {
+      "source": "auth:000696327",
+      "target": "case:Софийски_градски_съд:ТД_728_2026",
+      "kind": "disputes_with",
+      "label": "Ответник по делото",
+      "amountEur": 0,
+      "evidence": "ЕИСС / ЕПЕП",
+      "url": ""
+    },
+    {
+      "source": "judge:Светослав_Василев",
+      "target": "case:Софийски_градски_съд:ТД_728_2026",
+      "kind": "presided_case",
+      "label": "Докладчик / Решаващ състав",
+      "amountEur": 0,
+      "evidence": "ЕИСС",
+      "url": ""
+    },
+    {
+      "source": "lawyer:Адвокат_Д_Д_С",
+      "target": "case:Софийски_градски_съд:ТД_728_2026",
+      "kind": "represented_by",
+      "label": "Процесуална защита",
+      "amountEur": 0,
+      "evidence": "ЕИСС Решение",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6YzJhYTNlM2RlOGY3ZTY4OTBiYWM1OWRiZjQ3YWEzMGJmNWI0M2E2ODU2YWM2YjQwMWZmYmMwMmNkZmY3OWM1ZA",
+      "target": "inst:Община_ОбС_Благоевград",
+      "kind": "conflict_of_interest",
+      "label": "Управлява / член на органа",
+      "amountEur": 29420040.03,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6YzJhYTNlM2RlOGY3ZTY4OTBiYWM1OWRiZjQ3YWEzMGJmNWI0M2E2ODU2YWM2YjQwMWZmYmMwMmNkZmY3OWM1ZA",
+      "target": "comp_off:РАСТЕР-ЮГ_ООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:РАСТЕР-ЮГ_ООД",
+      "target": "inst:Община_ОбС_Благоевград",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €29.42M",
+      "amountEur": 29420040.03,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NmE3ZTk2OWM4ZGJhNTIwZTAwNDg1MzNiOWY1YzBmNmQ1M2I0OWQxNTdjYzA3ZGU4ZWI3MWE3YWZjMmViOWFjOA",
+      "target": "inst:Община_ОбС_Благоевград",
+      "kind": "conflict_of_interest",
+      "label": "Свързано лице",
+      "amountEur": 22312.37,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NmE3ZTk2OWM4ZGJhNTIwZTAwNDg1MzNiOWY1YzBmNmQ1M2I0OWQxNTdjYzA3ZGU4ZWI3MWE3YWZjMmViOWFjOA",
+      "target": "comp_off:ТЕРРА_ВЕДЖИС_ЕООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:ТЕРРА_ВЕДЖИС_ЕООД",
+      "target": "inst:Община_ОбС_Благоевград",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €0.02M",
+      "amountEur": 22312.37,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6MDdkMjc4NjgzMGViZjY1ZDI0Y2JhYWY1YzA3NzlmMjMzYmYzODYzMGY5Njk0OGY2ODM1ZjgzOGI0MmRlMTU1ZQ",
+      "target": "inst:Община_ОбС_Благоевград",
+      "kind": "conflict_of_interest",
+      "label": "Свързано лице",
+      "amountEur": 0,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6MDdkMjc4NjgzMGViZjY1ZDI0Y2JhYWY1YzA3NzlmMjMzYmYzODYzMGY5Njk0OGY2ODM1ZjgzOGI0MmRlMTU1ZQ",
+      "target": "comp_off:АТ_-_КОНСУЛТИНГ_ЕООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:АТ_-_КОНСУЛТИНГ_ЕООД",
+      "target": "inst:Община_ОбС_Благоевград",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €0.00M",
+      "amountEur": 0,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NzE1MmNlNTliNTYxMzRkNTkyMWYyYzdiYjlhZmIyYTMzZjZkYTUyMWQxZDRmMzM3NjhhNjlkY2ViYzdlZWJiZQ",
+      "target": "inst:Община_ОбС_Благоевград",
+      "kind": "conflict_of_interest",
+      "label": "Свързано лице",
+      "amountEur": 0,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NzE1MmNlNTliNTYxMzRkNTkyMWYyYzdiYjlhZmIyYTMzZjZkYTUyMWQxZDRmMzM3NjhhNjlkY2ViYzdlZWJiZQ",
+      "target": "comp_off:МЕДИЯ_ГРУП_ПРЕС_ЕООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:МЕДИЯ_ГРУП_ПРЕС_ЕООД",
+      "target": "inst:Община_ОбС_Благоевград",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €0.00M",
+      "amountEur": 0,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NjFiYmViNzZjMDM1NTQ2NTQ5ZGMzMzAzYTRmNjU1NjY3MjllOGJiOGU5MDJjYzRkNjgxYzI2ZTFkOGJlZGY4Nw",
+      "target": "inst:Община_ОбС_Хасково",
+      "kind": "conflict_of_interest",
+      "label": "Управлява / член на органа",
+      "amountEur": 14610532.11,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NjFiYmViNzZjMDM1NTQ2NTQ5ZGMzMzAzYTRmNjU1NjY3MjllOGJiOGU5MDJjYzRkNjgxYzI2ZTFkOGJlZGY4Nw",
+      "target": "comp_off:ГЛОБЪЛ_КЛИНЪР_ООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:ГЛОБЪЛ_КЛИНЪР_ООД",
+      "target": "inst:Община_ОбС_Хасково",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €14.61M",
+      "amountEur": 14610532.11,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NjFiYmViNzZjMDM1NTQ2NTQ5ZGMzMzAzYTRmNjU1NjY3MjllOGJiOGU5MDJjYzRkNjgxYzI2ZTFkOGJlZGY4Nw",
+      "target": "comp_off:ЕКО_-_ТИТАН_ГРУП_АД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:ЕКО_-_ТИТАН_ГРУП_АД",
+      "target": "inst:Община_ОбС_Хасково",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €14.61M",
+      "amountEur": 14610532.11,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NjFiYmViNzZjMDM1NTQ2NTQ5ZGMzMzAzYTRmNjU1NjY3MjllOGJiOGU5MDJjYzRkNjgxYzI2ZTFkOGJlZGY4Nw",
+      "target": "comp_off:ЕКО_ТРАДЕКС_ГРУП_АД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:ЕКО_ТРАДЕКС_ГРУП_АД",
+      "target": "inst:Община_ОбС_Хасково",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €14.61M",
+      "amountEur": 14610532.11,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NjFiYmViNzZjMDM1NTQ2NTQ5ZGMzMzAzYTRmNjU1NjY3MjllOGJiOGU5MDJjYzRkNjgxYzI2ZTFkOGJlZGY4Nw",
+      "target": "comp_off:ХЛЕБНА_ПРОМИШЛЕНОСТ_АД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:ХЛЕБНА_ПРОМИШЛЕНОСТ_АД",
+      "target": "inst:Община_ОбС_Хасково",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €14.61M",
+      "amountEur": 14610532.11,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NjFiYmViNzZjMDM1NTQ2NTQ5ZGMzMzAzYTRmNjU1NjY3MjllOGJiOGU5MDJjYzRkNjgxYzI2ZTFkOGJlZGY4Nw",
+      "target": "comp_off:ХЛЕБОЗАВОД_АД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:ХЛЕБОЗАВОД_АД",
+      "target": "inst:Община_ОбС_Хасково",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €14.61M",
+      "amountEur": 14610532.11,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NjFiYmViNzZjMDM1NTQ2NTQ5ZGMzMzAzYTRmNjU1NjY3MjllOGJiOGU5MDJjYzRkNjgxYzI2ZTFkOGJlZGY4Nw",
+      "target": "comp_off:ЯНТРА_-_ТРАНСПОРТ_АД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:ЯНТРА_-_ТРАНСПОРТ_АД",
+      "target": "inst:Община_ОбС_Хасково",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €14.61M",
+      "amountEur": 14610532.11,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NzhjZWI1NTBjYjE5NzhiZmE2YzUzMWMyMWIxZTFlZDIyOGZiOGI1ODU3NDMxNTE5MWFmYmNlOTQ3YzcxNjNjMA",
+      "target": "inst:Община_ОбС_Хасково",
+      "kind": "conflict_of_interest",
+      "label": "Управлява / член на органа",
+      "amountEur": 246563.33,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NzhjZWI1NTBjYjE5NzhiZmE2YzUzMWMyMWIxZTFlZDIyOGZiOGI1ODU3NDMxNTE5MWFmYmNlOTQ3YzcxNjNjMA",
+      "target": "comp_off:ГАРАНТ_-_2000_ООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:ГАРАНТ_-_2000_ООД",
+      "target": "inst:Община_ОбС_Хасково",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €0.25M",
+      "amountEur": 246563.33,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NzhjZWI1NTBjYjE5NzhiZmE2YzUzMWMyMWIxZTFlZDIyOGZiOGI1ODU3NDMxNTE5MWFmYmNlOTQ3YzcxNjNjMA",
+      "target": "comp_off:ЯНТРА_-_ТРАНСПОРТ_АД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6ZmRjYTE4OGU5OGE2NDZjNWFjN2NjOTEzZWU5NDA3MTk5MDgzNzAxNGE1ZTA1ZGIyODEzMDAxYzY3MGZlYzE4ZQ",
+      "target": "inst:Община_ОбС_Хасково",
+      "kind": "conflict_of_interest",
+      "label": "Свързано лице",
+      "amountEur": 85897.04,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6ZmRjYTE4OGU5OGE2NDZjNWFjN2NjOTEzZWU5NDA3MTk5MDgzNzAxNGE1ZTA1ZGIyODEzMDAxYzY3MGZlYzE4ZQ",
+      "target": "comp_off:ДЖЕНИ_СПОРТ_ЕООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:ДЖЕНИ_СПОРТ_ЕООД",
+      "target": "inst:Община_ОбС_Хасково",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €0.09M",
+      "amountEur": 85897.04,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NWIyOWU3YjVkZTgwYTQ5Mzc5OTk4ZjUzYWZmYjg3MjRkNmY4NWI0NmVlMGU0N2Y5ZjVjNDMzZDg0ZmMwYzUwZQ",
+      "target": "inst:Община_ОбС_Хасково",
+      "kind": "conflict_of_interest",
+      "label": "Управлява / член на органа",
+      "amountEur": 306.78,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NWIyOWU3YjVkZTgwYTQ5Mzc5OTk4ZjUzYWZmYjg3MjRkNmY4NWI0NmVlMGU0N2Y5ZjVjNDMzZDg0ZmMwYzUwZQ",
+      "target": "comp_off:АДЛОН_И_КО_ЕООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:АДЛОН_И_КО_ЕООД",
+      "target": "inst:Община_ОбС_Хасково",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €0.00M",
+      "amountEur": 306.78,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NWIyOWU3YjVkZTgwYTQ5Mzc5OTk4ZjUzYWZmYjg3MjRkNmY4NWI0NmVlMGU0N2Y5ZjVjNDMzZDg0ZmMwYzUwZQ",
+      "target": "comp_off:ГАРАНТ_-_2000_ООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6ZGEzNWE5MDc1OTgwNDFkZjBlZGM5ZWU0MWNmZWVkMzA1MGU3OGU3Yjk3OGIzOGM5YjE3MzZiNzE3MjJjMjI0Mg",
+      "target": "inst:Община_ОбС_Неделино",
+      "kind": "conflict_of_interest",
+      "label": "Управлява / член на органа",
+      "amountEur": 10885457.94,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6ZGEzNWE5MDc1OTgwNDFkZjBlZGM5ZWU0MWNmZWVkMzA1MGU3OGU3Yjk3OGIzOGM5YjE3MzZiNzE3MjJjMjI0Mg",
+      "target": "comp_off:МАРИБОР_-_СТРОЙ_ЕООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:МАРИБОР_-_СТРОЙ_ЕООД",
+      "target": "inst:Община_ОбС_Неделино",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €10.89M",
+      "amountEur": 10885457.94,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6ZGEzNWE5MDc1OTgwNDFkZjBlZGM5ZWU0MWNmZWVkMzA1MGU3OGU3Yjk3OGIzOGM5YjE3MzZiNzE3MjJjMjI0Mg",
+      "target": "comp_off:МАРИБОР_ББ_СТРОЙ_ЕООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:МАРИБОР_ББ_СТРОЙ_ЕООД",
+      "target": "inst:Община_ОбС_Неделино",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €10.89M",
+      "amountEur": 10885457.94,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6OTQwNWYzNTA3YzQ3YWFhNDFiZmIxNWYwMjYzNjY0NWYwZGRjY2ViZWFmYWYxODM5NGNkNjFmMGI1YmViODdhNA",
+      "target": "inst:Община_ОбС_Неделино",
+      "kind": "conflict_of_interest",
+      "label": "Управлява / член на органа",
+      "amountEur": 123211.01,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6OTQwNWYzNTA3YzQ3YWFhNDFiZmIxNWYwMjYzNjY0NWYwZGRjY2ViZWFmYWYxODM5NGNkNjFmMGI1YmViODdhNA",
+      "target": "comp_off:ЕТ_ВЕСДАН-81_-_ВЕСЕЛИН_КЕХАЙОВ",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:ЕТ_ВЕСДАН-81_-_ВЕСЕЛИН_КЕХАЙОВ",
+      "target": "inst:Община_ОбС_Неделино",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €0.12M",
+      "amountEur": 123211.01,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6YmI1ZmI5NmY2ZTY3YjI2MjUwMzJlNDUwMGM1NDNjZWIyMTUxMmUxNGZhZGZjNDExNjVhNWUxYzRmZTQ2OGY5MQ",
+      "target": "inst:Община_ОбС_Неделино",
+      "kind": "conflict_of_interest",
+      "label": "Свързано лице",
+      "amountEur": 0,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6YmI1ZmI5NmY2ZTY3YjI2MjUwMzJlNDUwMGM1NDNjZWIyMTUxMmUxNGZhZGZjNDExNjVhNWUxYzRmZTQ2OGY5MQ",
+      "target": "comp_off:ЕТ_СТЕФАН_ГЬОЛАДЖИЕВ",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:ЕТ_СТЕФАН_ГЬОЛАДЖИЕВ",
+      "target": "inst:Община_ОбС_Неделино",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €0.00M",
+      "amountEur": 0,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6ODQ5YjQ2YmJhMzVkY2RjYTJjZWFiZTFkNDlmODYxOTBhNTZiYzc2NGVmNWJjNGNmZmMzYjZlNDJkNDNiZWEzZg",
+      "target": "inst:Народно_събрание",
+      "kind": "conflict_of_interest",
+      "label": "Свързано лице",
+      "amountEur": 1875500.58,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6ODQ5YjQ2YmJhMzVkY2RjYTJjZWFiZTFkNDlmODYxOTBhNTZiYzc2NGVmNWJjNGNmZmMzYjZlNDJkNDNiZWEzZg",
+      "target": "comp_off:ДЕСТИНАЦИЯ_БЪЛГАРИЯ_ЕООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:ДЕСТИНАЦИЯ_БЪЛГАРИЯ_ЕООД",
+      "target": "inst:Народно_събрание",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €1.88M",
+      "amountEur": 1875500.58,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6MzY5NTI2MTVjM2U1ZDI3N2UyY2JiZTI3YTNkZWIwNDhkMzFkY2ZlZTQ3ZmQ0M2Q3Yzc5NDgyYTNlOTkxMDNiOA",
+      "target": "inst:Народно_събрание",
+      "kind": "conflict_of_interest",
+      "label": "Свързано лице",
+      "amountEur": 806196.17,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6MzY5NTI2MTVjM2U1ZDI3N2UyY2JiZTI3YTNkZWIwNDhkMzFkY2ZlZTQ3ZmQ0M2Q3Yzc5NDgyYTNlOTkxMDNiOA",
+      "target": "comp_off:МАТ_ООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:МАТ_ООД",
+      "target": "inst:Народно_събрание",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €0.81M",
+      "amountEur": 806196.17,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NTk4OGQyODdmOTQ4NjQ5NmU0MmI0MTMxYTgyZWEyMmRhMGI5NmVmNmIxODRmMWIyMWJiMWY5MzE2YTE2OTM2Mg",
+      "target": "inst:Народно_събрание",
+      "kind": "conflict_of_interest",
+      "label": "Свързано лице",
+      "amountEur": 777933.31,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NTk4OGQyODdmOTQ4NjQ5NmU0MmI0MTMxYTgyZWEyMmRhMGI5NmVmNmIxODRmMWIyMWJiMWY5MzE2YTE2OTM2Mg",
+      "target": "comp_off:АЛ_И_КО_АД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:АЛ_И_КО_АД",
+      "target": "inst:Народно_събрание",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €0.78M",
+      "amountEur": 777933.31,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NjEwMzUwNGViMGM5YzEyMDQxNGU2ZWZmNDVmY2I3YTg5NGFmYzNmMDMwNjhjMTU1YzAxOGE1OTY5OTY1OGZkZg",
+      "target": "inst:Народно_събрание",
+      "kind": "conflict_of_interest",
+      "label": "Свързано лице",
+      "amountEur": 414146.42,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NjEwMzUwNGViMGM5YzEyMDQxNGU2ZWZmNDVmY2I3YTg5NGFmYzNmMDMwNjhjMTU1YzAxOGE1OTY5OTY1OGZkZg",
+      "target": "comp_off:СДРУЖЕНИЕ_ФЕДЕРАЦИЯ_НА_ПОТРЕБИТЕЛИТЕ_В_БЪЛГАРИЯ_Сдружение",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:СДРУЖЕНИЕ_ФЕДЕРАЦИЯ_НА_ПОТРЕБИТЕЛИТЕ_В_БЪЛГАРИЯ_Сдружение",
+      "target": "inst:Народно_събрание",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €0.41M",
+      "amountEur": 414146.42,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6MTk5MGU1YjM0ZTMyZDAxNzBiZGU4OWFhOTk4NWMzZWIwZjZkNmZjMDU2M2M2MjE1MWYwMjNhNzVlMTEwZWFmOQ",
+      "target": "inst:Община_ОбС_Шумен",
+      "kind": "conflict_of_interest",
+      "label": "Управлява / член на органа",
+      "amountEur": 2843383.37,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6MTk5MGU1YjM0ZTMyZDAxNzBiZGU4OWFhOTk4NWMzZWIwZjZkNmZjMDU2M2M2MjE1MWYwMjNhNzVlMTEwZWFmOQ",
+      "target": "comp_off:Е_-_ПЛАНТ_ЕООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:Е_-_ПЛАНТ_ЕООД",
+      "target": "inst:Община_ОбС_Шумен",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €2.84M",
+      "amountEur": 2843383.37,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NTk4OGQyODdmOTQ4NjQ5NmU0MmI0MTMxYTgyZWEyMmRhMGI5NmVmNmIxODRmMWIyMWJiMWY5MzE2YTE2OTM2Mg",
+      "target": "inst:Община_ОбС_Шумен",
+      "kind": "conflict_of_interest",
+      "label": "Свързано лице",
+      "amountEur": 777933.31,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "comp_off:АЛ_И_КО_АД",
+      "target": "inst:Община_ОбС_Шумен",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €0.78M",
+      "amountEur": 777933.31,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6MjgxNzY0ZjY2ZDA3Nzc2NTI1NjJmM2NiZGRmZmE3Y2M5MGFiNzM5Zjc5ODY4MDEzNzQxNTc3ODYxY2Q2YTg5MQ",
+      "target": "inst:Община_ОбС_Шумен",
+      "kind": "conflict_of_interest",
+      "label": "Свързано лице",
+      "amountEur": 22031.57,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6MjgxNzY0ZjY2ZDA3Nzc2NTI1NjJmM2NiZGRmZmE3Y2M5MGFiNzM5Zjc5ODY4MDEzNzQxNTc3ODYxY2Q2YTg5MQ",
+      "target": "comp_off:КОНТРОЛСТРОЙ_БГ_ООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:КОНТРОЛСТРОЙ_БГ_ООД",
+      "target": "inst:Община_ОбС_Шумен",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €0.02M",
+      "amountEur": 22031.57,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6MjgxNzY0ZjY2ZDA3Nzc2NTI1NjJmM2NiZGRmZmE3Y2M5MGFiNzM5Zjc5ODY4MDEzNzQxNTc3ODYxY2Q2YTg5MQ",
+      "target": "comp_off:СТРОЙКОНТРОЛ_-_ГТ_ООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:СТРОЙКОНТРОЛ_-_ГТ_ООД",
+      "target": "inst:Община_ОбС_Шумен",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €0.02M",
+      "amountEur": 22031.57,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6M2E3OWIwYTE5NTdiODIxZDg2OGJmZTVmOWQ0NWQ1YjkzZjg0NjVkNzM3NmIwNjk5YTE4NDI4YTg2YTI2ZGUwOQ",
+      "target": "inst:Община_ОбС_Шумен",
+      "kind": "conflict_of_interest",
+      "label": "Управлява / член на органа",
+      "amountEur": 20228.75,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6M2E3OWIwYTE5NTdiODIxZDg2OGJmZTVmOWQ0NWQ1YjkzZjg0NjVkNzM3NmIwNjk5YTE4NDI4YTg2YTI2ZGUwOQ",
+      "target": "comp_off:Еко_груп_рисайклинг_ООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:Еко_груп_рисайклинг_ООД",
+      "target": "inst:Община_ОбС_Шумен",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €0.02M",
+      "amountEur": 20228.75,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6OTI0ZmUxZjVmMTI5ODBkMDczNjA1MjU4ZDM5MTk3OTYwMzVkMWM3ODBmNmEzMzdiOTE1NGZmMzZhNTZlNDRiZA",
+      "target": "inst:Община_ОбС_Белово",
+      "kind": "conflict_of_interest",
+      "label": "Свързано лице",
+      "amountEur": 2898534.13,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6OTI0ZmUxZjVmMTI5ODBkMDczNjA1MjU4ZDM5MTk3OTYwMzVkMWM3ODBmNmEzMzdiOTE1NGZmMzZhNTZlNDRiZA",
+      "target": "comp_off:Ейч_Ел_Ес_трейд_ЕООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:Ейч_Ел_Ес_трейд_ЕООД",
+      "target": "inst:Община_ОбС_Белово",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €2.90M",
+      "amountEur": 2898534.13,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6ZTljNTI5ZDFmNTFhYzU1OGIxZjE3NTE0YzE3YzY3N2EzZTUxZWVjMWRhMWE1ZWQ4M2EwMGYxMWI2NjE2ZGJlNA",
+      "target": "inst:Община_ОбС_Белово",
+      "kind": "conflict_of_interest",
+      "label": "Управлява / член на органа",
+      "amountEur": 196150.85,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6ZTljNTI5ZDFmNTFhYzU1OGIxZjE3NTE0YzE3YzY3N2EzZTUxZWVjMWRhMWE1ZWQ4M2EwMGYxMWI2NjE2ZGJlNA",
+      "target": "comp_off:СИГМА-СТРОЙ_ООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:СИГМА-СТРОЙ_ООД",
+      "target": "inst:Община_ОбС_Белово",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €0.20M",
+      "amountEur": 196150.85,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6MTk5MGU1YjM0ZTMyZDAxNzBiZGU4OWFhOTk4NWMzZWIwZjZkNmZjMDU2M2M2MjE1MWYwMjNhNzVlMTEwZWFmOQ",
+      "target": "inst:Областна_администрация_Шумен",
+      "kind": "conflict_of_interest",
+      "label": "Управлява / член на органа",
+      "amountEur": 2843383.37,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "comp_off:Е_-_ПЛАНТ_ЕООД",
+      "target": "inst:Областна_администрация_Шумен",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €2.84M",
+      "amountEur": 2843383.37,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6YjM5YmI3ZjM4NDU3MTk2NDZhNzVhY2E4MTkzNTBmOTYyZTMyZTQ5ZmJhYjk3MjFjOTc2MGYyYzY4ZTEyZWIxNA",
+      "target": "inst:Областна_администрация_Шумен",
+      "kind": "conflict_of_interest",
+      "label": "Свързано лице",
+      "amountEur": 0,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6YjM5YmI3ZjM4NDU3MTk2NDZhNzVhY2E4MTkzNTBmOTYyZTMyZTQ5ZmJhYjk3MjFjOTc2MGYyYzY4ZTEyZWIxNA",
+      "target": "comp_off:ХИГИЯМЕД_ООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:ХИГИЯМЕД_ООД",
+      "target": "inst:Областна_администрация_Шумен",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €0.00M",
+      "amountEur": 0,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6MTM0MGE3NjdhZWQxYzViOGM2NmQ2YjhkYzJjN2NjYTk3NGIxOWQ1MWY2Yzg2MWRhZDk4Y2ViMzg5NGU2ZmI3Ng",
+      "target": "inst:Община_ОбС_Самоков",
+      "kind": "conflict_of_interest",
+      "label": "Управлява / член на органа",
+      "amountEur": 2710075.27,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6MTM0MGE3NjdhZWQxYzViOGM2NmQ2YjhkYzJjN2NjYTk3NGIxOWQ1MWY2Yzg2MWRhZDk4Y2ViMzg5NGU2ZmI3Ng",
+      "target": "comp_off:КОМЕКЕС_АД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:КОМЕКЕС_АД",
+      "target": "inst:Община_ОбС_Самоков",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €2.71M",
+      "amountEur": 2710075.27,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6MTM0MGE3NjdhZWQxYzViOGM2NmQ2YjhkYzJjN2NjYTk3NGIxOWQ1MWY2Yzg2MWRhZDk4Y2ViMzg5NGU2ZmI3Ng",
+      "target": "comp_off:САМЕЛ_-_90_АД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:САМЕЛ_-_90_АД",
+      "target": "inst:Община_ОбС_Самоков",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €2.71M",
+      "amountEur": 2710075.27,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NDg1OGY1YTY1YjU0MjcxNDE4MDJiNGYyZGU3OTFmMzMyZTg1YzQ0OGJjYTA2YWU3MzQ3NjEwOGE1MmRlNmUwOQ",
+      "target": "inst:Община_ОбС_Самоков",
+      "kind": "conflict_of_interest",
+      "label": "Свързано лице",
+      "amountEur": 0,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NDg1OGY1YTY1YjU0MjcxNDE4MDJiNGYyZGU3OTFmMzMyZTg1YzQ0OGJjYTA2YWU3MzQ3NjEwOGE1MmRlNmUwOQ",
+      "target": "comp_off:ЛОБУТОВ_МЛ_ЕООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:ЛОБУТОВ_МЛ_ЕООД",
+      "target": "inst:Община_ОбС_Самоков",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €0.00M",
+      "amountEur": 0,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6NDg1OGY1YTY1YjU0MjcxNDE4MDJiNGYyZGU3OTFmMzMyZTg1YzQ0OGJjYTA2YWU3MzQ3NjEwOGE1MmRlNmUwOQ",
+      "target": "comp_off:ДИЛ_ТРАНС_ООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:ДИЛ_ТРАНС_ООД",
+      "target": "inst:Община_ОбС_Самоков",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €0.00M",
+      "amountEur": 0,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6ZDkwNjE0NzNhMmM5NTk0MDY5M2U5Mjk0ZTRlYWRiYTE2YTVmNDhmNzcwMGZiNWMxZjkwYzc3MmJkYjMwYjg4Mg",
+      "target": "inst:Община_ОбС_Самоков",
+      "kind": "conflict_of_interest",
+      "label": "Свързано лице",
+      "amountEur": 0,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6ZDkwNjE0NzNhMmM5NTk0MDY5M2U5Mjk0ZTRlYWRiYTE2YTVmNDhmNzcwMGZiNWMxZjkwYzc3MmJkYjMwYjg4Mg",
+      "target": "comp_off:БЕКАСТРОЙ_ЕАД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:БЕКАСТРОЙ_ЕАД",
+      "target": "inst:Община_ОбС_Самоков",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €0.00M",
+      "amountEur": 0,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6ZWU3NGExOTUxZTQ4MTFkNWEwNDQ5NzVhMDg0NTkyMGM5YmQ3YjVhMTE3YjIwZDI3OWIzYWFhN2YwY2EwMjAzMw",
+      "target": "inst:Община_ОбС_Самоков",
+      "kind": "conflict_of_interest",
+      "label": "Свързано лице",
+      "amountEur": 0,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6ZWU3NGExOTUxZTQ4MTFkNWEwNDQ5NzVhMDg0NTkyMGM5YmQ3YjVhMTE3YjIwZDI3OWIzYWFhN2YwY2EwMjAzMw",
+      "target": "comp_off:ТРАНСТЕХ_ООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:ТРАНСТЕХ_ООД",
+      "target": "inst:Община_ОбС_Самоков",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €0.00M",
+      "amountEur": 0,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6OThiOWYzOTFjNjdlNDYxMTFjMzQ3MmE1NDZjOWEwNDljOWQ3ODUxYjNhNjkzMjQ1OTljNzM0YzZlN2JjODZkZQ",
+      "target": "inst:Община_ОбС_Суворово",
+      "kind": "conflict_of_interest",
+      "label": "Управлява / член на органа",
+      "amountEur": 2547617.67,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6OThiOWYzOTFjNjdlNDYxMTFjMzQ3MmE1NDZjOWEwNDljOWQ3ODUxYjNhNjkzMjQ1OTljNzM0YzZlN2JjODZkZQ",
+      "target": "comp_off:ЕР_БИЛД_-_ИНЖЕНЕРИНГ_ЕООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:ЕР_БИЛД_-_ИНЖЕНЕРИНГ_ЕООД",
+      "target": "inst:Община_ОбС_Суворово",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €2.55M",
+      "amountEur": 2547617.67,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6ODc3NmVhNTAxY2M3YzliYzI2NDMyOTgwYTc4ZGI1ZjAwZjcyMTA2ZTMyNWY4ZDVkYmY5MDk4YmYyMzBlNzY5Yg",
+      "target": "inst:Община_ОбС_Суворово",
+      "kind": "conflict_of_interest",
+      "label": "Свързано лице",
+      "amountEur": 124315.15,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6ODc3NmVhNTAxY2M3YzliYzI2NDMyOTgwYTc4ZGI1ZjAwZjcyMTA2ZTMyNWY4ZDVkYmY5MDk4YmYyMzBlNzY5Yg",
+      "target": "comp_off:БОКСЕР_ЕООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:БОКСЕР_ЕООД",
+      "target": "inst:Община_ОбС_Суворово",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €0.12M",
+      "amountEur": 124315.15,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6M2E0YTNmY2VhYTNlOWQ4ZmVhZWJlMjY0ZmQ4OTMyYTJlZjgwZDYyN2Q4YmRiNTgyNTY0ZGNiMDE4ZTVmOTY2Nw",
+      "target": "inst:Община_ОбС_Несебър",
+      "kind": "conflict_of_interest",
+      "label": "Управлява / член на органа",
+      "amountEur": 2280392.19,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6M2E0YTNmY2VhYTNlOWQ4ZmVhZWJlMjY0ZmQ4OTMyYTJlZjgwZDYyN2Q4YmRiNTgyNTY0ZGNiMDE4ZTVmOTY2Nw",
+      "target": "comp_off:АТЛАНТ_2013_ЕООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:АТЛАНТ_2013_ЕООД",
+      "target": "inst:Община_ОбС_Несебър",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €2.28M",
+      "amountEur": 2280392.19,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6ODkwMDhhNzI2MTI1NjBmYzQ1MTViMDQ3MzEyOWRkZDdkMWQ1MmUwNzllZWQzODRjOTA4ZTA4ODgwMzBmZDQ4Mw",
+      "target": "inst:Община_ОбС_Несебър",
+      "kind": "conflict_of_interest",
+      "label": "Свързано лице",
+      "amountEur": 0,
+      "evidence": "Сметна палата / КПКОНПИ / ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "off:aWRlbnRpdHk6ODkwMDhhNzI2MTI1NjBmYzQ1MTViMDQ3MzEyOWRkZDdkMWQ1MmUwNzllZWQzODRjOTA4ZTA4ODgwMzBmZDQ4Mw",
+      "target": "comp_off:ДИН_СТРОЙ_ЕООД",
+      "kind": "owns_share",
+      "label": "Собственик / Съдружник",
+      "amountEur": 0,
+      "evidence": "Търговски регистър",
+      "url": ""
+    },
+    {
+      "source": "comp_off:ДИН_СТРОЙ_ЕООД",
+      "target": "inst:Община_ОбС_Несебър",
+      "kind": "won_zop",
+      "label": "Спечелени договори: €0.00M",
+      "amountEur": 0,
+      "evidence": "ЦАИС ЕОП",
+      "url": ""
+    },
+    {
+      "source": "law_firm:175253221",
+      "target": "auth:000695025",
+      "kind": "awarded_legal_tender",
+      "label": "Правно представителство: €1564k",
+      "amountEur": 1563688.65,
+      "evidence": "ЦАИС ЕОП УНП T390221 (2024-05-02)",
+      "url": "https://app.eop.bg/today/contracts"
+    },
+    {
+      "source": "law_firm:121162565",
+      "target": "auth:000695406",
+      "kind": "awarded_legal_tender",
+      "label": "Правно представителство: €895k",
+      "amountEur": 894760.79,
+      "evidence": "ЦАИС ЕОП УНП T569003 (2026-04-08)",
+      "url": "https://app.eop.bg/today/contracts"
+    },
+    {
+      "source": "law_firm:103913291",
+      "target": "auth:000695406",
+      "kind": "awarded_legal_tender",
+      "label": "Правно представителство: €537k",
+      "amountEur": 536856.47,
+      "evidence": "ЦАИС ЕОП УНП T569003 (2026-04-17)",
+      "url": "https://app.eop.bg/today/contracts"
+    },
+    {
+      "source": "law_firm:WHITE_&CASE_LLP",
+      "target": "auth:175203478",
+      "kind": "awarded_legal_tender",
+      "label": "Правно представителство: €410k",
+      "amountEur": 410000,
+      "evidence": "ЦАИС ЕОП УНП T394429 (2024-03-12)",
+      "url": "https://app.eop.bg/today/contracts"
+    },
+    {
+      "source": "law_firm:204842656",
+      "target": "auth:000695406",
+      "kind": "awarded_legal_tender",
+      "label": "Правно представителство: €358k",
+      "amountEur": 357904.32,
+      "evidence": "ЦАИС ЕОП УНП T569003 (2026-04-17)",
+      "url": "https://app.eop.bg/today/contracts"
+    },
+    {
+      "source": "law_firm:175382262",
+      "target": "auth:000695025",
+      "kind": "awarded_legal_tender",
+      "label": "Правно представителство: €245k",
+      "amountEur": 245420.1,
+      "evidence": "ЦАИС ЕОП УНП T356428 (2022-08-19)",
+      "url": "https://app.eop.bg/today/contracts"
+    },
+    {
+      "source": "law_firm:131472060",
+      "target": "auth:177549105",
+      "kind": "awarded_legal_tender",
+      "label": "Правно представителство: €217k",
+      "amountEur": 217336.37,
+      "evidence": "ЦАИС ЕОП УНП T382545 (2023-07-14)",
+      "url": "https://app.eop.bg/today/contracts"
+    },
+    {
+      "source": "law_firm:175825028",
+      "target": "auth:106513772",
+      "kind": "awarded_legal_tender",
+      "label": "Правно представителство: €204k",
+      "amountEur": 203724.25,
+      "evidence": "ЦАИС ЕОП УНП T375567 (2022-12-12)",
+      "url": "https://app.eop.bg/today/contracts"
+    },
+    {
+      "source": "law_firm:106038717",
+      "target": "auth:816090199",
+      "kind": "awarded_legal_tender",
+      "label": "Правно представителство: €147k",
+      "amountEur": 147252.06,
+      "evidence": "ЦАИС ЕОП УНП T379676 (2023-10-10)",
+      "url": "https://app.eop.bg/today/contracts"
+    },
+    {
+      "source": "law_firm:адв._Галина_Стамболиева",
+      "target": "auth:115010670",
+      "kind": "awarded_legal_tender",
+      "label": "Правно представителство: €121k",
+      "amountEur": 121176.18,
+      "evidence": "ЦАИС ЕОП УНП T371758 (2023-08-04)",
+      "url": "https://app.eop.bg/today/contracts"
+    },
+    {
+      "source": "law_firm:175250218",
+      "target": "auth:106513772",
+      "kind": "awarded_legal_tender",
+      "label": "Правно представителство: €88k",
+      "amountEur": 87883.79,
+      "evidence": "ЦАИС ЕОП УНП T368159 (2021-09-30)",
+      "url": "https://app.eop.bg/today/contracts"
+    },
+    {
+      "source": "law_firm:176642834",
+      "target": "auth:129009070",
+      "kind": "awarded_legal_tender",
+      "label": "Правно представителство: €66k",
+      "amountEur": 65693.85,
+      "evidence": "ЦАИС ЕОП УНП T404170 (2023-11-09)",
+      "url": "https://app.eop.bg/today/contracts"
+    },
+    {
+      "source": "law_firm:176093905",
+      "target": "auth:177549105",
+      "kind": "awarded_legal_tender",
+      "label": "Правно представителство: €64k",
+      "amountEur": 64422.78,
+      "evidence": "ЦАИС ЕОП УНП T463662 (2025-02-11)",
+      "url": "https://app.eop.bg/today/contracts"
+    },
+    {
+      "source": "law_firm:адв._Васил_Василев",
+      "target": "auth:830166530",
+      "kind": "awarded_legal_tender",
+      "label": "Правно представителство: €51k",
+      "amountEur": 51129.19,
+      "evidence": "ЦАИС ЕОП УНП T409702 (2024-07-02)",
+      "url": "https://app.eop.bg/today/contracts"
+    },
+    {
+      "source": "law_firm:101678670",
+      "target": "auth:202766380",
+      "kind": "awarded_legal_tender",
+      "label": "Правно представителство: €51k",
+      "amountEur": 51077.99,
+      "evidence": "ЦАИС ЕОП УНП T550893 (2025-12-17)",
+      "url": "https://app.eop.bg/today/contracts"
+    },
+    {
+      "source": "judge:Дафина_Николаева_Арабаджиева",
+      "target": "party:175451413",
+      "kind": "presided_case",
+      "label": "35 дела (9.04x над очакваното)",
+      "amountEur": 0,
+      "evidence": "ЕИСС одит · Районен съд - Пловдив (2023)",
+      "url": "https://ecase.justice.bg/Case/CaseDetail/a03d8208-9f05-4865-8bce-bda6361806bf"
+    },
+    {
+      "source": "judge:НОРА_ВЛАДИМИРОВА_МАРИНОВА",
+      "target": "party:831609046",
+      "kind": "presided_case",
+      "label": "43 дела (4.87x над очакваното)",
+      "amountEur": 0,
+      "evidence": "ЕИСС одит · Софийски районен съд (2025)",
+      "url": "https://ecase.justice.bg/Case/CaseDetail/7746c227-0da5-44a9-8e55-6d7e8b3a39d0"
+    },
+    {
+      "source": "judge:Диляна_Василева_Славова",
+      "target": "party:175451413",
+      "kind": "presided_case",
+      "label": "23 дела (10.4x над очакваното)",
+      "amountEur": 0,
+      "evidence": "ЕИСС одит · Районен съд - Пловдив (2023)",
+      "url": "https://ecase.justice.bg/Case/CaseDetail/93e782bb-b670-48bb-9ee8-4853aeaff1ea"
+    },
+    {
+      "source": "judge:ЛЮБОМИР_ИЛИЕВ_ИГНАТОВ",
+      "target": "party:831609046",
+      "kind": "presided_case",
+      "label": "23 дела (9.85x над очакваното)",
+      "amountEur": 0,
+      "evidence": "ЕИСС одит · Софийски районен съд (2023)",
+      "url": "https://ecase.justice.bg/Case/CaseDetail/1195cff0-5a30-414b-8779-13a0fa85a55f"
+    },
+    {
+      "source": "judge:ПЛАМЕНА_САШЕВА_ТРЕНЧЕВА",
+      "target": "party:831609046",
+      "kind": "presided_case",
+      "label": "27 дела (6.92x над очакваното)",
+      "amountEur": 0,
+      "evidence": "ЕИСС одит · Софийски районен съд (2024)",
+      "url": "https://ecase.justice.bg/Case/CaseDetail/b4057422-ee5a-4469-90f9-f4eb4edff6e2"
+    },
+    {
+      "source": "judge:Александър_Венков_Точевски",
+      "target": "party:175451413",
+      "kind": "presided_case",
+      "label": "20 дела (7.62x над очакваното)",
+      "amountEur": 0,
+      "evidence": "ЕИСС одит · Районен съд - Пловдив (2023)",
+      "url": "https://ecase.justice.bg/Case/CaseDetail/8d970f99-ddda-4b5d-93fc-4de1c4a8c187"
+    },
+    {
+      "source": "judge:МАРИЯ_ИЛЧЕВА_ИЛИЕВА",
+      "target": "party:831609046",
+      "kind": "presided_case",
+      "label": "27 дела (5.11x над очакваното)",
+      "amountEur": 0,
+      "evidence": "ЕИСС одит · Софийски районен съд (2025)",
+      "url": "https://ecase.justice.bg/Case/CaseDetail/e01c497a-0394-4c0f-a0a4-fe94fdb5c115"
+    },
+    {
+      "source": "judge:АСПАРУХ_ЕМИЛОВ_ХРИСТОВ",
+      "target": "party:831609046",
+      "kind": "presided_case",
+      "label": "18 дела (7.28x над очакваното)",
+      "amountEur": 0,
+      "evidence": "ЕИСС одит · Софийски районен съд (2023)",
+      "url": "https://ecase.justice.bg/Case/CaseDetail/722e9522-d685-47ea-ab77-9fcfde4844fb"
+    },
+    {
+      "source": "judge:СВЕТЛАНА_НИКОЛАЕВА_РАЧЕВА_ЯНЕВА",
+      "target": "party:831609046",
+      "kind": "presided_case",
+      "label": "33 дела (3.81x над очакваното)",
+      "amountEur": 0,
+      "evidence": "ЕИСС одит · Софийски районен съд (2026)",
+      "url": "https://ecase.justice.bg/Case/CaseDetail/42917049-b06d-465c-80e5-804e6ef43e59"
+    },
+    {
+      "source": "judge:Спасена_Венелинова_Драготинова",
+      "target": "party:ОБЛАСТНА_АДМИНИСТРАЦИЯ_ГЮСИНГ,_АВСТРИЯ",
+      "kind": "presided_case",
+      "label": "8 дела (21.96x над очакваното)",
+      "amountEur": 0,
+      "evidence": "ЕИСС одит · Окръжен съд - Стара Загора (2023)",
+      "url": "https://ecase.justice.bg/Case/CaseDetail/198d5d7a-148f-4d54-8cf9-82c0091d808f"
+    },
+    {
+      "source": "judge:Петя_Георгиева",
+      "target": "party:131282355",
+      "kind": "presided_case",
+      "label": "7 дела (26.25x над очакваното)",
+      "amountEur": 0,
+      "evidence": "ЕИСС одит · Софийски градски съд (2025)",
+      "url": "https://ecase.justice.bg/Case/CaseDetail/7938f5f8-613e-4731-9383-cd06f0b035d3"
+    },
+    {
+      "source": "judge:Ива_Илиева_Стойчева_Коджабашева",
+      "target": "party:829053806",
+      "kind": "presided_case",
+      "label": "14 дела (5.66x над очакваното)",
+      "amountEur": 0,
+      "evidence": "ЕИСС одит · Районен съд - Сливен (2025)",
+      "url": "https://ecase.justice.bg/Case/CaseDetail/6539da20-9305-4015-adbc-6fd1a071f574"
+    },
+    {
+      "source": "judge:РАФАЕЛА_СТОИЛОВА_МАТЕВА",
+      "target": "party:040638060",
+      "kind": "presided_case",
+      "label": "15 дела (7.63x над очакваното)",
+      "amountEur": 0,
+      "evidence": "ЕИСС одит · Софийски районен съд (2026)",
+      "url": "https://ecase.justice.bg/Case/CaseDetail/de8b449d-89c9-4689-9baa-274497c501d1"
+    },
+    {
+      "source": "judge:Милена_Костова_-_Колева",
+      "target": "party:КМЕТА_НА_ОБЩИНА_БОЖУРИЩЕ",
+      "kind": "presided_case",
+      "label": "12 дела (8.06x над очакваното)",
+      "amountEur": 0,
+      "evidence": "ЕИСС одит · Административен съд - София-област (2026)",
+      "url": "https://ecase.justice.bg/Case/CaseDetail/236aba8d-29f4-4546-9986-f96fa1924c4a"
+    },
+    {
+      "source": "judge:ВЛАДИМИР_СТАНЧЕВ_КЪНЕВ",
+      "target": "party:АГЕНЦИЯ_ЗА_СЪБИРАНЕ_НА_ВЗЕМАНИЯ_ЕАД",
+      "kind": "presided_case",
+      "label": "11 дела (11.5x над очакваното)",
+      "amountEur": 0,
+      "evidence": "ЕИСС одит · Софийски районен съд (2025)",
+      "url": "https://ecase.justice.bg/Case/CaseDetail/bed42084-11bd-4bfd-943d-5ce319207eba"
+    },
+    {
+      "source": "judge:РАДИНА_КАЛИНОВА_КАЛЕВА",
+      "target": "party:831609046",
+      "kind": "presided_case",
+      "label": "20 дела (5x над очакваното)",
+      "amountEur": 0,
+      "evidence": "ЕИСС одит · Софийски районен съд (2025)",
+      "url": "https://ecase.justice.bg/Case/CaseDetail/bc6b89cf-0ee0-47b3-b8aa-dc4ef00967f6"
+    },
+    {
+      "source": "judge:АНГЕЛИНА_КОЛЕВА_БОЕВА",
+      "target": "party:131468980",
+      "kind": "presided_case",
+      "label": "16 дела (5.42x над очакваното)",
+      "amountEur": 0,
+      "evidence": "ЕИСС одит · Софийски районен съд (2025)",
+      "url": "https://ecase.justice.bg/Case/CaseDetail/c841fdbb-4555-4ded-bcc8-16c80eb94892"
+    },
+    {
+      "source": "judge:АНГЕЛИНА_КОЛЕВА_БОЕВА",
+      "target": "party:МИНОЛБИ_ЕООД",
+      "kind": "presided_case",
+      "label": "12 дела (7.32x над очакваното)",
+      "amountEur": 0,
+      "evidence": "ЕИСС одит · Софийски районен съд (2025)",
+      "url": "https://ecase.justice.bg/Case/CaseDetail/91755228-b97e-4990-91e2-f4db93fc47b7"
+    },
+    {
+      "source": "judge:Евгения_Баева",
+      "target": "party:ГЛАВЕН_АРХИТЕКТ_НА_СТОЛИЧНА_ОБЩИНА",
+      "kind": "presided_case",
+      "label": "11 дела (9.91x над очакваното)",
+      "amountEur": 0,
+      "evidence": "ЕИСС одит · Административен съд - София-град (2023)",
+      "url": "https://ecase.justice.bg/Case/CaseDetail/7d4498de-03e2-c63a-c225-8a6100476625"
+    },
+    {
+      "source": "judge:Анета_Юргакиева",
+      "target": "party:КОМИСИЯТА_ЗА_ЕНЕРГИЙНО_И_ВОДНО_РЕГУЛИРАНЕ",
+      "kind": "presided_case",
+      "label": "5 дела (45.51x над очакваното)",
+      "amountEur": 0,
+      "evidence": "ЕИСС одит · Административен съд - София-град (2023)",
+      "url": "https://ecase.justice.bg/Case/CaseDetail/531d0ec5-330a-ac2a-c225-8a0e00411e17"
+    },
+    {
+      "source": "judge:Красимира_Милачкова",
+      "target": "party:ГЛАВЕН_АРХИТЕКТ_НА_СТОЛИЧНА_ОБЩИНА",
+      "kind": "presided_case",
+      "label": "10 дела (10.48x над очакваното)",
+      "amountEur": 0,
+      "evidence": "ЕИСС одит · Административен съд - София-град (2023)",
+      "url": "https://ecase.justice.bg/Case/CaseDetail/6f2d4e24-04c6-79cc-c225-8a8c004f34da"
+    },
+    {
+      "source": "energy:106513772",
+      "target": "energy:126017122",
+      "kind": "disputes_with",
+      "label": "Искове и претенции за десетки милиони лева",
+      "amountEur": 25000000,
+      "evidence": "ТД № 32/2020 и ТД № 171/2021",
+      "url": ""
+    },
+    {
+      "source": "health:121130788",
+      "target": "health:108501669",
+      "kind": "won_zop",
+      "label": "Застрахователно обслужване и спорове",
+      "amountEur": 450000,
+      "evidence": "ЦАИС ЕОП / СГС",
+      "url": ""
+    }
+  ]
+}
