@@ -23,7 +23,7 @@ test('English executive brief (/en/ and /en.html) is synced with Zenodo DOI and 
 
   const html = fs.readFileSync(enIndexPath, 'utf8');
   assert.match(html, /<html lang="en"/);
-  assert.match(html, /href="\/sigma3\/styles\.css\?v=20261127a"/);
+  assert.match(html, /href="\/sigma3\/styles\.css\?v=20261127[a-z]"/);
   assert.match(html, /10\.5281\/zenodo\.24580253/);
   assert.match(html, /a30faab18bbfa551a3fc8a2389c2f8661115f9b85137e35b5eb0ad41b7a912ca/);
   assert.match(html, /2,234,509/);
@@ -41,13 +41,18 @@ test('English executive brief (/en/ and /en.html) is synced with Zenodo DOI and 
 test('ot-mrak-kam-svetlina has 1-click signal generator modal, Zenodo DOI badge, and updated JS/CSS bundles', () => {
   const htmlPath = path.join(root, 'docs', 'ot-mrak-kam-svetlina.html');
   const jsPath = path.join(root, 'docs', 'sigma3', 'ot_mrak_kam_svetlina.js');
+  const cssPath = path.join(root, 'docs', 'sigma3', 'styles.css');
   const html = fs.readFileSync(htmlPath, 'utf8');
   const js = fs.readFileSync(jsPath, 'utf8');
+  const css = fs.readFileSync(cssPath, 'utf8');
 
-  assert.match(html, /sigma3\/ot_mrak_kam_svetlina\.js\?v=20261127a/);
-  assert.match(html, /sigma3\/styles\.css\?v=20261127a/);
+  assert.match(html, /sigma3\/ot_mrak_kam_svetlina\.js\?v=20261127[a-z]/);
+  assert.match(html, /sigma3\/styles\.css\?v=20261127[a-z]/);
   assert.match(html, /id="svetSignalModal"/);
   assert.match(html, /id="svetSignalBackdrop"/);
+  assert.match(html, /id="svetSignalCancelBtn"/);
+  assert.match(css, /\.svet-signal-modal\[hidden\][^}]*display:\s*none\s*!important/);
+  assert.match(css, /\.svet-signal-modal\.is-open/);
   assert.match(html, /data-svet-signal-idx="/);
   assert.match(html, /data-svet-signal-coi="/);
   assert.match(html, /10\.5281\/zenodo\.24580253/);

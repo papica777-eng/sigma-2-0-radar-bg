@@ -3729,6 +3729,7 @@
     var metaEl = document.getElementById('svetSignalMeta');
     var textEl = document.getElementById('svetSignalText');
     var closeBtn = document.getElementById('svetSignalCloseBtn');
+    var cancelBtn = document.getElementById('svetSignalCancelBtn');
     var copyBtn = document.getElementById('svetSignalCopyBtn');
     var dlBtn = document.getElementById('svetSignalDownloadBtn');
     var printBtn = document.getElementById('svetSignalPrintBtn');
@@ -3968,6 +3969,8 @@
       refreshModal();
       backdrop.hidden = false;
       modal.hidden = false;
+      backdrop.classList.add('is-open');
+      modal.classList.add('is-open');
       window.setTimeout(function () {
         textEl.focus();
       }, 40);
@@ -3976,7 +3979,11 @@
     function closeSignalModal() {
       backdrop.hidden = true;
       modal.hidden = true;
+      backdrop.classList.remove('is-open');
+      modal.classList.remove('is-open');
     }
+
+    closeSignalModal();
 
     modal.querySelectorAll('[data-svet-signal-authority]').forEach(function (tab) {
       tab.addEventListener('click', function () {
@@ -4067,9 +4074,10 @@
       });
     }
     if (closeBtn) closeBtn.addEventListener('click', closeSignalModal);
+    if (cancelBtn) cancelBtn.addEventListener('click', closeSignalModal);
     backdrop.addEventListener('click', closeSignalModal);
     document.addEventListener('keydown', function (ev) {
-      if (ev.key === 'Escape' && !modal.hidden) closeSignalModal();
+      if (ev.key === 'Escape' && modal.classList.contains('is-open')) closeSignalModal();
     });
 
     if (copyBtn) {
