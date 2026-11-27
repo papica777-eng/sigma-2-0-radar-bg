@@ -20,6 +20,13 @@ import invRaw from '../../docs/data/nasvetlo_investigations.json';
 import telkRaw from '../../docs/data/nasvetlo_telk_radar.json';
 import fiscalRaw from '../../docs/data/nasvetlo_fiscal_edp.json';
 import eissAuditRaw from '../../docs/data/nasvetlo_eiss_audit.json';
+import networkRaw from '../../docs/data/nasvetlo_network_graph.json';
+
+const netSum = (networkRaw as any).summary || {};
+const netNodesFmt = Number(netSum.totalNodes || 334).toLocaleString('bg-BG');
+const netEdgesFmt = Number(netSum.totalEdges || 367).toLocaleString('bg-BG');
+const netBridgesFmt = Number(netSum.bridgeNodesCount || 18).toLocaleString('bg-BG');
+const netEurBn = (Number(netSum.totalInvestigatedResourceEur || 15384500000) / 1e9).toFixed(2).replace('.', ',');
 
 const eissU = (eissAuditRaw as any).universe || {};
 const eissCasesFmt = Number(eissU.casesUnique || 1695046).toLocaleString('bg-BG');
@@ -48,13 +55,13 @@ const dynamicAsOf = [
     <span class="svetlina-banner__cta btn btn-dark">Отвори одита &rarr;</span>
   </a>
 
-  <a class="mrezha-banner" href="mrezhata.html" title="Отвори „МРЕЖАТА“ — интерактивен граф на зависимостите между фирми, дела, съдии, прокурори и адвокати">
-    <span class="mrezha-banner__tag">СПЕЦИАЛНО · КАРТА НА ЗАВЛАДЯНАТА ДЪРЖАВА</span>
+  <a class="mrezha-banner" href="mrezhata.html" title="Отвори „МРЕЖАТА“ — интерактивен крос-регистров граф на институционалната свързаност">
+    <span class="mrezha-banner__tag">КРОС-РЕГИСТРОВ ГРАФ &middot; BRANDES &middot; SHA-256</span>
     <div class="mrezha-banner__body">
-      <div class="mrezha-banner__title">МРЕЖАТА — Корупционен &amp; съдебен граф на зависимостите (€2,94 млрд.)</div>
-      <div class="mrezha-banner__sub">Картографиране на <strong>178 институционални и корпоративни възела</strong> и <strong>188 пресечни връзки</strong>: строителни картели, общински феодализъм (чл. 49 ЗПКОНПИ), съдебни лобита и адвокатски договори без състезание.</div>
+      <div class="mrezha-banner__title">МРЕЖАТА — Крос-регистров граф на институционалната свързаност (€{netEurBn} млрд.)</div>
+      <div class="mrezha-banner__sub">Картографиране на <strong>{netNodesFmt} обекта</strong>, <strong>{netEdgesFmt} верифицирани връзки</strong> и <strong>{netBridgesFmt} мулти-клъстерни моста</strong>: инфраструктурни спорове, свързаност по чл. 49 ЗПК, ЕИСС концентрации и правни договори (Модул J3).</div>
     </div>
-    <span class="mrezha-banner__cta">Разгледай графа &rarr;</span>
+    <span class="mrezha-banner__cta">Отвори графа &rarr;</span>
   </a>
   <HeroFunnel asOf={dynamicAsOf} />
   <NavTabs />

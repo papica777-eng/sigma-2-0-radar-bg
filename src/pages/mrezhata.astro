@@ -7,10 +7,12 @@ const s = net.summary || {};
 const nodes: any[] = net.nodes || [];
 const edges: any[] = net.edges || [];
 const clusters: any[] = net.clusters || [];
+const featuredPaths: any[] = s.featuredPaths || [];
 
 const fmtInt = (n: number) => Number(n || 0).toLocaleString('bg-BG');
 const fmtEurShort = (n: number) => {
   const v = Number(n || 0);
+  if (!Number.isFinite(v) || v <= 0) return '—';
   if (v >= 1e9) return `€${(v / 1e9).toFixed(2).replace('.', ',')} млрд.`;
   if (v >= 1e6) return `€${(v / 1e6).toFixed(1).replace('.', ',')} млн.`;
   if (v >= 1e3) return `€${Math.round(v / 1e3).toLocaleString('bg-BG')} хил.`;
@@ -19,820 +21,574 @@ const fmtEurShort = (n: number) => {
 
 const asOf = String(net.generatedAtUtc || '2026-11-27').slice(0, 10);
 
-const TYPE_LABELS: Record<string, { label: string; color: string; icon: string }> = {
-  company: { label: 'Фирма / Изпълнител', color: '#ef4444', icon: '🏢' },
-  authority: { label: 'Възложител / Ведомство', color: '#3b82f6', icon: '🏛️' },
-  judge: { label: 'Съдия / Магистрат', color: '#8b5cf6', icon: '⚖️' },
-  lawyer: { label: 'Адвокат / Кантора', color: '#06b6d4', icon: '💼' },
-  official: { label: 'Публично лице (ЗПК)', color: '#f59e0b', icon: '👔' },
-  case: { label: 'Съдебно дело / Спор', color: '#ec4899', icon: '📁' },
+const CLUSTER_INFO: Record<string, { kicker: string; title: string; desc: string; accent: string }> = {
+  ROAD_SECTOR: {
+    kicker: 'Клъстер 01 · Инфраструктура & АПИ',
+    title: 'Строително-инфраструктурен сектор & АПИ',
+    desc: 'Компании с договори за стотици милиони евро по ЗОП (Пътинженерингстрой-Т, Запрянови-03, Еко-Хидро-90, Пътища и мостове, Градив), свързани с реални търговски производства по ЕИСС срещу АПИ и общини.',
+    accent: '#f97316',
+  },
+  MUNICIPAL_AFFILIATION: {
+    kicker: 'Клъстер 02 · Местна власт · чл. 49 ЗПК',
+    title: 'Общинска свързаност & Декларации по ЗПК',
+    desc: 'Кметове, общински съветници и публични лица (Благоевград, Хасково, Неделино, Белово, Пловдив, Столична община, Шумен, Самоков), чиито свързани дружества по ТР са изпълнители по ЗОП.',
+    accent: '#d97706',
+  },
+  JUDICIAL_CONCENTRATION: {
+    kicker: 'Клъстер 03 · Съдебна мрежа & Модул J3',
+    title: 'ЕИСС концентрации (q < 0,01) & Правни договори',
+    desc: 'Статистически необяснени концентрации в случайното разпределение (Benjamini–Hochberg FDR q < 0,01), връзки адвокат → съдия (Ниво 3) и договори за правни услуги по CPV 791 без състезание.',
+    accent: '#7c3aed',
+  },
+  ENERGY_SECTOR: {
+    kicker: 'Клъстер 04 · Енергетика & ВиК',
+    title: 'Енергиен & ВиК сектор',
+    desc: 'Взаимни искове, ЗОП поръчки и правни договори между държавни енергийни оператори (ЕСО ЕАД, Булгартрансгаз ЕАД, АЕЦ Козлодуй ЕАД), ВиК дружества и частни ТЕЦ-ове / доставчици за десетки милиони евро.',
+    accent: '#0891b2',
+  },
+  HEALTH_SECTOR: {
+    kicker: 'Клъстер 05 · Здравеопазване & ТЕЛК',
+    title: 'Болнични центрове, НЗОК & ТЕЛК епицентър',
+    desc: 'Областни болници (Кърджали, Силистра), застрахователни дружества и доставчици на медицинска апаратура, свързани с търговски спорове в СГС и фискални обеми по НЗОК/НОИ.',
+    accent: '#db2777',
+  },
 };
+
+const graphPayloadJson = JSON.stringify({
+  generatedAtUtc: net.generatedAtUtc,
+  methodologyVersion: net.methodologyVersion,
+  summary: s,
+  clusters,
+  nodes,
+  edges,
+});
 ---
 
 <BaseLayout
-  title="NAsvetlo — МРЕЖАТА: Карта на завладяната държава"
-  description={`Интерактивен системен граф на институционалната свързаност в България: ${fmtInt(s.totalNodes || 228)} обекта, ${fmtInt(s.totalEdges || 288)} съдебни и търговски връзки върху ${fmtEurShort(s.totalInvestigatedResourceEur || 3460000000)} обществен ресурс.`}
+  title="NAsvetlo — МРЕЖАТА: Крос-регистров граф на институционалната свързаност"
+  description={`Интерактивен форензик граф на институционалната и корпоративна свързаност в България: ${fmtInt(s.totalNodes)} възела, ${fmtInt(s.totalEdges)} верифицирани връзки, ${fmtInt(s.bridgeNodesCount)} мулти-клъстерни моста върху ${fmtEurShort(s.totalInvestigatedResourceEur)} публичен ресурс.`}
   asOf={asOf}
   subpage={true}
   canonicalPath="/mrezhata.html"
+  subpageScript="sigma3/mrezhata_engine.js?v=20261127a"
+  subpageSyncHref="data/nasvetlo_network_graph.json"
 >
   <!-- Hero Section -->
   <section class="mrezha-hero" id="top">
     <div class="mrezha-kicker">
-      <span>●</span>
-      <span>СИСТЕМЕН АНАЛИЗАТОР НА ИНСТИТУЦИОНАЛНА СВЪРЗАНОСТ И СЪДЕБНИ МРЕЖИ</span>
+      <span class="kicker-dot" aria-hidden="true"></span>
+      <span>КРОС-РЕГИСТРОВ ФОРЕНЗИК ГРАФ &middot; BRANDES CENTRALITY &middot; SHA-256 ВЕРИФИКАЦИЯ</span>
     </div>
-    <h1 class="mrezha-title">МРЕЖАТА: Карта на завладяната държава</h1>
+    <h1 class="mrezha-title">МРЕЖАТА: Крос-регистров граф на институционалната свързаност</h1>
     <p class="mrezha-subtitle">
-      Първият независим крос-регистров граф в България, свързващ в единна интерактивна паяжина
-      корпоративни капитали, обществени поръчки, съдии, прокурори, адвокатски кантори и публични лица.
-      Всички връзки се базират на 100% официални данни от ЕИСС, Търговския регистър, ЦАИС ЕОП и КПК.
+      Интерактивна аналитична система, обединяваща по единен ЕИК корпоративни капитали, обществени поръчки (ЦАИС ЕОП),
+      търговски и съдебни дела (ЕПЕП/ЕИСС), адвокатски кантори (Модул J3) и декларации пред КПК по ЗПК.
+      Всяка връзка носи първичен официален идентификатор и подлежи на локална Rust/Wasm криптографска проверка.
     </p>
 
-    <!-- KPI Grid -->
+    <!-- 6-Tile Institutional KPI Grid -->
     <div class="mrezha-kpi-grid">
       <div class="mrezha-kpi-card is-crimson">
         <div class="mrezha-kpi-val">{fmtEurShort(s.totalInvestigatedResourceEur)}</div>
-        <div class="mrezha-kpi-lbl">Разследван финансов ресурс</div>
+        <div class="mrezha-kpi-lbl">Анализиран финансов ресурс</div>
       </div>
       <div class="mrezha-kpi-card is-purple">
         <div class="mrezha-kpi-val">{fmtInt(s.totalNodes)}</div>
-        <div class="mrezha-kpi-lbl">Анализирани възела (Фирми, Съдии, Дела)</div>
+        <div class="mrezha-kpi-lbl">Картографирани възела</div>
       </div>
       <div class="mrezha-kpi-card is-blue">
         <div class="mrezha-kpi-val">{fmtInt(s.totalEdges)}</div>
-        <div class="mrezha-kpi-lbl">Документирани пресечни връзки</div>
+        <div class="mrezha-kpi-lbl">Верифицирани връзки</div>
+      </div>
+      <div class="mrezha-kpi-card is-teal">
+        <div class="mrezha-kpi-val">{fmtInt(s.bridgeNodesCount)}</div>
+        <div class="mrezha-kpi-lbl">Мулти-клъстерни мостове</div>
       </div>
       <div class="mrezha-kpi-card is-amber">
         <div class="mrezha-kpi-val">{fmtInt(s.criticalRiskNodesCount)}</div>
-        <div class="mrezha-kpi-lbl">Критични обекта (Score ≥ 80)</div>
+        <div class="mrezha-kpi-lbl">Критични обекта (Score &ge; 80)</div>
+      </div>
+      <div class="mrezha-kpi-card is-ink">
+        <div class="mrezha-kpi-val is-compact">{fmtInt(s.largestComponentSize)} / {fmtInt(s.connectedComponentsCount)}</div>
+        <div class="mrezha-kpi-lbl">Макс. компонента / Общо групи</div>
       </div>
     </div>
   </section>
 
-  <!-- Interactive Graph Section -->
-  <section class="mrezha-graph-section">
-    <div class="mrezha-toolbar">
-      <div class="mrezha-search-box">
-        <span aria-hidden="true">🔍</span>
-        <input
-          type="text"
-          id="mrezhaSearchInput"
-          placeholder="Търси фирма, ЕИК, съдия, адвокат, дело..."
-          autocomplete="off"
-        />
+  <!-- Enterprise Forensic Graph Workspace -->
+  <section class="mrezha-graph-section" id="mrezhaWorkspace">
+    <!-- Command Bar Tier 1: Search, Layout Switcher, Shortest Path, Sizing, Export -->
+    <div class="mrezha-command-bar">
+      <div class="mrezha-cmd-row">
+        <!-- Autocomplete Search -->
+        <div class="mrezha-search-wrap">
+          <div class="mrezha-search-box">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              id="mrezhaSearchInput"
+              placeholder="Търси фирма, ЕИК, съдия, дело, община... (натисни /)"
+              autocomplete="off"
+            />
+          </div>
+          <div class="mrezha-ac-dropdown" id="mrezhaSearchDropdown" hidden></div>
+        </div>
+
+        <!-- 4-Mode Topological Layout Switcher -->
+        <div class="mrezha-layout-group" role="group" aria-label="Топологично оформление">
+          <button type="button" class="mrezha-layout-btn is-active" data-layout="force" title="Клъстерна физика (Force-Directed)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="5" r="2.5"></circle>
+              <circle cx="5" cy="18" r="2.5"></circle>
+              <circle cx="19" cy="18" r="2.5"></circle>
+              <line x1="10.7" y1="7.2" x2="6.3" y2="15.8"></line>
+              <line x1="13.3" y1="7.2" x2="17.7" y2="15.8"></line>
+              <line x1="7.5" y1="18" x2="16.5" y2="18"></line>
+            </svg>
+            <span>Физика</span>
+          </button>
+          <button type="button" class="mrezha-layout-btn" data-layout="radial" title="Концентрична йерархия по централност">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="9"></circle>
+              <circle cx="12" cy="12" r="5"></circle>
+              <circle cx="12" cy="12" r="1.5" fill="currentColor"></circle>
+            </svg>
+            <span>Радиален</span>
+          </button>
+          <button type="button" class="mrezha-layout-btn" data-layout="stratified" title="6-слойна институционална верига">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <line x1="4" y1="4" x2="4" y2="20"></line>
+              <line x1="12" y1="4" x2="12" y2="20"></line>
+              <line x1="20" y1="4" x2="20" y2="20"></line>
+              <circle cx="4" cy="8" r="2" fill="currentColor"></circle>
+              <circle cx="12" cy="13" r="2" fill="currentColor"></circle>
+              <circle cx="20" cy="9" r="2" fill="currentColor"></circle>
+            </svg>
+            <span>6-слоен</span>
+          </button>
+          <button type="button" class="mrezha-layout-btn" data-layout="matrix" title="Секторна матрица по 5 клъстера">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <rect x="3" y="3" width="7.5" height="7.5"></rect>
+              <rect x="13.5" y="3" width="7.5" height="7.5"></rect>
+              <rect x="3" y="13.5" width="7.5" height="7.5"></rect>
+              <rect x="13.5" y="13.5" width="7.5" height="7.5"></rect>
+            </svg>
+            <span>Клъстери</span>
+          </button>
+        </div>
+
+        <!-- Shortest-Path Finder Trigger -->
+        <button type="button" class="mrezha-tool-btn is-accent" id="togglePathFinderBtn" title="Открий най-кратката документална верига между два субекта">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="5" cy="18" r="3"></circle>
+            <circle cx="19" cy="6" r="3"></circle>
+            <path d="M8 18h4a2 2 0 0 0 2-2V8a2 2 0 0 1 2-2h0"></path>
+          </svg>
+          <span>Път A &harr; B</span>
+        </button>
+
+        <!-- Action Utility Icons -->
+        <div class="mrezha-action-group">
+          <button type="button" class="mrezha-icon-btn" id="toggleCanvasThemeBtn" title="Превключи платното (Тъмно телеметрично / Светло печатно)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+            </svg>
+          </button>
+          <button type="button" class="mrezha-icon-btn" id="exportPngBtn" title="Експорт на графа във висока резолюция (2x PNG с SHA-256 печат)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>PNG</span>
+          </button>
+          <button type="button" class="mrezha-icon-btn" id="exportJsonBtn" title="Експорт на видимия подграф в JSON">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+            <span>JSON</span>
+          </button>
+          <button type="button" class="mrezha-icon-btn" id="toggleFullscreenBtn" title="Режим Цял екран (Esc за изход)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <polyline points="9 21 3 21 3 15"></polyline>
+              <line x1="21" y1="3" x2="14" y2="10"></line>
+              <line x1="3" y1="21" x2="10" y2="14"></line>
+            </svg>
+          </button>
+        </div>
       </div>
 
-      <div class="mrezha-filters">
-        <button type="button" class="mrezha-filter-btn is-active" data-filter="all">Всички ({nodes.length})</button>
-        <button type="button" class="mrezha-filter-btn" data-filter="company">🏢 Фирми ({s.totalCompanies || 0})</button>
-        <button type="button" class="mrezha-filter-btn" data-filter="judge">⚖️ Съдии ({s.totalJudges || 0})</button>
-        <button type="button" class="mrezha-filter-btn" data-filter="authority">🏛️ Възложители ({s.totalAuthorities || 0})</button>
-        <button type="button" class="mrezha-filter-btn" data-filter="lawyer">💼 Адвокати ({s.totalLawyers || 0})</button>
-        <button type="button" class="mrezha-filter-btn" data-filter="official">👔 Длъжностни лица ({s.totalOfficials || 0})</button>
-        <button type="button" class="mrezha-filter-btn" data-filter="case">📁 Дела ({s.totalCases || 0})</button>
+      <!-- Expandable Shortest-Path Finder Drawer -->
+      <div class="mrezha-path-panel" id="mrezhaPathPanel" hidden>
+        <div class="path-inputs-row">
+          <div class="path-field">
+            <label for="pathFromInput">Начален субект (А)</label>
+            <input type="text" id="pathFromInput" placeholder="Въведете лице, фирма, ЕИК или съдия..." autocomplete="off" />
+            <div class="mrezha-ac-dropdown" id="pathFromDropdown" hidden></div>
+          </div>
+          <span class="path-arrow-sep" aria-hidden="true">&harr;</span>
+          <div class="path-field">
+            <label for="pathToInput">Целеви субект (Б)</label>
+            <input type="text" id="pathToInput" placeholder="Въведете лице, фирма, дело или съдия..." autocomplete="off" />
+            <div class="mrezha-ac-dropdown" id="pathToDropdown" hidden></div>
+          </div>
+          <button type="button" class="mrezha-path-run-btn" id="btnRunPathFinder">Открий верига</button>
+        </div>
+        {featuredPaths.length > 0 && (
+          <div class="path-presets-row">
+            <span class="path-presets-lbl">Верифицирани вериги (1 клик):</span>
+            {featuredPaths.map((fp) => (
+              <button
+                type="button"
+                class="mrezha-preset-path-btn"
+                data-from={fp.fromId}
+                data-to={fp.toId}
+              >
+                {fp.title} ({fp.hops} прехода)
+              </button>
+            ))}
+          </div>
+        )}
+        <div class="mrezha-path-result" id="mrezhaPathResult" hidden></div>
+      </div>
+
+      <!-- Command Bar Tier 2: Geometric Entity Type Chips + Analytical Filters -->
+      <div class="mrezha-cmd-row is-filters">
+        <div class="mrezha-filters" role="group" aria-label="Филтър по тип обект">
+          <button type="button" class="mrezha-filter-btn is-active" data-filter="all">
+            <span>Всички ({nodes.length})</span>
+          </button>
+          <button type="button" class="mrezha-filter-btn" data-filter="company">
+            <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true"><polygon points="8,1.5 14,5 14,11 8,14.5 2,11 2,5" fill="#e11d48" fill-opacity="0.25" stroke="#e11d48" stroke-width="1.7"/></svg>
+            <span>Фирми ({s.totalCompanies || 0})</span>
+          </button>
+          <button type="button" class="mrezha-filter-btn" data-filter="authority">
+            <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5L13.5 3.8V8.2C13.5 11.4 11.1 13.7 8 14.8C4.9 13.7 2.5 11.4 2.5 8.2V3.8L8 1.5Z" fill="#2563eb" fill-opacity="0.25" stroke="#2563eb" stroke-width="1.7"/></svg>
+            <span>Възложители ({s.totalAuthorities || 0})</span>
+          </button>
+          <button type="button" class="mrezha-filter-btn" data-filter="judge">
+            <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true"><polygon points="5.2,1.5 10.8,1.5 14.5,5.2 14.5,10.8 10.8,14.5 5.2,14.5 1.5,10.8 1.5,5.2" fill="#7c3aed" fill-opacity="0.25" stroke="#7c3aed" stroke-width="1.7"/></svg>
+            <span>Съдии ({s.totalJudges || 0})</span>
+          </button>
+          <button type="button" class="mrezha-filter-btn" data-filter="lawyer">
+            <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true"><rect x="2.2" y="2.2" width="11.6" height="11.6" rx="2.2" fill="#0891b2" fill-opacity="0.25" stroke="#0891b2" stroke-width="1.7"/></svg>
+            <span>Кантори ({s.totalLawyers || 0})</span>
+          </button>
+          <button type="button" class="mrezha-filter-btn" data-filter="official">
+            <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6" fill="#d97706" fill-opacity="0.25" stroke="#d97706" stroke-width="1.7"/><circle cx="8" cy="8" r="2.2" fill="#d97706"/></svg>
+            <span>ЗПК лица ({s.totalOfficials || 0})</span>
+          </button>
+          <button type="button" class="mrezha-filter-btn" data-filter="case">
+            <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true"><polygon points="8,1.2 14.8,8 8,14.8 1.2,8" fill="#db2777" fill-opacity="0.25" stroke="#db2777" stroke-width="1.7"/></svg>
+            <span>Дела ({s.totalCases || 0})</span>
+          </button>
+        </div>
+
+        <div class="mrezha-selects">
+          <select id="mrezhaClusterFilter" class="mrezha-select" aria-label="Филтър по секторен клъстер">
+            <option value="ALL">Всички клъстери</option>
+            <option value="ROAD_SECTOR">Инфраструктура &amp; АПИ</option>
+            <option value="MUNICIPAL_AFFILIATION">Местна власт (чл. 49 ЗПК)</option>
+            <option value="JUDICIAL_CONCENTRATION">Съдебна концентрация &amp; J3</option>
+            <option value="ENERGY_SECTOR">Енергетика &amp; ВиК</option>
+            <option value="HEALTH_SECTOR">Здравеопазване &amp; ТЕЛК</option>
+          </select>
+
+          <select id="mrezhaEdgeFilter" class="mrezha-select" aria-label="Филтър по тип връзка">
+            <option value="ALL">Всички връзки</option>
+            <option value="won_zop">ЗОП договори</option>
+            <option value="conflict_of_interest">Свързаност чл. 49 ЗПК</option>
+            <option value="owns_share">Собственост в ТР</option>
+            <option value="awarded_legal_tender">Правни услуги (J3)</option>
+            <option value="presided_case">Съдия / ЕИСС концентрация</option>
+            <option value="disputes_with">Търговски / Съдебен спор</option>
+            <option value="represented_by">Процесуална защита</option>
+          </select>
+
+          <select id="mrezhaSizeMetric" class="mrezha-select" aria-label="Мащабиране на възлите по показател">
+            <option value="centrality">Размер: Централност</option>
+            <option value="amount">Размер: Финансов обем</option>
+            <option value="risk">Размер: Риск индекс</option>
+            <option value="degree">Размер: Брой връзки</option>
+          </select>
+
+          <label class="mrezha-risk-control" for="mrezhaRiskSlider">
+            <span>Мин. риск:</span>
+            <input type="range" id="mrezhaRiskSlider" min="0" max="90" step="5" value="0" />
+            <strong id="mrezhaRiskVal">Всички</strong>
+          </label>
+
+          <button type="button" class="mrezha-reset-btn" id="btnResetFilters" title="Нулирай всички филтри">Нулирай</button>
+        </div>
       </div>
     </div>
 
-    <!-- Canvas Container with Physics -->
+    <!-- High-DPI Tactical Canvas Stage -->
     <div class="mrezha-canvas-container" id="canvasContainer">
       <canvas id="mrezhaCanvas"></canvas>
 
-      <!-- Legend -->
+      <!-- Floating Glass Hover Tooltip -->
+      <div class="mrezha-hover-tooltip" id="mrezhaHoverTooltip" hidden></div>
+
+      <!-- Precision Geometric Legend (Nodes + Edges) -->
       <div class="mrezha-canvas-legend">
-        <div class="legend-item"><span class="legend-dot" style="background:#ef4444;"></span> Фирма / Изпълнител</div>
-        <div class="legend-item"><span class="legend-dot" style="background:#8b5cf6;"></span> Съдия / Магистрат</div>
-        <div class="legend-item"><span class="legend-dot" style="background:#3b82f6;"></span> Възложител / Община</div>
-        <div class="legend-item"><span class="legend-dot" style="background:#06b6d4;"></span> Адвокат / Кантора</div>
-        <div class="legend-item"><span class="legend-dot" style="background:#f59e0b;"></span> Длъжностно лице</div>
-        <div class="legend-item"><span class="legend-dot" style="background:#ec4899;"></span> Съдебно дело / Спор</div>
+        <div class="legend-section-title">ВЪЗЛИ (ГЕОМЕТРИЯ)</div>
+        <div class="legend-item">
+          <svg width="11" height="11" viewBox="0 0 16 16"><polygon points="8,1.5 14,5 14,11 8,14.5 2,11 2,5" fill="#e11d48"/></svg>
+          <span>Фирма / Изпълнител</span>
+        </div>
+        <div class="legend-item">
+          <svg width="11" height="11" viewBox="0 0 16 16"><path d="M8 1.5L13.5 3.8V8.2C13.5 11.4 11.1 13.7 8 14.8C4.9 13.7 2.5 11.4 2.5 8.2V3.8L8 1.5Z" fill="#2563eb"/></svg>
+          <span>Възложител / Орган</span>
+        </div>
+        <div class="legend-item">
+          <svg width="11" height="11" viewBox="0 0 16 16"><polygon points="5.2,1.5 10.8,1.5 14.5,5.2 14.5,10.8 10.8,14.5 5.2,14.5 1.5,10.8 1.5,5.2" fill="#7c3aed"/></svg>
+          <span>Съдия / Магистрат</span>
+        </div>
+        <div class="legend-item">
+          <svg width="11" height="11" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="2" fill="#0891b2"/></svg>
+          <span>Адвокат / Кантора</span>
+        </div>
+        <div class="legend-item">
+          <svg width="11" height="11" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" fill="none" stroke="#d97706" stroke-width="2.4"/><circle cx="8" cy="8" r="2.2" fill="#d97706"/></svg>
+          <span>Публично лице (ЗПК)</span>
+        </div>
+        <div class="legend-item">
+          <svg width="11" height="11" viewBox="0 0 16 16"><polygon points="8,1 15,8 8,15 1,8" fill="#db2777"/></svg>
+          <span>Съдебно дело (ЕИСС)</span>
+        </div>
+        <div class="legend-divider"></div>
+        <div class="legend-section-title">РЕБРА &amp; МАРКЕРИ</div>
+        <div class="legend-item"><span class="legend-line" style="background:#10b981;"></span><span>ЗОП договор</span></div>
+        <div class="legend-item"><span class="legend-line is-dashed" style="border-color:#ef4444;"></span><span>Чл. 49 ЗПК / Мост</span></div>
+        <div class="legend-item"><span class="legend-line" style="background:#8b5cf6;"></span><span>ЕИСС разпределение</span></div>
+        <div class="legend-item"><span class="legend-ring-bridge"></span><span>Мулти-клъстерен мост</span></div>
       </div>
 
-      <!-- Controls -->
+      <!-- Interactive Radar Minimap -->
+      <div class="mrezha-minimap-wrap" title="Интерактивна радарна карта — кликнете или плъзнете за навигация">
+        <div class="minimap-hdr">РАДАР · ОБЗОР</div>
+        <canvas id="mrezhaMinimap" width="186" height="122"></canvas>
+      </div>
+
+      <!-- Telemetry Status Pill -->
+      <div class="mrezha-telemetry-bar" id="mrezhaTelemetryStatus"></div>
+
+      <!-- Camera & Physics Controls Dock -->
       <div class="mrezha-canvas-controls">
-        <button type="button" id="zoomInBtn" title="Приближи">+</button>
-        <button type="button" id="zoomOutBtn" title="Отдалечи">&minus;</button>
-        <button type="button" id="resetZoomBtn" title="Центрирай">⟲</button>
+        <button type="button" id="zoomInBtn" title="Приближи (+)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        </button>
+        <button type="button" id="zoomOutBtn" title="Отдалечи (-)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        </button>
+        <button type="button" id="resetZoomBtn" title="Помести целия граф (0)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+        </button>
+        <button type="button" id="togglePhysicsBtn" title="Паузирай / Продължи физиката (Space)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+        </button>
+        <button type="button" id="reheatPhysicsBtn" title="Отключи закачените възли и преподреди">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+        </button>
       </div>
 
-      <!-- Inspector Drawer -->
+      <!-- 4-Layer Slide-Over Forensic Inspector Drawer -->
       <aside class="mrezha-inspector" id="mrezhaInspector" aria-hidden="true">
-        <button type="button" class="mrezha-inspector-close" id="closeInspectorBtn" aria-label="Затвори">&times;</button>
-        <span class="mrezha-inspector-badge" id="inspectorBadge" style="background:#ef4444;color:#fff;">ФИРМА</span>
-        <h3 class="mrezha-inspector-title" id="inspectorTitle">Име на обекта</h3>
-        <div class="mrezha-inspector-meta" id="inspectorMeta">Детайли...</div>
+        <div class="mrezha-inspector-top">
+          <span class="mrezha-inspector-badge" id="inspectorBadge">СУБЕКТ</span>
+          <button type="button" class="mrezha-inspector-close" id="closeInspectorBtn" aria-label="Затвори">&times;</button>
+        </div>
+        <h3 class="mrezha-inspector-title" id="inspectorTitle">Изберете обект</h3>
+        <div class="mrezha-inspector-meta" id="inspectorMeta"></div>
 
         <div class="mrezha-inspector-connections">
-          <h4>Свързани възли по официални регистри</h4>
+          <h4>Първични регистрови връзки (клик за преход)</h4>
           <div id="inspectorConnectionsList"></div>
         </div>
 
         <button type="button" class="mrezha-signal-btn" id="openSignalFromInspectorBtn">
-          <span>🚨</span>
-          <span>Генерирай институционален сигнал за този възел</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+          </svg>
+          <span>Генерирай институционален сигнал (EPPO / КПК / ИВСС)</span>
         </button>
       </aside>
     </div>
   </section>
 
-  <!-- Thematic Clusters Section -->
+  <!-- Dynamic Thematic Clusters Section (Zero Hardcoded Numbers) -->
   <section class="mrezha-clusters-section">
     <div class="mrezha-section-hdr">
-      <h2>Шестте ключови клъстера на институционалната мрежа</h2>
-      <p>Форензичен анализ на основните канали за концентрация на публичен ресурс и съдебни аномалии в България.</p>
+      <h2>Петте ключови сектора на крос-регистровата мрежа</h2>
+      <p>Кликнете върху който и да е сектор, за да изолирате и фокусирате графа директно върху неговите възли и мостове.</p>
     </div>
 
     <div class="mrezha-cluster-grid">
-      <div class="mrezha-cluster-card">
-        <div class="cluster-kicker">Клъстер 1 · Инфраструктура</div>
-        <h3 class="cluster-title">Строително-пътен картел &amp; АПИ</h3>
-        <p class="cluster-desc">
-          Компании с договори за стотици милиони евро по ЗОП (Пътинженерингстрой-Т, Запрянови, Пътища и мостове, Дюлгер),
-          които водят координирани търговски дела срещу държавните агенции и общините за допълнителни плащания и лихви.
-        </p>
-        <div class="cluster-meta-row">
-          <span>Обем: €298.5 млн.</span>
-          <span style="color:#ef4444;font-weight:700;">Риск: 88/100</span>
-        </div>
-      </div>
-
-      <div class="mrezha-cluster-card">
-        <div class="cluster-kicker">Клъстер 2 · Местна власт</div>
-        <h3 class="cluster-title">Общински феодализъм &amp; Чл. 49 ЗПК</h3>
-        <p class="cluster-desc">
-          Кметове, заместник-кметове и общински съветници в Благоевград, Хасково, Неделино, Белово, Суворово и Несебър,
-          чиито лични и семейни дружества са печелили директно обществени поръчки от техните собствени общини.
-        </p>
-        <div class="cluster-meta-row">
-          <span>Обем: €180.8 млн.</span>
-          <span style="color:#ef4444;font-weight:700;">Риск: 92/100</span>
-        </div>
-      </div>
-
-      <div class="mrezha-cluster-card">
-        <div class="cluster-kicker">Клъстер 3 · Правосъдие</div>
-        <h3 class="cluster-title">Съдебни лобита &amp; Адвокатски абонаменти</h3>
-        <p class="cluster-desc">
-          Адвокатски дружества, получаващи милиони евро от държавни гиганти (АЕЦ Козлодуй, Булгартрансгаз, ВиК дружества)
-          чрез процедури без обявление (0 оферти) за „процесуално представителство“ пред същите съдилища, където работят техни бивши колеги.
-        </p>
-        <div class="cluster-meta-row">
-          <span>Обем: €6.4 млн.</span>
-          <span style="color:#ef4444;font-weight:700;">Риск: 86/100</span>
-        </div>
-      </div>
-
-      <div class="mrezha-cluster-card">
-        <div class="cluster-kicker">Клъстер 4 · Енергетика</div>
-        <h3 class="cluster-title">Енергиен &amp; ВиК сектор</h3>
-        <p class="cluster-desc">
-          Взаимно оплетени претенции между държавни енергийни оператори (ЕСО ЕАД, Булгартрансгаз ЕАД) и частни ТЕЦ-ове / доставчици,
-          свързани със съдебни спорове за десетки милиони евро и извънсъдебни спогодби за сметка на потребителите.
-        </p>
-        <div class="cluster-meta-row">
-          <span>Обем: €1.19 млрд.</span>
-          <span style="color:#ef4444;font-weight:700;">Риск: 81/100</span>
-        </div>
-      </div>
-
-      <div class="mrezha-cluster-card">
-        <div class="cluster-kicker">Клъстер 5 · Здравеопазване</div>
-        <h3 class="cluster-title">Здравен монопол &amp; ТЕЛК входни врати</h3>
-        <p class="cluster-desc">
-          Областни болници и частни медицински центрове (Кърджали, Силистра), захранващи ТЕЛК комисиите с входна документация,
-          в съчетание със застрахователни компании и дистрибутори на медикаменти, опериращи с публични фондове на НЗОК.
-        </p>
-        <div class="cluster-meta-row">
-          <span>Обем: €98.3 млн.</span>
-          <span style="color:#ef4444;font-weight:700;">Риск: 84/100</span>
-        </div>
-      </div>
-
-      <div class="mrezha-cluster-card">
-        <div class="cluster-kicker">Клъстер 6 · Алгоритмичен контрол</div>
-        <h3 class="cluster-title">Аномалии в случайното разпределение</h3>
-        <p class="cluster-desc">
-          154 статистически необяснени червени флага (FDR q &lt; 0.01) в системата ЕИСС, където конкретни състави в СРС, СГС,
-          АССГ и РС Пловдив получават в пъти по-висока концентрация на дела от определени институции или компании.
-        </p>
-        <div class="cluster-meta-row">
-          <span>Обем: 2.23 млн. дела</span>
-          <span style="color:#ef4444;font-weight:700;">Риск: 94/100</span>
-        </div>
-      </div>
+      {clusters.map((cl) => {
+        const info = CLUSTER_INFO[cl.id] || { kicker: cl.id, title: cl.title, desc: '', accent: '#ac1b18' };
+        return (
+          <button type="button" class="mrezha-cluster-card" data-cluster-focus={cl.id} style={`--cl-accent:${info.accent};`}>
+            <div class="cluster-kicker">{info.kicker}</div>
+            <h3 class="cluster-title">{info.title}</h3>
+            <p class="cluster-desc">{info.desc}</p>
+            <div class="cluster-meta-row">
+              <span>Възли: <strong>{fmtInt(cl.nodesCount)}</strong></span>
+              <span>Обем: <strong>{fmtEurShort(cl.amountEur)}</strong></span>
+              <span class="cluster-risk">Макс. риск: {cl.maxRisk || 0}/100</span>
+            </div>
+          </button>
+        );
+      })}
     </div>
   </section>
 
-  <!-- Master Table Section -->
+  <!-- Synced Sortable Master Registry Table -->
   <section class="mrezha-clusters-section">
-    <div class="mrezha-section-hdr">
-      <h2>Регистър на картографираните обекти ({nodes.length})</h2>
-      <p>Пълен опис на субектите в графа, подреден по риск и финансов обем. Кликнете на ред за паспорта на възела.</p>
+    <div class="mrezha-table-hdr-bar">
+      <div class="mrezha-section-hdr" style="margin-bottom:0;">
+        <h2>Регистър на картографираните обекти <span class="mrezha-count-pill" id="mrezhaTableCount">{nodes.length} / {nodes.length}</span></h2>
+        <p>Пълен опис с Brandes централност, степен на свързаност и финансов обем. Кликнете на ред за фокус в графа.</p>
+      </div>
+      <div class="mrezha-table-controls">
+        <input type="text" id="mrezhaTableSearch" class="mrezha-table-input" placeholder="Филтрирай таблицата по име, ЕИК, съд..." />
+        <select id="mrezhaTableType" class="mrezha-select" aria-label="Категория в таблицата">
+          <option value="ALL">Всички категории</option>
+          <option value="company">Фирми / Изпълнители</option>
+          <option value="authority">Възложители / Ведомства</option>
+          <option value="judge">Съдии / Магистрати</option>
+          <option value="lawyer">Адвокатски кантори</option>
+          <option value="official">Публични лица (ЗПК)</option>
+          <option value="case">Съдебни дела (ЕИСС)</option>
+        </select>
+        <select id="mrezhaTableSort" class="mrezha-select" aria-label="Подредба на таблицата">
+          <option value="centrality">Подреди: Централност</option>
+          <option value="risk">Подреди: Риск индекс</option>
+          <option value="amount">Подреди: Финансов обем</option>
+          <option value="degree">Подреди: Брой връзки</option>
+          <option value="name">Подреди: Азбучен ред</option>
+        </select>
+      </div>
     </div>
 
     <div class="mrezha-table-container">
       <table id="mrezhaTable">
         <thead>
           <tr>
-            <th>Обект / Лице</th>
+            <th>Обект / Субект</th>
             <th>Категория</th>
-            <th>Клъстер</th>
+            <th>Сектор</th>
             <th>Идентификатор / Съд</th>
+            <th>Централност</th>
+            <th>Връзки</th>
             <th>Финансов обем</th>
-            <th>Риск Индекс</th>
+            <th>Риск индекс</th>
             <th>Действие</th>
           </tr>
         </thead>
-        <tbody>
-          {nodes.map((n) => {
-            const meta = TYPE_LABELS[n.type] || { label: n.type, color: '#94a3b8', icon: '●' };
-            return (
-              <tr data-node-id={n.id}>
-                <td class="cell-name">
-                  <span style={`color:${meta.color};margin-right:0.4rem;`}>{meta.icon}</span>
-                  <span>{n.label}</span>
-                </td>
-                <td>
-                  <span style={`font-family:var(--font-mono);font-size:0.75rem;color:${meta.color};font-weight:600;`}>
-                    {meta.label}
-                  </span>
-                </td>
-                <td style="font-size:0.78rem;">{n.cluster}</td>
-                <td class="cell-mono">{n.eik ? `ЕИК ${n.eik}` : (n.details?.court || '—')}</td>
-                <td class="cell-mono" style="font-weight:600;">{n.amountEur > 0 ? fmtEurShort(n.amountEur) : '—'}</td>
-                <td>
-                  <span class={`status-badge ${n.riskScore >= 80 ? 'status-red' : n.riskScore >= 60 ? 'status-amber' : 'status-green'}`}>
-                    {n.riskScore}/100
-                  </span>
-                </td>
-                <td>
-                  <button
-                    type="button"
-                    class="btn btn-secondary inspect-node-btn"
-                    data-id={n.id}
-                    style="padding:0.25rem 0.6rem;font-size:0.75rem;"
-                  >
-                    Паспорт ↗
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
+        <tbody></tbody>
       </table>
     </div>
   </section>
 
-  <!-- Methodology and Legal Disclaimer Section -->
+  <!-- Methodology, Legal Disclaimer & Client-Side Rust/Wasm Verifier -->
   <section class="mrezha-methodology-section" id="methodology">
     <div class="mrezha-section-hdr">
-      <h2>Правна рамка, презумпция за невиновност и методология</h2>
-      <p>Официални регистри, математическа верификация и спазване на върховенството на правото.</p>
+      <h2>Правна рамка, презумпция за невиновност и криптографска методология</h2>
+      <p>Неутрална доказателствена архитектура върху публични държавни регистри с локална WebAssembly проверка.</p>
     </div>
 
     <div class="mrezha-disclaimer-grid">
       <div class="mrezha-disclaimer-card">
-        <h3>⚖️ Презумпция за невиновност и конституционни гаранции</h3>
+        <h3>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v18M4 7h16M5 7l-2 7h4l-2-7zm14 0l-2 7h4l-2-7z"/></svg>
+          <span>Презумпция за невиновност и конституционни гаранции</span>
+        </h3>
         <p>
-          Всяко физическо и юридическо лице, посочено на тази платформа, се ползва от 
-          <strong>презумпцията за невиновност съгласно чл. 31, ал. 3 от Конституцията на Република България</strong> и 
-          <strong>чл. 6, ал. 2 от Европейската конвенция за защита на правата на човека и основните свободи (ЕКПЧ)</strong>. 
-          Визуализираните данни отразяват документална институционална, процесуална и търговска свързаност и 
-          <strong>НЕ представляват влязла в сила присъда, обвинителен акт или констатация за извършено престъпление</strong>.
+          Всяко физическо и юридическо лице, посочено на тази платформа, се ползва от
+          <strong>презумпцията за невиновност съгласно чл. 31, ал. 3 от Конституцията на Република България</strong> и
+          <strong>чл. 6, ал. 2 от Европейската конвенция за защита на правата на човека (ЕКПЧ)</strong>.
+          Визуализираните връзки представляват документална институционална и корпоративна свързаност по публични регистри и
+          <strong>НЕ представляват влязла в сила присъда, обвинение или констатация за престъпление</strong>.
         </p>
       </div>
 
       <div class="mrezha-disclaimer-card">
-        <h3>📊 Статистическа методология и неутрална доказателствена база</h3>
+        <h3>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+          <span>Графова математика (Brandes, PageRank &amp; FDR q &lt; 0,01)</span>
+        </h3>
         <p>
-          Всички възли и ребра в графа стъпват изключително върху официални първични регистри:
-          <strong>ЦАИС ЕОП</strong> (чрез УНП на поръчките), <strong>Търговския регистър</strong> (по ЕИК), 
-          <strong>ЕИСС / ЕПЕП</strong> (по официални номера на дела) и <strong>публичния регистър на КПК</strong> (по чл. 49 от ЗПК). 
-          Индексът на риска (Score) и съдебните маркери са резултат от обективни статистически тестове 
-          (едностранен точен биномен тест с корекция по <em>Benjamini–Hochberg False Discovery Rate q &lt; 0.01</em>), 
-          указващи математически необичайна концентрация на разпределени дела.
+          Всички възли са унифицирани по първичен <strong>ЕИК</strong> и носят директни идентификатори от
+          <strong>ЦАИС ЕОП (УНП)</strong>, <strong>ТРРЮЛНЦ</strong>, <strong>ЕПЕП/ЕИСС</strong> и <strong>КПК (чл. 49 ЗПК)</strong>.
+          Индексът на централност комбинира точния алгоритъм на <em>Brandes</em> за посредничество (Betweenness Centrality),
+          итеративен <em>PageRank</em> и статистическите флагове по <em>Benjamini–Hochberg FDR q &lt; 0,01</em>.
         </p>
       </div>
 
       <div class="mrezha-disclaimer-card">
-        <h3>🛡️ Криптографски печат за интегритет (SHA-256)</h3>
+        <h3>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
+          <span>Криптографски печат (FIPS 180-4 SHA-256 &amp; Rust/Wasm)</span>
+        </h3>
         <p>
-          Графът функционира изцяло като статичен клиентски модел без уязвими сървърни бази данни. 
-          Пълният масив е криптографски защитен чрез хеш по <strong>FIPS 180-4 SHA-256</strong>:
+          Графът работи изцяло клиентски без сървърни бази данни (имунизиран срещу DDoS).
+          Интегритетът на масива е гарантиран чрез каноничен SHA-256 хеш:
         </p>
         <div class="mrezha-sha-badge">
-          <code>SHA-256: {s.datasetSha256 || '895de6d2b560962550275a7a20d900c5c01d0e3dd2ddef26e22af885ae4842cf'}</code>
+          <code>SHA-256: {s.datasetSha256}</code>
         </div>
-        <p style="margin-top:0.5rem;font-size:0.75rem;color:var(--text-muted);">
-          Гарантира, че данните не могат да бъдат манипулирани, подменяни или свалени чрез атака.
-        </p>
+        <button type="button" class="mrezha-wasm-btn" id="mrezhaWasmVerifyBtn">
+          Верифицирай локално с Rust/Wasm (SHA-256 &amp; GDPR)
+        </button>
+        <div id="mrezhaWasmVerifyOut" hidden></div>
       </div>
 
       <div class="mrezha-disclaimer-card">
-        <h3>📬 Право на отговор и институционални сигнали</h3>
+        <h3>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line></svg>
+          <span>ЗЗЛД / GDPR хигиена и право на отговор</span>
+        </h3>
         <p>
-          Гражданска платформа NAsvetlo предоставя пълен достъп до първичните идентификатори за всеки анализиран запис. 
-          При настъпили промени в официалните държавни регистри (заличаване в ТР, приключване на съдебно дело с влязъл в сила акт), 
-          всяко заинтересовано лице може да изпрати актуализирана информация за незабавна верификация в седмичния бюлетин.
+          На ниво компилация и автоматични тестове е заложена строга защита: <strong>0 цивилни ЕГН</strong>,
+          <strong>0 домашни адреса на физически лица</strong> и <strong>0 празни скоби</strong>.
+          При актуализация в официалните държавни регистри (ТР, ЕИСС, КПК) всяко лице може да подаде корекция за синхронизация в седмичния бюлетин.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- 1-Click Institutional Signal Generator Modal -->
+  <!-- 1-Click Institutional Signal Generator Modal (Zero Emojis) -->
   <div class="mrezha-signal-backdrop" id="signalBackdrop" hidden></div>
   <div class="mrezha-signal-modal" id="signalModal" hidden role="dialog" aria-modal="true" aria-labelledby="signalModalTitle">
     <div class="mrezha-signal-header">
-      <h3 id="signalModalTitle">🚨 Институционален сигнал до EPPO, КПК и ИВСС</h3>
+      <h3 id="signalModalTitle">Институционален сигнал до EPPO, КПК, ИВСС и АДФИ</h3>
       <button type="button" id="closeSignalModalBtn" aria-label="Затвори">&times;</button>
     </div>
-    <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:0.75rem;">
-      Автоматично генериран юридически издържан текст с точни позовавания на ЕИК, ЗОП поръчки и съдебни дела по ЕИСС.
+    <p class="mrezha-signal-sub">
+      Автоматично генериран доказателствен проект с точни позовавания на ЕИК, ЦАИС ЕОП УНП, ЕИСС дела, Brandes централност и SHA-256 печат.
     </p>
     <pre class="mrezha-signal-pre" id="signalTextPre"></pre>
     <div class="mrezha-signal-actions">
-      <button type="button" class="btn-cancel" id="cancelSignalBtn">Отказ</button>
+      <button type="button" class="btn-cancel" id="cancelSignalBtn">Затвори</button>
       <button type="button" class="btn-copy" id="copySignalBtn">Копирай сигнала в клипборда</button>
     </div>
   </div>
 
-  <!-- Client-side Graph Physics Engine & Interactivity -->
-  <script is:inline define:vars={{ graphNodes: nodes, graphEdges: edges }}>
-    (function() {
-      const canvas = document.getElementById('mrezhaCanvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      const container = document.getElementById('canvasContainer');
-
-      let width = container.clientWidth;
-      let height = container.clientHeight;
-      canvas.width = width * window.devicePixelRatio;
-      canvas.height = height * window.devicePixelRatio;
-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-
-      // Simulation State
-      let zoom = 1.0;
-      let panX = width / 2;
-      let panY = height / 2;
-      let isDragging = false;
-      let dragStartX = 0;
-      let dragStartY = 0;
-      let selectedNode = null;
-      let hoveredNode = null;
-      let filterType = 'all';
-      let searchQuery = '';
-
-      // Initialize Node Physics Coordinates
-      const simNodes = graphNodes.map((n, i) => {
-        const angle = (i / graphNodes.length) * Math.PI * 2;
-        const radius = 180 + (i % 6) * 55;
-        return {
-          ...n,
-          x: Math.cos(angle) * radius,
-          y: Math.sin(angle) * radius,
-          vx: 0,
-          vy: 0,
-          radius: n.type === 'company' || n.type === 'authority' ? 14 : 10,
-        };
-      });
-
-      const nodeById = new Map();
-      simNodes.forEach(n => nodeById.set(n.id, n));
-
-      const simEdges = graphEdges
-        .map(e => ({
-          ...e,
-          sourceNode: nodeById.get(e.source),
-          targetNode: nodeById.get(e.target),
-        }))
-        .filter(e => e.sourceNode && e.targetNode);
-
-      // Force Layout Physics Tick
-      function tickSimulation() {
-        const repulsion = 1100;
-        const linkDist = 85;
-
-        // Repulsion between visible nodes
-        for (let i = 0; i < simNodes.length; i++) {
-          const n1 = simNodes[i];
-          for (let j = i + 1; j < simNodes.length; j++) {
-            const n2 = simNodes[j];
-            const dx = n2.x - n1.x;
-            const dy = n2.y - n1.y;
-            const distSq = dx * dx + dy * dy + 0.1;
-            const dist = Math.sqrt(distSq);
-            if (dist < 280) {
-              const force = repulsion / distSq;
-              const fx = (dx / dist) * force;
-              const fy = (dy / dist) * force;
-              n1.vx -= fx;
-              n1.vy -= fy;
-              n2.vx += fx;
-              n2.vy += fy;
-            }
-          }
-        }
-
-        // Link forces
-        for (const e of simEdges) {
-          const dx = e.targetNode.x - e.sourceNode.x;
-          const dy = e.targetNode.y - e.sourceNode.y;
-          const dist = Math.sqrt(dx * dx + dy * dy) + 0.1;
-          const force = (dist - linkDist) * 0.02;
-          const fx = (dx / dist) * force;
-          const fy = (dy / dist) * force;
-          e.sourceNode.vx += fx;
-          e.sourceNode.vy += fy;
-          e.targetNode.vx -= fx;
-          e.targetNode.vy -= fy;
-        }
-
-        // Gravity to center & damping
-        for (const n of simNodes) {
-          n.vx -= n.x * 0.005;
-          n.vy -= n.y * 0.005;
-          n.vx *= 0.85;
-          n.vy *= 0.85;
-          n.x += n.vx;
-          n.y += n.vy;
-        }
-      }
-
-      // Draw Engine
-      const TYPE_COLORS = {
-        company: '#ef4444',
-        authority: '#3b82f6',
-        judge: '#8b5cf6',
-        lawyer: '#06b6d4',
-        official: '#f59e0b',
-        case: '#ec4899',
-      };
-
-      function isNodeVisible(n) {
-        if (filterType !== 'all' && n.type !== filterType) return false;
-        if (searchQuery) {
-          const q = searchQuery.toLowerCase();
-          const matchLabel = (n.label || '').toLowerCase().includes(q);
-          const matchEik = (n.eik || '').toLowerCase().includes(q);
-          const matchSub = (n.subLabel || '').toLowerCase().includes(q);
-          if (!matchLabel && !matchEik && !matchSub) return false;
-        }
-        return true;
-      }
-
-      function draw() {
-        ctx.clearRect(0, 0, width, height);
-
-        ctx.save();
-        ctx.translate(panX, panY);
-        ctx.scale(zoom, zoom);
-
-        // Draw Edges
-        for (const e of simEdges) {
-          const sVis = isNodeVisible(e.sourceNode);
-          const tVis = isNodeVisible(e.targetNode);
-          if (!sVis && !tVis) continue;
-
-          const isHighlight = selectedNode && (e.sourceNode === selectedNode || e.targetNode === selectedNode);
-
-          ctx.beginPath();
-          ctx.moveTo(e.sourceNode.x, e.sourceNode.y);
-          ctx.lineTo(e.targetNode.x, e.targetNode.y);
-          ctx.strokeStyle = isHighlight ? '#f59e0b' : 'rgba(255, 255, 255, 0.12)';
-          ctx.lineWidth = isHighlight ? 2.5 : 1;
-          ctx.stroke();
-
-          if (isHighlight && zoom >= 0.8) {
-            const mx = (e.sourceNode.x + e.targetNode.x) / 2;
-            const my = (e.sourceNode.y + e.targetNode.y) / 2;
-            ctx.fillStyle = '#cbd5e1';
-            ctx.font = '9px monospace';
-            ctx.fillText(e.label || '', mx + 4, my - 2);
-          }
-        }
-
-        // Draw Nodes
-        for (const n of simNodes) {
-          const visible = isNodeVisible(n);
-          const isSelected = selectedNode === n;
-          const isHovered = hoveredNode === n;
-
-          ctx.save();
-          ctx.beginPath();
-          ctx.arc(n.x, n.y, n.radius * (isSelected ? 1.4 : 1), 0, Math.PI * 2);
-
-          const col = TYPE_COLORS[n.type] || '#94a3b8';
-          ctx.fillStyle = visible ? col : 'rgba(100, 116, 139, 0.2)';
-          ctx.fill();
-
-          if (isSelected || isHovered) {
-            ctx.strokeStyle = '#ffffff';
-            ctx.lineWidth = 3;
-            ctx.stroke();
-          }
-
-          // Node Label
-          if (visible && (zoom >= 0.85 || isSelected || isHovered)) {
-            ctx.fillStyle = isSelected ? '#ffffff' : '#e2e8f0';
-            ctx.font = isSelected ? 'bold 11px sans-serif' : '10px sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText(n.label.slice(0, 24), n.x, n.y + n.radius + 12);
-          }
-          ctx.restore();
-        }
-
-        ctx.restore();
-      }
-
-      // Animation Loop
-      let simFrames = 0;
-      function loop() {
-        if (simFrames < 140) {
-          tickSimulation();
-          simFrames++;
-        }
-        draw();
-        requestAnimationFrame(loop);
-      }
-      loop();
-
-      // Canvas Interactions: Pan, Zoom, Click
-      container.addEventListener('mousedown', (e) => {
-        if (e.target !== canvas) return;
-        isDragging = true;
-        dragStartX = e.clientX - panX;
-        dragStartY = e.clientY - panY;
-      });
-
-      window.addEventListener('mousemove', (e) => {
-        if (isDragging) {
-          panX = e.clientX - dragStartX;
-          panY = e.clientY - dragStartY;
-          return;
-        }
-
-        // Hover detection
-        const rect = canvas.getBoundingClientRect();
-        const mouseX = (e.clientX - rect.left - panX) / zoom;
-        const mouseY = (e.clientY - rect.top - panY) / zoom;
-
-        let hit = null;
-        for (const n of simNodes) {
-          if (!isNodeVisible(n)) continue;
-          const dx = n.x - mouseX;
-          const dy = n.y - mouseY;
-          if (dx * dx + dy * dy < n.radius * n.radius * 2) {
-            hit = n;
-            break;
-          }
-        }
-        hoveredNode = hit;
-        canvas.style.cursor = hit ? 'pointer' : 'grab';
-      });
-
-      window.addEventListener('mouseup', () => {
-        isDragging = false;
-      });
-
-      // Canvas Click -> Select Node & Open Inspector
-      canvas.addEventListener('click', (e) => {
-        const rect = canvas.getBoundingClientRect();
-        const mouseX = (e.clientX - rect.left - panX) / zoom;
-        const mouseY = (e.clientY - rect.top - panY) / zoom;
-
-        for (const n of simNodes) {
-          if (!isNodeVisible(n)) continue;
-          const dx = n.x - mouseX;
-          const dy = n.y - mouseY;
-          if (dx * dx + dy * dy < n.radius * n.radius * 2) {
-            selectNode(n);
-            return;
-          }
-        }
-      });
-
-      // Controls
-      document.getElementById('zoomInBtn')?.addEventListener('click', () => { zoom = Math.min(3, zoom * 1.25); });
-      document.getElementById('zoomOutBtn')?.addEventListener('click', () => { zoom = Math.max(0.3, zoom / 1.25); });
-      document.getElementById('resetZoomBtn')?.addEventListener('click', () => {
-        zoom = 1.0;
-        panX = width / 2;
-        panY = height / 2;
-        selectedNode = null;
-        simFrames = 0;
-      });
-
-      // Filter Buttons
-      const filterBtns = document.querySelectorAll('.mrezha-filter-btn');
-      filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          filterBtns.forEach(b => b.classList.remove('is-active'));
-          btn.classList.add('is-active');
-          filterType = btn.getAttribute('data-filter') || 'all';
-        });
-      });
-
-      // Search Input
-      const searchInput = document.getElementById('mrezhaSearchInput');
-      searchInput?.addEventListener('input', (e) => {
-        searchQuery = (e.target.value || '').trim();
-      });
-
-      // Inspector Logic with 4-Layer Presentation
-      const inspector = document.getElementById('mrezhaInspector');
-      const inspectorBadge = document.getElementById('inspectorBadge');
-      const inspectorTitle = document.getElementById('inspectorTitle');
-      const inspectorMeta = document.getElementById('inspectorMeta');
-      const connList = document.getElementById('inspectorConnectionsList');
-
-      function selectNode(n) {
-        selectedNode = n;
-        if (!inspector) return;
-
-        inspectorBadge.textContent = (n.type || '').toUpperCase();
-        inspectorBadge.style.background = TYPE_COLORS[n.type] || '#ef4444';
-        inspectorTitle.textContent = n.label;
-
-        let metaHtml = `<strong>Клъстер:</strong> ${n.cluster || '—'}<br>`;
-        if (n.eik) metaHtml += `<strong>ЕИК:</strong> ${n.eik}<br>`;
-        if (n.amountEur > 0) metaHtml += `<strong>Финансов обем:</strong> €${Number(n.amountEur).toLocaleString('bg-BG')}<br>`;
-        metaHtml += `<strong>Индекс на риск:</strong> ${n.riskScore}/100<br>`;
-        if (n.badges?.length) {
-          metaHtml += `<div style="margin-top:0.4rem;display:flex;flex-wrap:wrap;gap:0.3rem;">` +
-            n.badges.map(b => `<span style="background:rgba(239,68,68,0.15);color:#ef4444;padding:0.15rem 0.4rem;border-radius:3px;font-size:0.7rem;">${b}</span>`).join('') +
-            `</div>`;
-        }
-
-        // 4 Distinct Forensic Layers
-        const f = n.financialLayer;
-        const c = n.corporateLayer;
-        const im = n.intermediaryLayer;
-        const j = n.judicialLayer;
-
-        metaHtml += `<div class="mrezha-four-layers">`;
-
-        // 1. Financial Layer
-        metaHtml += `
-          <div class="mrezha-layer-box" style="border-left:3px solid #ef4444;">
-            <div style="font-weight:700;font-size:0.78rem;color:#ef4444;margin-bottom:0.2rem;">💰 1. ФИНАНСОВ СЛОЙ (ЗОП & ДЗЗД)</div>
-            <div style="color:var(--text-secondary);">
-              Директни договори по ЗОП: <strong>${f?.directContractsCount || 0}</strong> (€${Number(f?.directContractsEur || 0).toLocaleString('bg-BG')})<br>
-              Дял в ДЗЗД консорциуми: <strong>${f?.dzzdCount || 0}</strong> (€${Number(f?.dzzdEur || 0).toLocaleString('bg-BG')})<br>
-              Анекси по чл. 116 ЗОП: <strong>${f?.annex116Count || 0}</strong>
-              ${f?.primaryUnps?.length ? `<br><span style="font-family:monospace;font-size:0.7rem;color:#94a3b8;">УНП: ${f.primaryUnps.slice(0, 3).join(', ')}</span>` : ''}
-            </div>
-          </div>
-        `;
-
-        // 2. Corporate Layer
-        metaHtml += `
-          <div class="mrezha-layer-box" style="border-left:3px solid #3b82f6;">
-            <div style="font-weight:700;font-size:0.78rem;color:#3b82f6;margin-bottom:0.2rem;">🏢 2. КОРПОРАТИВЕН СЛОЙ (ТР & ЗМИП)</div>
-            <div style="color:var(--text-secondary);">
-              Действителни собственици (ЗМИП): ${c?.zmipOwners?.length ? c.zmipOwners.join(', ') : 'Няма вписани / Публичен орган'}<br>
-              Свързани лица в ТР: ${c?.trRelatedEntities?.length ? c.trRelatedEntities.slice(0, 3).join(', ') : 'Няма декларирани'}<br>
-              Споделени управители: ${c?.sharedManagers?.length ? c.sharedManagers.join(', ') : 'Самостоятелно управление'}
-            </div>
-          </div>
-        `;
-
-        // 3. Intermediary Layer (Module J3)
-        metaHtml += `
-          <div class="mrezha-layer-box" style="border-left:3px solid #06b6d4;">
-            <div style="font-weight:700;font-size:0.78rem;color:#06b6d4;margin-bottom:0.2rem;">💼 3. ПОСРЕДНИЧЕСКИ СЛОЙ (МОДУЛ J3)</div>
-            <div style="color:var(--text-secondary);">
-              Адвокатски кантори: ${im?.lawFirms?.length ? im.lawFirms.join(', ') : 'Без наета външна кантора'}<br>
-              Договори за правни услуги: €${Number(im?.legalProcurementEur || 0).toLocaleString('bg-BG')}<br>
-              Процесуални референции: ${im?.j3HubReferences?.length ? im.j3HubReferences.join(', ') : 'Няма активни референции'}
-            </div>
-          </div>
-        `;
-
-        // 4. Judicial & Declarative Layer
-        metaHtml += `
-          <div class="mrezha-layer-box" style="border-left:3px solid #8b5cf6;">
-            <div style="font-weight:700;font-size:0.78rem;color:#8b5cf6;margin-bottom:0.2rem;">⚖️ 4. СЪДЕБЕН & ДЕКЛАРАТИВЕН СЛОЙ</div>
-            <div style="color:var(--text-secondary);">
-              Дела в ЕИСС/ЕПЕП: ${j?.eissCases?.length ? j.eissCases.slice(0, 3).join(', ') : 'Няма засечени търговски дела'}<br>
-              Аномалии по Benjamini–Hochberg (FDR q<0.01): <strong>${j?.fdrQ001Count || 0}</strong><br>
-              Декларации Таблица 9 (КПК): ${j?.kpkTable9?.length ? j.kpkTable9.join(', ') : 'Няма задължение / Недекларирано'}
-            </div>
-          </div>
-        `;
-
-        metaHtml += `</div>`;
-        inspectorMeta.innerHTML = metaHtml;
-
-        // Connections
-        const conns = simEdges.filter(e => e.sourceNode === n || e.targetNode === n);
-        if (conns.length === 0) {
-          connList.innerHTML = '<p style="font-size:0.8rem;color:#64748b;">Няма намерени преки ребра.</p>';
-        } else {
-          connList.innerHTML = conns.map(e => {
-            const other = e.sourceNode === n ? e.targetNode : e.sourceNode;
-            return `
-              <div class="mrezha-conn-item">
-                <span class="conn-rel">${e.label || 'Връзка'} · ${e.evidence || ''}</span>
-                <span class="conn-name">${other.label}</span>
-              </div>
-            `;
-          }).join('');
-        }
-
-        inspector.classList.add('is-open');
-        inspector.removeAttribute('aria-hidden');
-      }
-
-      document.getElementById('closeInspectorBtn')?.addEventListener('click', () => {
-        inspector?.classList.remove('is-open');
-        inspector?.setAttribute('aria-hidden', 'true');
-        selectedNode = null;
-      });
-
-      // Table Row Click
-      document.querySelectorAll('#mrezhaTable tbody tr').forEach(tr => {
-        tr.addEventListener('click', () => {
-          const nid = tr.getAttribute('data-node-id');
-          const n = nodeById.get(nid);
-          if (n) {
-            selectNode(n);
-            panX = width / 2 - n.x * zoom;
-            panY = height / 2 - n.y * zoom;
-          }
-        });
-      });
-
-      // Signal Generator Modal
-      const signalModal = document.getElementById('signalModal');
-      const signalBackdrop = document.getElementById('signalBackdrop');
-      const signalPre = document.getElementById('signalTextPre');
-
-      function openSignalModal(n) {
-        const targetName = n ? n.label : 'Обект от мрежата на институционална свързаност';
-        const targetEik = n?.eik ? `с ЕИК ${n.eik}` : '';
-        const targetRisk = n?.riskScore ? `${n.riskScore}/100` : 'Висок';
-        const targetAmount = n?.amountEur ? `€${Number(n.amountEur).toLocaleString('bg-BG')}` : 'Неопределен';
-
-        const body = 
-`ДО: ЕВРОПЕЙСКА ПРОКУРАТУРА (EPPO) — ДЕЛЕГИРАНИ ПРОКУРОРИ СОФИЯ
-ДО: КОМИСИЯ ЗА ПРОТИВОДЕЙСТВИЕ НА КОРУПЦИЯТА (КПК)
-ДО: ИНСПЕКТОРАТ КЪМ ВИСШИЯ СЪДЕБЕН СЪВЕТ (ИВСС)
-ДО: ДЪРЖАВНА АГЕНЦИЯ „НАЦИОНАЛНА СИГУРНОСТ“ (ДАНС)
-
-СИГНАЛ ЗА СИСТЕМНИ ЗАВИСИМОСТИ, СЪДЕБЕН ЧАДЪР И КОНФЛИКТ НА ИНТЕРЕСИ
-
-ОТ: Гражданска платформа NAsvetlo (https://nasvetlo.website/mrezhata.html)
-ДАТА: ${new Date().toLocaleDateString('bg-BG')}
-
-УВАЖАЕМИ ЕВРОПЕЙСКИ И НАЦИОНАЛНИ МАГИСТРАТИ,
-
-Сезирам Ви относно документирани системни съвпадения и корупционен риск за следния субект от националния граф:
-
-СУБЕКТ: ${targetName} ${targetEik}
-КАТЕГОРИЯ: ${n?.type || 'Обект от мрежата'} | КЛЪСТЕР: ${n?.cluster || 'Системен риск'}
-ИНДЕКС НА РИСК: ${targetRisk}
-ФИНАНСОВ ОБЕМ ПО ОБЩЕСТВЕНИ ПОРЪЧКИ / ДЕЛА: ${targetAmount}
-
-ФАКТИЧЕСКИ ОБСТОЯТЕЛСТВА:
-1. По данни от официалните регистри (ЕИСС/ЕПЕП, Търговски регистър, ЦАИС ЕОП) субектът е част от картографиран клъстер на свързани лица.
-2. Налице са индикатори за възможен конфликт на интереси по чл. 49 и чл. 52 от ЗПК, чл. 54 от ЗОП и чл. 282 / чл. 288 от Наказателния кодекс.
-3. Документираните съдебни дела и възлагания на обществени поръчки без състезание пораждат основателни съмнения за корупционно влияние върху случайното разпределение на делата и разходването на публични средства.
-
-ИСКАНЕ:
-Моля да образувате проверка по компетентност, да изискате пълните преписки от ЕИСС и ЦАИС ЕОП и при установяване на данни за престъпление по служба или злоупотреба с фондове на ЕС (Регламент 2017/1939) да предприемете предвидените в закона действия.
-
-ПРИЛОЖЕНИЕ: Пълен аналитичен паспорт от https://nasvetlo.website/mrezhata.html`;
-
-        signalPre.textContent = body;
-        signalModal?.removeAttribute('hidden');
-        signalBackdrop?.removeAttribute('hidden');
-        signalModal?.classList.add('is-open');
-      }
-
-      document.getElementById('openSignalFromInspectorBtn')?.addEventListener('click', () => {
-        openSignalModal(selectedNode);
-      });
-
-      function closeSignal() {
-        signalModal?.setAttribute('hidden', '');
-        signalBackdrop?.setAttribute('hidden', '');
-        signalModal?.classList.remove('is-open');
-      }
-
-      document.getElementById('closeSignalModalBtn')?.addEventListener('click', closeSignal);
-      document.getElementById('cancelSignalBtn')?.addEventListener('click', closeSignal);
-      signalBackdrop?.addEventListener('click', closeSignal);
-
-      document.getElementById('copySignalBtn')?.addEventListener('click', () => {
-        navigator.clipboard.writeText(signalPre.textContent || '').then(() => {
-          const btn = document.getElementById('copySignalBtn');
-          if (btn) {
-            const orig = btn.textContent;
-            btn.textContent = '✓ Копирано!';
-            setTimeout(() => { btn.textContent = orig; }, 2000);
-          }
-        });
-      });
-    })();
-  </script>
+  <!-- Embedded Zero-Latency Canonical Graph Payload -->
+  <script id="mrezhataGraphPayload" type="application/json" set:html={graphPayloadJson}></script>
 </BaseLayout>
