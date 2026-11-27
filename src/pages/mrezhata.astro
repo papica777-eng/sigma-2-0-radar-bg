@@ -70,7 +70,7 @@ const graphPayloadJson = JSON.stringify({
   asOf={asOf}
   subpage={true}
   canonicalPath="/mrezhata.html"
-  subpageScript="sigma3/mrezhata_engine.js?v=20261127b"
+  subpageScript="sigma3/mrezhata_engine.js?v=20261128a"
   subpageSyncHref="data/nasvetlo_network_graph.json"
 >
   <!-- Hero Section -->
@@ -313,8 +313,10 @@ const graphPayloadJson = JSON.stringify({
           <select id="mrezhaEdgeFilter" class="mrezha-select" aria-label="Филтър по тип връзка">
             <option value="ALL">Всички връзки</option>
             <option value="beneficial_owner">Действителен собственик (ЗМИП)</option>
-            <option value="holding_control">Холдингов контрол / Майка</option>
+            <option value="holding_control">Холдингов контрол / Феникс</option>
             <option value="consortium_member">Мега-консорциум (ДЗЗД)</option>
+            <option value="political_donor">Партиен дарител (ЕРИК × ЗОП)</option>
+            <option value="cartel_rotation">Картелна ротация / Нарязване</option>
             <option value="won_zop">ЗОП договори</option>
             <option value="conflict_of_interest">Свързаност чл. 49 ЗПК</option>
             <option value="owns_share">Собственост / Акции (КПК)</option>

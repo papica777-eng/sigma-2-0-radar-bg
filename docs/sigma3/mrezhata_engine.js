@@ -195,8 +195,10 @@
 
   var EDGE_META = {
     beneficial_owner: { label: 'Действителен собственик (ЗМИП)', color: '#10b981', dashed: false },
-    holding_control: { label: 'Холдингов контрол / Майка', color: '#f97316', dashed: true },
+    holding_control: { label: 'Холдингов контрол / Феникс', color: '#f97316', dashed: true },
     consortium_member: { label: 'Участие в мега-консорциум (ДЗЗД)', color: '#eab308', dashed: false },
+    political_donor: { label: 'Партиен дарител (ЕРИК × ЗОП)', color: '#f43f5e', dashed: true },
+    cartel_rotation: { label: 'Картелна ротация / Салами-нарязване', color: '#a855f7', dashed: true },
     won_zop: { label: 'ЗОП договор', color: '#22c55e', dashed: false },
     conflict_of_interest: { label: 'Свързаност чл. 49 ЗПК', color: '#ef4444', dashed: true },
     owns_share: { label: 'Собственост / Участие в ТР', color: '#f59e0b', dashed: false },

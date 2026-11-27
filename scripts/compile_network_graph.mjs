@@ -1769,6 +1769,286 @@ for (const hc of (deepLinksRaw.hiddenConsortiumLeaderboard || []).slice(0, 10)) 
 }
 
 // ============================================================================
+// 6D. VERIFIED POLITICAL DONOR BRIDGES (BULNAO ERIK 2023-2026 x KPK x TR x ZOP)
+//     Strictly zero-homonym verified individuals (rare/unique names or geo-confirmed)
+// ============================================================================
+const VERIFIED_DONOR_BRIDGES = [
+  {
+    name: 'Сашо Георгиев Дончев',
+    type: 'ubo',
+    cluster: 'ENERGY_SECTOR',
+    donationBgn: 150000,
+    party: 'ИК Андрей Гюров и Георги Кандев (Президентски 2026)',
+    targetId: 'eik:201935557',
+    targetName: 'АПСЕНЧЪР ООД',
+    targetEik: '201935557',
+    targetEur: 6340000,
+    relNote: 'Дарение 150 000 лв. (ЕРИК 2026) · Свързаност по ТР',
+  },
+  {
+    name: 'Радослав Сабинов Ревански',
+    type: 'official',
+    cluster: 'MUNICIPAL_AFFILIATION',
+    donationBgn: 51129,
+    party: 'ДПС – Ново начало (НС 2024)',
+    targetId: 'eik:000024688',
+    targetName: 'ОБЩИНА БЕЛИЦА',
+    targetEik: '000024688',
+    targetType: 'authority',
+    targetEur: 35211446.95,
+    relNote: 'Кмет & Зам.-предс. ДПС · Дарение 51 129 лв. при годишна заплата 60 560 лв. (КПК 2026)',
+  },
+  {
+    name: 'Иванка Петрова Кусева',
+    type: 'official',
+    cluster: 'MUNICIPAL_AFFILIATION',
+    donationBgn: 6410,
+    party: 'ИК Минчо Афузов – Сливен (Местни 2023, GEO-потвърдено)',
+    targetId: 'eik:202314635',
+    targetName: 'ИЗОГЛАС СТРОЙ ЕООД',
+    targetEik: '202314635',
+    targetEur: 9420000,
+    relNote: 'Дарение 6 410 лв. (ЕРИК 2023) ↔ €9,42 млн. ЗОП',
+  },
+  {
+    name: 'Джипо Николов Джипов',
+    type: 'official',
+    cluster: 'MUNICIPAL_AFFILIATION',
+    donationBgn: 10000,
+    party: 'ИК Андрей Гюров и Георги Кандев (Президентски 2026)',
+    targetId: 'eik:116011316',
+    targetName: 'МАТ ООД',
+    targetEik: '116011316',
+    targetEur: 6200000,
+    relNote: 'Народен представител · Дарение 10 000 лв. (ЕРИК 2026) ↔ €6,20 млн. ЗОП',
+  },
+  {
+    name: 'Людмил Въчков Лазаров',
+    type: 'official',
+    cluster: 'HEALTH_SECTOR',
+    donationBgn: 5062,
+    party: 'МК КОД (Местни 2023)',
+    targetId: 'eik:121130788',
+    targetName: 'ЗАСТРАХОВАТЕЛНА КОМПАНИЯ ЛЕВ ИНС АД',
+    targetEik: '121130788',
+    targetEur: 7851532.63,
+    relNote: 'ДКК · Дарение 5 062 лв. (ЕРИК 2023) ↔ Лев Инс АД',
+  },
+  {
+    name: 'Владислав Панчев Панев',
+    type: 'official',
+    cluster: 'ENERGY_SECTOR',
+    donationBgn: 5050,
+    party: 'ИК Андрей Гюров и Георги Кандев (Президентски 2026)',
+    targetId: 'eik:106530686',
+    targetName: 'АТОМЕНЕРГОРЕМОНТ АД',
+    targetEik: '106530686',
+    targetEur: 232534905.19,
+    relNote: 'Народен представител · Дарение 5 050 лв. (ЕРИК 2026) · Акции Табл. 9 КПК',
+  },
+  {
+    name: 'Калин Велчев Калчев',
+    type: 'ubo',
+    cluster: 'ROAD_SECTOR',
+    donationBgn: 4857,
+    party: 'СБОР (Местни 2023)',
+    targetId: 'eik:201995489',
+    targetName: 'АЛВЕ КОНСУЛТ ЕООД',
+    targetEik: '201995489',
+    targetEur: 1665573.05,
+    relNote: 'Дарение 4 857 лв. (ЕРИК 2023) · Участник в АМ Струма 3.1 (€89,9 млн.)',
+  },
+  {
+    name: 'Борислав Любенов Великов',
+    type: 'official',
+    cluster: 'HEALTH_SECTOR',
+    donationBgn: 1023,
+    party: 'Българска нова демокрация (Местни 2023)',
+    targetId: 'eik:831911400',
+    targetName: 'АКВАХИМ АД',
+    targetEik: '831911400',
+    targetEur: 29039661.16,
+    relNote: 'Народен представител · Дарение 1 023 лв. (ЕРИК 2023) ↔ Аквахим (€29,0 млн.)',
+  },
+];
+
+for (const db of VERIFIED_DONOR_BRIDGES) {
+  const personId = db.type === 'ubo'
+    ? ensureUboNode(
+        db.name,
+        db.cluster,
+        `Партиен дарител (${db.donationBgn.toLocaleString('bg-BG')} лв.) · ${db.party}`,
+        db.targetEur,
+        85,
+        ['ЕРИК Дарител (Сметна палата)', `Дарение ${db.donationBgn.toLocaleString('bg-BG')} лв.`],
+        [db.targetName],
+        db.relNote
+      )
+    : addNode({
+        id: canonicalEntityId('official', db.name, ''),
+        label: db.name,
+        type: 'official',
+        cluster: db.cluster,
+        subLabel: `ЕРИК Дарител (${db.donationBgn.toLocaleString('bg-BG')} лв.) · ${db.party}`,
+        amountEur: db.targetEur,
+        riskScore: db.donationBgn >= 50000 ? 90 : 82,
+        badges: ['ЕРИК Дарител (Сметна палата)', `Дарение ${db.donationBgn.toLocaleString('bg-BG')} лв.`],
+        judicialLayer: { kpkTable9: [`ЕРИК Сметна палата · ${db.party}`] },
+        details: { donationBgn: db.donationBgn, party: db.party, note: db.relNote },
+      });
+
+  const targetId = addNode({
+    id: db.targetId,
+    label: db.targetName,
+    type: db.targetType || 'company',
+    cluster: db.cluster,
+    subLabel: `ЕИК ${db.targetEik} · €${(db.targetEur / 1e6).toFixed(2)} млн.`,
+    eik: db.targetEik,
+    amountEur: db.targetEur,
+    riskScore: 84,
+    badges: ['Връзка с партиен дарител (ЕРИК)'],
+    financialLayer: { directContractsEur: db.targetEur },
+    corporateLayer: { eik: db.targetEik, trRelatedEntities: [db.name] },
+    details: { eik: db.targetEik },
+  });
+
+  if (personId && targetId) {
+    addEdge({
+      source: personId,
+      target: targetId,
+      kind: 'political_donor',
+      label: `ЕРИК дарител (${db.donationBgn.toLocaleString('bg-BG')} лв. → ${db.party.split('(')[0].trim()})`,
+      primaryId: `ЕРИК Сметна палата · ЕИК ${db.targetEik}`,
+      amountEur: db.targetEur,
+      evidence: db.relNote,
+    });
+  }
+}
+
+// ============================================================================
+// 6E. CARTEL ROTATION RINGS (100% ABABABABA) & TOP SALAMI-SLICING CLUSTERS
+// ============================================================================
+for (const ring of (forensicsRaw.engine6_cartelGraphs?.rotationRings || []).slice(0, 3)) {
+  if (Number(ring.alternationPct || 0) < 95) continue;
+  const authId = addNode({
+    id: canonicalEntityId('authority', ring.authority, ring.authorityEik),
+    label: cleanText(ring.authority),
+    type: 'authority',
+    cluster: inferSectorCluster(ring.authority, ring.authorityEik),
+    subLabel: `Картелен ротационен пръстен · ${ring.alternationPct}% редуване (${ring.sequence})`,
+    eik: ring.authorityEik,
+    amountEur: Number(ring.ringEur || 0),
+    riskScore: Math.min(95, Number(ring.rotationScore || 90)),
+    badges: [`Картелно редуване ${ring.alternationPct}%`, `Схема ${ring.sequence}`],
+    financialLayer: { directContractsCount: ring.ringContracts, directContractsEur: Number(ring.ringEur || 0) },
+    details: { eik: ring.authorityEik, sequence: ring.sequence, alternationPct: ring.alternationPct },
+  });
+
+  for (const m of ring.members || []) {
+    if (!m.eik) continue;
+    const mId = addNode({
+      id: canonicalEntityId('company', m.name, m.eik),
+      label: cleanText(m.name),
+      type: 'company',
+      cluster: inferSectorCluster(m.name + ' ' + ring.authority, m.eik),
+      subLabel: `Участник в ротация (${ring.sequence}) · ЕИК ${m.eik}`,
+      eik: m.eik,
+      amountEur: Number(m.eur || companyEikToInfo.get(m.eik)?.wonEur || 0),
+      riskScore: 86,
+      badges: ['Engine 6 · Картелна ротация', `Редуване ${ring.alternationPct}%`],
+      corporateLayer: { eik: m.eik },
+      details: { eik: m.eik },
+    });
+    if (mId && authId) {
+      addEdge({
+        source: mId,
+        target: authId,
+        kind: 'cartel_rotation',
+        label: `Картелна ротация ${ring.alternationPct}% (${ring.sequence})`,
+        primaryId: `Engine 6 · ЕИК ${m.eik} ↔ ${ring.authorityEik}`,
+        amountEur: Number(ring.ringEur || 0),
+        evidence: `ЦАИС ЕОП · ${ring.ringContracts} договора, средно ${ring.avgBids} оферти`,
+      });
+    }
+  }
+}
+
+// Top 4 non-pharma Salami-Slicing clusters (threshold-splitting under €138,050)
+for (const sl of (forensicsRaw.engine3_salamiSlicing?.clusters || []).filter((c) => !c.isPharma).slice(0, 4)) {
+  const authId = addNode({
+    id: canonicalEntityId('authority', sl.authority, sl.authorityEik),
+    label: cleanText(sl.authority),
+    type: 'authority',
+    cluster: 'MUNICIPAL_AFFILIATION',
+    subLabel: `Салами-нарязване: ${sl.contractCount} договора за ${sl.spanDays} дни под €138k`,
+    eik: sl.authorityEik,
+    amountEur: Number(sl.totalEur || 0),
+    riskScore: 87,
+    badges: ['Engine 3 · Нарязване под праг', `${sl.contractCount} дог. / ${sl.spanDays} дни`],
+    details: { eik: sl.authorityEik },
+  });
+  const compId = addNode({
+    id: canonicalEntityId('company', sl.contractor, sl.contractorEik),
+    label: cleanText(sl.contractor),
+    type: 'company',
+    cluster: 'ROAD_SECTOR',
+    subLabel: `Салами-нарязване · ${sl.contractCount} договора (€${(sl.totalEur / 1e3).toFixed(0)} хил.)`,
+    eik: sl.contractorEik,
+    amountEur: Number(companyEikToInfo.get(sl.contractorEik)?.wonEur || sl.totalEur || 0),
+    riskScore: 85,
+    badges: ['Engine 3 · Нарязване под праг', `${sl.singleOfferCount}/${sl.contractCount} с 1 оферта`],
+    corporateLayer: { eik: sl.contractorEik },
+    details: { eik: sl.contractorEik },
+  });
+  if (compId && authId) {
+    addEdge({
+      source: compId,
+      target: authId,
+      kind: 'cartel_rotation',
+      label: `Салами-нарязване: ${sl.contractCount} дог. за ${sl.spanDays} дни (€${(sl.totalEur / 1e3).toFixed(0)} хил.)`,
+      primaryId: `Engine 3 · ${sl.startDate}–${sl.endDate}`,
+      amountEur: Number(sl.totalEur || 0),
+      evidence: `Макс. договор €${Math.round(sl.maxSingleEur)} (< €138 050 праг)`,
+    });
+  }
+}
+
+// ============================================================================
+// 6F. ANNEX 116 (+50% POST-AWARD INFLATION) & TOP MISSING-ZMIP GIANTS
+// ============================================================================
+const ANNEX_GIANTS = [
+  { eik: '831646048', name: 'АВТОМАГИСТРАЛИ ЕАД', eur: 1017969271.3, annexEur: 64370000, unp: '00044-2023-0018', pct: 50, note: '€1,02 млрд. ЗОП + Анекс +€64,4M (+50%) · Липсващ ЗМИП запис' },
+  { eik: '836014515', name: 'АБ АД', eur: 187007637.66, annexEur: 50270000, unp: '00044-2023-0041', pct: 50, note: '€187,0 млн. ЗОП + Анекс +€50,3M (+50%) с АПИ' },
+];
+for (const ag of ANNEX_GIANTS) {
+  const gId = addNode({
+    id: `eik:${ag.eik}`,
+    label: ag.name,
+    type: 'company',
+    cluster: 'ROAD_SECTOR',
+    subLabel: ag.note,
+    eik: ag.eik,
+    amountEur: ag.eur,
+    riskScore: 91,
+    badges: [`Анекс чл. 116 (+${ag.pct}%)`, `Увеличение +€${(ag.annexEur / 1e6).toFixed(1)}M`],
+    financialLayer: { directContractsEur: ag.eur, annex116Count: 1, primaryUnps: [ag.unp] },
+    corporateLayer: { eik: ag.eik },
+    details: { eik: ag.eik, unp: ag.unp },
+  });
+  if (gId && nodesMap.has('eik:000695089')) {
+    addEdge({
+      source: gId,
+      target: 'eik:000695089',
+      kind: 'won_zop',
+      label: `Анекс чл. 116: +€${(ag.annexEur / 1e6).toFixed(1)} млн. (+${ag.pct}%)`,
+      primaryId: `ЦАИС ЕОП УНП ${ag.unp}`,
+      amountEur: ag.annexEur,
+      evidence: 'Engine 1 · Оскъпяване след подписване (чл. 116 ЗОП)',
+    });
+  }
+}
+
+// ============================================================================
 // 7. GRAPH-THEORETIC ANALYTICS (Brandes Betweenness, PageRank, Components)
 // ============================================================================
 const validNodesSet = new Set(nodesMap.keys());
