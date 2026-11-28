@@ -2434,6 +2434,117 @@
       openSignalModal(selectedNode);
     });
 
+    function openPrintableDossier(n) {
+      if (!n) return;
+      var tm = TYPE_META[n.type] || TYPE_META.company;
+      var cl = CLUSTER_META[n.cluster] || { title: n.cluster || '—' };
+      var conns = incidentEdges.get(n.id) || [];
+      var nowStr = new Date().toLocaleString('bg-BG');
+      var badgesHtml = (n.badges || []).map(function (b) {
+        return '<span class="pill">' + esc(b) + '</span>';
+      }).join(' ');
+      var rowsHtml = conns.map(function (e, i) {
+        var other = e.sourceNode === n ? e.targetNode : e.sourceNode;
+        var em = EDGE_META[e.kind] || { label: e.kind };
+        return (
+          '<tr>' +
+          '<td>' + (i + 1) + '</td>' +
+          '<td><strong>' + esc(other ? other.label : '') + '</strong>' + (other && other.eik ? '<br><span class="muted">ЕИК ' + esc(other.eik) + '</span>' : '') + '</td>' +
+          '<td>' + esc(em.label) + '</td>' +
+          '<td>' + esc(e.label || '—') + '<br><span class="muted">' + esc(e.primaryId || e.evidence || '') + '</span></td>' +
+          '<td class="num">' + (e.amountEur > 0 ? esc(fmtEurExact(e.amountEur)) : '—') + '</td>' +
+          '</tr>'
+        );
+      }).join('');
+      var zmipList = (n.corporateLayer && n.corporateLayer.zmipOwners && n.corporateLayer.zmipOwners.length)
+        ? n.corporateLayer.zmipOwners.join(', ')
+        : '—';
+      var relList = (n.corporateLayer && n.corporateLayer.trRelatedEntities && n.corporateLayer.trRelatedEntities.length)
+        ? n.corporateLayer.trRelatedEntities.join(', ')
+        : '—';
+      var kpkList = (n.judicialLayer && n.judicialLayer.kpkTable9 && n.judicialLayer.kpkTable9.length)
+        ? n.judicialLayer.kpkTable9.join(' · ')
+        : '—';
+      var eissList = (n.judicialLayer && n.judicialLayer.eissCases && n.judicialLayer.eissCases.length)
+        ? n.judicialLayer.eissCases.join(', ')
+        : '—';
+
+      var html =
+        '<!DOCTYPE html><html lang="bg"><head><meta charset="utf-8">' +
+        '<title>NAsvetlo Досие — ' + esc(n.label) + '</title>' +
+        '<style>' +
+        '@page{size:A4;margin:14mm;}' +
+        'body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#111;font-size:11px;line-height:1.45;margin:0;padding:0;}' +
+        '.hdr{border-bottom:2px solid #111;padding-bottom:8px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;}' +
+        '.brand{font-size:16px;font-weight:800;letter-spacing:.04em;}' +
+        '.kicker{font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#b91c1c;font-weight:700;}' +
+        '.meta-r{text-align:right;font-size:9px;color:#444;font-family:monospace;}' +
+        'h1{font-size:18px;margin:4px 0 4px;line-height:1.2;}' +
+        '.sub{font-size:11px;color:#444;margin-bottom:8px;}' +
+        '.pills{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px;}' +
+        '.pill{display:inline-block;padding:2px 7px;border:1px solid #cbd5e1;border-radius:3px;font-size:9px;font-weight:600;background:#f8fafc;}' +
+        '.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}' +
+        '.kpi{border:1px solid #d1d5db;padding:7px 9px;border-radius:4px;background:#fafaf9;}' +
+        '.kpi-l{font-size:8.5px;text-transform:uppercase;color:#555;letter-spacing:.06em;}' +
+        '.kpi-v{font-size:14px;font-weight:800;margin-top:2px;}' +
+        '.sec{margin-bottom:12px;}' +
+        '.sec h2{font-size:11px;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid #d1d5db;padding-bottom:3px;margin:0 0 6px;color:#111;}' +
+        '.kv{display:grid;grid-template-columns:160px 1fr;gap:4px 10px;font-size:10.5px;}' +
+        '.kv dt{font-weight:700;color:#333;}' +
+        '.kv dd{margin:0;}' +
+        'table{width:100%;border-collapse:collapse;font-size:10px;margin-top:4px;}' +
+        'th,td{border:1px solid #d1d5db;padding:5px 6px;text-align:left;vertical-align:top;}' +
+        'th{background:#f3f4f6;font-weight:700;font-size:9px;text-transform:uppercase;}' +
+        '.num{text-align:right;white-space:nowrap;font-family:monospace;font-weight:600;}' +
+        '.muted{color:#555;font-size:9px;}' +
+        '.foot{margin-top:14px;padding-top:8px;border-top:1px solid #9ca3af;font-size:8.5px;color:#444;}' +
+        '.sha{font-family:monospace;font-size:8.5px;word-break:break-all;background:#f3f4f6;padding:4px 6px;border-radius:3px;margin-top:4px;}' +
+        '</style></head><body>' +
+        '<div class="hdr">' +
+        '<div><div class="kicker">NAsvetlo · МРЕЖАТА v3.0 · ДОКУМЕНТАЛНО ФОРЕНЗИК ДОСИЕ (CC-BY 4.0)</div><div class="brand">nasvetlo.website/mrezhata.html</div></div>' +
+        '<div class="meta-r">Генерирано: ' + esc(nowStr) + '<br>Идентификатор: ' + esc(n.id) + '</div>' +
+        '</div>' +
+        '<h1>' + esc(n.label) + '</h1>' +
+        '<div class="sub">' + esc(tm.label) + (n.eik ? ' · ЕИК ' + esc(n.eik) : '') + ' · Сектор: ' + esc(cl.title) + (n.subLabel ? ' · ' + esc(n.subLabel) : '') + '</div>' +
+        (badgesHtml ? '<div class="pills">' + badgesHtml + '</div>' : '') +
+        '<div class="grid">' +
+        '<div class="kpi"><div class="kpi-l">Финансов обем</div><div class="kpi-v">' + esc(n.amountEur > 0 ? fmtEurExact(n.amountEur) : '—') + '</div></div>' +
+        '<div class="kpi"><div class="kpi-l">Индекс на риск</div><div class="kpi-v">' + esc(n.riskScore || 0) + ' / 100</div></div>' +
+        '<div class="kpi"><div class="kpi-l">Brandes / Централност</div><div class="kpi-v">' + esc(n.centralityScore || 0) + ' / 100 (B:' + esc(n.betweenness || 0) + ')</div></div>' +
+        '<div class="kpi"><div class="kpi-l">Свързани обекти</div><div class="kpi-v">' + esc(conns.length) + ' (Компонента: ' + esc(n.componentSize || 1) + ')</div></div>' +
+        '</div>' +
+        '<div class="sec"><h2>4-слоен регистров профил</h2><dl class="kv">' +
+        '<dt>Действителни собственици (ЗМИП):</dt><dd>' + esc(zmipList) + '</dd>' +
+        '<dt>Свързани субекти (ТР / ДЗЗД):</dt><dd>' + esc(relList) + '</dd>' +
+        '<dt>КПК / ИВСС / ЕРИК записи:</dt><dd>' + esc(kpkList) + '</dd>' +
+        '<dt>Съдебни дела (ЕПЕП / ЕИСС):</dt><dd>' + esc(eissList) + '</dd>' +
+        '</dl></div>' +
+        '<div class="sec"><h2>Верифицирани първични връзки (' + conns.length + ')</h2>' +
+        '<table><thead><tr><th>#</th><th>Свързан субект</th><th>Тип връзка</th><th>Описание и първичен идентификатор</th><th class="num">Обем (EUR)</th></tr></thead><tbody>' +
+        (rowsHtml || '<tr><td colspan="5">Няма директни връзки.</td></tr>') +
+        '</tbody></table></div>' +
+        '<div class="foot">' +
+        '<strong>ПРАВНА И ЗЗЛД БЕЛЕЖКА (чл. 6, ал. 2 ЕКПЧ):</strong> Данните произхождат единствено от публични държавни регистри (ЦАИС ЕОП, ТРРЮЛНЦ, ЕПЕП/ЕИСС, КПК, ИВСС, Сметна палата ЕРИК, МЕ, ДНСК, МВР, ДА Държавен резерв). Индикаторите не представляват присъда или обвинение, а документално основание за проверка. 0 цивилни ЕГН · 0 домашни адреса.' +
+        '<div class="sha">Каноничен SHA-256 (FIPS 180-4) на масива МРЕЖАТА: ' + esc(summary.datasetSha256 || '') + '</div>' +
+        '</div></body></html>';
+
+      var win = window.open('', '_blank', 'width=920,height=760');
+      if (!win) {
+        alert('Моля разрешете изскачащите прозорци за печат на PDF досието.');
+        return;
+      }
+      win.document.open();
+      win.document.write(html);
+      win.document.close();
+      setTimeout(function () {
+        try { win.focus(); win.print(); } catch (e) {}
+      }, 280);
+    }
+
+    document.getElementById('printDossierFromInspectorBtn')?.addEventListener('click', function () {
+      openPrintableDossier(selectedNode);
+    });
+
     function closeSignal() {
       signalModal?.setAttribute('hidden', '');
       signalBackdrop?.setAttribute('hidden', '');
