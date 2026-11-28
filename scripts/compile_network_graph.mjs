@@ -2490,6 +2490,145 @@ if (nodesMap.has('eik:200145389') && nodesMap.has('eik:126182689')) {
   });
 }
 
+// 6G.7 Varna Municipal Council Chair (Христо Атанасов Димитров) KPK 2026 & Planex DZZD Interlock
+const varnaDimitrovNodes = [
+  {
+    id: 'off:ХРИСТО_АТАНАСОВ_ДИМИТРОВ',
+    label: 'Христо Атанасов Димитров',
+    type: 'official',
+    cluster: 'MUNICIPAL_AFFILIATION',
+    riskScore: 92,
+    badges: [
+      'КПК 2026 Г3455: Mercedes EQS 580 за 18 019 лв.',
+      'ТР: Недекларирано управление (ПЛАНЕКС ИНФРАСТРУКТУРА)',
+    ],
+    financialLayer: {
+      directContractsCount: 21,
+      directContractsEur: 12715309.97,
+      dzzdCount: 12,
+      dzzdEur: 61538251.41,
+      annex116Count: 4,
+      primaryUnps: ['00797-2023-0006'],
+    },
+    corporateLayer: {
+      trRelatedEntities: ['ПЛАНЕКС ЕООД', 'ПЛАНЕКС ИНФРАСТРУКТУРА ЕООД'],
+      sharedManagers: ['Христо Атанасов Димитров', 'Полина Христова Николова'],
+    },
+    judicialLayer: {
+      kpkTable9: [
+        'КПК 2026 Г3455/28.04.2026 (EQS 580 за 18 019 лв.; влог 284 294 лв.; 0 фирми в Табл. 9)',
+        'КПК 2025 Г10867/14.05.2025 (влог 244 626 лв.; произход дивиденти без дивидент в Табл. 12)',
+      ],
+    },
+    details: {
+      kpk2026Entry: 'Г3455/28.04.2026',
+      kpk2026Hash: 'F2E97DDE',
+      declaredVehicle: 'Мерцедес Бенц EQS 580 (2025) — 18 019 лв.',
+      totalDirectPlusDzzdEur: 74253561.38,
+    },
+  },
+  {
+    id: 'eik:813087785',
+    label: 'ПЛАНЕКС ЕООД',
+    type: 'company',
+    cluster: 'JUDICIAL_CONCENTRATION',
+    eik: '813087785',
+    riskScore: 86,
+    badges: [
+      'ДЗЗД Детска болница Бургас (€36,01 млн., 4 анекса)',
+      'ТР управител: Полина Христова Николова',
+    ],
+    financialLayer: {
+      primaryUnps: ['00797-2023-0006'],
+      annex116Count: 4,
+    },
+    corporateLayer: {
+      sharedManagers: ['Полина Христова Николова'],
+    },
+  },
+  {
+    id: 'eik:202694924',
+    label: 'ПЛАНЕКС ИНФРАСТРУКТУРА ЕООД',
+    type: 'company',
+    cluster: 'JUDICIAL_CONCENTRATION',
+    eik: '202694924',
+    riskScore: 88,
+    badges: [
+      'ТР: Недекларирано управление (СИГМА 2.0)',
+      '12 ДЗЗД (€61,54 млн.)',
+    ],
+    financialLayer: {
+      primaryUnps: ['00797-2023-0006'],
+      annex116Count: 4,
+    },
+    corporateLayer: {
+      sharedManagers: ['Кристиян Пламенов Дешков'],
+    },
+  },
+  {
+    id: 'eik:000056814',
+    label: 'ОБЩИНА БУРГАС',
+    type: 'authority',
+    cluster: 'MUNICIPAL_AFFILIATION',
+    subLabel: 'Възложител · ЕИК 000056814',
+    eik: '000056814',
+    riskScore: 76,
+    badges: ['Публичен възложител', 'УНП 00797-2023-0006'],
+    details: { eik: '000056814' },
+  },
+  {
+    id: 'eik:000093442',
+    label: 'ОБЩИНА ВАРНА',
+    type: 'authority',
+    cluster: 'MUNICIPAL_AFFILIATION',
+    subLabel: 'Възложител / ОбС Варна · ЕИК 000093442',
+    eik: '000093442',
+    riskScore: 78,
+    badges: ['Публичен възложител', 'ОбС Варна'],
+    details: { eik: '000093442' },
+  },
+];
+
+for (const vn of varnaDimitrovNodes) {
+  addNode(vn);
+}
+
+if (nodesMap.has('off:ХРИСТО_АТАНАСОВ_ДИМИТРОВ') && nodesMap.has('eik:000093442')) {
+  addEdge({
+    source: 'off:ХРИСТО_АТАНАСОВ_ДИМИТРОВ',
+    target: 'eik:000093442',
+    kind: 'conflict_of_interest',
+    label: 'Председател на ОбС Варна (КПК Г3455/28.04.2026)',
+    primaryId: 'КПК Г3455/28.04.2026 · ОбС Варна',
+    amountEur: 74253561.38,
+    evidence: 'КПК 2026 Г3455 (Mercedes EQS 580 за 18 019 лв.; влог 284 294 лв.; 0 фирми в Табл. 9)',
+  });
+}
+
+if (nodesMap.has('eik:813087785') && nodesMap.has('eik:000056814')) {
+  addEdge({
+    source: 'eik:813087785',
+    target: 'eik:000056814',
+    kind: 'won_zop',
+    label: 'ДЗЗД Детска болница „Св. Анастасия“ (€36,01 млн., 4 анекса +€1,25 млн.)',
+    primaryId: 'ЦАИС ЕОП УНП 00797-2023-0006',
+    amountEur: 36010331.16,
+    evidence: 'Подписан 17.08.2023; последен анекс 07.01.2026',
+  });
+}
+
+if (nodesMap.has('eik:202694924') && nodesMap.has('eik:000056814')) {
+  addEdge({
+    source: 'eik:202694924',
+    target: 'eik:000056814',
+    kind: 'won_zop',
+    label: 'Участник в ДЗЗД „МБАЛДБ Св. Анастасия-Бургас“ (€36,01 млн.)',
+    primaryId: 'ЦАИС ЕОП УНП 00797-2023-0006',
+    amountEur: 36010331.16,
+    evidence: 'Недекларирано управление в СИГМА 2.0',
+  });
+}
+
 // ============================================================================
 // 7. GRAPH-THEORETIC ANALYTICS (Brandes Betweenness, PageRank, Components)
 // ============================================================================

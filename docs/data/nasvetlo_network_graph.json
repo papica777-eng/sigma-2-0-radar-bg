@@ -1,23 +1,23 @@
 {
-  "generatedAtUtc": "2026-11-28T10:03:31.414Z",
+  "generatedAtUtc": "2026-11-28T10:42:53.892Z",
   "methodologyVersion": "NAsvetlo-Network v3.0 (Full Capital & ZMIП UBO Ownership Chain, Brandes Betweenness & PageRank)",
   "summary": {
-    "totalNodes": 512,
-    "totalEdges": 561,
-    "totalInvestigatedResourceEur": 33813315537,
+    "totalNodes": 513,
+    "totalEdges": 564,
+    "totalInvestigatedResourceEur": 34261409171,
     "totalUboControlledEur": 9490669777,
     "totalCompanies": 186,
-    "totalAuthorities": 96,
+    "totalAuthorities": 97,
     "totalJudges": 67,
     "totalLawyers": 18,
     "totalOfficials": 62,
     "totalCases": 54,
     "totalUbos": 29,
     "criticalRiskNodesCount": 316,
-    "bridgeNodesCount": 27,
-    "connectedComponentsCount": 84,
-    "largestComponentSize": 199,
-    "avgDegree": 2.17,
+    "bridgeNodesCount": 28,
+    "connectedComponentsCount": 83,
+    "largestComponentSize": 203,
+    "avgDegree": 2.18,
     "topBridgeLabel": "АГЕНЦИЯ \"ПЪТНА ИНФРАСТРУКТУРА\"",
     "topBridgeId": "eik:000695089",
     "featuredPaths": [
@@ -70,7 +70,7 @@
         "hops": 2
       }
     ],
-    "datasetSha256": "48f2065c1089835d90d3cc7a40a4ac9110150b4d0b4c6450ab19aedec6ecfb1e"
+    "datasetSha256": "010f27f62bdee7f4ba3811b093a6f0c977ea756b2cd99c216bfa31ca3434aa93"
   },
   "clusters": [
     {
@@ -83,8 +83,8 @@
     {
       "id": "MUNICIPAL_AFFILIATION",
       "title": "Местна власт & Декларирана свързаност (чл. 49 ЗПК)",
-      "nodesCount": 148,
-      "amountEur": 4718943269,
+      "nodesCount": 149,
+      "amountEur": 5167036902,
       "maxRisk": 96
     },
     {
@@ -129,7 +129,7 @@
       "pageRank": 100,
       "centralityScore": 100,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мулти-клъстерен мост",
         "Държавен / публичен възложител",
@@ -193,7 +193,7 @@
       "pageRank": 99,
       "centralityScore": 100,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мулти-клъстерен мост",
         "ЕИСС концентрация (q < 0,01)",
@@ -268,7 +268,7 @@
       "pageRank": 39,
       "centralityScore": 83,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мулти-клъстерен мост",
         "Държавен / публичен възложител",
@@ -326,11 +326,11 @@
       "amountEur": 1200000000,
       "riskScore": 84,
       "degree": 12,
-      "betweenness": 93,
+      "betweenness": 94,
       "pageRank": 54,
       "centralityScore": 80,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "МЕ Концесии за кариери",
         "Вертикален монопол: Кариера + АПИ"
@@ -384,7 +384,7 @@
       "pageRank": 36,
       "centralityScore": 74,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мулти-клъстерен мост",
         "Търговски субект",
@@ -457,7 +457,7 @@
       "pageRank": 35,
       "centralityScore": 74,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мулти-клъстерен мост",
         "Участник в мега-консорциум",
@@ -523,7 +523,7 @@
       "pageRank": 37,
       "centralityScore": 72,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мулти-клъстерен мост",
         "Държавен / публичен възложител",
@@ -585,7 +585,7 @@
       "pageRank": 47,
       "centralityScore": 71,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Публична институция",
         "Собствени поръчки (чл. 49 ЗПК)"
@@ -640,7 +640,7 @@
       "pageRank": 36,
       "centralityScore": 70,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Концесия МЕ: Боаза",
         "Голям изпълнител по ЗОП",
@@ -719,7 +719,7 @@
       "pageRank": 41,
       "centralityScore": 69,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Публична институция",
         "Собствени поръчки (чл. 49 ЗПК)"
@@ -774,7 +774,7 @@
       "pageRank": 38,
       "centralityScore": 69,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Публична институция",
         "Собствени поръчки (чл. 49 ЗПК)"
@@ -891,7 +891,7 @@
       "pageRank": 26,
       "centralityScore": 67,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мулти-клъстерен мост",
         "Концесия МЕ: Бов",
@@ -946,11 +946,11 @@
       "amountEur": 29442352.4,
       "riskScore": 84,
       "degree": 8,
-      "betweenness": 77,
+      "betweenness": 76,
       "pageRank": 41,
       "centralityScore": 66,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Публична институция",
         "Собствени поръчки (чл. 49 ЗПК)"
@@ -1005,7 +1005,7 @@
       "pageRank": 24,
       "centralityScore": 65,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС концентрация (FDR q < 0,01)",
         "Кратност ×9.8",
@@ -1077,7 +1077,7 @@
       "pageRank": 21,
       "centralityScore": 65,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мулти-клъстерен мост",
         "ЕИСС концентрация (q < 0,01)",
@@ -1204,7 +1204,7 @@
       "pageRank": 31,
       "centralityScore": 63,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС концентрация (FDR q < 0,01)",
         "Кратност ×4.9",
@@ -1278,7 +1278,7 @@
       "pageRank": 32,
       "centralityScore": 63,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Концесия МЕ: Конаговски чал",
         "Голям изпълнител по ЗОП",
@@ -1328,6 +1328,64 @@
       }
     },
     {
+      "id": "eik:000093442",
+      "label": "ОБЩИНА ВАРНА",
+      "type": "authority",
+      "cluster": "ROAD_SECTOR",
+      "allClusters": [
+        "ROAD_SECTOR",
+        "MUNICIPAL_AFFILIATION"
+      ],
+      "subLabel": "Възложител · ЕИК 000093442",
+      "eik": "000093442",
+      "amountEur": 411134613.86,
+      "riskScore": 78,
+      "degree": 3,
+      "betweenness": 72,
+      "pageRank": 17,
+      "centralityScore": 59,
+      "componentId": 4,
+      "componentSize": 203,
+      "badges": [
+        "Мулти-клъстерен мост",
+        "Държавен / публичен възложител",
+        "ЕИСС търговски спор",
+        "Публичен възложител",
+        "ОбС Варна"
+      ],
+      "financialLayer": {
+        "directContractsCount": 8,
+        "directContractsEur": 411134613.86,
+        "dzzdCount": 0,
+        "dzzdEur": 0,
+        "annex116Count": 0,
+        "primaryUnps": []
+      },
+      "corporateLayer": {
+        "eik": "000093442",
+        "zmipOwners": [],
+        "trRelatedEntities": [],
+        "sharedManagers": []
+      },
+      "intermediaryLayer": {
+        "lawFirms": [],
+        "legalProcurementEur": 0,
+        "j3HubReferences": []
+      },
+      "judicialLayer": {
+        "eissCases": [
+          "Окръжен съд - Варна ТД № 58/2026"
+        ],
+        "fdrQ001Count": 0,
+        "kzkVasActs": [],
+        "kpkTable9": []
+      },
+      "details": {
+        "eik": "000093442",
+        "court": "Окръжен съд - Варна"
+      }
+    },
+    {
       "id": "company:DZZD_АМ_РУСЕ_ТЪРНОВО",
       "label": "АМ РУСЕ ТЪРНОВО",
       "type": "company",
@@ -1344,7 +1402,7 @@
       "pageRank": 27,
       "centralityScore": 58,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мега-консорциум (ДЗЗД)",
         "Обем €337.7 млн."
@@ -1401,7 +1459,7 @@
       "pageRank": 30,
       "centralityScore": 58,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Концесия МЕ: Делчевото - 2, у-к \"Делчевото - 2 юг\"",
         "Голям изпълнител по ЗОП",
@@ -1523,7 +1581,7 @@
       "pageRank": 25,
       "centralityScore": 56,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мега-консорциум (ДЗЗД)",
         "Обем €448.2 млн."
@@ -1580,7 +1638,7 @@
       "pageRank": 19,
       "centralityScore": 56,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мега-консорциум (ДЗЗД)",
         "Обем €170.6 млн."
@@ -1636,7 +1694,7 @@
       "pageRank": 25,
       "centralityScore": 56,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мега-консорциум (ДЗЗД)",
         "Обем €89.9 млн."
@@ -1693,7 +1751,7 @@
       "pageRank": 11,
       "centralityScore": 54,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Заличен търговец (ТРРЮЛНЦ)",
         "Прехвърлена дейност"
@@ -1747,7 +1805,7 @@
       "pageRank": 25,
       "centralityScore": 54,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Концесия МЕ: Лучище",
         "Участник в мега-консорциум",
@@ -1805,7 +1863,7 @@
       "pageRank": 12,
       "centralityScore": 54,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "1-ви договор: 266 дни",
         "Новорегистрирано дружество"
@@ -1864,7 +1922,7 @@
       "pageRank": 15,
       "centralityScore": 54,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Декларирана фирма в ТР",
         "Ниво 4 · Декларация КПК × ЕИСС"
@@ -1992,11 +2050,11 @@
       "amountEur": 0,
       "riskScore": 94,
       "degree": 4,
-      "betweenness": 73,
+      "betweenness": 72,
       "pageRank": 21,
       "centralityScore": 52,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС концентрация (FDR q < 0,01)",
         "Кратност ×5.4",
@@ -2064,7 +2122,7 @@
       "pageRank": 24,
       "centralityScore": 52,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Участник в мега-консорциум",
         "Разкрит UBO (ЗМИП)"
@@ -2120,7 +2178,7 @@
       "pageRank": 15,
       "centralityScore": 52,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Концесия МЕ: Идринизица",
         "Свързана фирма по ТР",
@@ -2180,7 +2238,7 @@
       "pageRank": 16,
       "centralityScore": 51,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Чл. 49 ЗПК · Собствена институция",
         "Ниво 4 · Декларация КПК × ЕИСС",
@@ -2244,7 +2302,7 @@
       "pageRank": 21,
       "centralityScore": 51,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Участник в мега-консорциум",
         "Разкрит UBO (ЗМИП)"
@@ -2303,7 +2361,7 @@
       "pageRank": 20,
       "centralityScore": 51,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мега-консорциум (ДЗЗД)",
         "Обем €197.9 млн."
@@ -2398,6 +2456,68 @@
       }
     },
     {
+      "id": "eik:813029821",
+      "label": "ПЪТИЩА И МОСТОВЕ ЕООД",
+      "type": "company",
+      "cluster": "ROAD_SECTOR",
+      "allClusters": [
+        "ROAD_SECTOR"
+      ],
+      "subLabel": "ЗОП обем €19.5 млн.",
+      "eik": "813029821",
+      "amountEur": 19501403.94,
+      "riskScore": 82,
+      "degree": 3,
+      "betweenness": 78,
+      "pageRank": 16,
+      "centralityScore": 51,
+      "componentId": 4,
+      "componentSize": 203,
+      "badges": [
+        "Концесия МЕ: Суворово - 2",
+        "Голям изпълнител по ЗОП",
+        "ЕИСС търговски спор"
+      ],
+      "financialLayer": {
+        "directContractsCount": 12,
+        "directContractsEur": 19501403.94,
+        "dzzdCount": 0,
+        "dzzdEur": 0,
+        "annex116Count": 0,
+        "primaryUnps": []
+      },
+      "corporateLayer": {
+        "eik": "813029821",
+        "zmipOwners": [
+          "Вписани действителни собственици по ЗМИП в ТР"
+        ],
+        "trRelatedEntities": [],
+        "sharedManagers": []
+      },
+      "intermediaryLayer": {
+        "lawFirms": [
+          "Адвокат: Л.Х.К",
+          "Юрисконсулт: С.П.М",
+          "Адвокат: Л.М.Б"
+        ],
+        "legalProcurementEur": 0,
+        "j3HubReferences": []
+      },
+      "judicialLayer": {
+        "eissCases": [
+          "Окръжен съд - Варна ТД № 58/2026"
+        ],
+        "fdrQ001Count": 0,
+        "kzkVasActs": [],
+        "kpkTable9": []
+      },
+      "details": {
+        "eik": "813029821",
+        "wonEur": 19501403.94,
+        "quarryConcession": "Суворово - 2 (Варовици, 35 г.)"
+      }
+    },
+    {
       "id": "eik:115004094",
       "label": "ЕВРОПЕЙСКИ ПЪТИЩА АД",
       "type": "company",
@@ -2414,7 +2534,7 @@
       "pageRank": 21,
       "centralityScore": 50,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Концесия МЕ: Белащица - юг",
         "Участник в мега-консорциум",
@@ -2474,7 +2594,7 @@
       "pageRank": 22,
       "centralityScore": 50,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС концентрация (q < 0,01)"
       ],
@@ -2537,7 +2657,7 @@
       "pageRank": 23,
       "centralityScore": 50,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Възложител на правни услуги (J3)",
         "Енергиен / ВиК сектор",
@@ -2605,7 +2725,7 @@
       "pageRank": 18,
       "centralityScore": 50,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мега-консорциум (ДЗЗД)",
         "Обем €94.1 млн."
@@ -2660,7 +2780,7 @@
       "pageRank": 19,
       "centralityScore": 50,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мега-консорциум (ДЗЗД)",
         "Обем €85.9 млн."
@@ -2715,7 +2835,7 @@
       "pageRank": 20,
       "centralityScore": 50,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мега-консорциум (ДЗЗД)",
         "Обем €75.5 млн."
@@ -2771,7 +2891,7 @@
       "pageRank": 20,
       "centralityScore": 50,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Публична институция",
         "Собствени поръчки (чл. 49 ЗПК)"
@@ -2827,7 +2947,7 @@
       "pageRank": 13,
       "centralityScore": 49,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мулти-клъстерен мост",
         "Ниво 4 · Мост ЕИСС × КПК",
@@ -2883,7 +3003,7 @@
       "pageRank": 19,
       "centralityScore": 49,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мега-консорциум (ДЗЗД)",
         "Обем €188.3 млн."
@@ -2935,11 +3055,11 @@
       "amountEur": 0,
       "riskScore": 72,
       "degree": 3,
-      "betweenness": 73,
+      "betweenness": 72,
       "pageRank": 18,
       "centralityScore": 49,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС Търговско дело",
         "Ищец (Възложител)"
@@ -3000,7 +3120,7 @@
       "pageRank": 14,
       "centralityScore": 49,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Декларирана фирма в ТР"
       ],
@@ -3058,7 +3178,7 @@
       "pageRank": 14,
       "centralityScore": 49,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Свързана фирма по ТР",
         "Изпълнител по ЗОП"
@@ -3100,65 +3220,73 @@
       }
     },
     {
-      "id": "eik:813029821",
-      "label": "ПЪТИЩА И МОСТОВЕ ЕООД",
-      "type": "company",
-      "cluster": "ROAD_SECTOR",
+      "id": "off:ХРИСТО_АТАНАСОВ_ДИМИТРОВ",
+      "label": "Христо Атанасов Димитров",
+      "type": "official",
+      "cluster": "MUNICIPAL_AFFILIATION",
       "allClusters": [
-        "ROAD_SECTOR"
+        "MUNICIPAL_AFFILIATION"
       ],
-      "subLabel": "ЗОП обем €19.5 млн.",
-      "eik": "813029821",
-      "amountEur": 19501403.94,
-      "riskScore": 82,
+      "subLabel": "Община / ОбС Варна · €61.5 млн. скрити ДЗЗД",
+      "eik": "",
+      "amountEur": 61538251.41,
+      "riskScore": 92,
       "degree": 3,
       "betweenness": 70,
-      "pageRank": 17,
+      "pageRank": 19,
       "centralityScore": 48,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
-        "Концесия МЕ: Суворово - 2",
-        "Голям изпълнител по ЗОП",
-        "ЕИСС търговски спор"
+        "Скрити ДЗЗД (КПК × ЦАИС)",
+        "ДЗЗД €61.5 млн.",
+        "КПК 2026 Г3455: Mercedes EQS 580 за 18 019 лв.",
+        "ТР: Недекларирано управление (ПЛАНЕКС ИНФРАСТРУКТУРА)"
       ],
       "financialLayer": {
-        "directContractsCount": 12,
-        "directContractsEur": 19501403.94,
-        "dzzdCount": 0,
-        "dzzdEur": 0,
-        "annex116Count": 0,
-        "primaryUnps": []
+        "directContractsCount": 21,
+        "directContractsEur": 61538251.41,
+        "dzzdCount": 12,
+        "dzzdEur": 61538251.41,
+        "annex116Count": 4,
+        "primaryUnps": [
+          "00797-2023-0006"
+        ]
       },
       "corporateLayer": {
-        "eik": "813029821",
-        "zmipOwners": [
-          "Вписани действителни собственици по ЗМИП в ТР"
+        "eik": "",
+        "zmipOwners": [],
+        "trRelatedEntities": [
+          "ПЛАНЕКС ЕООД",
+          "ПЛАНЕКС ИНФРАСТРУКТУРА ЕООД"
         ],
-        "trRelatedEntities": [],
-        "sharedManagers": []
+        "sharedManagers": [
+          "Христо Атанасов Димитров",
+          "Полина Христова Николова"
+        ]
       },
       "intermediaryLayer": {
-        "lawFirms": [
-          "Адвокат: Л.Х.К",
-          "Юрисконсулт: С.П.М",
-          "Адвокат: Л.М.Б"
-        ],
+        "lawFirms": [],
         "legalProcurementEur": 0,
         "j3HubReferences": []
       },
       "judicialLayer": {
-        "eissCases": [
-          "Окръжен съд - Варна ТД № 58/2026"
-        ],
+        "eissCases": [],
         "fdrQ001Count": 0,
         "kzkVasActs": [],
-        "kpkTable9": []
+        "kpkTable9": [
+          "КПК / СИГМА 2.0 · Община / ОбС Варна",
+          "КПК 2026 Г3455/28.04.2026 (EQS 580 за 18 019 лв.; влог 284 294 лв.; 0 фирми в Табл. 9)",
+          "КПК 2025 Г10867/14.05.2025 (влог 244 626 лв.; произход дивиденти без дивидент в Табл. 12)"
+        ]
       },
       "details": {
-        "eik": "813029821",
-        "wonEur": 19501403.94,
-        "quarryConcession": "Суворово - 2 (Варовици, 35 г.)"
+        "institution": "Община / ОбС Варна",
+        "hiddenConsortiumEur": 61538251.41,
+        "kpk2026Entry": "Г3455/28.04.2026",
+        "kpk2026Hash": "F2E97DDE",
+        "declaredVehicle": "Мерцедес Бенц EQS 580 (2025) — 18 019 лв.",
+        "totalDirectPlusDzzdEur": 74253561.38
       }
     },
     {
@@ -3178,7 +3306,7 @@
       "pageRank": 21,
       "centralityScore": 47,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Участник в мега-консорциум",
         "Разкрит UBO (ЗМИП)"
@@ -3237,7 +3365,7 @@
       "pageRank": 21,
       "centralityScore": 47,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Холдинг-майка (ТРРЮЛНЦ)",
         "Капиталова верига",
@@ -3302,7 +3430,7 @@
       "pageRank": 21,
       "centralityScore": 47,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Участник в мега-консорциум",
         "Корпоративен участник",
@@ -3419,7 +3547,7 @@
       "pageRank": 20,
       "centralityScore": 47,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "1-ви договор: 26 дни",
         "ЗОП/капитал 1543×"
@@ -3480,7 +3608,7 @@
       "pageRank": 19,
       "centralityScore": 47,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС Търговско дело",
         "Ответник (Съден от изпълнител)"
@@ -3540,7 +3668,7 @@
       "pageRank": 22,
       "centralityScore": 47,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Участник в мега-консорциум",
         "Разкрит UBO (ЗМИП)"
@@ -3597,7 +3725,7 @@
       "pageRank": 21,
       "centralityScore": 47,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Участник в мега-консорциум",
         "Разкрит UBO (ЗМИП)"
@@ -3716,7 +3844,7 @@
       "pageRank": 15,
       "centralityScore": 45,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Чл. 49 ЗПК · Собствена институция"
       ],
@@ -3774,7 +3902,7 @@
       "pageRank": 15,
       "centralityScore": 45,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Свързана фирма по ТР",
         "Изпълнител по ЗОП"
@@ -3832,7 +3960,7 @@
       "pageRank": 16,
       "centralityScore": 45,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Концесия МЕ: Кралево-2",
         "Участник в мега-консорциум",
@@ -3888,11 +4016,11 @@
       "amountEur": 12288771.95,
       "riskScore": 74,
       "degree": 3,
-      "betweenness": 63,
+      "betweenness": 64,
       "pageRank": 16,
       "centralityScore": 45,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Концесия МЕ: Мътница 2",
         "Участник в мега-консорциум",
@@ -3948,11 +4076,11 @@
       "amountEur": 106833738.75,
       "riskScore": 85,
       "degree": 3,
-      "betweenness": 62,
+      "betweenness": 61,
       "pageRank": 15,
       "centralityScore": 44,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мега-консорциум (ДЗЗД)",
         "Обем €106.8 млн."
@@ -4007,7 +4135,7 @@
       "pageRank": 19,
       "centralityScore": 44,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Голям изпълнител по ЗОП",
         "ЕИСС търговски спор"
@@ -4068,7 +4196,7 @@
       "pageRank": 18,
       "centralityScore": 44,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС Търговско дело",
         "Ответник (Съден от изпълнител)"
@@ -4127,7 +4255,7 @@
       "pageRank": 18,
       "centralityScore": 44,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС Търговско дело",
         "Ответник (Съден от изпълнител)"
@@ -4186,7 +4314,7 @@
       "pageRank": 19,
       "centralityScore": 44,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС Търговско дело",
         "Ищец (Възложител)"
@@ -4242,10 +4370,10 @@
       "riskScore": 82,
       "degree": 3,
       "betweenness": 59,
-      "pageRank": 19,
+      "pageRank": 18,
       "centralityScore": 44,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС Търговско дело",
         "Ответник (Съден от изпълнител)"
@@ -4306,7 +4434,7 @@
       "pageRank": 19,
       "centralityScore": 44,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС Търговско дело",
         "Ответник (Съден от изпълнител)"
@@ -4367,7 +4495,7 @@
       "pageRank": 15,
       "centralityScore": 44,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мега-консорциум (ДЗЗД)",
         "Обем €81.3 млн."
@@ -4422,7 +4550,7 @@
       "pageRank": 13,
       "centralityScore": 44,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Съдия по търговско дело (ЕИСС)"
       ],
@@ -4458,67 +4586,6 @@
       },
       "details": {
         "court": "Софийски градски съд"
-      }
-    },
-    {
-      "id": "case:АПЕЛАТИВЕН_СЪД_СОФИЯ_ВТД_574_2026",
-      "label": "ВТД № 574/2026 (Апелативен съд - София)",
-      "type": "case",
-      "cluster": "MUNICIPAL_AFFILIATION",
-      "allClusters": [
-        "MUNICIPAL_AFFILIATION"
-      ],
-      "subLabel": "Решение № 503 · 2026-11-10",
-      "eik": "",
-      "amountEur": 0,
-      "riskScore": 72,
-      "degree": 4,
-      "betweenness": 49,
-      "pageRank": 23,
-      "centralityScore": 44,
-      "componentId": 17,
-      "componentSize": 18,
-      "badges": [
-        "ЕИСС Търговско дело",
-        "Ищец (Възложител)"
-      ],
-      "financialLayer": {
-        "directContractsCount": 0,
-        "directContractsEur": 0,
-        "dzzdCount": 0,
-        "dzzdEur": 0,
-        "annex116Count": 0,
-        "primaryUnps": []
-      },
-      "corporateLayer": {
-        "eik": "",
-        "zmipOwners": [],
-        "trRelatedEntities": [],
-        "sharedManagers": []
-      },
-      "intermediaryLayer": {
-        "lawFirms": [
-          "Процесуален представител: М.Н.С",
-          "Процесуален представител: И.П.А.К",
-          "Адвокат: Т.П.Н"
-        ],
-        "legalProcurementEur": 0,
-        "j3HubReferences": []
-      },
-      "judicialLayer": {
-        "eissCases": [
-          "Апелативен съд - София ВТД № 574/2026"
-        ],
-        "fdrQ001Count": 0,
-        "kzkVasActs": [],
-        "kpkTable9": []
-      },
-      "details": {
-        "court": "Апелативен съд - София",
-        "caseNo": "ВТД № 574/2026",
-        "actNo": "Решение № 503",
-        "actDate": "2026-11-10",
-        "caseUrl": "https://ecase.justice.bg/Case/CaseDetail/d2877092-eb3b-4de0-a004-75dff169caed"
       }
     },
     {
@@ -4603,7 +4670,7 @@
       "pageRank": 15,
       "centralityScore": 43,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мега-консорциум (ДЗЗД)",
         "Обем €124.0 млн."
@@ -4642,6 +4709,125 @@
       }
     },
     {
+      "id": "eik:207021725",
+      "label": "ТРЕЙС БГ ЕООД",
+      "type": "company",
+      "cluster": "ROAD_SECTOR",
+      "allClusters": [
+        "ROAD_SECTOR"
+      ],
+      "subLabel": "гр. София · ЗОП €6.7 млн.",
+      "eik": "207021725",
+      "amountEur": 6705350.23,
+      "riskScore": 74,
+      "degree": 3,
+      "betweenness": 58,
+      "pageRank": 15,
+      "centralityScore": 43,
+      "componentId": 4,
+      "componentSize": 203,
+      "badges": [
+        "Концесия МЕ: Винарово",
+        "Участник в мега-консорциум",
+        "Корпоративен участник"
+      ],
+      "financialLayer": {
+        "directContractsCount": 14,
+        "directContractsEur": 6705350.23,
+        "dzzdCount": 1,
+        "dzzdEur": 106833738.75,
+        "annex116Count": 0,
+        "primaryUnps": []
+      },
+      "corporateLayer": {
+        "eik": "207021725",
+        "zmipOwners": [],
+        "trRelatedEntities": [
+          "ТРЕЙС ГРУП ХОЛД"
+        ],
+        "sharedManagers": [
+          "Димитър Райчев Съртонев"
+        ]
+      },
+      "intermediaryLayer": {
+        "lawFirms": [],
+        "legalProcurementEur": 0,
+        "j3HubReferences": []
+      },
+      "judicialLayer": {
+        "eissCases": [],
+        "fdrQ001Count": 0,
+        "kzkVasActs": [],
+        "kpkTable9": []
+      },
+      "details": {
+        "eik": "207021725",
+        "seatCity": "гр. София",
+        "quarryConcession": "Винарово (Варовици, 35 г.)"
+      }
+    },
+    {
+      "id": "case:АПЕЛАТИВЕН_СЪД_СОФИЯ_ВТД_574_2026",
+      "label": "ВТД № 574/2026 (Апелативен съд - София)",
+      "type": "case",
+      "cluster": "MUNICIPAL_AFFILIATION",
+      "allClusters": [
+        "MUNICIPAL_AFFILIATION"
+      ],
+      "subLabel": "Решение № 503 · 2026-11-10",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 72,
+      "degree": 4,
+      "betweenness": 49,
+      "pageRank": 23,
+      "centralityScore": 43,
+      "componentId": 17,
+      "componentSize": 18,
+      "badges": [
+        "ЕИСС Търговско дело",
+        "Ищец (Възложител)"
+      ],
+      "financialLayer": {
+        "directContractsCount": 0,
+        "directContractsEur": 0,
+        "dzzdCount": 0,
+        "dzzdEur": 0,
+        "annex116Count": 0,
+        "primaryUnps": []
+      },
+      "corporateLayer": {
+        "eik": "",
+        "zmipOwners": [],
+        "trRelatedEntities": [],
+        "sharedManagers": []
+      },
+      "intermediaryLayer": {
+        "lawFirms": [
+          "Процесуален представител: М.Н.С",
+          "Процесуален представител: И.П.А.К",
+          "Адвокат: Т.П.Н"
+        ],
+        "legalProcurementEur": 0,
+        "j3HubReferences": []
+      },
+      "judicialLayer": {
+        "eissCases": [
+          "Апелативен съд - София ВТД № 574/2026"
+        ],
+        "fdrQ001Count": 0,
+        "kzkVasActs": [],
+        "kpkTable9": []
+      },
+      "details": {
+        "court": "Апелативен съд - София",
+        "caseNo": "ВТД № 574/2026",
+        "actNo": "Решение № 503",
+        "actDate": "2026-11-10",
+        "caseUrl": "https://ecase.justice.bg/Case/CaseDetail/d2877092-eb3b-4de0-a004-75dff169caed"
+      }
+    },
+    {
       "id": "judge:РАДИНА_КАЛИНОВА_КАЛЕВА",
       "label": "РАДИНА КАЛИНОВА КАЛЕВА",
       "type": "judge",
@@ -4658,7 +4844,7 @@
       "pageRank": 16,
       "centralityScore": 42,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ИВСС Списък неподали декларация (чл. 175а ЗСВ)",
         "ЕИСС концентрация (FDR q < 0,01)",
@@ -4710,6 +4896,67 @@
       }
     },
     {
+      "id": "eik:202920330",
+      "label": "ПЪТИНЖЕНЕРИНГ АД",
+      "type": "company",
+      "cluster": "ROAD_SECTOR",
+      "allClusters": [
+        "ROAD_SECTOR"
+      ],
+      "subLabel": "гр. Русе · ЗОП €145.4 млн.",
+      "eik": "202920330",
+      "amountEur": 145425231.51,
+      "riskScore": 88,
+      "degree": 3,
+      "betweenness": 56,
+      "pageRank": 14,
+      "centralityScore": 42,
+      "componentId": 4,
+      "componentSize": 203,
+      "badges": [
+        "Концесия МЕ: Ломенска кория",
+        "Участник в мега-консорциум",
+        "Разкрит UBO (ЗМИП)"
+      ],
+      "financialLayer": {
+        "directContractsCount": 133,
+        "directContractsEur": 145425231.51,
+        "dzzdCount": 1,
+        "dzzdEur": 81260628.45,
+        "annex116Count": 0,
+        "primaryUnps": []
+      },
+      "corporateLayer": {
+        "eik": "202920330",
+        "zmipOwners": [
+          "Григор Цветков Иванов"
+        ],
+        "trRelatedEntities": [],
+        "sharedManagers": [
+          "Петко Йорданов Николов",
+          "Григор Цветков Иванов",
+          "Спас Иванов Спасов",
+          "Валентин Георгиев Манов"
+        ]
+      },
+      "intermediaryLayer": {
+        "lawFirms": [],
+        "legalProcurementEur": 0,
+        "j3HubReferences": []
+      },
+      "judicialLayer": {
+        "eissCases": [],
+        "fdrQ001Count": 0,
+        "kzkVasActs": [],
+        "kpkTable9": []
+      },
+      "details": {
+        "eik": "202920330",
+        "seatCity": "гр. Русе",
+        "quarryConcession": "Ломенска кория (Базалти, 25 г.)"
+      }
+    },
+    {
       "id": "eik:108501669",
       "label": "МБАЛ Д-Р АТАНАС ДАФОВСКИ АД - КЪРДЖАЛИ",
       "type": "authority",
@@ -4726,7 +4973,7 @@
       "pageRank": 14,
       "centralityScore": 42,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Здравен сектор / ТЕЛК",
         "Фискален обем НЗОК/НОИ"
@@ -4778,7 +5025,7 @@
       "pageRank": 15,
       "centralityScore": 42,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС Търговско дело",
         "Ответник (Съден от изпълнител)"
@@ -4822,125 +5069,6 @@
       }
     },
     {
-      "id": "eik:207021725",
-      "label": "ТРЕЙС БГ ЕООД",
-      "type": "company",
-      "cluster": "ROAD_SECTOR",
-      "allClusters": [
-        "ROAD_SECTOR"
-      ],
-      "subLabel": "гр. София · ЗОП €6.7 млн.",
-      "eik": "207021725",
-      "amountEur": 6705350.23,
-      "riskScore": 74,
-      "degree": 3,
-      "betweenness": 58,
-      "pageRank": 15,
-      "centralityScore": 42,
-      "componentId": 4,
-      "componentSize": 199,
-      "badges": [
-        "Концесия МЕ: Винарово",
-        "Участник в мега-консорциум",
-        "Корпоративен участник"
-      ],
-      "financialLayer": {
-        "directContractsCount": 14,
-        "directContractsEur": 6705350.23,
-        "dzzdCount": 1,
-        "dzzdEur": 106833738.75,
-        "annex116Count": 0,
-        "primaryUnps": []
-      },
-      "corporateLayer": {
-        "eik": "207021725",
-        "zmipOwners": [],
-        "trRelatedEntities": [
-          "ТРЕЙС ГРУП ХОЛД"
-        ],
-        "sharedManagers": [
-          "Димитър Райчев Съртонев"
-        ]
-      },
-      "intermediaryLayer": {
-        "lawFirms": [],
-        "legalProcurementEur": 0,
-        "j3HubReferences": []
-      },
-      "judicialLayer": {
-        "eissCases": [],
-        "fdrQ001Count": 0,
-        "kzkVasActs": [],
-        "kpkTable9": []
-      },
-      "details": {
-        "eik": "207021725",
-        "seatCity": "гр. София",
-        "quarryConcession": "Винарово (Варовици, 35 г.)"
-      }
-    },
-    {
-      "id": "eik:202920330",
-      "label": "ПЪТИНЖЕНЕРИНГ АД",
-      "type": "company",
-      "cluster": "ROAD_SECTOR",
-      "allClusters": [
-        "ROAD_SECTOR"
-      ],
-      "subLabel": "гр. Русе · ЗОП €145.4 млн.",
-      "eik": "202920330",
-      "amountEur": 145425231.51,
-      "riskScore": 88,
-      "degree": 3,
-      "betweenness": 55,
-      "pageRank": 14,
-      "centralityScore": 41,
-      "componentId": 4,
-      "componentSize": 199,
-      "badges": [
-        "Концесия МЕ: Ломенска кория",
-        "Участник в мега-консорциум",
-        "Разкрит UBO (ЗМИП)"
-      ],
-      "financialLayer": {
-        "directContractsCount": 133,
-        "directContractsEur": 145425231.51,
-        "dzzdCount": 1,
-        "dzzdEur": 81260628.45,
-        "annex116Count": 0,
-        "primaryUnps": []
-      },
-      "corporateLayer": {
-        "eik": "202920330",
-        "zmipOwners": [
-          "Григор Цветков Иванов"
-        ],
-        "trRelatedEntities": [],
-        "sharedManagers": [
-          "Петко Йорданов Николов",
-          "Григор Цветков Иванов",
-          "Спас Иванов Спасов",
-          "Валентин Георгиев Манов"
-        ]
-      },
-      "intermediaryLayer": {
-        "lawFirms": [],
-        "legalProcurementEur": 0,
-        "j3HubReferences": []
-      },
-      "judicialLayer": {
-        "eissCases": [],
-        "fdrQ001Count": 0,
-        "kzkVasActs": [],
-        "kpkTable9": []
-      },
-      "details": {
-        "eik": "202920330",
-        "seatCity": "гр. Русе",
-        "quarryConcession": "Ломенска кория (Базалти, 25 г.)"
-      }
-    },
-    {
       "id": "company:DZZD_ДЗЗД_ТЕХ_ЕНЕРДЖИ_ЕКСПАНЖЪН",
       "label": "ДЗЗД \"ТЕХ ЕНЕРДЖИ ЕКСПАНЖЪН\"",
       "type": "company",
@@ -4953,11 +5081,11 @@
       "amountEur": 157831921.22,
       "riskScore": 85,
       "degree": 3,
-      "betweenness": 54,
+      "betweenness": 55,
       "pageRank": 14,
       "centralityScore": 41,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мега-консорциум (ДЗЗД)",
         "Обем €157.8 млн."
@@ -5008,11 +5136,11 @@
       "amountEur": 113110699.81,
       "riskScore": 85,
       "degree": 3,
-      "betweenness": 54,
+      "betweenness": 55,
       "pageRank": 14,
       "centralityScore": 41,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мега-консорциум (ДЗЗД)",
         "Обем €113.1 млн."
@@ -5063,11 +5191,11 @@
       "amountEur": 93756279.24,
       "riskScore": 79,
       "degree": 3,
-      "betweenness": 54,
+      "betweenness": 55,
       "pageRank": 14,
       "centralityScore": 41,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мега-консорциум (ДЗЗД)",
         "Обем €93.8 млн."
@@ -5122,7 +5250,7 @@
       "pageRank": 15,
       "centralityScore": 40,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Съвместни ДЗЗД (4 договора)",
         "Мост ПИМК ↔ Нивел Строй"
@@ -5174,7 +5302,7 @@
       "pageRank": 14,
       "centralityScore": 40,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Ниво 4 · Декларация КПК × ЕИСС",
         "Скрити ДЗЗД (КПК × ЦАИС)",
@@ -5230,7 +5358,7 @@
       "pageRank": 16,
       "centralityScore": 40,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Здравен сектор / ТЕЛК",
         "Фискален обем НЗОК/НОИ",
@@ -5285,7 +5413,7 @@
       "pageRank": 15,
       "centralityScore": 40,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Участник в мега-консорциум",
         "Корпоративен участник"
@@ -5343,7 +5471,7 @@
       "pageRank": 15,
       "centralityScore": 40,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Участник в мега-консорциум",
         "Разкрит UBO (ЗМИП)"
@@ -5380,63 +5508,6 @@
       "details": {
         "eik": "202394154",
         "seatCity": "гр. Враца"
-      }
-    },
-    {
-      "id": "eik:130227663",
-      "label": "ПЪТПРОЕКТ 2000 ООД",
-      "type": "company",
-      "cluster": "ROAD_SECTOR",
-      "allClusters": [
-        "ROAD_SECTOR"
-      ],
-      "subLabel": "гр. София · ЗОП €0.9 млн.",
-      "eik": "130227663",
-      "amountEur": 900739.49,
-      "riskScore": 74,
-      "degree": 2,
-      "betweenness": 59,
-      "pageRank": 14,
-      "centralityScore": 40,
-      "componentId": 4,
-      "componentSize": 199,
-      "badges": [
-        "Участник в мега-консорциум",
-        "Разкрит UBO (ЗМИП)"
-      ],
-      "financialLayer": {
-        "directContractsCount": 9,
-        "directContractsEur": 900739.49,
-        "dzzdCount": 1,
-        "dzzdEur": 337670228.93,
-        "annex116Count": 0,
-        "primaryUnps": []
-      },
-      "corporateLayer": {
-        "eik": "130227663",
-        "zmipOwners": [
-          "Цветан Венциславов Колев"
-        ],
-        "trRelatedEntities": [],
-        "sharedManagers": [
-          "Цветан Венциславов Колев",
-          "Николай Иванов Терзиев"
-        ]
-      },
-      "intermediaryLayer": {
-        "lawFirms": [],
-        "legalProcurementEur": 0,
-        "j3HubReferences": []
-      },
-      "judicialLayer": {
-        "eissCases": [],
-        "fdrQ001Count": 0,
-        "kzkVasActs": [],
-        "kpkTable9": []
-      },
-      "details": {
-        "eik": "130227663",
-        "seatCity": "гр. София"
       }
     },
     {
@@ -5515,7 +5586,7 @@
       "pageRank": 14,
       "centralityScore": 39,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мега-консорциум (ДЗЗД)",
         "Обем €305.5 млн."
@@ -5569,7 +5640,7 @@
       "pageRank": 14,
       "centralityScore": 39,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Участник в мега-консорциум",
         "Разкрит UBO (ЗМИП)"
@@ -5630,7 +5701,7 @@
       "pageRank": 13,
       "centralityScore": 39,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Участник в мега-консорциум",
         "Разкрит UBO (ЗМИП)",
@@ -5766,7 +5837,7 @@
       "pageRank": 13,
       "centralityScore": 39,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Участник в мега-консорциум",
         "Корпоративен участник"
@@ -5807,40 +5878,45 @@
       }
     },
     {
-      "id": "case:АПЕЛАТИВЕН_СЪД_СОФИЯ_ВТД_544_2026",
-      "label": "ВТД № 544/2026 (Апелативен съд - София)",
-      "type": "case",
-      "cluster": "JUDICIAL_CONCENTRATION",
+      "id": "eik:130227663",
+      "label": "ПЪТПРОЕКТ 2000 ООД",
+      "type": "company",
+      "cluster": "ROAD_SECTOR",
       "allClusters": [
-        "JUDICIAL_CONCENTRATION"
+        "ROAD_SECTOR"
       ],
-      "subLabel": "Решение № 421 · 2026-09-03",
-      "eik": "",
-      "amountEur": 0,
-      "riskScore": 72,
-      "degree": 4,
-      "betweenness": 25,
-      "pageRank": 37,
-      "centralityScore": 38,
-      "componentId": 18,
-      "componentSize": 5,
+      "subLabel": "гр. София · ЗОП €0.9 млн.",
+      "eik": "130227663",
+      "amountEur": 900739.49,
+      "riskScore": 74,
+      "degree": 2,
+      "betweenness": 59,
+      "pageRank": 14,
+      "centralityScore": 39,
+      "componentId": 4,
+      "componentSize": 203,
       "badges": [
-        "ЕИСС Търговско дело",
-        "Ответник (Съден от изпълнител)"
+        "Участник в мега-консорциум",
+        "Разкрит UBO (ЗМИП)"
       ],
       "financialLayer": {
-        "directContractsCount": 0,
-        "directContractsEur": 0,
-        "dzzdCount": 0,
-        "dzzdEur": 0,
+        "directContractsCount": 9,
+        "directContractsEur": 900739.49,
+        "dzzdCount": 1,
+        "dzzdEur": 337670228.93,
         "annex116Count": 0,
         "primaryUnps": []
       },
       "corporateLayer": {
-        "eik": "",
-        "zmipOwners": [],
+        "eik": "130227663",
+        "zmipOwners": [
+          "Цветан Венциславов Колев"
+        ],
         "trRelatedEntities": [],
-        "sharedManagers": []
+        "sharedManagers": [
+          "Цветан Венциславов Колев",
+          "Николай Иванов Терзиев"
+        ]
       },
       "intermediaryLayer": {
         "lawFirms": [],
@@ -5848,19 +5924,14 @@
         "j3HubReferences": []
       },
       "judicialLayer": {
-        "eissCases": [
-          "Апелативен съд - София ВТД № 544/2026"
-        ],
+        "eissCases": [],
         "fdrQ001Count": 0,
         "kzkVasActs": [],
         "kpkTable9": []
       },
       "details": {
-        "court": "Апелативен съд - София",
-        "caseNo": "ВТД № 544/2026",
-        "actNo": "Решение № 421",
-        "actDate": "2026-09-03",
-        "caseUrl": "https://ecase.justice.bg/Case/CaseDetail/d631ccf8-d70d-412f-8b26-4010122822f4"
+        "eik": "130227663",
+        "seatCity": "гр. София"
       }
     },
     {
@@ -5938,7 +6009,7 @@
       "pageRank": 11,
       "centralityScore": 37,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мулти-клъстерен мост",
         "Действителен собственик (ЗМИП чл. 63)",
@@ -6005,7 +6076,7 @@
       "pageRank": 11,
       "centralityScore": 37,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мулти-клъстерен мост",
         "Действителен собственик (ЗМИП чл. 63)",
@@ -6055,6 +6126,124 @@
       }
     },
     {
+      "id": "eik:202694924",
+      "label": "ПЛАНЕКС ИНФРАСТРУКТУРА ЕООД",
+      "type": "company",
+      "cluster": "JUDICIAL_CONCENTRATION",
+      "allClusters": [
+        "JUDICIAL_CONCENTRATION"
+      ],
+      "subLabel": "Свързано дружество (Скрити ДЗЗД) · ЕИК 202694924",
+      "eik": "202694924",
+      "amountEur": 12715309.97,
+      "riskScore": 88,
+      "degree": 2,
+      "betweenness": 52,
+      "pageRank": 13,
+      "centralityScore": 37,
+      "componentId": 4,
+      "componentSize": 203,
+      "badges": [
+        "Скрити ДЗЗД консорциуми",
+        "Свързано с публично лице (КПК)",
+        "ТР: Недекларирано управление (СИГМА 2.0)",
+        "12 ДЗЗД (€61,54 млн.)"
+      ],
+      "financialLayer": {
+        "directContractsCount": 0,
+        "directContractsEur": 12715309.97,
+        "dzzdCount": 0,
+        "dzzdEur": 61538251.41,
+        "annex116Count": 4,
+        "primaryUnps": [
+          "00797-2023-0006"
+        ]
+      },
+      "corporateLayer": {
+        "eik": "202694924",
+        "zmipOwners": [],
+        "trRelatedEntities": [
+          "Христо Атанасов Димитров"
+        ],
+        "sharedManagers": [
+          "Кристиян Пламенов Дешков"
+        ]
+      },
+      "intermediaryLayer": {
+        "lawFirms": [],
+        "legalProcurementEur": 0,
+        "j3HubReferences": []
+      },
+      "judicialLayer": {
+        "eissCases": [],
+        "fdrQ001Count": 0,
+        "kzkVasActs": [],
+        "kpkTable9": []
+      },
+      "details": {
+        "eik": "202694924"
+      }
+    },
+    {
+      "id": "eik:813087785",
+      "label": "ПЛАНЕКС ЕООД",
+      "type": "company",
+      "cluster": "JUDICIAL_CONCENTRATION",
+      "allClusters": [
+        "JUDICIAL_CONCENTRATION"
+      ],
+      "subLabel": "Свързано дружество (Скрити ДЗЗД) · ЕИК 813087785",
+      "eik": "813087785",
+      "amountEur": 12715309.97,
+      "riskScore": 86,
+      "degree": 2,
+      "betweenness": 52,
+      "pageRank": 13,
+      "centralityScore": 37,
+      "componentId": 4,
+      "componentSize": 203,
+      "badges": [
+        "Скрити ДЗЗД консорциуми",
+        "Свързано с публично лице (КПК)",
+        "ДЗЗД Детска болница Бургас (€36,01 млн., 4 анекса)",
+        "ТР управител: Полина Христова Николова"
+      ],
+      "financialLayer": {
+        "directContractsCount": 0,
+        "directContractsEur": 12715309.97,
+        "dzzdCount": 0,
+        "dzzdEur": 61538251.41,
+        "annex116Count": 4,
+        "primaryUnps": [
+          "00797-2023-0006"
+        ]
+      },
+      "corporateLayer": {
+        "eik": "813087785",
+        "zmipOwners": [],
+        "trRelatedEntities": [
+          "Христо Атанасов Димитров"
+        ],
+        "sharedManagers": [
+          "Полина Христова Николова"
+        ]
+      },
+      "intermediaryLayer": {
+        "lawFirms": [],
+        "legalProcurementEur": 0,
+        "j3HubReferences": []
+      },
+      "judicialLayer": {
+        "eissCases": [],
+        "fdrQ001Count": 0,
+        "kzkVasActs": [],
+        "kpkTable9": []
+      },
+      "details": {
+        "eik": "813087785"
+      }
+    },
+    {
       "id": "company:DZZD_ДЗЗД_РОУД_ПРОДЖЕКТ",
       "label": "ДЗЗД \"РОУД ПРОДЖЕКТ\"",
       "type": "company",
@@ -6071,7 +6260,7 @@
       "pageRank": 11,
       "centralityScore": 37,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мега-консорциум (ДЗЗД)",
         "Обем €78.9 млн."
@@ -6106,6 +6295,63 @@
       "details": {
         "fullConsortium": "ДЗЗД \"РОУД ПРОДЖЕКТ\"; ХИДРОСТРОЙ АД; ТРАНССТРОЙ - ВАРНА АД",
         "wonEur": 78857543.86
+      }
+    },
+    {
+      "id": "case:АПЕЛАТИВЕН_СЪД_СОФИЯ_ВТД_544_2026",
+      "label": "ВТД № 544/2026 (Апелативен съд - София)",
+      "type": "case",
+      "cluster": "JUDICIAL_CONCENTRATION",
+      "allClusters": [
+        "JUDICIAL_CONCENTRATION"
+      ],
+      "subLabel": "Решение № 421 · 2026-09-03",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 72,
+      "degree": 4,
+      "betweenness": 25,
+      "pageRank": 37,
+      "centralityScore": 37,
+      "componentId": 18,
+      "componentSize": 5,
+      "badges": [
+        "ЕИСС Търговско дело",
+        "Ответник (Съден от изпълнител)"
+      ],
+      "financialLayer": {
+        "directContractsCount": 0,
+        "directContractsEur": 0,
+        "dzzdCount": 0,
+        "dzzdEur": 0,
+        "annex116Count": 0,
+        "primaryUnps": []
+      },
+      "corporateLayer": {
+        "eik": "",
+        "zmipOwners": [],
+        "trRelatedEntities": [],
+        "sharedManagers": []
+      },
+      "intermediaryLayer": {
+        "lawFirms": [],
+        "legalProcurementEur": 0,
+        "j3HubReferences": []
+      },
+      "judicialLayer": {
+        "eissCases": [
+          "Апелативен съд - София ВТД № 544/2026"
+        ],
+        "fdrQ001Count": 0,
+        "kzkVasActs": [],
+        "kpkTable9": []
+      },
+      "details": {
+        "court": "Апелативен съд - София",
+        "caseNo": "ВТД № 544/2026",
+        "actNo": "Решение № 421",
+        "actDate": "2026-09-03",
+        "caseUrl": "https://ecase.justice.bg/Case/CaseDetail/d631ccf8-d70d-412f-8b26-4010122822f4"
       }
     },
     {
@@ -6224,6 +6470,67 @@
       }
     },
     {
+      "id": "case:ОКРЪЖЕН_СЪД_ТЪРГОВИЩЕ_ТД_46_2026",
+      "label": "ТД № 46/2026 (Окръжен съд - Търговище)",
+      "type": "case",
+      "cluster": "ROAD_SECTOR",
+      "allClusters": [
+        "ROAD_SECTOR"
+      ],
+      "subLabel": "Решение № 62 · 2026-10-12",
+      "eik": "",
+      "amountEur": 0,
+      "riskScore": 82,
+      "degree": 3,
+      "betweenness": 40,
+      "pageRank": 15,
+      "centralityScore": 36,
+      "componentId": 4,
+      "componentSize": 203,
+      "badges": [
+        "ЕИСС Търговско дело",
+        "Ответник (Съден от изпълнител)"
+      ],
+      "financialLayer": {
+        "directContractsCount": 0,
+        "directContractsEur": 0,
+        "dzzdCount": 0,
+        "dzzdEur": 0,
+        "annex116Count": 0,
+        "primaryUnps": []
+      },
+      "corporateLayer": {
+        "eik": "",
+        "zmipOwners": [],
+        "trRelatedEntities": [],
+        "sharedManagers": []
+      },
+      "intermediaryLayer": {
+        "lawFirms": [
+          "Адвокат: И.И.И",
+          "Адвокат: Д.А.М",
+          "Адвокат: Р.К.М"
+        ],
+        "legalProcurementEur": 0,
+        "j3HubReferences": []
+      },
+      "judicialLayer": {
+        "eissCases": [
+          "Окръжен съд - Търговище ТД № 46/2026"
+        ],
+        "fdrQ001Count": 0,
+        "kzkVasActs": [],
+        "kpkTable9": []
+      },
+      "details": {
+        "court": "Окръжен съд - Търговище",
+        "caseNo": "ТД № 46/2026",
+        "actNo": "Решение № 62",
+        "actDate": "2026-10-12",
+        "caseUrl": "https://ecase.justice.bg/Case/CaseDetail/5c8760a5-1d9d-44b8-b421-78e03e96319d"
+      }
+    },
+    {
       "id": "judge:АНДРЕЙ_КРАСИМИРОВ_ГЕОРГИЕВ",
       "label": "АНДРЕЙ КРАСИМИРОВ ГЕОРГИЕВ",
       "type": "judge",
@@ -6240,7 +6547,7 @@
       "pageRank": 12,
       "centralityScore": 35,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ИВСС НП № 16/2018 (чл. 175а ЗСВ)",
         "Ниво 4 · Съдия по мост ЕИСС × КПК"
@@ -6296,7 +6603,7 @@
       "pageRank": 11,
       "centralityScore": 35,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мега-консорциум (ДЗЗД)",
         "Обем €101.8 млн."
@@ -6331,67 +6638,6 @@
       "details": {
         "fullConsortium": "БКС ЕООД; ЕТЕРНА КЪНСТРЪКШЪН АД; Грома Холд ЕООД; ПЪТНО ПОДДЪРЖАНЕ ОБЛАСТ БЛАГОЕВГРАД 2023",
         "wonEur": 101823794.12
-      }
-    },
-    {
-      "id": "case:ОКРЪЖЕН_СЪД_ТЪРГОВИЩЕ_ТД_46_2026",
-      "label": "ТД № 46/2026 (Окръжен съд - Търговище)",
-      "type": "case",
-      "cluster": "ROAD_SECTOR",
-      "allClusters": [
-        "ROAD_SECTOR"
-      ],
-      "subLabel": "Решение № 62 · 2026-10-12",
-      "eik": "",
-      "amountEur": 0,
-      "riskScore": 82,
-      "degree": 3,
-      "betweenness": 40,
-      "pageRank": 15,
-      "centralityScore": 35,
-      "componentId": 4,
-      "componentSize": 199,
-      "badges": [
-        "ЕИСС Търговско дело",
-        "Ответник (Съден от изпълнител)"
-      ],
-      "financialLayer": {
-        "directContractsCount": 0,
-        "directContractsEur": 0,
-        "dzzdCount": 0,
-        "dzzdEur": 0,
-        "annex116Count": 0,
-        "primaryUnps": []
-      },
-      "corporateLayer": {
-        "eik": "",
-        "zmipOwners": [],
-        "trRelatedEntities": [],
-        "sharedManagers": []
-      },
-      "intermediaryLayer": {
-        "lawFirms": [
-          "Адвокат: И.И.И",
-          "Адвокат: Д.А.М",
-          "Адвокат: Р.К.М"
-        ],
-        "legalProcurementEur": 0,
-        "j3HubReferences": []
-      },
-      "judicialLayer": {
-        "eissCases": [
-          "Окръжен съд - Търговище ТД № 46/2026"
-        ],
-        "fdrQ001Count": 0,
-        "kzkVasActs": [],
-        "kpkTable9": []
-      },
-      "details": {
-        "court": "Окръжен съд - Търговище",
-        "caseNo": "ТД № 46/2026",
-        "actNo": "Решение № 62",
-        "actDate": "2026-10-12",
-        "caseUrl": "https://ecase.justice.bg/Case/CaseDetail/5c8760a5-1d9d-44b8-b421-78e03e96319d"
       }
     },
     {
@@ -6575,7 +6821,7 @@
       "pageRank": 15,
       "centralityScore": 34,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Участник в мега-консорциум",
         "Корпоративен участник"
@@ -7240,7 +7486,7 @@
       "pageRank": 10,
       "centralityScore": 32,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Холдинг-майка (ТРРЮЛНЦ)",
         "Капиталова верига"
@@ -7298,7 +7544,7 @@
       "pageRank": 12,
       "centralityScore": 32,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ИВСС чл. 175а ЗСВ",
         "Списъци НП и неподали в срок"
@@ -7345,11 +7591,11 @@
       "amountEur": 127054.48,
       "riskScore": 74,
       "degree": 2,
-      "betweenness": 42,
+      "betweenness": 41,
       "pageRank": 11,
       "centralityScore": 32,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Участник в мега-консорциум",
         "Корпоративен участник"
@@ -7400,7 +7646,7 @@
       "betweenness": 19,
       "pageRank": 30,
       "centralityScore": 31,
-      "componentId": 77,
+      "componentId": 76,
       "componentSize": 4,
       "badges": [
         "Картелно редуване 100%",
@@ -7453,7 +7699,7 @@
       "betweenness": 19,
       "pageRank": 30,
       "centralityScore": 31,
-      "componentId": 79,
+      "componentId": 78,
       "componentSize": 4,
       "badges": [
         "Картелно редуване 100%",
@@ -7503,11 +7749,11 @@
       "amountEur": 912621215.01,
       "riskScore": 92,
       "degree": 2,
-      "betweenness": 39,
+      "betweenness": 40,
       "pageRank": 10,
       "centralityScore": 31,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Скрити ДЗЗД (КПК × ЦАИС)",
         "ДЗЗД €912.6 млн."
@@ -7615,7 +7861,7 @@
       "betweenness": 19,
       "pageRank": 30,
       "centralityScore": 31,
-      "componentId": 84,
+      "componentId": 83,
       "componentSize": 4,
       "badges": [
         "ЗЗНН Държавен резерв",
@@ -8825,7 +9071,7 @@
       "pageRank": 15,
       "centralityScore": 26,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Действителен собственик (ЗМИП чл. 63)",
         "Холдингова верига",
@@ -9067,7 +9313,7 @@
       "pageRank": 11,
       "centralityScore": 25,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мулти-клъстерен мост",
         "Свързана фирма по ТР",
@@ -9541,7 +9787,7 @@
       "betweenness": 11,
       "pageRank": 22,
       "centralityScore": 22,
-      "componentId": 78,
+      "componentId": 77,
       "componentSize": 3,
       "badges": [
         "Картелно редуване 100%",
@@ -9595,7 +9841,7 @@
       "pageRank": 15,
       "centralityScore": 22,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС концентрация (FDR q < 0,01)",
         "Кратност ×5.1",
@@ -9719,7 +9965,7 @@
       "pageRank": 15,
       "centralityScore": 22,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Чл. 49 ЗПК · Собствена институция"
       ],
@@ -9869,60 +10115,6 @@
       },
       "details": {
         "court": "Районен съд - Разлог"
-      }
-    },
-    {
-      "id": "off:ХРИСТО_АТАНАСОВ_ДИМИТРОВ",
-      "label": "Христо Атанасов Димитров",
-      "type": "official",
-      "cluster": "MUNICIPAL_AFFILIATION",
-      "allClusters": [
-        "MUNICIPAL_AFFILIATION"
-      ],
-      "subLabel": "Община / ОбС Варна · €61.5 млн. скрити ДЗЗД",
-      "eik": "",
-      "amountEur": 61538251.41,
-      "riskScore": 85,
-      "degree": 2,
-      "betweenness": 11,
-      "pageRank": 22,
-      "centralityScore": 22,
-      "componentId": 70,
-      "componentSize": 3,
-      "badges": [
-        "Скрити ДЗЗД (КПК × ЦАИС)",
-        "ДЗЗД €61.5 млн."
-      ],
-      "financialLayer": {
-        "directContractsCount": 0,
-        "directContractsEur": 61538251.41,
-        "dzzdCount": 2,
-        "dzzdEur": 61538251.41,
-        "annex116Count": 0,
-        "primaryUnps": []
-      },
-      "corporateLayer": {
-        "eik": "",
-        "zmipOwners": [],
-        "trRelatedEntities": [],
-        "sharedManagers": []
-      },
-      "intermediaryLayer": {
-        "lawFirms": [],
-        "legalProcurementEur": 0,
-        "j3HubReferences": []
-      },
-      "judicialLayer": {
-        "eissCases": [],
-        "fdrQ001Count": 0,
-        "kzkVasActs": [],
-        "kpkTable9": [
-          "КПК / СИГМА 2.0 · Община / ОбС Варна"
-        ]
-      },
-      "details": {
-        "institution": "Община / ОбС Варна",
-        "hiddenConsortiumEur": 61538251.41
       }
     },
     {
@@ -10543,7 +10735,7 @@
       "pageRank": 15,
       "centralityScore": 22,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Декларирана фирма в ТР"
       ],
@@ -10602,7 +10794,7 @@
       "pageRank": 15,
       "centralityScore": 22,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Декларирана фирма в ТР"
       ],
@@ -10862,7 +11054,7 @@
       "pageRank": 7,
       "centralityScore": 20,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Мулти-клъстерен мост",
         "Ниво 4 · Декларация КПК × ЕИСС",
@@ -10905,6 +11097,57 @@
       }
     },
     {
+      "id": "eik:000056814",
+      "label": "ОБЩИНА БУРГАС",
+      "type": "authority",
+      "cluster": "MUNICIPAL_AFFILIATION",
+      "allClusters": [
+        "MUNICIPAL_AFFILIATION"
+      ],
+      "subLabel": "Възложител · ЕИК 000056814",
+      "eik": "000056814",
+      "amountEur": 448093633.46,
+      "riskScore": 76,
+      "degree": 2,
+      "betweenness": 7,
+      "pageRank": 14,
+      "centralityScore": 19,
+      "componentId": 4,
+      "componentSize": 203,
+      "badges": [
+        "Публичен възложител",
+        "УНП 00797-2023-0006"
+      ],
+      "financialLayer": {
+        "directContractsCount": 0,
+        "directContractsEur": 448093633.46,
+        "dzzdCount": 0,
+        "dzzdEur": 0,
+        "annex116Count": 0,
+        "primaryUnps": []
+      },
+      "corporateLayer": {
+        "eik": "000056814",
+        "zmipOwners": [],
+        "trRelatedEntities": [],
+        "sharedManagers": []
+      },
+      "intermediaryLayer": {
+        "lawFirms": [],
+        "legalProcurementEur": 0,
+        "j3HubReferences": []
+      },
+      "judicialLayer": {
+        "eissCases": [],
+        "fdrQ001Count": 0,
+        "kzkVasActs": [],
+        "kpkTable9": []
+      },
+      "details": {
+        "eik": "000056814"
+      }
+    },
+    {
       "id": "judge:МИЛЕН_ИВАНОВ_СТОЙЧЕВ",
       "label": "МИЛЕН ИВАНОВ СТОЙЧЕВ",
       "type": "judge",
@@ -10921,7 +11164,7 @@
       "pageRank": 11,
       "centralityScore": 18,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Съдия по търговско дело (ЕИСС)"
       ],
@@ -11978,7 +12221,7 @@
       "pageRank": 13,
       "centralityScore": 16,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Голям изпълнител по ЗОП",
         "ЕИСС търговски спор"
@@ -13007,60 +13250,6 @@
       }
     },
     {
-      "id": "eik:000093442",
-      "label": "ОБЩИНА ВАРНА",
-      "type": "authority",
-      "cluster": "ROAD_SECTOR",
-      "allClusters": [
-        "ROAD_SECTOR"
-      ],
-      "subLabel": "Възложител · ЕИК 000093442",
-      "eik": "000093442",
-      "amountEur": 411134613.86,
-      "riskScore": 76,
-      "degree": 2,
-      "betweenness": 0,
-      "pageRank": 12,
-      "centralityScore": 16,
-      "componentId": 4,
-      "componentSize": 199,
-      "badges": [
-        "Държавен / публичен възложител",
-        "ЕИСС търговски спор"
-      ],
-      "financialLayer": {
-        "directContractsCount": 8,
-        "directContractsEur": 411134613.86,
-        "dzzdCount": 0,
-        "dzzdEur": 0,
-        "annex116Count": 0,
-        "primaryUnps": []
-      },
-      "corporateLayer": {
-        "eik": "000093442",
-        "zmipOwners": [],
-        "trRelatedEntities": [],
-        "sharedManagers": []
-      },
-      "intermediaryLayer": {
-        "lawFirms": [],
-        "legalProcurementEur": 0,
-        "j3HubReferences": []
-      },
-      "judicialLayer": {
-        "eissCases": [
-          "Окръжен съд - Варна ТД № 58/2026"
-        ],
-        "fdrQ001Count": 0,
-        "kzkVasActs": [],
-        "kpkTable9": []
-      },
-      "details": {
-        "eik": "000093442",
-        "court": "Окръжен съд - Варна"
-      }
-    },
-    {
       "id": "eik:000471059",
       "label": "ОБЩИНА АСЕНОВГРАД",
       "type": "authority",
@@ -13077,7 +13266,7 @@
       "pageRank": 13,
       "centralityScore": 16,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Държавен / публичен възложител",
         "ЕИСС търговски спор"
@@ -13131,7 +13320,7 @@
       "pageRank": 13,
       "centralityScore": 16,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Държавен / публичен възложител",
         "ЕИСС търговски спор"
@@ -13709,7 +13898,7 @@
       "pageRank": 12,
       "centralityScore": 16,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Държавен / публичен възложител",
         "ЕИСС търговски спор"
@@ -13979,7 +14168,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС концентрация (FDR q < 0,01)",
         "Кратност ×6.9"
@@ -14043,7 +14232,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС концентрация (FDR q < 0,01)",
         "Кратност ×7.3",
@@ -14108,7 +14297,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС концентрация (FDR q < 0,01)",
         "Кратност ×3.8"
@@ -14172,7 +14361,7 @@
       "pageRank": 12,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС концентрация (FDR q < 0,01)",
         "Кратност ×5.6"
@@ -14236,7 +14425,7 @@
       "pageRank": 12,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Чл. 49 ЗПК · Собствена институция"
       ],
@@ -14410,7 +14599,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Чл. 49 ЗПК · Собствена институция"
       ],
@@ -14700,7 +14889,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Свързана фирма по ТР",
         "Изпълнител по ЗОП"
@@ -14758,7 +14947,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Свързана фирма по ТР",
         "Изпълнител по ЗОП"
@@ -14816,7 +15005,7 @@
       "pageRank": 12,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Свързана фирма по ТР",
         "Изпълнител по ЗОП"
@@ -14990,7 +15179,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Свързана фирма по ТР",
         "Изпълнител по ЗОП"
@@ -15164,7 +15353,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС RED (FDR q < 0,01)",
         "×4.9"
@@ -15222,7 +15411,7 @@
       "pageRank": 10,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС RED (FDR q < 0,01)",
         "×9.8"
@@ -15280,7 +15469,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС RED (FDR q < 0,01)",
         "×6.9"
@@ -15338,7 +15527,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС RED (FDR q < 0,01)",
         "×5.1"
@@ -15396,7 +15585,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС RED (FDR q < 0,01)",
         "×7.3"
@@ -15454,7 +15643,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС RED (FDR q < 0,01)",
         "×3.8"
@@ -15512,7 +15701,7 @@
       "pageRank": 10,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС RED (FDR q < 0,01)",
         "×4.8"
@@ -15570,7 +15759,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС RED (FDR q < 0,01)",
         "×6.7"
@@ -15628,7 +15817,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС RED (FDR q < 0,01)",
         "×5.0"
@@ -15686,7 +15875,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС RED (FDR q < 0,01)",
         "×7.5"
@@ -15744,7 +15933,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС RED (FDR q < 0,01)",
         "×9.1"
@@ -15802,7 +15991,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС RED (FDR q < 0,01)",
         "×5.4"
@@ -15860,7 +16049,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС RED (FDR q < 0,01)",
         "×7.3"
@@ -15918,7 +16107,7 @@
       "pageRank": 12,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕИСС RED (FDR q < 0,01)",
         "×5.6"
@@ -15976,7 +16165,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Свързана фирма по ТР",
         "Изпълнител по ЗОП",
@@ -16036,7 +16225,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Декларирана фирма в ТР",
         "ЕРИК Дарител (Сметна палата)",
@@ -16100,7 +16289,7 @@
       "pageRank": 10,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Държавен / публичен възложител",
         "ЕИСС търговски спор"
@@ -16154,7 +16343,7 @@
       "pageRank": 10,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Декларирана фирма в ТР"
       ],
@@ -16212,7 +16401,7 @@
       "pageRank": 12,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Декларирана фирма в ТР"
       ],
@@ -16270,7 +16459,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Декларирана фирма в ТР"
       ],
@@ -16386,7 +16575,7 @@
       "pageRank": 12,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Декларирана фирма в ТР"
       ],
@@ -16444,7 +16633,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Декларирана фирма в ТР"
       ],
@@ -16502,7 +16691,7 @@
       "pageRank": 12,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Декларирана фирма в ТР"
       ],
@@ -16850,7 +17039,7 @@
       "pageRank": 12,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Декларирана фирма в ТР"
       ],
@@ -16966,7 +17155,7 @@
       "pageRank": 12,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Декларирана фирма в ТР"
       ],
@@ -17024,7 +17213,7 @@
       "pageRank": 10,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Свързана фирма по ТР",
         "Изпълнител по ЗОП"
@@ -17082,7 +17271,7 @@
       "pageRank": 12,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Свързана фирма по ТР",
         "Изпълнител по ЗОП"
@@ -17140,7 +17329,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Свързана фирма по ТР",
         "Изпълнител по ЗОП"
@@ -17430,7 +17619,7 @@
       "pageRank": 12,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Свързана фирма по ТР",
         "Изпълнител по ЗОП"
@@ -17488,7 +17677,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Свързана фирма по ТР",
         "Изпълнител по ЗОП"
@@ -17546,7 +17735,7 @@
       "pageRank": 12,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Свързана фирма по ТР",
         "Изпълнител по ЗОП"
@@ -17604,7 +17793,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Свързана фирма по ТР",
         "Изпълнител по ЗОП"
@@ -17662,7 +17851,7 @@
       "pageRank": 11,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Свързана фирма по ТР",
         "Изпълнител по ЗОП"
@@ -17952,7 +18141,7 @@
       "pageRank": 10,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Свързана фирма по ТР",
         "Изпълнител по ЗОП"
@@ -18010,7 +18199,7 @@
       "pageRank": 10,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Свързана фирма по ТР",
         "Изпълнител по ЗОП"
@@ -18126,7 +18315,7 @@
       "pageRank": 12,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Свързана фирма по ТР",
         "Изпълнител по ЗОП"
@@ -18242,7 +18431,7 @@
       "pageRank": 12,
       "centralityScore": 15,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Свързана фирма по ТР",
         "Изпълнител по ЗОП"
@@ -18353,7 +18542,7 @@
       "betweenness": 0,
       "pageRank": 15,
       "centralityScore": 12,
-      "componentId": 82,
+      "componentId": 81,
       "componentSize": 2,
       "badges": [
         "МВР ЗЧОД: Отнет лиценз",
@@ -18409,7 +18598,7 @@
       "betweenness": 0,
       "pageRank": 15,
       "centralityScore": 12,
-      "componentId": 83,
+      "componentId": 82,
       "componentSize": 2,
       "badges": [
         "МВР ЗЧОД: Отнет лиценз",
@@ -18465,7 +18654,7 @@
       "betweenness": 0,
       "pageRank": 15,
       "centralityScore": 12,
-      "componentId": 75,
+      "componentId": 74,
       "componentSize": 2,
       "badges": [
         "ЕРИК Дарител (Сметна палата)",
@@ -19001,7 +19190,7 @@
       "betweenness": 0,
       "pageRank": 15,
       "centralityScore": 12,
-      "componentId": 80,
+      "componentId": 79,
       "componentSize": 2,
       "badges": [
         "Engine 3 · Нарязване под праг",
@@ -19052,7 +19241,7 @@
       "betweenness": 0,
       "pageRank": 15,
       "centralityScore": 12,
-      "componentId": 81,
+      "componentId": 80,
       "componentSize": 2,
       "badges": [
         "Engine 3 · Нарязване под праг",
@@ -19392,7 +19581,7 @@
       "betweenness": 0,
       "pageRank": 15,
       "centralityScore": 12,
-      "componentId": 71,
+      "componentId": 70,
       "componentSize": 2,
       "badges": [
         "Скрити ДЗЗД (КПК × ЦАИС)",
@@ -19446,7 +19635,7 @@
       "betweenness": 0,
       "pageRank": 15,
       "centralityScore": 12,
-      "componentId": 72,
+      "componentId": 71,
       "componentSize": 2,
       "badges": [
         "Скрити ДЗЗД (КПК × ЦАИС)",
@@ -19500,7 +19689,7 @@
       "betweenness": 0,
       "pageRank": 15,
       "centralityScore": 12,
-      "componentId": 73,
+      "componentId": 72,
       "componentSize": 2,
       "badges": [
         "Скрити ДЗЗД (КПК × ЦАИС)",
@@ -19554,7 +19743,7 @@
       "betweenness": 0,
       "pageRank": 15,
       "centralityScore": 12,
-      "componentId": 74,
+      "componentId": 73,
       "componentSize": 2,
       "badges": [
         "ЕРИК Дарител (Сметна палата)",
@@ -19612,7 +19801,7 @@
       "betweenness": 0,
       "pageRank": 15,
       "centralityScore": 12,
-      "componentId": 80,
+      "componentId": 79,
       "componentSize": 2,
       "badges": [
         "Engine 3 · Нарязване под праг",
@@ -19663,7 +19852,7 @@
       "betweenness": 0,
       "pageRank": 15,
       "centralityScore": 12,
-      "componentId": 81,
+      "componentId": 80,
       "componentSize": 2,
       "badges": [
         "Engine 3 · Нарязване под праг",
@@ -19768,7 +19957,7 @@
       "betweenness": 0,
       "pageRank": 15,
       "centralityScore": 12,
-      "componentId": 75,
+      "componentId": 74,
       "componentSize": 2,
       "badges": [
         "Връзка с партиен дарител (ЕРИК)"
@@ -19820,7 +20009,7 @@
       "betweenness": 0,
       "pageRank": 15,
       "centralityScore": 12,
-      "componentId": 76,
+      "componentId": 75,
       "componentSize": 2,
       "badges": [
         "Връзка с партиен дарител (ЕРИК)"
@@ -19872,7 +20061,7 @@
       "betweenness": 0,
       "pageRank": 15,
       "centralityScore": 12,
-      "componentId": 74,
+      "componentId": 73,
       "componentSize": 2,
       "badges": [
         "Връзка с партиен дарител (ЕРИК)"
@@ -19924,7 +20113,7 @@
       "betweenness": 0,
       "pageRank": 15,
       "centralityScore": 12,
-      "componentId": 82,
+      "componentId": 81,
       "componentSize": 2,
       "badges": [
         "МВР ЗЧОД аномалия",
@@ -19976,7 +20165,7 @@
       "betweenness": 0,
       "pageRank": 15,
       "centralityScore": 12,
-      "componentId": 83,
+      "componentId": 82,
       "componentSize": 2,
       "badges": [
         "МВР ЗЧОД аномалия",
@@ -20028,7 +20217,7 @@
       "betweenness": 0,
       "pageRank": 15,
       "centralityScore": 12,
-      "componentId": 76,
+      "componentId": 75,
       "componentSize": 2,
       "badges": [
         "ЕРИК Дарител (Сметна палата)",
@@ -20083,7 +20272,7 @@
       "betweenness": 0,
       "pageRank": 15,
       "centralityScore": 12,
-      "componentId": 71,
+      "componentId": 70,
       "componentSize": 2,
       "badges": [
         "Скрити ДЗЗД консорциуми",
@@ -20189,7 +20378,7 @@
       "betweenness": 0,
       "pageRank": 15,
       "centralityScore": 12,
-      "componentId": 72,
+      "componentId": 71,
       "componentSize": 2,
       "badges": [
         "Скрити ДЗЗД консорциуми",
@@ -20242,7 +20431,7 @@
       "betweenness": 0,
       "pageRank": 15,
       "centralityScore": 12,
-      "componentId": 73,
+      "componentId": 72,
       "componentSize": 2,
       "badges": [
         "Скрити ДЗЗД консорциуми",
@@ -21830,7 +22019,7 @@
       "betweenness": 0,
       "pageRank": 12,
       "centralityScore": 11,
-      "componentId": 78,
+      "componentId": 77,
       "componentSize": 3,
       "badges": [
         "Engine 6 · Картелна ротация",
@@ -21941,7 +22130,7 @@
       "betweenness": 0,
       "pageRank": 11,
       "centralityScore": 11,
-      "componentId": 77,
+      "componentId": 76,
       "componentSize": 4,
       "badges": [
         "Engine 6 · Картелна ротация",
@@ -21992,7 +22181,7 @@
       "betweenness": 0,
       "pageRank": 11,
       "centralityScore": 11,
-      "componentId": 77,
+      "componentId": 76,
       "componentSize": 4,
       "badges": [
         "Engine 6 · Картелна ротация",
@@ -22043,7 +22232,7 @@
       "betweenness": 0,
       "pageRank": 11,
       "centralityScore": 11,
-      "componentId": 77,
+      "componentId": 76,
       "componentSize": 4,
       "badges": [
         "Engine 6 · Картелна ротация",
@@ -22094,7 +22283,7 @@
       "betweenness": 0,
       "pageRank": 12,
       "centralityScore": 11,
-      "componentId": 78,
+      "componentId": 77,
       "componentSize": 3,
       "badges": [
         "Engine 6 · Картелна ротация",
@@ -22145,7 +22334,7 @@
       "betweenness": 0,
       "pageRank": 11,
       "centralityScore": 11,
-      "componentId": 79,
+      "componentId": 78,
       "componentSize": 4,
       "badges": [
         "Engine 6 · Картелна ротация",
@@ -22256,7 +22445,7 @@
       "betweenness": 0,
       "pageRank": 11,
       "centralityScore": 11,
-      "componentId": 79,
+      "componentId": 78,
       "componentSize": 4,
       "badges": [
         "Engine 6 · Картелна ротация",
@@ -22307,7 +22496,7 @@
       "betweenness": 0,
       "pageRank": 11,
       "centralityScore": 11,
-      "componentId": 79,
+      "componentId": 78,
       "componentSize": 4,
       "badges": [
         "Engine 6 · Картелна ротация",
@@ -22534,7 +22723,7 @@
       "betweenness": 0,
       "pageRank": 11,
       "centralityScore": 11,
-      "componentId": 84,
+      "componentId": 83,
       "componentSize": 4,
       "badges": [
         "Държавен резерв (ЗЗНН)",
@@ -22586,7 +22775,7 @@
       "betweenness": 0,
       "pageRank": 11,
       "centralityScore": 11,
-      "componentId": 84,
+      "componentId": 83,
       "componentSize": 4,
       "badges": [
         "Държавен резерв (ЗЗНН)",
@@ -22911,7 +23100,7 @@
       "betweenness": 0,
       "pageRank": 11,
       "centralityScore": 11,
-      "componentId": 84,
+      "componentId": 83,
       "componentSize": 4,
       "badges": [
         "Държавен резерв (ЗЗНН)",
@@ -22945,112 +23134,6 @@
       "details": {
         "eik": "115624227",
         "zznnPeriod": "чл. 23, ал. 2 и ал. 3 (01.07.2026 - 30.06.2027)"
-      }
-    },
-    {
-      "id": "eik:813087785",
-      "label": "ПЛАНЕКС ЕООД",
-      "type": "company",
-      "cluster": "JUDICIAL_CONCENTRATION",
-      "allClusters": [
-        "JUDICIAL_CONCENTRATION"
-      ],
-      "subLabel": "Свързано дружество (Скрити ДЗЗД) · ЕИК 813087785",
-      "eik": "813087785",
-      "amountEur": 12715309.97,
-      "riskScore": 80,
-      "degree": 1,
-      "betweenness": 0,
-      "pageRank": 12,
-      "centralityScore": 11,
-      "componentId": 70,
-      "componentSize": 3,
-      "badges": [
-        "Скрити ДЗЗД консорциуми",
-        "Свързано с публично лице (КПК)"
-      ],
-      "financialLayer": {
-        "directContractsCount": 0,
-        "directContractsEur": 12715309.97,
-        "dzzdCount": 0,
-        "dzzdEur": 61538251.41,
-        "annex116Count": 0,
-        "primaryUnps": []
-      },
-      "corporateLayer": {
-        "eik": "813087785",
-        "zmipOwners": [],
-        "trRelatedEntities": [
-          "Христо Атанасов Димитров"
-        ],
-        "sharedManagers": []
-      },
-      "intermediaryLayer": {
-        "lawFirms": [],
-        "legalProcurementEur": 0,
-        "j3HubReferences": []
-      },
-      "judicialLayer": {
-        "eissCases": [],
-        "fdrQ001Count": 0,
-        "kzkVasActs": [],
-        "kpkTable9": []
-      },
-      "details": {
-        "eik": "813087785"
-      }
-    },
-    {
-      "id": "eik:202694924",
-      "label": "ПЛАНЕКС ИНФРАСТРУКТУРА ЕООД",
-      "type": "company",
-      "cluster": "JUDICIAL_CONCENTRATION",
-      "allClusters": [
-        "JUDICIAL_CONCENTRATION"
-      ],
-      "subLabel": "Свързано дружество (Скрити ДЗЗД) · ЕИК 202694924",
-      "eik": "202694924",
-      "amountEur": 12715309.97,
-      "riskScore": 80,
-      "degree": 1,
-      "betweenness": 0,
-      "pageRank": 12,
-      "centralityScore": 11,
-      "componentId": 70,
-      "componentSize": 3,
-      "badges": [
-        "Скрити ДЗЗД консорциуми",
-        "Свързано с публично лице (КПК)"
-      ],
-      "financialLayer": {
-        "directContractsCount": 0,
-        "directContractsEur": 12715309.97,
-        "dzzdCount": 0,
-        "dzzdEur": 61538251.41,
-        "annex116Count": 0,
-        "primaryUnps": []
-      },
-      "corporateLayer": {
-        "eik": "202694924",
-        "zmipOwners": [],
-        "trRelatedEntities": [
-          "Христо Атанасов Димитров"
-        ],
-        "sharedManagers": []
-      },
-      "intermediaryLayer": {
-        "lawFirms": [],
-        "legalProcurementEur": 0,
-        "j3HubReferences": []
-      },
-      "judicialLayer": {
-        "eissCases": [],
-        "fdrQ001Count": 0,
-        "kzkVasActs": [],
-        "kpkTable9": []
-      },
-      "details": {
-        "eik": "202694924"
       }
     },
     {
@@ -25526,7 +25609,7 @@
       "pageRank": 8,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ТР: В несъстоятелност",
         "Феникс-верига (Module 5)"
@@ -25580,7 +25663,7 @@
       "pageRank": 7,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Действителен собственик (ЗМИП чл. 63)",
         "Мега-консорциум"
@@ -25641,7 +25724,7 @@
       "pageRank": 7,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Действителен собственик (ЗМИП чл. 63)",
         "Мега-консорциум"
@@ -25701,7 +25784,7 @@
       "pageRank": 7,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Действителен собственик (ЗМИП чл. 63)",
         "Мега-консорциум"
@@ -25760,7 +25843,7 @@
       "pageRank": 7,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Действителен собственик (ЗМИП чл. 63)",
         "Мега-консорциум"
@@ -25821,7 +25904,7 @@
       "pageRank": 7,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Действителен собственик (ЗМИП чл. 63)",
         "Мега-консорциум"
@@ -25884,7 +25967,7 @@
       "pageRank": 8,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Действителен собственик (ЗМИП чл. 63)",
         "Мега-консорциум"
@@ -25943,7 +26026,7 @@
       "pageRank": 8,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Действителен собственик (ЗМИП чл. 63)",
         "Мега-консорциум"
@@ -26002,7 +26085,7 @@
       "pageRank": 8,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Действителен собственик (ЗМИП чл. 63)",
         "Мега-консорциум"
@@ -26061,7 +26144,7 @@
       "pageRank": 8,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Действителен собственик (ЗМИП чл. 63)",
         "Мега-консорциум"
@@ -26120,7 +26203,7 @@
       "pageRank": 8,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Действителен собственик (ЗМИП чл. 63)",
         "Мега-консорциум"
@@ -26179,7 +26262,7 @@
       "pageRank": 7,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Собственик (ТРРЮЛНЦ Live)",
         "Крос-регистрова верига"
@@ -26237,7 +26320,7 @@
       "pageRank": 7,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Собственик (ТРРЮЛНЦ Live)",
         "Крос-регистрова верига"
@@ -26347,7 +26430,7 @@
       "pageRank": 8,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Ниво 4 · Съдия по мост ЕИСС × КПК"
       ],
@@ -26399,7 +26482,7 @@
       "pageRank": 7,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Ниво 4 · Съдия по мост ЕИСС × КПК"
       ],
@@ -26451,7 +26534,7 @@
       "pageRank": 7,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Ниво 4 · Съдия по мост ЕИСС × КПК"
       ],
@@ -26562,7 +26645,7 @@
       "pageRank": 9,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "€53,45 млн. общо (ЗОП + ДЗЗД)",
         "4 съвместни ДЗЗД с Нивел Строй",
@@ -26725,7 +26808,7 @@
       "pageRank": 8,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Действителен собственик (ЗМИП чл. 63)",
         "Мега-консорциум",
@@ -26888,7 +26971,7 @@
       "pageRank": 7,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Действителен собственик (ЗМИП чл. 63)",
         "Мега-консорциум"
@@ -26947,7 +27030,7 @@
       "pageRank": 9,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Действителен собственик (ЗМИП чл. 63)",
         "Мега-консорциум"
@@ -27006,7 +27089,7 @@
       "pageRank": 7,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Собственик (ТРРЮЛНЦ Live)",
         "Крос-регистрова верига"
@@ -27064,7 +27147,7 @@
       "pageRank": 7,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Собственик (ТРРЮЛНЦ Live)",
         "Крос-регистрова верига"
@@ -27122,7 +27205,7 @@
       "pageRank": 9,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Холдинг-майка (ТРРЮЛНЦ)",
         "Капиталова верига"
@@ -27335,7 +27418,7 @@
       "pageRank": 8,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Холдинг-майка (ТРРЮЛНЦ)",
         "Капиталова верига"
@@ -27442,7 +27525,7 @@
       "pageRank": 8,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Холдинг-майка (ТРРЮЛНЦ)",
         "Engine 2 Верига"
@@ -27495,7 +27578,7 @@
       "pageRank": 9,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "ЕРИК Дарител (Сметна палата)",
         "Дарение 1023 лв."
@@ -27550,7 +27633,7 @@
       "pageRank": 8,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Собственик (ТРРЮЛНЦ Live)",
         "Крос-регистрова верига"
@@ -27609,7 +27692,7 @@
       "pageRank": 8,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Ключов национален възложител",
         "Мега-консорциуми ЗОП"
@@ -27660,7 +27743,7 @@
       "pageRank": 8,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Скрити ДЗЗД консорциуми",
         "Свързано с публично лице (КПК)"
@@ -27713,7 +27796,7 @@
       "pageRank": 7,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "КПК Табл. 9 (2026)",
         "Народно събрание"
@@ -27822,7 +27905,7 @@
       "pageRank": 7,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Съдия по търговско дело (ЕИСС)"
       ],
@@ -27930,7 +28013,7 @@
       "pageRank": 7,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Съдия по търговско дело (ЕИСС)"
       ],
@@ -27984,7 +28067,7 @@
       "pageRank": 8,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Съдия по търговско дело (ЕИСС)"
       ],
@@ -28089,10 +28172,10 @@
       "riskScore": 74,
       "degree": 1,
       "betweenness": 0,
-      "pageRank": 8,
+      "pageRank": 7,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Съдия по търговско дело (ЕИСС)"
       ],
@@ -28146,7 +28229,7 @@
       "pageRank": 8,
       "centralityScore": 10,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Съдия по търговско дело (ЕИСС)"
       ],
@@ -28939,7 +29022,7 @@
       "pageRank": 6,
       "centralityScore": 9,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Анекс чл. 116 (+50%)",
         "Увеличение +€64.4M"
@@ -28993,7 +29076,7 @@
       "pageRank": 6,
       "centralityScore": 9,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Анекс чл. 116 (+50%)",
         "Увеличение +€50.3M"
@@ -29047,7 +29130,7 @@
       "pageRank": 7,
       "centralityScore": 9,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Действителен собственик (ЗМИП чл. 63)",
         "Мега-консорциум"
@@ -29108,7 +29191,7 @@
       "pageRank": 6,
       "centralityScore": 9,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Ниво 4 · Съдия по мост ЕИСС × КПК"
       ],
@@ -29160,7 +29243,7 @@
       "pageRank": 6,
       "centralityScore": 9,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Правни услуги (CPV 791)",
         "Пряко възлагане (0 оферти)"
@@ -29220,7 +29303,7 @@
       "pageRank": 6,
       "centralityScore": 9,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Ниво 4 · Декларация КПК × ЕИСС"
       ],
@@ -29272,7 +29355,7 @@
       "pageRank": 6,
       "centralityScore": 9,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Ниво 4 · Декларация КПК × ЕИСС"
       ],
@@ -29324,7 +29407,7 @@
       "pageRank": 6,
       "centralityScore": 9,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Ниво 4 · Декларация КПК × ЕИСС"
       ],
@@ -29376,7 +29459,7 @@
       "pageRank": 6,
       "centralityScore": 9,
       "componentId": 4,
-      "componentSize": 199,
+      "componentSize": 203,
       "badges": [
         "Участник в мега-консорциум",
         "Корпоративен участник"
@@ -35073,6 +35156,36 @@
       "primaryId": "ЦАИС ЕОП УНП 00211-2025-0059 ↔ УНП 00211-2022-0005",
       "amountEur": 8550000,
       "evidence": "Община Хасково · Регионално депо (Клетка 1) · Свързани фирми на общински съветници",
+      "url": ""
+    },
+    {
+      "source": "off:ХРИСТО_АТАНАСОВ_ДИМИТРОВ",
+      "target": "eik:000093442",
+      "kind": "conflict_of_interest",
+      "label": "Председател на ОбС Варна (КПК Г3455/28.04.2026)",
+      "primaryId": "КПК Г3455/28.04.2026 · ОбС Варна",
+      "amountEur": 74253561.38,
+      "evidence": "КПК 2026 Г3455 (Mercedes EQS 580 за 18 019 лв.; влог 284 294 лв.; 0 фирми в Табл. 9)",
+      "url": ""
+    },
+    {
+      "source": "eik:813087785",
+      "target": "eik:000056814",
+      "kind": "won_zop",
+      "label": "ДЗЗД Детска болница „Св. Анастасия“ (€36,01 млн., 4 анекса +€1,25 млн.)",
+      "primaryId": "ЦАИС ЕОП УНП 00797-2023-0006",
+      "amountEur": 36010331.16,
+      "evidence": "Подписан 17.08.2023; последен анекс 07.01.2026",
+      "url": ""
+    },
+    {
+      "source": "eik:202694924",
+      "target": "eik:000056814",
+      "kind": "won_zop",
+      "label": "Участник в ДЗЗД „МБАЛДБ Св. Анастасия-Бургас“ (€36,01 млн.)",
+      "primaryId": "ЦАИС ЕОП УНП 00797-2023-0006",
+      "amountEur": 36010331.16,
+      "evidence": "Недекларирано управление в СИГМА 2.0",
       "url": ""
     }
   ]
