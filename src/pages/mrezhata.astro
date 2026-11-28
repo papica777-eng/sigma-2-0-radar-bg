@@ -72,20 +72,35 @@ const graphPayloadJson = JSON.stringify({
   canonicalPath="/mrezhata.html"
   subpageScript="sigma3/mrezhata_engine.js?v=20261128c"
   subpageSyncHref="data/nasvetlo_network_graph.json"
+  ogImage="https://nasvetlo.website/sigma3/og-mrezhata.jpg"
 >
   <!-- Hero Section -->
   <section class="mrezha-hero" id="top">
-    <div class="mrezha-kicker">
-      <span class="kicker-dot" aria-hidden="true"></span>
-      <span>ПЪЛНА КАПИТАЛОВА ВЕРИГА &middot; ЗМИП ЧЛ. 63 &middot; BRANDES CENTRALITY &middot; SHA-256</span>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+      <div style="flex:1 1 540px;min-width:0;">
+        <div class="mrezha-kicker">
+          <span class="kicker-dot" aria-hidden="true"></span>
+          <span>ПЪЛНА КАПИТАЛОВА ВЕРИГА &middot; ЗМИП ЧЛ. 63 &middot; BRANDES CENTRALITY &middot; SHA-256</span>
+        </div>
+        <h1 class="mrezha-title">МРЕЖАТА: Пълна верига на капитала и институционалната свързаност</h1>
+        <p class="mrezha-subtitle">
+          Интерактивна аналитична система, проследяваща пълната документална верига по единен ЕИК:
+          <strong>Възложител &rarr; ДЗЗД консорциум &rarr; Изпълнител &rarr; Холдинг-майка &rarr; Действителен собственик (чл. 63 ЗМИП)</strong>,
+          кръстосана с търговски дела (ЕПЕП/ЕИСС), адвокатски кантори (Модул J3) и декларации пред КПК по ЗПК.
+          Всяка връзка носи първичен официален идентификатор и подлежи на локална Rust/Wasm криптографска проверка.
+        </p>
+      </div>
+      <div style="flex:0 0 auto;border-radius:10px;overflow:hidden;border:1px solid var(--border-strong);box-shadow:0 10px 28px rgba(7,11,20,0.22);background:#070b14;">
+        <img
+          src="sigma3/mrezhata-logo.webp"
+          alt="МРЕЖАТА — NAsvetlo · Капитал и Власт"
+          width="260"
+          height="146"
+          decoding="async"
+          style="display:block;width:260px;height:146px;object-fit:cover;"
+        />
+      </div>
     </div>
-    <h1 class="mrezha-title">МРЕЖАТА: Пълна верига на капитала и институционалната свързаност</h1>
-    <p class="mrezha-subtitle">
-      Интерактивна аналитична система, проследяваща пълната документална верига по единен ЕИК:
-      <strong>Възложител &rarr; ДЗЗД консорциум &rarr; Изпълнител &rarr; Холдинг-майка &rarr; Действителен собственик (чл. 63 ЗМИП)</strong>,
-      кръстосана с търговски дела (ЕПЕП/ЕИСС), адвокатски кантори (Модул J3) и декларации пред КПК по ЗПК.
-      Всяка връзка носи първичен официален идентификатор и подлежи на локална Rust/Wasm криптографска проверка.
-    </p>
 
     <!-- 6-Tile Institutional KPI Grid -->
     <div class="mrezha-kpi-grid">
