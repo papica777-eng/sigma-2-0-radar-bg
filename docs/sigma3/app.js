@@ -289,7 +289,11 @@
   }
 
   function switchTab(tabId) {
-    document.querySelectorAll('.tab-btn').forEach((b) => b.classList.toggle('active', b.dataset.tab === tabId));
+    document.querySelectorAll('.tab-btn').forEach((b) => {
+      const isAct = b.dataset.tab === tabId;
+      b.classList.toggle('active', isAct);
+      b.setAttribute('aria-selected', isAct ? 'true' : 'false');
+    });
     document.querySelectorAll('.tab-panel').forEach((p) => {
       const isActive = p.id === 'tab-' + tabId;
       p.classList.toggle('active', isActive);

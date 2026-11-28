@@ -400,6 +400,7 @@ code {
 .info-subbar {
   background: var(--surface-alt);
   border-bottom: 1px solid var(--border);
+  min-height: 34px;
 }
 .info-subbar-inner {
   max-width: 1340px;
@@ -409,6 +410,16 @@ code {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+}
+[data-theme="dark"] .topbar-btn-mrezhata {
+  color: #fca5a5 !important;
+  border-color: rgba(248, 113, 113, 0.45) !important;
+}
+[data-theme="dark"] .subbar-fb-link {
+  color: #93c5fd !important;
+}
+[data-theme="dark"] .subbar-mrezha-link {
+  color: #fca5a5 !important;
 }
 @media (max-width: 1080px) {
   .info-subbar-inner {
@@ -481,9 +492,14 @@ code {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 12px;
   white-space: nowrap;
+}
+@media (max-width: 1080px) {
+  .info-subbar-links {
+    flex-wrap: wrap;
+  }
 }
 .subbar-link,
 .subbar-link-btn {
@@ -624,10 +640,18 @@ code {
 .hero-emblem-visual {
   width: 100%;
   aspect-ratio: 880 / 816;
-  background-image: url('./hero-emblem.png?v=20261120j');
+  background-image: url('./hero-emblem.webp?v=20261128');
   background-repeat: no-repeat;
   background-position: center center;
   background-size: contain;
+  filter: drop-shadow(0 14px 20px rgba(23, 21, 17, 0.14));
+}
+.hero-emblem-img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 880 / 816;
+  display: block;
+  object-fit: contain;
   filter: drop-shadow(0 14px 20px rgba(23, 21, 17, 0.14));
 }
 @media (max-width: 960px) {

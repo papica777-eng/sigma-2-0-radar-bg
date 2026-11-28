@@ -5,7 +5,7 @@
   "description": "СИГМА 3.0 FINALITY — Национална криминалистична платформа за обществени поръчки и съдебно-институционално разузнаване (Astro + Dart Sass @use + TypeScript)",
   "scripts": {
     "dev": "astro dev",
-    "build:sass": "sass --no-source-map src/styles/main.scss docs/sigma3/styles.css",
+    "build:sass": "sass --style=compressed --no-source-map src/styles/main.scss docs/sigma3/styles.css",
     "build:astro": "astro build",
     "sync:docs": "node -e \"const fs=require('fs'); for (const f of ['index.html','mrezhata.html','razsledvaniya.html','razsledvaniq.html','telk-skener.html','ezdrave-telk.html','sadeben-odit.html','ot-mrak-kam-svetlina.html','en.html']) { if (fs.existsSync('dist/'+f)) fs.copyFileSync('dist/'+f,'docs/'+f); } if (fs.existsSync('dist/en.html')) { fs.mkdirSync('docs/en',{recursive:true}); fs.copyFileSync('dist/en.html','docs/en/index.html'); }\"",
     "build": "npm run build:sass && npm run build:astro && npm run sync:docs",

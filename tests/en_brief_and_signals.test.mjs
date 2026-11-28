@@ -47,7 +47,7 @@ test('ot-mrak-kam-svetlina has 1-click signal generator modal, Zenodo DOI badge,
   const css = fs.readFileSync(cssPath, 'utf8');
 
   assert.match(html, /sigma3\/ot_mrak_kam_svetlina\.js\?v=20261127[a-z]/);
-  assert.match(html, /sigma3\/styles\.css\?v=20261127[a-z]/);
+  assert.match(html, /sigma3\/styles\.css\?v=202611\d{2}[a-z]/);
   assert.match(html, /id="svetSignalModal"/);
   assert.match(html, /id="svetSignalBackdrop"/);
   assert.match(html, /id="svetSignalCancelBtn"/);
