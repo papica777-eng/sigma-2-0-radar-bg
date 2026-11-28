@@ -5,8 +5,15 @@
     <link>https://nasvetlo.website/</link>
     <description>Независима гражданска платформа върху отворените данни (CC-BY 4.0) на МИДТ / СИГМА 2.0, ЕПЕП/ЕИСС (2 234 509 дела), ЦАИС ЕОП (€53,22 млрд.), КПК, АДФИ, КЗК, НОИ и EPPO.</description>
     <language>bg-BG</language>
-    <lastBuildDate>Fri, 27 Nov 2026 09:15:00 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 28 Nov 2026 03:15:00 +0200</lastBuildDate>
     <atom:link href="https://nasvetlo.website/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>МРЕЖАТА v3.0 — Пълна верига на капитала (512 възела, 29 ЗМИП собственици, 558 връзки, €33,81 млрд.)</title>
+      <link>https://nasvetlo.website/mrezhata.html</link>
+      <guid isPermaLink="true">https://nasvetlo.website/mrezhata.html</guid>
+      <pubDate>Sat, 28 Nov 2026 03:15:00 +0200</pubDate>
+      <description>Интерактивен форензик граф с Brandes централност, PageRank и Rust/Wasm SHA-256 верификация: 512 възела, 29 действителни собственици (ЗМИП чл. 63), 558 връзки, 199-възлово ядро, МЕ кариерни концесии × АПИ, ЕРИК партийни дарители × ЗОП, ИВСС санкции върху ЕИСС съдии, ДНСК изтекли лицензи, МВР ЗЧОД отнети лицензи и Феникс-вериги.</description>
+    </item>
     <item>
       <title>English Executive Brief (EPPO / EC / OCCRP) + CERN Zenodo DOI 10.5281/zenodo.24580253 &amp; 1-Click АПК Signal Generator</title>
       <link>https://nasvetlo.website/en/</link>

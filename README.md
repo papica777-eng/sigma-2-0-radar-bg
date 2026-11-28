@@ -1,17 +1,22 @@
 # NAsvetlo — Независима гражданска платформа за финансов и съдебен одит на обществените поръчки
 
 [![Live Platform](https://img.shields.io/badge/LIVE-https%3A%2F%2Fnasvetlo.website%2F-10b981?style=for-the-badge)](https://nasvetlo.website/)
-[![Investigations Hub](https://img.shields.io/badge/%D0%A0%D0%90%D0%97%D0%A1%D0%9B%D0%95%D0%94%D0%92%D0%90%D0%9D%D0%98%D0%AF-20%2B%20REGISTRIES-dc2626?style=for-the-badge)](https://nasvetlo.website/razsledvaniya.html)
-[![Open Data CC-BY 4.0](https://img.shields.io/badge/DATA-MIDT%20%2F%20SIGMA%202.0%20%2B%20EPEP%20%2F%20ADFI%20%2F%20MVR-0b111c?style=for-the-badge)](https://nasvetlo.website/)
+[![Mrezhata Graph](https://img.shields.io/badge/%D0%9C%D0%A0%D0%95%D0%96%D0%90%D0%A2%D0%90-512%20NODES%20%7C%20%E2%82%AC33.81B-e11d48?style=for-the-badge)](https://nasvetlo.website/mrezhata.html)
+[![Judicial Audit](https://img.shields.io/badge/EISS%20AUDIT-2.23M%20CASES%20%7C%20ZENODO%20DOI-7c3aed?style=for-the-badge)](https://nasvetlo.website/ot-mrak-kam-svetlina.html)
+[![Investigations Hub](https://img.shields.io/badge/%D0%A0%D0%90%D0%97%D0%A1%D0%9B%D0%95%D0%94%D0%92%D0%90%D0%9D%D0%98%D0%AF-22%2B%20REGISTRIES-dc2626?style=for-the-badge)](https://nasvetlo.website/razsledvaniya.html)
 [![GDPR & Data Audit](https://img.shields.io/badge/GDPR%20%2F%20%D0%97%D0%97%D0%9B%D0%94-0%20RAW%20EGN%20%7C%204--POINT%20VERIFIED-059669?style=for-the-badge)](https://nasvetlo.website/)
-[![Architecture](https://img.shields.io/badge/ASTRO%205%20%2B%20DART%20SASS-ZERO--SERVER%20%7C%2023%2F23%20TESTS-0284c7?style=for-the-badge)](https://nasvetlo.website/)
+[![Architecture](https://img.shields.io/badge/ASTRO%205%20%2B%20DART%20SASS%20%2B%20WASM-43%2F43%20TESTS-0284c7?style=for-the-badge)](https://nasvetlo.website/)
 
 **NAsvetlo** ([https://nasvetlo.website/](https://nasvetlo.website/)) е **независима гражданска аналитична платформа**, изградена върху отворените данни (**CC-BY 4.0**) на МИДТ / СИГМА 2.0 и **22+ първични публични регистъра** на Република България: **АОП / ЦАИС ЕОП**, **Сметна палата & ЕРИК**, **Търговски регистър (ТРРЮЛНЦ)**, **АДФИ**, **КЗК**, **ВСС — ЕПЕП / ЕИСС (`ecase.justice.bg`)**, **Върховен административен съд (ВАС)**, **EPPO (ЕС средства)**, **`data.egov.bg` (`11 843` масива)**, **МВР (ЗЧОД)**, **МЕ (Концесии)**, **ДНСК**, **ИААА**, **ДА „Държавен резерв“ (ЗЗНН)**, **МФ (ПВУ/ИСУН)**, **БАБХ**, **ОЗОБ**, **НАП**, **НОИ (Годишници „Пенсии“ 2023–2025)** и **НСИ (Демография по 28 области)**.
 
 Платформата работи изцяло автономно в браузъра (**0 лв. разход за външни сървъри и AI ключове**, 100% непрекъсваемост), с вградена `Ctrl+K` търсачка през **22 343 субекта**, **9-възлов институционален граф**, динамичен **Индекс на риска (`0–100`)**, **НАсветло / НАтъмно** режим, **Одиторски / Презентационен изглед**, специализиран разследващ център **[Разследвания](https://nasvetlo.website/razsledvaniya.html)** с **1-клик Генератор на сигнали и ЗДОИ** и калибриран български AI асистент (**NAsvetlo ORACLE**).
 
 - **Официален домейн (Production):** [https://nasvetlo.website/](https://nasvetlo.website/)
-- **Разследвания & Кръстосан одит (20+ регистъра):** [https://nasvetlo.website/razsledvaniya.html](https://nasvetlo.website/razsledvaniya.html)
+- **МРЕЖАТА v3.0 — Пълна верига на капитала (512 възела · 558 връзки · €33,81 млрд.):** [https://nasvetlo.website/mrezhata.html](https://nasvetlo.website/mrezhata.html)
+- **От мрак към светлина — Съдебен одит 2023–2026 (2 234 509 дела в ЕИСС):** [https://nasvetlo.website/ot-mrak-kam-svetlina.html](https://nasvetlo.website/ot-mrak-kam-svetlina.html)
+- **Разследвания & Кръстосан одит (22+ регистъра):** [https://nasvetlo.website/razsledvaniya.html](https://nasvetlo.website/razsledvaniya.html)
+- **English Executive Brief (EPPO / EC / OCCRP) & CERN Zenodo DOI:** [https://nasvetlo.website/en/](https://nasvetlo.website/en/) · [DOI 10.5281/zenodo.24580253](https://zenodo.org/records/24580253)
+- **Официална Facebook страница на NAsvetlo:** [https://www.facebook.com/profile.php?id=61593934623851](https://www.facebook.com/profile.php?id=61593934623851)
 - **Хранилище с отворен код (Open Source):** [https://github.com/papica777-eng/sigma-2-0-radar-bg](https://github.com/papica777-eng/sigma-2-0-radar-bg)
 - **Автоматично 301 пренасочване:** `https://papica777-eng.github.io/sigma-2-0-radar-bg/` и `https://paas.website/` &rarr; `https://nasvetlo.website/`
 

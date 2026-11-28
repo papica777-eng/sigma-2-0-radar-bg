@@ -4,11 +4,13 @@
 
 - Автор: Димитър Ставрев Продромов (ORCID: 0009-0004-8070-1348)
 - Лиценз: CC-BY 4.0 / MIT
-- Последна синхронизация: 2026-11-27
+- Последна синхронизация: 2026-11-28
 - Неизменяем научен депозит (CERN Zenodo DOI): [10.5281/zenodo.24580253](https://zenodo.org/records/24580253)
+- Официална Facebook страница: [NAsvetlo Facebook](https://www.facebook.com/profile.php?id=61593934623851)
 
 ## Основни страници
 
+- [МРЕЖАТА — Пълна верига на капитала и институционалната свързаност](https://nasvetlo.website/mrezhata.html): Интерактивен форензик граф (512 възела, 29 крайни собственици по чл. 63 ЗМИП, 558 верифицирани връзки, €33,81 млрд. ресурс, 199-възлово ядро) с Brandes Betweenness Centrality, PageRank, 1-клик най-кратък път (BFS), МЕ кариерни концесии, ИВСС санкции, ДНСК изтекли лицензи, МВР ЗЧОД, ЕРИК партийни дарители и локална Rust/Wasm SHA-256 верификация (`959a98799b1ac0be741a7ecf84c01cede2e5abf562615fc2720543ce5438d40c`).
 - [English Executive Brief (EPPO / EC DG JUST / OCCRP)](https://nasvetlo.website/en/): Пълно резюме на английски език за 4-годишния съдебен и ЗОП одит (2 234 509 дела, 154 необяснени приоритетни аномалии, 302 EPPO високорискови европроекта за €1,58 млрд., Zenodo DOI 10.5281/zenodo.24580253).
 
 - [Главна платформа NAsvetlo](https://nasvetlo.website/): Пълен одит на €53,22 млрд. обществени поръчки (206 907 договора, 4 344 възложители, 17 428 фирми, 571 свързани длъжностни лица, +€1,92 млрд. скрити ДЗЗД), 9-възлов мрежов граф, Фискален рентген (Евростат EDP 2021–2026) и AI асистент.
@@ -33,6 +35,7 @@
 
 ## Отворени машинни масиви (JSON / CSV / XML)
 
+- [Форензик мрежов граф МРЕЖАТА (JSON)](https://nasvetlo.website/data/nasvetlo_network_graph.json)
 - [ЕИСС Съдебен одит (JSON)](https://nasvetlo.website/data/nasvetlo_eiss_audit.json)
 - [Кръстосани разследвания (JSON)](https://nasvetlo.website/data/nasvetlo_investigations.json)
 - [28 области × 7 сфери (JSON)](https://nasvetlo.website/data/nasvetlo_oblast_sectors.json)
