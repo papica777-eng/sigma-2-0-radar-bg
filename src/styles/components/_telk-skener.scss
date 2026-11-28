@@ -2,7 +2,7 @@
 // NAsvetlo · ТЕЛК Скенер (Публично интерактивно демо + ССЕВ оферта за държавата)
 // =============================================================================
 
-.topbar-btn-telk {
+.topbar-btn-telk:not(.topbar-section-pill) {
   border-color: var(--teal);
   color: var(--teal);
   font-weight: 700;

@@ -70,24 +70,34 @@ const uniqueClusters = Array.from(new Set(adminsAll.map((a) => a.cluster).filter
   asOf={asOf}
   subpage={true}
   canonicalPath="/razsledvaniya.html"
+  ogImage="https://nasvetlo.website/sigma3/og-razsledvaniya.jpg"
 >
-  <section class="inv-hero" id="top">
-    <div class="inv-kicker-row">
-      <span class="inv-kicker">
-        <span class="mini-win-dot" aria-hidden="true"></span>
-        <span>КРЪСТОСАНИ РЕГИСТРИ &amp; ИНДЕКС НА ИНСТИТУЦИОНАЛНАТА ПРОЗРАЧНОСТ</span>
-      </span>
-      <span class="mono" style="font-size:0.74rem;color:var(--ink-muted);">Актуализирано: {asOf} · CC-BY 4.0 / CC0 (data.egov.bg × ЗОП)</span>
+  <section class="obsidian-section-hero is-razsledvaniya" id="top">
+    <div class="obsidian-section-hero__copy">
+      <div class="obsidian-section-hero__kicker">
+        <span class="obsidian-section-hero__dot" aria-hidden="true"></span>
+        <span>КРЪСТОСАНИ РЕГИСТРИ &amp; ИНДЕКС НА ПРОЗРАЧНОСТ &middot; АКТУАЛИЗИРАНО: {asOf}</span>
+      </div>
+      <h1 class="obsidian-section-hero__title">Кръстосани разследвания и Индекс на институционалната прозрачност</h1>
+      <p class="obsidian-section-hero__sub">
+        Автоматично детерминистично засичане по 9-цифрен ЕИК и точно правно наименование между <strong>{fmtInt(sumInv.totalCrossLinkedRegistries || 11)} отворени държавни регистъра</strong> от <code>data.egov.bg</code> и националния масив на NAsvetlo (17 428 изпълнители по ЗОП, 571 политически свързани лица и 206 907 договора), съчетано с оценка на отворения достъп и корупционния риск на водещите централни ведомства, регулатори и държавни дружества с общ договорен ресурс <strong>{fmtEur(totalZopSpentEur)}</strong> по ЗОП.
+      </p>
+      <div class="obsidian-section-hero__actions">
+        <a href="#invCrossSection" class="btn">1. Кръстосани разследвания ({fmtInt(sumInv.totalCrossLinkedRegistries || 11)} регистъра)</a>
+        <a href="#invAudit50Section" class="btn">2. Индекс на прозрачност ({totalAdmins} институции)</a>
+        <button type="button" class="btn is-primary-action" id="btnOpenSignalsModal" data-signal-doc="exec_brief">Екзекутивен доклад &amp; Готови сигнали (ЗДОИ / АДФИ / КЗК)</button>
+        <a href="data/NASVETLO_INSTITUTIONAL_ACTION_PACK_2026.md" download class="btn">Пълен пакет (.md) &darr;</a>
+      </div>
     </div>
-    <h1 class="inv-hero-title">Кръстосани разследвания и Индекс на институционалната прозрачност</h1>
-    <p class="inv-hero-sub">
-      Автоматично детерминистично засичане по 9-цифрен ЕИК и точно правно наименование между <strong>{fmtInt(sumInv.totalCrossLinkedRegistries || 11)} отворени държавни регистъра</strong> от <code>data.egov.bg</code> и националния масив на NAsvetlo (17 428 изпълнители по ЗОП, 571 политически свързани лица и 206 907 договора), съчетано с оценка на отворения достъп и корупционния риск на водещите централни ведомства, регулатори и държавни дружества с общ договорен ресурс <strong>{fmtEur(totalZopSpentEur)}</strong> по ЗОП.
-    </p>
-    <div class="inv-nav-actions">
-      <a href="#invCrossSection" class="btn topbar-btn">1. Кръстосани разследвания ({fmtInt(sumInv.totalCrossLinkedRegistries || 11)} регистъра)</a>
-      <a href="#invAudit50Section" class="btn topbar-btn">2. Индекс на прозрачност ({totalAdmins} институции)</a>
-      <button type="button" class="btn topbar-btn-inv" id="btnOpenSignalsModal" data-signal-doc="exec_brief">Екзекутивен доклад &amp; Готови сигнали (ЗДОИ / АДФИ / КЗК)</button>
-      <a href="data/NASVETLO_INSTITUTIONAL_ACTION_PACK_2026.md" download class="btn topbar-btn">Пълен пакет (.md) &darr;</a>
+    <div class="obsidian-section-hero__brand">
+      <img
+        src="sigma3/logo-razsledvaniya.webp"
+        alt="РАЗСЛЕДВАНИЯ — NAsvetlo · 22 Регистъра"
+        width="356"
+        height="199"
+        decoding="async"
+        class="obsidian-section-hero__logo"
+      />
     </div>
   </section>
 

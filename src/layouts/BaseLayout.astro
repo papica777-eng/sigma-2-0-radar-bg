@@ -222,7 +222,7 @@ const jsonLd = JSON.stringify({
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:ital,wght@0,600;0,700;1,600&display=optional" rel="stylesheet" />
-  <link rel="stylesheet" href="sigma3/styles.css?v=20261128a" />
+  <link rel="stylesheet" href="sigma3/styles.css?v=20261128b" />
 </head>
 <body>
 
@@ -234,9 +234,25 @@ const jsonLd = JSON.stringify({
 
     <div class="topbar-center">
       {subpage ? (
-        <a href="./" class="btn-cmd-center" style="text-decoration:none;justify-content:center;">
-          <span>&larr; Към главната платформа NAsvetlo</span>
-        </a>
+        <nav class="topbar-section-nav" aria-label="Раздели на NAsvetlo">
+          <a href="./" class="topbar-home-pill" title="Към главната платформа NAsvetlo">&larr; Начало</a>
+          <a href="telk-skener.html" class={`topbar-section-pill is-telk${canonicalPath === '/telk-skener.html' ? ' is-current' : ''}`} title="ТЕЛК Скенер — Суверенна проверка на експертни решения">
+            <img src="sigma3/emblem-telk-sm.webp" alt="" width="22" height="22" decoding="async" class="topbar-emblem" />
+            <span>ТЕЛК Скенер</span>
+          </a>
+          <a href="ot-mrak-kam-svetlina.html" class={`topbar-section-pill is-svetlina${canonicalPath === '/ot-mrak-kam-svetlina.html' ? ' is-current' : ''}`} title="От мрак към светлина — Съдебен одит на 2 234 509 дела в ЕИСС">
+            <img src="sigma3/emblem-svetlina-sm.webp" alt="" width="22" height="22" decoding="async" class="topbar-emblem" />
+            <span>От мрак към светлина</span>
+          </a>
+          <a href="mrezhata.html" class={`topbar-section-pill is-mrezhata${canonicalPath === '/mrezhata.html' ? ' is-current' : ''}`} title="МРЕЖАТА — Пълна верига на капитала и институционалната свързаност">
+            <img src="sigma3/emblem-mrezhata-sm.webp" alt="" width="22" height="22" decoding="async" class="topbar-emblem" />
+            <span>МРЕЖАТА</span>
+          </a>
+          <a href="razsledvaniya.html" class={`topbar-section-pill is-razsledvaniya${canonicalPath === '/razsledvaniya.html' ? ' is-current' : ''}`} title="Разследвания — Кръстосани проверки по 22 държавни регистъра">
+            <img src="sigma3/emblem-razsledvaniya-sm.webp" alt="" width="22" height="22" decoding="async" class="topbar-emblem" />
+            <span>Разследвания</span>
+          </a>
+        </nav>
       ) : (
         <button type="button" class="btn-cmd-center" id="openCmdPaletteBtn" title="Бързо глобално търсене (Ctrl+K)">
           <span class="cmd-search-icon" aria-hidden="true">⌕</span>
@@ -257,10 +273,22 @@ const jsonLd = JSON.stringify({
           <button type="button" class="btn topbar-btn-ai" id="quickOpenOracleBtn">AI Асистент</button>
           <button type="button" class="btn topbar-btn" id="densityToggleBtn" title="Превключи между компактен одиторски изглед и презентационен изглед">Одиторски изглед</button>
           <button type="button" class="btn topbar-btn topbar-btn-theme" id="themeToggleBtn" title="Превключи между Светъл и Тъмен режим">Тъмен режим</button>
-          <a href="telk-skener.html" class="btn topbar-btn-telk" title="Интерактивно демо на платформата за проверка на ТЕЛК решения — оферта за безвъзмездно дарение на държавата по ССЕВ">ТЕЛК Скенер (Демо) ↗</a>
-          <a href="ot-mrak-kam-svetlina.html" class="btn topbar-btn-svetlina" title="От мрак към светлина — алгоритмичен одит на 2 234 509 дела в ЕИСС, 28-областен съдебен радар и 869 RED флага (154 необяснени)">От мрак към светлина ↗</a>
-          <a href="mrezhata.html" class="btn topbar-btn-mrezhata" style="background:rgba(220,38,38,0.12);color:#b91c1c;border:1px solid rgba(185,28,28,0.34);font-weight:700;" title="МРЕЖАТА — Крос-регистров граф на институционалната свързаност: фирми, възложители, дела, съдии, адвокатски кантори и публични лица">МРЕЖАТА ↗</a>
-          <a href="razsledvaniya.html" class="btn topbar-btn-inv" title="Кръстосани разследвания по държавни регистри и Индекс на институционалната прозрачност">Нови разследвания ↗</a>
+          <a href="telk-skener.html" class="topbar-section-pill topbar-btn-telk is-telk" title="ТЕЛК Скенер — Суверенна проверка на експертни решения и 28-областен НОИ радар">
+            <img src="sigma3/emblem-telk-sm.webp" alt="" width="22" height="22" decoding="async" class="topbar-emblem" />
+            <span>ТЕЛК Скенер</span>
+          </a>
+          <a href="ot-mrak-kam-svetlina.html" class="topbar-section-pill topbar-btn-svetlina is-svetlina" title="От мрак към светлина — алгоритмичен одит на 2 234 509 дела в ЕИСС и 28-областен съдебен радар">
+            <img src="sigma3/emblem-svetlina-sm.webp" alt="" width="22" height="22" decoding="async" class="topbar-emblem" />
+            <span>От мрак към светлина</span>
+          </a>
+          <a href="mrezhata.html" class="topbar-section-pill topbar-btn-mrezhata is-mrezhata" title="МРЕЖАТА — Пълна верига на капитала: ДЗЗД, холдинги, ЗМИП собственици, съдии и КПК">
+            <img src="sigma3/emblem-mrezhata-sm.webp" alt="" width="22" height="22" decoding="async" class="topbar-emblem" />
+            <span>МРЕЖАТА</span>
+          </a>
+          <a href="razsledvaniya.html" class="topbar-section-pill topbar-btn-inv is-razsledvaniya" title="Кръстосани разследвания по държавни регистри и Индекс на институционалната прозрачност">
+            <img src="sigma3/emblem-razsledvaniya-sm.webp" alt="" width="22" height="22" decoding="async" class="topbar-emblem" />
+            <span>Разследвания</span>
+          </a>
         </>
       )}
     </div>
