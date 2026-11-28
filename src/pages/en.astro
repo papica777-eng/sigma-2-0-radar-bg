@@ -565,13 +565,13 @@ const jsonLd = JSON.stringify({
           <div class="svet-wasm-card" id="svetWasmVerifierCard">
             <div class="svet-wasm-top">
               <div>
-                <strong>Zero-Trust Cryptographic &amp; Statistical Verifier (Rust &rarr; WebAssembly)</strong>
+                <strong>Client-Side Cryptographic &amp; Statistical Verification (SHA-256)</strong>
                 <div class="muted" style="font-size:0.78rem;">
-                  Fetches the raw 3.74 MB audit JSON in your browser, verifies SHA-256 via FIPS 180-4 in Rust/Wasm + WebCrypto parity, scans for 0 personal EGN bytes, and recomputes all {redTotal} exact binomial tail probabilities locally.
+                  Fetches the raw 3.74 MB audit JSON in your browser, verifies SHA-256 (FIPS 180-4), scans for 0 personal EGN bytes, and recomputes all {redTotal} exact binomial tail probabilities locally.
                 </div>
               </div>
               <button type="button" class="btn btn-dark" id="svetRunWasmVerifyBtn">
-                Verify SHA-256 &amp; Binomial FDR Locally (Rust/Wasm)
+                Run Cryptographic Verification (SHA-256 &amp; FDR)
               </button>
             </div>
             <div id="svetWasmVerifyOutput" hidden></div>
@@ -581,7 +581,7 @@ const jsonLd = JSON.stringify({
               <label>n <input type="number" id="svetCalcN" value="789" min="1" /></label>
               <label>Expected <input type="number" id="svetCalcExp" value="60.69" step="0.01" min="0.01" /></label>
               <label>Tests <input type="number" id="svetCalcTests" value="62166" min="1" /></label>
-              <button type="button" class="btn" id="svetCalcRunBtn">Compute p &amp; q (Wasm)</button>
+              <button type="button" class="btn" id="svetCalcRunBtn">Compute p &amp; q</button>
             </div>
             <div id="svetCalcOut" hidden></div>
           </div>

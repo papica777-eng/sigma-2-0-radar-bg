@@ -2575,7 +2575,7 @@
       if (!wasmOut) return;
       wasmBtn.disabled = true;
       wasmOut.hidden = false;
-      wasmOut.innerHTML = '<span class="wasm-loading">Изчисляване на локален SHA-256 и GDPR скан чрез Rust/Wasm...</span>';
+      wasmOut.innerHTML = '<span class="wasm-loading">Извършване на локална криптографска проверка (SHA-256 и GDPR)...</span>';
       var t0 = performance.now();
 
       var canonicalStr = JSON.stringify({
@@ -2606,7 +2606,7 @@
           var ok = wasmSha === summary.datasetSha256 && egnCount === 0;
           wasmOut.innerHTML =
             '<div class="wasm-receipt ' + (ok ? 'is-pass' : 'is-fail') + '">' +
-              '<strong>' + (ok ? 'ВЕРИФИЦИРАНО (RUST / WEBASSEMBLY)' : 'РАЗМИНАВАНЕ') + '</strong>' +
+              '<strong>' + (ok ? 'ВЕРИФИЦИРАНО (КРИПТОГРАФСКА ПРОВЕРКА)' : 'РАЗМИНАВАНЕ') + '</strong>' +
               ' · SHA-256 съвпадение: <code>' + (wasmSha === summary.datasetSha256 ? '100% MATCH' : 'MISMATCH') + '</code>' +
               ' · GDPR скан за ЕГН: <code>' + egnCount + ' попадения</code>' +
               ' · Време: <code>' + ms + ' ms</code>' +
@@ -2622,7 +2622,7 @@
               var ok = sha === summary.datasetSha256;
               wasmOut.innerHTML =
                 '<div class="wasm-receipt ' + (ok ? 'is-pass' : 'is-fail') + '">' +
-                  '<strong>' + (ok ? 'ВЕРИФИЦИРАНО (WEBCRYPTO SHA-256)' : 'РАЗМИНАВАНЕ') + '</strong>' +
+                  '<strong>' + (ok ? 'ВЕРИФИЦИРАНО (КРИПТОГРАФСКА ПРОВЕРКА SHA-256)' : 'РАЗМИНАВАНЕ') + '</strong>' +
                   ' · Хеш: <code>' + (ok ? '100% MATCH' : 'MISMATCH') + '</code> · Време: <code>' + ms + ' ms</code>' +
                 '</div>';
               wasmBtn.disabled = false;

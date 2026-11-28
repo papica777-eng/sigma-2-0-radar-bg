@@ -2107,13 +2107,13 @@ const extraJsonLd = JSON.stringify({
         <div class="svet-wasm-card" id="svetWasmVerifierCard">
           <div class="svet-wasm-top">
             <div>
-              <strong>Локален криптографски и математически верификатор (Rust &rarr; WebAssembly)</strong>
+              <strong>Локална криптографска и статистическа проверка (SHA-256)</strong>
               <div class="muted" style="font-size:0.76rem;">
-                Изтегля суровия 3,74 MB одитен JSON директно в браузъра, проверява SHA-256 (FIPS 180-4 + WebCrypto), сканира за 0 ЕГН и преизчислява точната биномна вероятност на всички {allRedFlagsList.length} RED флага.
+                Изтегля суровия 3,74 MB одитен JSON директно в браузъра, проверява SHA-256 (FIPS 180-4), сканира за 0 ЕГН и преизчислява точната биномна вероятност на всички {allRedFlagsList.length} RED флага.
               </div>
             </div>
             <button type="button" class="btn btn-dark" id="svetRunWasmVerifyBtn">
-              Верифицирай SHA-256 &amp; Binomial FDR локално (Rust/Wasm)
+              Криптографска проверка (SHA-256 &amp; Binomial FDR)
             </button>
           </div>
           <div id="svetWasmVerifyOutput" hidden></div>
@@ -2123,7 +2123,7 @@ const extraJsonLd = JSON.stringify({
             <label>n <input type="number" id="svetCalcN" value="789" min="1" /></label>
             <label>Очаквано <input type="number" id="svetCalcExp" value="60.69" step="0.01" min="0.01" /></label>
             <label>Тестове <input type="number" id="svetCalcTests" value="62166" min="1" /></label>
-            <button type="button" class="btn" id="svetCalcRunBtn">Изчисли p &amp; q (Wasm)</button>
+            <button type="button" class="btn" id="svetCalcRunBtn">Изчисли p &amp; q</button>
           </div>
           <div id="svetCalcOut" hidden></div>
         </div>

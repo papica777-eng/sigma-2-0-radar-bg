@@ -70,7 +70,7 @@ const graphPayloadJson = JSON.stringify({
   asOf={asOf}
   subpage={true}
   canonicalPath="/mrezhata.html"
-  subpageScript="sigma3/mrezhata_engine.js?v=20261128c"
+  subpageScript="sigma3/mrezhata_engine.js?v=20261128d"
   subpageSyncHref="data/nasvetlo_network_graph.json"
   ogImage="https://nasvetlo.website/sigma3/og-mrezhata.jpg"
 >
@@ -87,7 +87,7 @@ const graphPayloadJson = JSON.stringify({
           Интерактивна аналитична система, проследяваща пълната документална верига по единен ЕИК:
           <strong>Възложител &rarr; ДЗЗД консорциум &rarr; Изпълнител &rarr; Холдинг-майка &rarr; Действителен собственик (чл. 63 ЗМИП)</strong>,
           кръстосана с търговски дела (ЕПЕП/ЕИСС), адвокатски кантори (Модул J3) и декларации пред КПК по ЗПК.
-          Всяка връзка носи първичен официален идентификатор и подлежи на локална Rust/Wasm криптографска проверка.
+          Всяка връзка носи първичен официален идентификатор и подлежи на локална криптографска проверка.
         </p>
       </div>
       <div style="flex:0 0 auto;border-radius:10px;overflow:hidden;border:1px solid var(--border-strong);box-shadow:0 10px 28px rgba(7,11,20,0.22);background:#070b14;">
@@ -586,7 +586,7 @@ const graphPayloadJson = JSON.stringify({
       <div class="mrezha-disclaimer-card">
         <h3>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
-          <span>Криптографски печат (FIPS 180-4 SHA-256 &amp; Rust/Wasm)</span>
+          <span>Криптографски печат (FIPS 180-4 SHA-256)</span>
         </h3>
         <p>
           Графът работи изцяло клиентски без сървърни бази данни (имунизиран срещу DDoS).
@@ -596,7 +596,7 @@ const graphPayloadJson = JSON.stringify({
           <code>SHA-256: {s.datasetSha256}</code>
         </div>
         <button type="button" class="mrezha-wasm-btn" id="mrezhaWasmVerifyBtn">
-          Верифицирай локално с Rust/Wasm (SHA-256 &amp; GDPR)
+          Криптографска проверка (SHA-256 &amp; GDPR)
         </button>
         <div id="mrezhaWasmVerifyOut" hidden></div>
       </div>

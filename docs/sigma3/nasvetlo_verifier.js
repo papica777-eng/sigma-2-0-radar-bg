@@ -53,8 +53,8 @@
     outEl.innerHTML =
       '<div class="svet-wasm-status">' +
       (en
-        ? 'Loading 36 KB Rust/Wasm module & hashing 3.74 MB raw audit JSON in memory...'
-        : 'Зареждане на 36 KB Rust/Wasm модул и локално хеширане на 3,74 MB одитен масив...') +
+        ? 'Running local cryptographic verification & hashing 3.74 MB audit JSON...'
+        : 'Извършване на локална криптографска проверка на 3,74 MB одитен масив...') +
       '</div>';
 
     var t0 = performance.now();
@@ -123,7 +123,7 @@
             '">' +
             '<div class="svet-wasm-head-row">' +
             '<strong>' +
-            (en ? 'RUST / WEBASSEMBLY ZERO-TRUST AUDIT COMPLETE' : 'RUST / WEBASSEMBLY ОДИТ ЗАВЪРШЕН УСПЕШНО') +
+            (en ? 'CRYPTOGRAPHIC VERIFICATION COMPLETE' : 'КРИПТОГРАФСКАТА ПРОВЕРКА Е ЗАВЪРШЕНА УСПЕШНО') +
             '</strong>' +
             '<span class="mono">' +
             elapsedMs +
@@ -201,7 +201,7 @@
         outEl.hidden = false;
         outEl.innerHTML =
           '<div class="svet-wasm-sub mono" style="margin-top:8px;">' +
-          (en ? 'Wasm Result (' : 'Wasm резултат (') +
+          (en ? 'Verification result (' : 'Резултат от проверката (') +
           dt +
           ' ms): <strong>Ratio = &times;' +
           ratio.toFixed(2) +
