@@ -232,15 +232,12 @@ const jsonLd = JSON.stringify({
       <nav class="en-nav" aria-label="Primary English Brief Navigation">
         <a class="subbar-link" href="/ot-mrak-kam-svetlina.html">BG Interactive Graph &amp; 869 Flags &rarr;</a>
         <a class="subbar-link" href="/">Main Procurement Portal</a>
-        <a class="en-doi-pill" href={ZENODO_URL} target="_blank" rel="noopener noreferrer">
-          CERN Zenodo DOI: {ZENODO_DOI} ↗
-        </a>
         <button type="button" class="subbar-link-btn" id="enThemeToggle">Dark Mode</button>
       </nav>
     </header>
 
     <main class="en-wrap">
-      <section class="svetlina-vault is-unlocked" style="margin-bottom:18px;">
+      <section class="svetlina-vault is-unlocked has-bg-emblem is-svetlina" style="margin-bottom:18px;">
         <div class="svetlina-kicker">
           <span class="svetlina-pulse" aria-hidden="true"></span>
           <span>EXECUTIVE INSTITUTIONAL BRIEF · EPPO · EC DG JUST · GRECO · OCCRP</span>
@@ -255,12 +252,9 @@ const jsonLd = JSON.stringify({
         </p>
 
         <div class="svetlina-published-banner">
-          <span class="published-badge">● IMMUTABLE SCIENTIFIC ARCHIVE</span>
+          <span class="published-badge">● CRYPTOGRAPHIC AUDIT ARCHIVE</span>
           <span class="published-desc">
-            CC-BY 4.0 dataset permanently deposited at CERN Zenodo:
-            <a href={ZENODO_URL} target="_blank" rel="noopener noreferrer" style="font-weight:700;text-decoration:underline;">
-              https://doi.org/{ZENODO_DOI}
-            </a>
+            CC-BY 4.0 open institutional audit dataset · SHA-256 cryptographically verifiable locally in browser.
           </span>
         </div>
 
@@ -558,9 +552,8 @@ const jsonLd = JSON.stringify({
             <strong>Legal Disclaimer &amp; GDPR:</strong> Red/Amber indicators are <em>purely statistical triage signals</em> warranting institutional inspection under Art. 9 of the Bulgarian Judiciary Act (random case allocation); they do not assert guilt or unlawful conduct. Automated ingress filtering excludes all natural persons, personal identification numbers (EGN), and sensitive health records.
           </p>
           <p class="mono" style="font-size:0.78rem;word-break:break-all;">
-            <strong>Raw File SHA-256 (Zenodo &amp; Live JSON):</strong> b6a49ec4644042f43657c10d413e5d055cb3f1e04b57fa3595565999fdec2bc3<br />
-            <strong>Canonical RED Snapshot SHA-256:</strong> {SHA256_SNAPSHOT}<br />
-            <strong>CERN Zenodo Permanent Archive:</strong> <a href={ZENODO_URL} target="_blank" rel="noopener noreferrer">https://doi.org/{ZENODO_DOI}</a>
+            <strong>Raw File SHA-256 (Live JSON):</strong> b6a49ec4644042f43657c10d413e5d055cb3f1e04b57fa3595565999fdec2bc3<br />
+            <strong>Canonical RED Snapshot SHA-256:</strong> {SHA256_SNAPSHOT}
           </p>
           <div class="svet-wasm-card" id="svetWasmVerifierCard">
             <div class="svet-wasm-top">

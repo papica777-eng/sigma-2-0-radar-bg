@@ -2349,6 +2349,147 @@ if (topFuel.length > 0) {
   }
 }
 
+// 6G.6 Haskovo EPPO Documentary Interlock (Builder x Supervisor x Shared Board)
+const haskovoInterlockNodes = [
+  {
+    id: 'off:ДАНИЕЛ_РУМЕНОВ_ГАРГОВ',
+    label: 'ДАНИЕЛ РУМЕНОВ ГАРГОВ',
+    type: 'official',
+    cluster: 'MUNICIPAL_AFFILIATION',
+    riskScore: 95,
+    badges: ['EPPO дело (Хасково) · СГС арест', 'КПК 2026: Г8815/15.05.2026'],
+    financialLayer: {
+      dzzdEur: 17790000,
+      primaryUnps: ['00211-2024-0068', '00211-2021-0058', '00211-2025-0059'],
+    },
+    judicialLayer: {
+      kpkTable9: ['КПК 2026 Г8815/15.05.2026 (€400 хил. + 780 хил. лв. кеш; $292,8 хил. в чужбина)'],
+    },
+  },
+  {
+    id: 'off:ГЕОРГИ_ДЕЛЧЕВ_ГЕОРГИЕВ',
+    label: 'ГЕОРГИ ДЕЛЧЕВ ГЕОРГИЕВ',
+    type: 'official',
+    cluster: 'MUNICIPAL_AFFILIATION',
+    riskScore: 95,
+    badges: ['EPPO дело (Хасково) · СГС арест', 'Недеклариран борд · ЯНТРА - ТРАНСПОРТ АД'],
+    judicialLayer: {
+      kpkTable9: ['КПК 2026 Г7354/14.05.2026 (100% ЕКО КОНЦЕСИЯ ЕООД; недекларирано участие в борда на ЯНТРА - ТРАНСПОРТ АД)'],
+    },
+  },
+  {
+    id: 'off:ПЕТЪР_ЕВГЕНИЕВ_НИКОЛОВ',
+    label: 'ПЕТЪР ЕВГЕНИЕВ НИКОЛОВ',
+    type: 'official',
+    cluster: 'MUNICIPAL_AFFILIATION',
+    riskScore: 95,
+    badges: ['EPPO дело (Хасково) · СГС арест', 'КПК 2026: Г8121/15.05.2026'],
+    judicialLayer: {
+      kpkTable9: ['КПК 2026 Г8121/15.05.2026 (ГАРАНТ - 2000 ООД & АДЛОН И КО ЕООД)'],
+    },
+  },
+  {
+    id: 'eik:126729838',
+    label: 'ЕКО ТРАДЕКС ГРУП АД',
+    type: 'company',
+    cluster: 'MUNICIPAL_AFFILIATION',
+    eik: '126729838',
+    riskScore: 94,
+    badges: ['30 ЕС договора (€22,53 млн.)', '9 ЕС с 1 оферта (€9,09 млн.)', 'Строител × Надзор (6 общини)'],
+    financialLayer: {
+      primaryUnps: ['00211-2024-0068', '00211-2021-0058'],
+    },
+    details: {
+      euContracts: 30,
+      euEur: 22530000,
+      singleBidEuContracts: 9,
+      singleBidEuEur: 9090000,
+      overlapMunicipalities: ['Хасково', 'Харманли', 'Димитровград', 'Севлиево', 'Горна Оряховица', 'Джебел'],
+    },
+  },
+  {
+    id: 'eik:126182689',
+    label: 'ГАРАНТ - 2000 ООД',
+    type: 'company',
+    cluster: 'MUNICIPAL_AFFILIATION',
+    eik: '126182689',
+    riskScore: 94,
+    badges: ['Строителен надзор (65 дог. / 23 ЕС)', 'Надзор на Еко Традекс (6 общини)'],
+    financialLayer: {
+      primaryUnps: ['00211-2022-0005'],
+    },
+    details: {
+      euContracts: 23,
+      totalContracts: 65,
+      role: 'Строителен надзор',
+      overlapMunicipalities: ['Хасково', 'Харманли', 'Димитровград', 'Севлиево', 'Горна Оряховица', 'Джебел'],
+    },
+  },
+  {
+    id: 'eik:200145389',
+    label: 'ЕКО - ТИТАН ГРУП АД',
+    type: 'company',
+    cluster: 'MUNICIPAL_AFFILIATION',
+    eik: '200145389',
+    riskScore: 92,
+    badges: ['Оператор депо Хасково · €8,55 млн. (1 оферта)'],
+    financialLayer: {
+      primaryUnps: ['00211-2025-0059'],
+    },
+  },
+  {
+    id: 'eik:814255710',
+    label: 'ЯНТРА - ТРАНСПОРТ АД',
+    type: 'company',
+    cluster: 'MUNICIPAL_AFFILIATION',
+    eik: '814255710',
+    riskScore: 92,
+    badges: ['Споделен борд: Д. Гаргов & Г. Георгиев'],
+    corporateLayer: {
+      sharedManagers: ['ДАНИЕЛ РУМЕНОВ ГАРГОВ', 'ГЕОРГИ ДЕЛЧЕВ ГЕОРГИЕВ'],
+    },
+  },
+];
+
+for (const hn of haskovoInterlockNodes) {
+  addNode(hn);
+}
+
+if (nodesMap.has('off:ДАНИЕЛ_РУМЕНОВ_ГАРГОВ') && nodesMap.has('eik:814255710')) {
+  addEdge({
+    source: 'off:ДАНИЕЛ_РУМЕНОВ_ГАРГОВ',
+    target: 'eik:814255710',
+    kind: 'owns_share',
+    label: 'Общ съвет на директорите с Г. Георгиев (ТРРЮЛНЦ)',
+    primaryId: 'ТР Партида ЕИК 814255710 (ЯНТРА - ТРАНСПОРТ АД)',
+    evidence: 'ТРРЮЛНЦ × КПК 2026 (Г8815 & Г7354) — корпоративна връзка между двама общински съветници в ОбС Хасково',
+  });
+}
+
+if (nodesMap.has('eik:126729838') && nodesMap.has('eik:126182689')) {
+  addEdge({
+    source: 'eik:126729838',
+    target: 'eik:126182689',
+    kind: 'conflict_of_interest',
+    label: 'Строител (30 ЕС / €22,53 млн.) ↔ Строителен надзор (23 ЕС) на същите обекти в 6 общини',
+    primaryId: 'ЦАИС ЕОП УНП 00211-2021-0058 ↔ УНП 00211-2022-0005 (Клетка 1 Хасково) & УНП 00211-2024-0068',
+    amountEur: 22530000,
+    evidence: 'Рекултивация Клетка 1 Хасково + ЕС саниране · Засичане в Хасково, Харманли, Димитровград, Севлиево, Горна Оряховица, Джебел',
+  });
+}
+
+if (nodesMap.has('eik:200145389') && nodesMap.has('eik:126182689')) {
+  addEdge({
+    source: 'eik:200145389',
+    target: 'eik:126182689',
+    kind: 'conflict_of_interest',
+    label: 'Оператор депо Хасково (€8,55 млн., 1 оферта) ↔ Надзор на Клетка 1',
+    primaryId: 'ЦАИС ЕОП УНП 00211-2025-0059 ↔ УНП 00211-2022-0005',
+    amountEur: 8550000,
+    evidence: 'Община Хасково · Регионално депо (Клетка 1) · Свързани фирми на общински съветници',
+  });
+}
+
 // ============================================================================
 // 7. GRAPH-THEORETIC ANALYTICS (Brandes Betweenness, PageRank, Components)
 // ============================================================================
@@ -2589,6 +2730,7 @@ function findShortestPath(startId, endId) {
 
 const featuredPaths = [];
 const candidatePairs = [
+  { title: 'Хасково (EPPO): Даниел Гаргов → Еко Традекс ↔ Гарант-2000 (Строител × Надзор)', from: 'off:ДАНИЕЛ_РУМЕНОВ_ГАРГОВ', to: 'eik:126182689' },
   { title: 'Пътна верига (ЗМИП): АПИ → ДЗЗД Хемус → ИГ Холдинг → Григор Иванов', from: 'eik:000695089', to: 'ubo:ГРИГОР_ЦВЕТКОВ_ИВАНОВ' },
   { title: 'ГБС & Газ (ЗМИП): Булгартрансгаз → Чирен ДЗЗД → ГБС → Камен Пешов', from: 'eik:175203478', to: 'ubo:КАМЕН_СИМЕОНОВ_ПЕШОВ' },
   { title: 'Белово (Пълна верига): ЗПК лице → Община → Еко-Хидро-90 → Георги Делчев', from: 'off:ХРИСТО_АТАНАСОВ_ЛАЗАРОВ', to: 'ubo:ГЕОРГИ_СТЕФАНОВ_ДЕЛЧЕВ' },
@@ -2597,7 +2739,7 @@ const candidatePairs = [
 ];
 for (const cp of candidatePairs) {
   const pathIds = findShortestPath(cp.from, cp.to);
-  if (pathIds && pathIds.length >= 3 && featuredPaths.length < 5) {
+  if (pathIds && pathIds.length >= 3 && featuredPaths.length < 6) {
     featuredPaths.push({
       title: cp.title,
       fromId: cp.from,

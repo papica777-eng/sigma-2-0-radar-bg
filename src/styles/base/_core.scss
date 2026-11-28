@@ -306,169 +306,50 @@ code {
   font-weight: 700;
 }
 
-/* =========================================================================
-   UNIFIED SEAMLESS OBSIDIAN SECTION HERO SHOWCASE (#030d16 matches all 4 logos)
-   ========================================================================= */
-.obsidian-section-hero {
+/* Atmospheric Section Emblem Background (matches AETERNA.PQC backdrop style without altering original hero layout) */
+.has-bg-emblem {
   position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1.38fr) minmax(250px, 370px);
-  align-items: center;
-  gap: 28px;
-  padding: 26px 30px;
-  margin-top: 16px;
-  margin-bottom: 18px;
-  border-radius: 10px;
-  background: #030d16;
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  border-top: 3px solid var(--hero-accent, #e11d48);
-  color: #f8fafc;
-  box-shadow: 0 18px 42px rgba(3, 13, 22, 0.24);
   overflow: hidden;
-  text-align: left;
 }
-.obsidian-section-hero::before {
+.has-bg-emblem > * {
+  position: relative;
+  z-index: 2;
+}
+.has-bg-emblem::after {
   content: "";
   position: absolute;
-  inset: 0;
+  top: 50%;
+  right: -28px;
+  transform: translateY(-50%);
+  width: 390px;
+  height: 390px;
+  background-image: var(--bg-emblem);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   pointer-events: none;
-  background: radial-gradient(circle at 12% 10%, var(--hero-glow, rgba(225, 29, 72, 0.14)) 0%, transparent 55%);
+  z-index: 1;
+  opacity: 0.14;
+  filter: saturate(1.15);
 }
-.obsidian-section-hero__copy {
-  position: relative;
-  z-index: 2;
-  min-width: 0;
+[data-theme="dark"] .has-bg-emblem::after {
+  opacity: 0.34;
+  mix-blend-mode: screen;
+  filter: saturate(1.25) brightness(1.08);
 }
-.obsidian-section-hero__kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 4px 10px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: var(--hero-kicker, #fda4af);
-  font-family: var(--font-mono);
-  font-size: 0.71rem;
-  font-weight: 700;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-}
-.obsidian-section-hero__dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--hero-accent, #e11d48);
-  box-shadow: 0 0 8px var(--hero-accent, #e11d48);
-  display: inline-block;
-  flex-shrink: 0;
-}
-.obsidian-section-hero__title {
-  font-family: var(--font-serif);
-  font-size: clamp(1.5rem, 2.7vw, 2.2rem);
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-  color: #ffffff;
-  margin: 0 0 10px;
-}
-.obsidian-section-hero__sub {
-  font-size: clamp(0.89rem, 1.25vw, 0.98rem);
-  line-height: 1.56;
-  color: #cbd5e1;
-  margin: 0 0 14px;
-  max-width: 78ch;
-}
-.obsidian-section-hero__sub strong {
-  color: #f8fafc;
-}
-.obsidian-section-hero__sub code {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.16);
-  color: #e2e8f0;
-}
-.obsidian-section-hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-}
-.obsidian-section-hero__actions .btn,
-.obsidian-section-hero__actions a.btn {
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(148, 163, 184, 0.28);
-  color: #f1f5f9;
-  border-radius: 5px;
-  font-size: 0.78rem;
-  padding: 6px 12px;
-  text-decoration: none;
-}
-.obsidian-section-hero__actions .btn:hover,
-.obsidian-section-hero__actions a.btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.52);
-  color: #ffffff;
-}
-.obsidian-section-hero__actions .btn.is-primary-action {
-  background: var(--hero-accent, #dc2626);
-  border-color: var(--hero-accent, #dc2626);
-  color: #ffffff;
-  font-weight: 700;
-}
-.obsidian-section-hero__actions .btn.is-primary-action:hover {
-  filter: brightness(1.12);
-}
-.obsidian-section-hero__brand {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.obsidian-section-hero__logo {
-  display: block;
-  width: 100%;
-  max-width: 356px;
-  height: auto;
-  aspect-ratio: 1376 / 768;
-  object-fit: contain;
-  border: none;
-  box-shadow: none;
-  -webkit-mask-image: radial-gradient(ellipse 92% 92% at 50% 50%, #000 72%, transparent 100%);
-  mask-image: radial-gradient(ellipse 92% 92% at 50% 50%, #000 72%, transparent 100%);
-}
-.obsidian-section-hero.is-mrezhata {
-  --hero-accent: #e11d48;
-  --hero-kicker: #fda4af;
-  --hero-glow: rgba(225, 29, 72, 0.15);
-}
-.obsidian-section-hero.is-svetlina {
-  --hero-accent: #f59e0b;
-  --hero-kicker: #fcd34d;
-  --hero-glow: rgba(245, 158, 11, 0.15);
-}
-.obsidian-section-hero.is-telk {
-  --hero-accent: #10b981;
-  --hero-kicker: #6ee7b7;
-  --hero-glow: rgba(16, 185, 129, 0.15);
-}
-.obsidian-section-hero.is-razsledvaniya {
-  --hero-accent: #0ea5e9;
-  --hero-kicker: #7dd3fc;
-  --hero-glow: rgba(14, 165, 233, 0.15);
-}
-@media (max-width: 920px) {
-  .obsidian-section-hero {
-    grid-template-columns: 1fr;
-    padding: 20px 18px;
-    gap: 16px;
+.has-bg-emblem.is-mrezhata { --bg-emblem: url('bg-emblem-mrezhata.webp'); }
+.has-bg-emblem.is-svetlina { --bg-emblem: url('bg-emblem-svetlina.webp'); }
+.has-bg-emblem.is-telk { --bg-emblem: url('bg-emblem-telk.webp'); }
+.has-bg-emblem.is-razsledvaniya { --bg-emblem: url('bg-emblem-razsledvaniya.webp'); }
+@media (max-width: 780px) {
+  .has-bg-emblem::after {
+    width: 240px;
+    height: 240px;
+    right: -50px;
+    opacity: 0.1;
   }
-  .obsidian-section-hero__brand {
-    order: -1;
-  }
-  .obsidian-section-hero__logo {
-    max-width: 270px;
+  [data-theme="dark"] .has-bg-emblem::after {
+    opacity: 0.22;
   }
 }
 

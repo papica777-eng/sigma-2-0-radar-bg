@@ -5,55 +5,39 @@
 
 .svetlina-vault {
   position: relative;
-  margin: 16px 0 18px;
-  padding: 26px 30px;
-  border-radius: 10px;
-  background: #030d16;
+  margin: 14px 0 18px;
+  padding: 24px 24px 20px;
+  border-radius: 8px;
+  background: radial-gradient(circle at 18% 20%, #1e293b 0%, #090d16 58%, #030712 100%);
   color: #f8fafc;
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  border-top: 3px solid #f59e0b;
-  box-shadow: 0 18px 42px rgba(3, 13, 22, 0.24);
+  border: 1px solid rgba(245, 158, 11, 0.38);
+  border-top: 4px solid #f59e0b;
+  box-shadow: 0 20px 50px rgba(2, 6, 23, 0.38);
   overflow: hidden;
 
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: radial-gradient(circle at 12% 10%, rgba(245, 158, 11, 0.14) 0%, transparent 55%);
-  }
-
   &.is-unlocked {
-    background: #030d16;
-    color: #f8fafc;
-    border: 1px solid rgba(148, 163, 184, 0.18);
-    border-top: 3px solid #f59e0b;
-    box-shadow: 0 18px 42px rgba(3, 13, 22, 0.24);
-    padding: 24px 28px;
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--crimson);
+    box-shadow: none;
+    padding: 16px 20px 14px;
   }
 }
 
 .svetlina-vault-split {
-  position: relative;
-  z-index: 2;
   display: grid;
-  grid-template-columns: minmax(0, 1.45fr) minmax(250px, 365px);
-  gap: 26px;
+  grid-template-columns: 1.55fr 1fr;
+  gap: 22px;
   align-items: center;
 
   @media (max-width: 920px) {
     grid-template-columns: 1fr;
-    gap: 16px;
   }
 
   .is-unlocked & {
-    grid-template-columns: minmax(0, 1.45fr) minmax(250px, 365px);
-    gap: 26px;
-
-    @media (max-width: 920px) {
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 }
 
@@ -62,25 +46,37 @@
   align-items: center;
   gap: 8px;
   padding: 4px 11px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 3px;
+  background: rgba(245, 158, 11, 0.14);
+  border: 1px solid rgba(245, 158, 11, 0.45);
   color: #fcd34d;
   font-family: var(--font-mono, "IBM Plex Mono", monospace);
-  font-size: 0.71rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
   margin-bottom: 10px;
+
+  .is-unlocked & {
+    background: rgba(185, 28, 28, 0.08);
+    border-color: rgba(185, 28, 28, 0.35);
+    color: var(--crimson);
+    margin-bottom: 6px;
+  }
 }
 
 .svetlina-pulse {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: #f59e0b;
-  box-shadow: 0 0 8px #f59e0b;
+  box-shadow: 0 0 10px #f59e0b;
   animation: svetlinaPulse 1.6s infinite ease-in-out;
+
+  .is-unlocked & {
+    background: var(--crimson);
+    box-shadow: 0 0 8px var(--crimson);
+  }
 }
 
 @keyframes svetlinaPulse {
@@ -92,21 +88,21 @@
   font-family: var(--font-serif, "Newsreader", Georgia, serif);
   font-size: clamp(1.45rem, 2.5vw, 2.15rem);
   font-weight: 700;
-  line-height: 1.15;
-  margin: 0 0 10px;
-  letter-spacing: -0.02em;
-  color: #ffffff;
+  line-height: 1.16;
+  margin: 0 0 8px;
+  letter-spacing: -0.01em;
 }
 
 .svetlina-sub {
   margin: 0 0 14px;
-  font-size: 0.92rem;
-  line-height: 1.54;
+  font-size: 0.9rem;
+  line-height: 1.5;
   color: #cbd5e1;
-  max-width: 80ch;
+  max-width: 82ch;
 
-  strong {
-    color: #f8fafc;
+  .is-unlocked & {
+    color: var(--ink-secondary);
+    margin-bottom: 8px;
   }
 }
 
@@ -115,45 +111,23 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
-  padding: 7px 14px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(148, 163, 184, 0.22);
-  border-left: 3px solid #f59e0b;
-  border-radius: 5px;
+  padding: 6px 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--crimson);
+  border-radius: 4px;
   margin: 0 0 12px;
   font-family: var(--font-mono, "IBM Plex Mono", monospace);
-  font-size: 0.75rem;
-  color: #f1f5f9;
+  font-size: 0.76rem;
+  color: var(--ink);
 
   .published-badge {
     font-weight: 700;
-    color: #fbbf24;
+    color: var(--crimson);
     letter-spacing: 0.05em;
   }
   .published-desc {
-    color: #cbd5e1;
-  }
-  .svet-zenodo-badge {
-    background: rgba(16, 185, 129, 0.16);
-    border-color: rgba(52, 211, 153, 0.45);
-    color: #6ee7b7;
-
-    &.is-en {
-      background: rgba(59, 130, 246, 0.2);
-      border-color: rgba(96, 165, 250, 0.48);
-      color: #93c5fd;
-    }
-  }
-  .svet-signal-btn {
-    background: rgba(248, 113, 113, 0.16);
-    border-color: rgba(248, 113, 113, 0.48);
-    color: #fca5a5;
-
-    &:hover {
-      background: #dc2626;
-      border-color: #dc2626;
-      color: #ffffff;
-    }
+    color: var(--ink-secondary);
   }
 }
 

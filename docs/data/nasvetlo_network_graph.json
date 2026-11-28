@@ -1,9 +1,9 @@
 {
-  "generatedAtUtc": "2026-11-27T22:28:27.056Z",
+  "generatedAtUtc": "2026-11-28T10:03:31.414Z",
   "methodologyVersion": "NAsvetlo-Network v3.0 (Full Capital & ZMIП UBO Ownership Chain, Brandes Betweenness & PageRank)",
   "summary": {
     "totalNodes": 512,
-    "totalEdges": 558,
+    "totalEdges": 561,
     "totalInvestigatedResourceEur": 33813315537,
     "totalUboControlledEur": 9490669777,
     "totalCompanies": 186,
@@ -17,10 +17,18 @@
     "bridgeNodesCount": 27,
     "connectedComponentsCount": 84,
     "largestComponentSize": 199,
-    "avgDegree": 2.16,
+    "avgDegree": 2.17,
     "topBridgeLabel": "АГЕНЦИЯ \"ПЪТНА ИНФРАСТРУКТУРА\"",
     "topBridgeId": "eik:000695089",
     "featuredPaths": [
+      {
+        "title": "Хасково (EPPO): Даниел Гаргов → Еко Традекс ↔ Гарант-2000 (Строител × Надзор)",
+        "fromId": "off:ДАНИЕЛ_РУМЕНОВ_ГАРГОВ",
+        "toId": "eik:126182689",
+        "fromLabel": "ДАНИЕЛ РУМЕНОВ ГАРГОВ",
+        "toLabel": "ГАРАНТ - 2000 ООД",
+        "hops": 2
+      },
       {
         "title": "Пътна верига (ЗМИП): АПИ → ДЗЗД Хемус → ИГ Холдинг → Григор Иванов",
         "fromId": "eik:000695089",
@@ -62,7 +70,7 @@
         "hops": 2
       }
     ],
-    "datasetSha256": "959a98799b1ac0be741a7ecf84c01cede2e5abf562615fc2720543ce5438d40c"
+    "datasetSha256": "48f2065c1089835d90d3cc7a40a4ac9110150b4d0b4c6450ab19aedec6ecfb1e"
   },
   "clusters": [
     {
@@ -1320,61 +1328,6 @@
       }
     },
     {
-      "id": "eik:000903946",
-      "label": "ОБЩИНА ХАСКОВО",
-      "type": "authority",
-      "cluster": "MUNICIPAL_AFFILIATION",
-      "allClusters": [
-        "MUNICIPAL_AFFILIATION"
-      ],
-      "subLabel": "Общини, Кметове и Общински съвети · €14.9 млн. свързаност",
-      "eik": "000903946",
-      "amountEur": 14943299.26,
-      "riskScore": 96,
-      "degree": 11,
-      "betweenness": 44,
-      "pageRank": 49,
-      "centralityScore": 58,
-      "componentId": 19,
-      "componentSize": 12,
-      "badges": [
-        "Публична институция",
-        "Собствени поръчки (чл. 49 ЗПК)"
-      ],
-      "financialLayer": {
-        "directContractsCount": 24,
-        "directContractsEur": 14943299.26,
-        "dzzdCount": 0,
-        "dzzdEur": 0,
-        "annex116Count": 0,
-        "primaryUnps": []
-      },
-      "corporateLayer": {
-        "eik": "000903946",
-        "zmipOwners": [],
-        "trRelatedEntities": [],
-        "sharedManagers": []
-      },
-      "intermediaryLayer": {
-        "lawFirms": [],
-        "legalProcurementEur": 0,
-        "j3HubReferences": []
-      },
-      "judicialLayer": {
-        "eissCases": [],
-        "fdrQ001Count": 0,
-        "kzkVasActs": [],
-        "kpkTable9": [
-          "Декларации по чл. 49 ЗПК"
-        ]
-      },
-      "details": {
-        "officialsCount": 6,
-        "companiesCount": 12,
-        "eik": "000903946"
-      }
-    },
-    {
       "id": "company:DZZD_АМ_РУСЕ_ТЪРНОВО",
       "label": "АМ РУСЕ ТЪРНОВО",
       "type": "company",
@@ -1496,6 +1449,61 @@
         "eik": "115816551",
         "wonEur": 110350784.69,
         "quarryConcession": "Делчевото - 2, у-к \"Делчевото - 2 юг\" (Мрамори, 35 г.)"
+      }
+    },
+    {
+      "id": "eik:000903946",
+      "label": "ОБЩИНА ХАСКОВО",
+      "type": "authority",
+      "cluster": "MUNICIPAL_AFFILIATION",
+      "allClusters": [
+        "MUNICIPAL_AFFILIATION"
+      ],
+      "subLabel": "Общини, Кметове и Общински съвети · €14.9 млн. свързаност",
+      "eik": "000903946",
+      "amountEur": 14943299.26,
+      "riskScore": 96,
+      "degree": 11,
+      "betweenness": 42,
+      "pageRank": 43,
+      "centralityScore": 56,
+      "componentId": 19,
+      "componentSize": 12,
+      "badges": [
+        "Публична институция",
+        "Собствени поръчки (чл. 49 ЗПК)"
+      ],
+      "financialLayer": {
+        "directContractsCount": 24,
+        "directContractsEur": 14943299.26,
+        "dzzdCount": 0,
+        "dzzdEur": 0,
+        "annex116Count": 0,
+        "primaryUnps": []
+      },
+      "corporateLayer": {
+        "eik": "000903946",
+        "zmipOwners": [],
+        "trRelatedEntities": [],
+        "sharedManagers": []
+      },
+      "intermediaryLayer": {
+        "lawFirms": [],
+        "legalProcurementEur": 0,
+        "j3HubReferences": []
+      },
+      "judicialLayer": {
+        "eissCases": [],
+        "fdrQ001Count": 0,
+        "kzkVasActs": [],
+        "kpkTable9": [
+          "Декларации по чл. 49 ЗПК"
+        ]
+      },
+      "details": {
+        "officialsCount": 6,
+        "companiesCount": 12,
+        "eik": "000903946"
       }
     },
     {
@@ -6729,6 +6737,151 @@
       }
     },
     {
+      "id": "off:ДАНИЕЛ_РУМЕНОВ_ГАРГОВ",
+      "label": "ДАНИЕЛ РУМЕНОВ ГАРГОВ",
+      "type": "official",
+      "cluster": "MUNICIPAL_AFFILIATION",
+      "allClusters": [
+        "MUNICIPAL_AFFILIATION"
+      ],
+      "subLabel": "Публично лице (ЗПК) · ОБЩИНА ХАСКОВО",
+      "eik": "",
+      "amountEur": 87577896.9,
+      "riskScore": 95,
+      "degree": 5,
+      "betweenness": 19,
+      "pageRank": 20,
+      "centralityScore": 33,
+      "componentId": 19,
+      "componentSize": 12,
+      "badges": [
+        "Чл. 49 ЗПК · Собствена институция",
+        "EPPO дело (Хасково) · СГС арест",
+        "КПК 2026: Г8815/15.05.2026"
+      ],
+      "financialLayer": {
+        "directContractsCount": 136,
+        "directContractsEur": 87577896.9,
+        "dzzdCount": 0,
+        "dzzdEur": 17790000,
+        "annex116Count": 0,
+        "primaryUnps": [
+          "00211-2024-0068",
+          "00211-2021-0058",
+          "00211-2025-0059"
+        ]
+      },
+      "corporateLayer": {
+        "eik": "",
+        "zmipOwners": [],
+        "trRelatedEntities": [
+          "ГЛОБЪЛ КЛИНЪР ООД",
+          "ЕКО - ТИТАН ГРУП АД",
+          "ЕКО ТРАДЕКС ГРУП АД",
+          "ХЛЕБНА ПРОМИШЛЕНОСТ АД",
+          "ХЛЕБОЗАВОД АД",
+          "ЯНТРА - ТРАНСПОРТ АД"
+        ],
+        "sharedManagers": [
+          "ДАНИЕЛ РУМЕНОВ ГАРГОВ"
+        ]
+      },
+      "intermediaryLayer": {
+        "lawFirms": [],
+        "legalProcurementEur": 0,
+        "j3HubReferences": []
+      },
+      "judicialLayer": {
+        "eissCases": [],
+        "fdrQ001Count": 0,
+        "kzkVasActs": [],
+        "kpkTable9": [
+          "КПК Таблица 9 · ДАНИЕЛ РУМЕНОВ ГАРГОВ",
+          "КПК 2026 Г8815/15.05.2026 (€400 хил. + 780 хил. лв. кеш; $292,8 хил. в чужбина)"
+        ]
+      },
+      "details": {
+        "contractCount": 136,
+        "periodEur": 87577896.9,
+        "ownInstitution": true
+      }
+    },
+    {
+      "id": "eik:126182689",
+      "label": "ГАРАНТ - 2000 ООД",
+      "type": "company",
+      "cluster": "MUNICIPAL_AFFILIATION",
+      "allClusters": [
+        "MUNICIPAL_AFFILIATION"
+      ],
+      "subLabel": "Свързано дружество · ГЕОРГИ ДЕЛЧЕВ ГЕОРГИЕВ",
+      "eik": "126182689",
+      "amountEur": 768824.53,
+      "riskScore": 94,
+      "degree": 5,
+      "betweenness": 19,
+      "pageRank": 20,
+      "centralityScore": 33,
+      "componentId": 19,
+      "componentSize": 12,
+      "badges": [
+        "Свързана фирма по ТР",
+        "Изпълнител по ЗОП",
+        "Строителен надзор (65 дог. / 23 ЕС)",
+        "Надзор на Еко Традекс (6 общини)"
+      ],
+      "financialLayer": {
+        "directContractsCount": 72,
+        "directContractsEur": 768824.53,
+        "dzzdCount": 0,
+        "dzzdEur": 0,
+        "annex116Count": 0,
+        "primaryUnps": [
+          "00211-2022-0005"
+        ]
+      },
+      "corporateLayer": {
+        "eik": "126182689",
+        "zmipOwners": [
+          "ГЕОРГИ ДЕЛЧЕВ ГЕОРГИЕВ",
+          "ПЕТЪР ЕВГЕНИЕВ НИКОЛОВ"
+        ],
+        "trRelatedEntities": [
+          "ГАРАНТ - 2000 ООД"
+        ],
+        "sharedManagers": [
+          "ГЕОРГИ ДЕЛЧЕВ ГЕОРГИЕВ",
+          "ПЕТЪР ЕВГЕНИЕВ НИКОЛОВ"
+        ]
+      },
+      "intermediaryLayer": {
+        "lawFirms": [],
+        "legalProcurementEur": 0,
+        "j3HubReferences": []
+      },
+      "judicialLayer": {
+        "eissCases": [],
+        "fdrQ001Count": 0,
+        "kzkVasActs": [],
+        "kpkTable9": []
+      },
+      "details": {
+        "owner": "ПЕТЪР ЕВГЕНИЕВ НИКОЛОВ",
+        "eik": "126182689",
+        "euContracts": 23,
+        "totalContracts": 65,
+        "role": "Строителен надзор",
+        "overlapMunicipalities": [
+          "Хасково",
+          "Харманли",
+          "Димитровград",
+          "Севлиево",
+          "Горна Оряховица",
+          "Джебел"
+        ]
+      }
+    },
+    {
       "id": "case:ОКРЪЖЕН_СЪД_ШУМЕН_ТД_1_2026",
       "label": "ТД № 1/2026 (Окръжен съд - Шумен)",
       "type": "case",
@@ -8376,69 +8529,6 @@
       }
     },
     {
-      "id": "off:ДАНИЕЛ_РУМЕНОВ_ГАРГОВ",
-      "label": "ДАНИЕЛ РУМЕНОВ ГАРГОВ",
-      "type": "official",
-      "cluster": "MUNICIPAL_AFFILIATION",
-      "allClusters": [
-        "MUNICIPAL_AFFILIATION"
-      ],
-      "subLabel": "Публично лице (ЗПК) · ОБЩИНА ХАСКОВО",
-      "eik": "",
-      "amountEur": 87577896.9,
-      "riskScore": 92,
-      "degree": 4,
-      "betweenness": 14,
-      "pageRank": 19,
-      "centralityScore": 28,
-      "componentId": 19,
-      "componentSize": 12,
-      "badges": [
-        "Чл. 49 ЗПК · Собствена институция"
-      ],
-      "financialLayer": {
-        "directContractsCount": 136,
-        "directContractsEur": 87577896.9,
-        "dzzdCount": 0,
-        "dzzdEur": 0,
-        "annex116Count": 0,
-        "primaryUnps": []
-      },
-      "corporateLayer": {
-        "eik": "",
-        "zmipOwners": [],
-        "trRelatedEntities": [
-          "ГЛОБЪЛ КЛИНЪР ООД",
-          "ЕКО - ТИТАН ГРУП АД",
-          "ЕКО ТРАДЕКС ГРУП АД",
-          "ХЛЕБНА ПРОМИШЛЕНОСТ АД",
-          "ХЛЕБОЗАВОД АД",
-          "ЯНТРА - ТРАНСПОРТ АД"
-        ],
-        "sharedManagers": [
-          "ДАНИЕЛ РУМЕНОВ ГАРГОВ"
-        ]
-      },
-      "intermediaryLayer": {
-        "lawFirms": [],
-        "legalProcurementEur": 0,
-        "j3HubReferences": []
-      },
-      "judicialLayer": {
-        "eissCases": [],
-        "fdrQ001Count": 0,
-        "kzkVasActs": [],
-        "kpkTable9": [
-          "КПК Таблица 9 · ДАНИЕЛ РУМЕНОВ ГАРГОВ"
-        ]
-      },
-      "details": {
-        "contractCount": 136,
-        "periodEur": 87577896.9,
-        "ownInstitution": true
-      }
-    },
-    {
       "id": "eik:114674768",
       "label": "ЕВРОСТРОЙ РН ЕООД",
       "type": "company",
@@ -9312,6 +9402,130 @@
       }
     },
     {
+      "id": "off:ГЕОРГИ_ДЕЛЧЕВ_ГЕОРГИЕВ",
+      "label": "ГЕОРГИ ДЕЛЧЕВ ГЕОРГИЕВ",
+      "type": "official",
+      "cluster": "MUNICIPAL_AFFILIATION",
+      "allClusters": [
+        "MUNICIPAL_AFFILIATION"
+      ],
+      "subLabel": "Публично лице (ЗПК) · ОБЩИНА ХАСКОВО",
+      "eik": "",
+      "amountEur": 768824.53,
+      "riskScore": 95,
+      "degree": 3,
+      "betweenness": 7,
+      "pageRank": 13,
+      "centralityScore": 22,
+      "componentId": 19,
+      "componentSize": 12,
+      "badges": [
+        "Чл. 49 ЗПК · Собствена институция",
+        "EPPO дело (Хасково) · СГС арест",
+        "Недеклариран борд · ЯНТРА - ТРАНСПОРТ АД"
+      ],
+      "financialLayer": {
+        "directContractsCount": 72,
+        "directContractsEur": 768824.53,
+        "dzzdCount": 0,
+        "dzzdEur": 0,
+        "annex116Count": 0,
+        "primaryUnps": []
+      },
+      "corporateLayer": {
+        "eik": "",
+        "zmipOwners": [],
+        "trRelatedEntities": [
+          "ГАРАНТ - 2000 ООД",
+          "ЯНТРА - ТРАНСПОРТ АД"
+        ],
+        "sharedManagers": [
+          "ГЕОРГИ ДЕЛЧЕВ ГЕОРГИЕВ"
+        ]
+      },
+      "intermediaryLayer": {
+        "lawFirms": [],
+        "legalProcurementEur": 0,
+        "j3HubReferences": []
+      },
+      "judicialLayer": {
+        "eissCases": [],
+        "fdrQ001Count": 0,
+        "kzkVasActs": [],
+        "kpkTable9": [
+          "КПК Таблица 9 · ГЕОРГИ ДЕЛЧЕВ ГЕОРГИЕВ",
+          "КПК 2026 Г7354/14.05.2026 (100% ЕКО КОНЦЕСИЯ ЕООД; недекларирано участие в борда на ЯНТРА - ТРАНСПОРТ АД)"
+        ]
+      },
+      "details": {
+        "contractCount": 72,
+        "periodEur": 768824.53,
+        "ownInstitution": true
+      }
+    },
+    {
+      "id": "off:ПЕТЪР_ЕВГЕНИЕВ_НИКОЛОВ",
+      "label": "ПЕТЪР ЕВГЕНИЕВ НИКОЛОВ",
+      "type": "official",
+      "cluster": "MUNICIPAL_AFFILIATION",
+      "allClusters": [
+        "MUNICIPAL_AFFILIATION"
+      ],
+      "subLabel": "Публично лице (ЗПК) · ОБЩИНА ХАСКОВО",
+      "eik": "",
+      "amountEur": 307022.22,
+      "riskScore": 95,
+      "degree": 3,
+      "betweenness": 7,
+      "pageRank": 13,
+      "centralityScore": 22,
+      "componentId": 19,
+      "componentSize": 12,
+      "badges": [
+        "Чл. 49 ЗПК · Собствена институция",
+        "EPPO дело (Хасково) · СГС арест",
+        "КПК 2026: Г8121/15.05.2026"
+      ],
+      "financialLayer": {
+        "directContractsCount": 66,
+        "directContractsEur": 307022.22,
+        "dzzdCount": 0,
+        "dzzdEur": 0,
+        "annex116Count": 0,
+        "primaryUnps": []
+      },
+      "corporateLayer": {
+        "eik": "",
+        "zmipOwners": [],
+        "trRelatedEntities": [
+          "АДЛОН И КО ЕООД",
+          "ГАРАНТ - 2000 ООД"
+        ],
+        "sharedManagers": [
+          "ПЕТЪР ЕВГЕНИЕВ НИКОЛОВ"
+        ]
+      },
+      "intermediaryLayer": {
+        "lawFirms": [],
+        "legalProcurementEur": 0,
+        "j3HubReferences": []
+      },
+      "judicialLayer": {
+        "eissCases": [],
+        "fdrQ001Count": 0,
+        "kzkVasActs": [],
+        "kpkTable9": [
+          "КПК Таблица 9 · ПЕТЪР ЕВГЕНИЕВ НИКОЛОВ",
+          "КПК 2026 Г8121/15.05.2026 (ГАРАНТ - 2000 ООД & АДЛОН И КО ЕООД)"
+        ]
+      },
+      "details": {
+        "contractCount": 66,
+        "periodEur": 307022.22,
+        "ownInstitution": true
+      }
+    },
+    {
       "id": "eik:119004654",
       "label": "Топлофикация-Сливен-инж.Ангел Ангелов ЕАД",
       "type": "authority",
@@ -9548,144 +9762,27 @@
       }
     },
     {
-      "id": "off:ГЕОРГИ_ДЕЛЧЕВ_ГЕОРГИЕВ",
-      "label": "ГЕОРГИ ДЕЛЧЕВ ГЕОРГИЕВ",
-      "type": "official",
-      "cluster": "MUNICIPAL_AFFILIATION",
-      "allClusters": [
-        "MUNICIPAL_AFFILIATION"
-      ],
-      "subLabel": "Публично лице (ЗПК) · ОБЩИНА ХАСКОВО",
-      "eik": "",
-      "amountEur": 768824.53,
-      "riskScore": 92,
-      "degree": 3,
-      "betweenness": 7,
-      "pageRank": 15,
-      "centralityScore": 22,
-      "componentId": 19,
-      "componentSize": 12,
-      "badges": [
-        "Чл. 49 ЗПК · Собствена институция"
-      ],
-      "financialLayer": {
-        "directContractsCount": 72,
-        "directContractsEur": 768824.53,
-        "dzzdCount": 0,
-        "dzzdEur": 0,
-        "annex116Count": 0,
-        "primaryUnps": []
-      },
-      "corporateLayer": {
-        "eik": "",
-        "zmipOwners": [],
-        "trRelatedEntities": [
-          "ГАРАНТ - 2000 ООД",
-          "ЯНТРА - ТРАНСПОРТ АД"
-        ],
-        "sharedManagers": [
-          "ГЕОРГИ ДЕЛЧЕВ ГЕОРГИЕВ"
-        ]
-      },
-      "intermediaryLayer": {
-        "lawFirms": [],
-        "legalProcurementEur": 0,
-        "j3HubReferences": []
-      },
-      "judicialLayer": {
-        "eissCases": [],
-        "fdrQ001Count": 0,
-        "kzkVasActs": [],
-        "kpkTable9": [
-          "КПК Таблица 9 · ГЕОРГИ ДЕЛЧЕВ ГЕОРГИЕВ"
-        ]
-      },
-      "details": {
-        "contractCount": 72,
-        "periodEur": 768824.53,
-        "ownInstitution": true
-      }
-    },
-    {
-      "id": "off:ПЕТЪР_ЕВГЕНИЕВ_НИКОЛОВ",
-      "label": "ПЕТЪР ЕВГЕНИЕВ НИКОЛОВ",
-      "type": "official",
-      "cluster": "MUNICIPAL_AFFILIATION",
-      "allClusters": [
-        "MUNICIPAL_AFFILIATION"
-      ],
-      "subLabel": "Публично лице (ЗПК) · ОБЩИНА ХАСКОВО",
-      "eik": "",
-      "amountEur": 307022.22,
-      "riskScore": 92,
-      "degree": 3,
-      "betweenness": 7,
-      "pageRank": 15,
-      "centralityScore": 22,
-      "componentId": 19,
-      "componentSize": 12,
-      "badges": [
-        "Чл. 49 ЗПК · Собствена институция"
-      ],
-      "financialLayer": {
-        "directContractsCount": 66,
-        "directContractsEur": 307022.22,
-        "dzzdCount": 0,
-        "dzzdEur": 0,
-        "annex116Count": 0,
-        "primaryUnps": []
-      },
-      "corporateLayer": {
-        "eik": "",
-        "zmipOwners": [],
-        "trRelatedEntities": [
-          "АДЛОН И КО ЕООД",
-          "ГАРАНТ - 2000 ООД"
-        ],
-        "sharedManagers": [
-          "ПЕТЪР ЕВГЕНИЕВ НИКОЛОВ"
-        ]
-      },
-      "intermediaryLayer": {
-        "lawFirms": [],
-        "legalProcurementEur": 0,
-        "j3HubReferences": []
-      },
-      "judicialLayer": {
-        "eissCases": [],
-        "fdrQ001Count": 0,
-        "kzkVasActs": [],
-        "kpkTable9": [
-          "КПК Таблица 9 · ПЕТЪР ЕВГЕНИЕВ НИКОЛОВ"
-        ]
-      },
-      "details": {
-        "contractCount": 66,
-        "periodEur": 307022.22,
-        "ownInstitution": true
-      }
-    },
-    {
-      "id": "eik:126182689",
-      "label": "ГАРАНТ - 2000 ООД",
+      "id": "eik:814255710",
+      "label": "ЯНТРА - ТРАНСПОРТ АД",
       "type": "company",
       "cluster": "MUNICIPAL_AFFILIATION",
       "allClusters": [
         "MUNICIPAL_AFFILIATION"
       ],
       "subLabel": "Свързано дружество · ГЕОРГИ ДЕЛЧЕВ ГЕОРГИЕВ",
-      "eik": "126182689",
+      "eik": "814255710",
       "amountEur": 768824.53,
-      "riskScore": 90,
+      "riskScore": 92,
       "degree": 3,
       "betweenness": 7,
-      "pageRank": 14,
+      "pageRank": 13,
       "centralityScore": 22,
       "componentId": 19,
       "componentSize": 12,
       "badges": [
         "Свързана фирма по ТР",
-        "Изпълнител по ЗОП"
+        "Изпълнител по ЗОП",
+        "Споделен борд: Д. Гаргов & Г. Георгиев"
       ],
       "financialLayer": {
         "directContractsCount": 72,
@@ -9696,17 +9793,16 @@
         "primaryUnps": []
       },
       "corporateLayer": {
-        "eik": "126182689",
+        "eik": "814255710",
         "zmipOwners": [
-          "ГЕОРГИ ДЕЛЧЕВ ГЕОРГИЕВ",
-          "ПЕТЪР ЕВГЕНИЕВ НИКОЛОВ"
+          "ГЕОРГИ ДЕЛЧЕВ ГЕОРГИЕВ"
         ],
         "trRelatedEntities": [
-          "ГАРАНТ - 2000 ООД"
+          "ЯНТРА - ТРАНСПОРТ АД"
         ],
         "sharedManagers": [
           "ГЕОРГИ ДЕЛЧЕВ ГЕОРГИЕВ",
-          "ПЕТЪР ЕВГЕНИЕВ НИКОЛОВ"
+          "ДАНИЕЛ РУМЕНОВ ГАРГОВ"
         ]
       },
       "intermediaryLayer": {
@@ -9721,8 +9817,8 @@
         "kpkTable9": []
       },
       "details": {
-        "owner": "ПЕТЪР ЕВГЕНИЕВ НИКОЛОВ",
-        "eik": "126182689"
+        "owner": "ГЕОРГИ ДЕЛЧЕВ ГЕОРГИЕВ",
+        "eik": "814255710"
       }
     },
     {
@@ -10546,6 +10642,143 @@
         "contractCount": 18,
         "periodEur": 85612.01,
         "ownInstitution": false
+      }
+    },
+    {
+      "id": "eik:126729838",
+      "label": "ЕКО ТРАДЕКС ГРУП АД",
+      "type": "company",
+      "cluster": "MUNICIPAL_AFFILIATION",
+      "allClusters": [
+        "MUNICIPAL_AFFILIATION"
+      ],
+      "subLabel": "Свързано дружество · ДАНИЕЛ РУМЕНОВ ГАРГОВ",
+      "eik": "126729838",
+      "amountEur": 87577896.9,
+      "riskScore": 94,
+      "degree": 3,
+      "betweenness": 5,
+      "pageRank": 12,
+      "centralityScore": 21,
+      "componentId": 19,
+      "componentSize": 12,
+      "badges": [
+        "Свързана фирма по ТР",
+        "Изпълнител по ЗОП",
+        "30 ЕС договора (€22,53 млн.)",
+        "9 ЕС с 1 оферта (€9,09 млн.)",
+        "Строител × Надзор (6 общини)"
+      ],
+      "financialLayer": {
+        "directContractsCount": 136,
+        "directContractsEur": 87577896.9,
+        "dzzdCount": 0,
+        "dzzdEur": 0,
+        "annex116Count": 0,
+        "primaryUnps": [
+          "00211-2024-0068",
+          "00211-2021-0058"
+        ]
+      },
+      "corporateLayer": {
+        "eik": "126729838",
+        "zmipOwners": [
+          "ДАНИЕЛ РУМЕНОВ ГАРГОВ"
+        ],
+        "trRelatedEntities": [
+          "ЕКО ТРАДЕКС ГРУП АД"
+        ],
+        "sharedManagers": [
+          "ДАНИЕЛ РУМЕНОВ ГАРГОВ"
+        ]
+      },
+      "intermediaryLayer": {
+        "lawFirms": [],
+        "legalProcurementEur": 0,
+        "j3HubReferences": []
+      },
+      "judicialLayer": {
+        "eissCases": [],
+        "fdrQ001Count": 0,
+        "kzkVasActs": [],
+        "kpkTable9": []
+      },
+      "details": {
+        "owner": "ДАНИЕЛ РУМЕНОВ ГАРГОВ",
+        "eik": "126729838",
+        "euContracts": 30,
+        "euEur": 22530000,
+        "singleBidEuContracts": 9,
+        "singleBidEuEur": 9090000,
+        "overlapMunicipalities": [
+          "Хасково",
+          "Харманли",
+          "Димитровград",
+          "Севлиево",
+          "Горна Оряховица",
+          "Джебел"
+        ]
+      }
+    },
+    {
+      "id": "eik:200145389",
+      "label": "ЕКО - ТИТАН ГРУП АД",
+      "type": "company",
+      "cluster": "MUNICIPAL_AFFILIATION",
+      "allClusters": [
+        "MUNICIPAL_AFFILIATION"
+      ],
+      "subLabel": "Свързано дружество · ДАНИЕЛ РУМЕНОВ ГАРГОВ",
+      "eik": "200145389",
+      "amountEur": 87577896.9,
+      "riskScore": 92,
+      "degree": 3,
+      "betweenness": 5,
+      "pageRank": 12,
+      "centralityScore": 21,
+      "componentId": 19,
+      "componentSize": 12,
+      "badges": [
+        "Свързана фирма по ТР",
+        "Изпълнител по ЗОП",
+        "Оператор депо Хасково · €8,55 млн. (1 оферта)"
+      ],
+      "financialLayer": {
+        "directContractsCount": 136,
+        "directContractsEur": 87577896.9,
+        "dzzdCount": 0,
+        "dzzdEur": 0,
+        "annex116Count": 0,
+        "primaryUnps": [
+          "00211-2025-0059"
+        ]
+      },
+      "corporateLayer": {
+        "eik": "200145389",
+        "zmipOwners": [
+          "ДАНИЕЛ РУМЕНОВ ГАРГОВ"
+        ],
+        "trRelatedEntities": [
+          "ЕКО - ТИТАН ГРУП АД"
+        ],
+        "sharedManagers": [
+          "ДАНИЕЛ РУМЕНОВ ГАРГОВ"
+        ]
+      },
+      "intermediaryLayer": {
+        "lawFirms": [],
+        "legalProcurementEur": 0,
+        "j3HubReferences": []
+      },
+      "judicialLayer": {
+        "eissCases": [],
+        "fdrQ001Count": 0,
+        "kzkVasActs": [],
+        "kpkTable9": []
+      },
+      "details": {
+        "owner": "ДАНИЕЛ РУМЕНОВ ГАРГОВ",
+        "eik": "200145389"
       }
     },
     {
@@ -14290,7 +14523,7 @@
       "riskScore": 90,
       "degree": 2,
       "betweenness": 0,
-      "pageRank": 10,
+      "pageRank": 9,
       "centralityScore": 15,
       "componentId": 19,
       "componentSize": 12,
@@ -14332,122 +14565,6 @@
       "details": {
         "owner": "ДАНИЕЛ РУМЕНОВ ГАРГОВ",
         "eik": "202758921"
-      }
-    },
-    {
-      "id": "eik:200145389",
-      "label": "ЕКО - ТИТАН ГРУП АД",
-      "type": "company",
-      "cluster": "MUNICIPAL_AFFILIATION",
-      "allClusters": [
-        "MUNICIPAL_AFFILIATION"
-      ],
-      "subLabel": "Свързано дружество · ДАНИЕЛ РУМЕНОВ ГАРГОВ",
-      "eik": "200145389",
-      "amountEur": 87577896.9,
-      "riskScore": 90,
-      "degree": 2,
-      "betweenness": 0,
-      "pageRank": 10,
-      "centralityScore": 15,
-      "componentId": 19,
-      "componentSize": 12,
-      "badges": [
-        "Свързана фирма по ТР",
-        "Изпълнител по ЗОП"
-      ],
-      "financialLayer": {
-        "directContractsCount": 136,
-        "directContractsEur": 87577896.9,
-        "dzzdCount": 0,
-        "dzzdEur": 0,
-        "annex116Count": 0,
-        "primaryUnps": []
-      },
-      "corporateLayer": {
-        "eik": "200145389",
-        "zmipOwners": [
-          "ДАНИЕЛ РУМЕНОВ ГАРГОВ"
-        ],
-        "trRelatedEntities": [
-          "ЕКО - ТИТАН ГРУП АД"
-        ],
-        "sharedManagers": [
-          "ДАНИЕЛ РУМЕНОВ ГАРГОВ"
-        ]
-      },
-      "intermediaryLayer": {
-        "lawFirms": [],
-        "legalProcurementEur": 0,
-        "j3HubReferences": []
-      },
-      "judicialLayer": {
-        "eissCases": [],
-        "fdrQ001Count": 0,
-        "kzkVasActs": [],
-        "kpkTable9": []
-      },
-      "details": {
-        "owner": "ДАНИЕЛ РУМЕНОВ ГАРГОВ",
-        "eik": "200145389"
-      }
-    },
-    {
-      "id": "eik:126729838",
-      "label": "ЕКО ТРАДЕКС ГРУП АД",
-      "type": "company",
-      "cluster": "MUNICIPAL_AFFILIATION",
-      "allClusters": [
-        "MUNICIPAL_AFFILIATION"
-      ],
-      "subLabel": "Свързано дружество · ДАНИЕЛ РУМЕНОВ ГАРГОВ",
-      "eik": "126729838",
-      "amountEur": 87577896.9,
-      "riskScore": 90,
-      "degree": 2,
-      "betweenness": 0,
-      "pageRank": 10,
-      "centralityScore": 15,
-      "componentId": 19,
-      "componentSize": 12,
-      "badges": [
-        "Свързана фирма по ТР",
-        "Изпълнител по ЗОП"
-      ],
-      "financialLayer": {
-        "directContractsCount": 136,
-        "directContractsEur": 87577896.9,
-        "dzzdCount": 0,
-        "dzzdEur": 0,
-        "annex116Count": 0,
-        "primaryUnps": []
-      },
-      "corporateLayer": {
-        "eik": "126729838",
-        "zmipOwners": [
-          "ДАНИЕЛ РУМЕНОВ ГАРГОВ"
-        ],
-        "trRelatedEntities": [
-          "ЕКО ТРАДЕКС ГРУП АД"
-        ],
-        "sharedManagers": [
-          "ДАНИЕЛ РУМЕНОВ ГАРГОВ"
-        ]
-      },
-      "intermediaryLayer": {
-        "lawFirms": [],
-        "legalProcurementEur": 0,
-        "j3HubReferences": []
-      },
-      "judicialLayer": {
-        "eissCases": [],
-        "fdrQ001Count": 0,
-        "kzkVasActs": [],
-        "kpkTable9": []
-      },
-      "details": {
-        "owner": "ДАНИЕЛ РУМЕНОВ ГАРГОВ",
-        "eik": "126729838"
       }
     },
     {
@@ -14857,64 +14974,6 @@
       }
     },
     {
-      "id": "eik:814255710",
-      "label": "ЯНТРА - ТРАНСПОРТ АД",
-      "type": "company",
-      "cluster": "MUNICIPAL_AFFILIATION",
-      "allClusters": [
-        "MUNICIPAL_AFFILIATION"
-      ],
-      "subLabel": "Свързано дружество · ГЕОРГИ ДЕЛЧЕВ ГЕОРГИЕВ",
-      "eik": "814255710",
-      "amountEur": 768824.53,
-      "riskScore": 90,
-      "degree": 2,
-      "betweenness": 0,
-      "pageRank": 10,
-      "centralityScore": 15,
-      "componentId": 19,
-      "componentSize": 12,
-      "badges": [
-        "Свързана фирма по ТР",
-        "Изпълнител по ЗОП"
-      ],
-      "financialLayer": {
-        "directContractsCount": 72,
-        "directContractsEur": 768824.53,
-        "dzzdCount": 0,
-        "dzzdEur": 0,
-        "annex116Count": 0,
-        "primaryUnps": []
-      },
-      "corporateLayer": {
-        "eik": "814255710",
-        "zmipOwners": [
-          "ГЕОРГИ ДЕЛЧЕВ ГЕОРГИЕВ"
-        ],
-        "trRelatedEntities": [
-          "ЯНТРА - ТРАНСПОРТ АД"
-        ],
-        "sharedManagers": [
-          "ГЕОРГИ ДЕЛЧЕВ ГЕОРГИЕВ"
-        ]
-      },
-      "intermediaryLayer": {
-        "lawFirms": [],
-        "legalProcurementEur": 0,
-        "j3HubReferences": []
-      },
-      "judicialLayer": {
-        "eissCases": [],
-        "fdrQ001Count": 0,
-        "kzkVasActs": [],
-        "kpkTable9": []
-      },
-      "details": {
-        "owner": "ГЕОРГИ ДЕЛЧЕВ ГЕОРГИЕВ",
-        "eik": "814255710"
-      }
-    },
-    {
       "id": "eik:206484688",
       "label": "Еко груп рисайклинг ООД",
       "type": "company",
@@ -14986,7 +15045,7 @@
       "riskScore": 90,
       "degree": 2,
       "betweenness": 0,
-      "pageRank": 10,
+      "pageRank": 9,
       "centralityScore": 15,
       "componentId": 19,
       "componentSize": 12,
@@ -16672,7 +16731,7 @@
       "riskScore": 68,
       "degree": 2,
       "betweenness": 0,
-      "pageRank": 11,
+      "pageRank": 10,
       "centralityScore": 15,
       "componentId": 19,
       "componentSize": 12,
@@ -17832,7 +17891,7 @@
       "riskScore": 66,
       "degree": 2,
       "betweenness": 0,
-      "pageRank": 11,
+      "pageRank": 10,
       "centralityScore": 15,
       "componentId": 19,
       "componentSize": 12,
@@ -34985,6 +35044,36 @@
       "amountEur": 49035204.82,
       "evidence": "Регистър ДА Държавен резерв × ЦАИС ЕОП",
       "url": "https://data.egov.bg/organisation/dataset/e73de8a3-2dbe-48b4-8705-059b35d5fac5"
+    },
+    {
+      "source": "off:ДАНИЕЛ_РУМЕНОВ_ГАРГОВ",
+      "target": "eik:814255710",
+      "kind": "owns_share",
+      "label": "Общ съвет на директорите с Г. Георгиев (ТРРЮЛНЦ)",
+      "primaryId": "ТР Партида ЕИК 814255710 (ЯНТРА - ТРАНСПОРТ АД)",
+      "amountEur": 0,
+      "evidence": "ТРРЮЛНЦ × КПК 2026 (Г8815 & Г7354) — корпоративна връзка между двама общински съветници в ОбС Хасково",
+      "url": ""
+    },
+    {
+      "source": "eik:126729838",
+      "target": "eik:126182689",
+      "kind": "conflict_of_interest",
+      "label": "Строител (30 ЕС / €22,53 млн.) ↔ Строителен надзор (23 ЕС) на същите обекти в 6 общини",
+      "primaryId": "ЦАИС ЕОП УНП 00211-2021-0058 ↔ УНП 00211-2022-0005 (Клетка 1 Хасково) & УНП 00211-2024-0068",
+      "amountEur": 22530000,
+      "evidence": "Рекултивация Клетка 1 Хасково + ЕС саниране · Засичане в Хасково, Харманли, Димитровград, Севлиево, Горна Оряховица, Джебел",
+      "url": ""
+    },
+    {
+      "source": "eik:200145389",
+      "target": "eik:126182689",
+      "kind": "conflict_of_interest",
+      "label": "Оператор депо Хасково (€8,55 млн., 1 оферта) ↔ Надзор на Клетка 1",
+      "primaryId": "ЦАИС ЕОП УНП 00211-2025-0059 ↔ УНП 00211-2022-0005",
+      "amountEur": 8550000,
+      "evidence": "Община Хасково · Регионално депо (Клетка 1) · Свързани фирми на общински съветници",
+      "url": ""
     }
   ]
 }

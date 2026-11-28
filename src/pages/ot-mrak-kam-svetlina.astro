@@ -926,7 +926,7 @@ const extraJsonLd = JSON.stringify({
 >
   <!-- COUNTDOWN VAULT & HERO (JUDICIAL-FIRST NARRATIVE) -->
   <section
-    class="svetlina-vault is-unlocked"
+    class="svetlina-vault is-unlocked has-bg-emblem is-svetlina"
     id="svetlinaVault"
     data-unlock-at="2026-11-26T12:00:00+02:00"
     data-start-at="2026-11-26T00:45:00+02:00"
@@ -950,14 +950,6 @@ const extraJsonLd = JSON.stringify({
         <div class="svetlina-published-banner">
           <span class="published-badge">● ОФИЦИАЛНО ПУБЛИКУВАН ОДИТ</span>
           <span class="published-desc">Пълен достъп до всички 28 области, {totalCourtsFmt} съдилища, {totalJudgesFmt} съдии и {allRedFlagsList.length} RED флага ({yearRangeLabel})</span>
-          <a
-            class="svet-zenodo-badge"
-            href="https://zenodo.org/records/24580253"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            CERN Zenodo DOI: 10.5281/zenodo.24580253 ↗
-          </a>
           <a class="svet-zenodo-badge is-en" href="/en/">EN Brief (EPPO / EU) ↗</a>
           <button type="button" class="svet-signal-btn" id="svetOpenSignalQuickBtn">
             ⚖ Генерирай сигнал (ИВСС / АДФИ / EPPO)
@@ -971,20 +963,8 @@ const extraJsonLd = JSON.stringify({
           <span>ЕПЕП / ЕИСС: {totalCasesFmt} дела ({yearRangeLabel})</span>
           <span>Метод: биномен тест · Benjamini–Hochberg FDR</span>
           <span>Ниво 1–5: {unexplainedRedTotal} необяснени · 9 необяснени многогодишни ({multiYearPersistent.length} общо)</span>
-          <span>CERN Zenodo Архив: 10.5281/zenodo.24580253</span>
           <span>GDPR: без ЕГН и лични данни на физически лица</span>
         </div>
-      </div>
-
-      <div class="obsidian-section-hero__brand svetlina-brand-showcase">
-        <img
-          src="sigma3/logo-svetlina.webp"
-          alt="От мрак към светлина — NAsvetlo · Съдебен одит"
-          width="356"
-          height="199"
-          decoding="async"
-          class="obsidian-section-hero__logo"
-        />
       </div>
 
       <!-- LIVE SVG ROTATING RADAR SCOPE IN VAULT -->
@@ -2140,9 +2120,9 @@ const extraJsonLd = JSON.stringify({
         </div>
         <p class="svetlina-method-meta">Данни към {asOf} · Отворени данни CC-BY 4.0 · Без ЕГН и лични данни на физически лица</p>
         <p class="svetlina-method-meta" style="margin-top:4px;">
-          Неизменяем архив в CERN Zenodo: <a href="https://zenodo.org/records/24580253" target="_blank" rel="noopener noreferrer" style="text-decoration:underline;font-weight:700;">DOI 10.5281/zenodo.24580253</a> · <a href="/en/" style="text-decoration:underline;">English Brief (EPPO / EC)</a>
+          <a href="/en/" style="text-decoration:underline;">English Brief (EPPO / EC)</a>
         </p>
-        <p class="svetlina-method-meta mono" style="word-break:break-all;margin-top:4px;">File SHA-256 (Zenodo &amp; live JSON): {RAW_FILE_SHA256}</p>
+        <p class="svetlina-method-meta mono" style="word-break:break-all;margin-top:4px;">File SHA-256 (live JSON): {RAW_FILE_SHA256}</p>
         {datasetSha256 ? <p class="svetlina-method-meta mono" style="word-break:break-all;margin-top:4px;">SHA-256 ({allRedFlagsList.length} RED snapshot): {datasetSha256}</p> : ''}
       </div>
     </section>
